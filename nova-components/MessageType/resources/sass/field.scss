@@ -1,0 +1,14 @@
+// Nova Tool CSS
+
+tr.message {
+  &.user {
+    td {
+      background: #fbbf88 !important;
+    }
+  }
+  &.chatbot {
+    td {
+      background: #ffffdd !important;
+    }
+  }
+}

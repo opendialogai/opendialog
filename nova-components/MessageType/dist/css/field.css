@@ -1,0 +1,8 @@
+tr.message.user td {
+  background: white !important;
+}
+
+tr.message.chatbot td {
+  background: #f6fbff !important;
+}
+
