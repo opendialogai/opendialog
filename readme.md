@@ -9,7 +9,7 @@ It pulls in both Open Dialog core and Open Dialog Webchat Package
 * [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
 * Install dependencies: `composer install`
 * Set up [OpenDialogAi-Webchat](https://github.com/opendialogai/webchat/): `bash update-web-chat.sh`
-* Create your environment file: `cp .env.example.lando .env`
+* Create your [Laravel environment](https://laravel.com/docs/5.8/configuration) file: `cp .env.example.lando .env`
 * Fire up the required services: `lando start`
 * Set up the database: `lando artisan migrate`
 * Add basic webchat settings: `lando artisan webchat:setup`
@@ -26,7 +26,7 @@ Message Mark-up:
 <text-message>I'm sorry, but I don't understand</text-message>
 </message>
 ```
-  * First, create an outgoing intent with the name intent.opendialog.welcome_response, and then create a message template from its page:
+  * Next, create an outgoing intent with the name intent.opendialog.welcome_response, and then create a message template from its page:
 ```
 name: no match
 conditions: <empty>
