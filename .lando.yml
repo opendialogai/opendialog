@@ -1,0 +1,48 @@
+name: opendialog
+recipe: laravel
+config:
+  webroot: public
+  php: 7.3
+proxy:
+  dgraph-ratel:
+    - dgraph-ratel.lndo.site:8000
+  dgraph-alpha:
+    - dgraph-alpha.lndo.site:8000
+services:
+  dgraph-zero:
+    type: compose
+    services:
+      image: dgraph/dgraph:latest
+      volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+      restart: on-failure
+      command: dgraph zero --my=dgraph-zero:5080
+  dgraph-alpha:
+    type: compose
+    services:
+      image: dgraph/dgraph:latest
+      volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+      restart: on-failure
+      command: dgraph alpha --my=dgraph-alpha:7080 --lru_mb=2048 --zero=dgraph-zero:5080
+  dgraph-ratel:
+    type: compose
+    services:
+      image: dgraph/dgraph:latest
+      volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+      command: dgraph-ratel -addr http://dgraph-alpha.lndo.site:8080
+    volumes:
+      dgraph:

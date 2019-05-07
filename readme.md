@@ -5,6 +5,39 @@ It pulls in both Open Dialog core and Open Dialog Webchat Package
 
 # Set Up Instructions
 
+## Quickstart
+* [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
+* `composer install`
+* `bash update-web-chat.sh`
+* `cp .env.example.lando .env`
+* `lando start`
+* `lando artisan migrate`
+* `lando artisan webchat:setup`
+* `lando artisan conversations:setup`
+* `lando artisan nova:publish`
+* `lando artisan nova:user`
+* Go to: http://opendialog.lndo.site/admin, log in with the user you just created, and create outgoing intents for your conversations:
+** First, create an outgoing intent with the name intent.core.NoMatchResponse, and then create a message template from its page:
+```
+name: no match
+conditions: <empty>
+Message Mark-up:
+<message>
+<text-message>I'm sorry, but I don't understand</text-message>
+</message>
+```
+** First, create an outgoing intent with the name intent.opendialog.welcome_response, and then create a message template from its page:
+```
+name: no match
+conditions: <empty>
+Message Mark-up:
+<message>
+<text-message>Hi there!</text-message>
+</message>
+```
+* Go to: http://opendialog.lndo.site/demo
+* The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
+
 ## Front end set up
 
 After running `composer install` or `composer update`, an update script file should be moved to the root of your project
@@ -27,7 +60,7 @@ For this to work successfully, the `APP_URL` environment variable need to be set
 
 ### Running DGraph
 
-If you don't have a `dgprah` directory in the root of your project, run
+If you don't have a `dgraph` directory in the root of your project, run
 
 ```php artisan vendor:publish --tag=dgraph```
 
