@@ -48,23 +48,23 @@ class SetWebchatSettings extends Command
         $this->info('...done');
 
         $odUrl = env('APP_URL');
-        $auditUrl = env('OPENDIALOG_AUDIT_URL');
-        $token = env('OPENDIALOG_AUDIT_TOKEN');
+        $commentsUrl = 'http://example.com';
+        $token = 'ApiTokenValue';
 
         $settings = [
             'url' => "$odUrl/web-chat",
             'hideOpenCloseIcons' => true,
             'open' => true,
-            'teamName' => 'Lisa',
+            'teamName' => 'OpenDialog Webchat',
             'messageDelay' => '1000',
             'colours' => 'colours',
-            'headerBackground' => '#98002e',
-            'chatbotAvatarPath' => "$odUrl/images/lisa.png",
+            'headerBackground' => '#0000FF',
+            'chatbotAvatarPath' => "$odUrl/images/logo.svg",
             'useAvatars' => true,
             'comments' => 'comments',
-            'commentsEnabled' => true,
+            'commentsEnabled' => false,
             'commentsName' => 'Comments',
-            'commentsEnabledPathPattern' => '^\\/home\\/audits|^\\/home\\/fsas',
+            'commentsEnabledPathPattern' => '^\\/home\\/posts',
             'commentsEntityName' => 'comments',
             'commentsCreatedFieldName' => 'created-at',
             'commentsTextFieldName' => 'comment',
@@ -72,14 +72,14 @@ class SetWebchatSettings extends Command
             'commentsAuthorRelationshipName' => 'author',
             'commentsAuthorIdFieldName' => 'id',
             'commentsAuthorNameFieldName' => 'name',
-            'commentsSectionEntityName' => 'fsas',
-            'commentsSectionRelationshipName' => 'fsa',
+            'commentsSectionEntityName' => 'posts',
+            'commentsSectionRelationshipName' => 'post',
             'commentsSectionIdFieldName' => 'id',
             'commentsSectionNameFieldName' => 'name',
-            'commentsSectionFilterPathPattern' => 'home\\/audits\\/(\\d*)\\/?',
-            'commentsSectionFilterQuery' => 'audit',
-            'commentsSectionPathPattern' => 'home\\/audits\\/\\d*\\/fsas\\/(\\d*)$',
-            'commentsAxiosConfig' => "{\"baseURL\": \"$auditUrl/json-api/v1\",\"headers\": {\"Authorization\": " .
+            'commentsSectionFilterPathPattern' => 'home\\/posts\\/(\\d*)\\/?',
+            'commentsSectionFilterQuery' => 'post',
+            'commentsSectionPathPattern' => 'home\\/posts\\/\\d*$',
+            'commentsAxiosConfig' => "{\"baseURL\": \"$commentsUrl/json-api/v1\",\"headers\": {\"Authorization\": " .
                 "\"Bearer $token\",\"Content-Type\": \"application/vnd.api+json\"}}",
             'disableCloseChat' => false,
             'webchatHistory' => 'webchatHistory',
