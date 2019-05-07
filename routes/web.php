@@ -10,3 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+use Illuminate\Support\Facades\Route;
+
+if (env("APP_DEBUG")) {
+    Route::get('/demo', function () {
+        return view('demo');
+    });
+}
