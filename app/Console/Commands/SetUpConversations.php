@@ -78,7 +78,6 @@ class SetUpConversations extends Command
                 'model_validation_status' => 'validated',
                 'notes' => 'auto generated',
                 'model' => $model,
-
             ]
         );
 
@@ -95,9 +94,9 @@ conversation:
   scenes:
     opening_scene:
       intents:
-        - u: 
+        - u:
             i: intent.core.NoMatch
-        - b: 
+        - b:
             i: intent.core.NoMatchResponse
             completes: true
 EOT;
@@ -111,9 +110,9 @@ conversation:
   scenes:
     opening_scene:
       intents:
-        - u: 
+        - u:
             i: intent.opendialog.welcome
-        - b: 
+        - b:
             i: intent.opendialog.welcome_response
             completes: true
 EOT;
