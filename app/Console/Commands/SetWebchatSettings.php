@@ -60,6 +60,7 @@ class SetWebchatSettings extends Command
             'colours' => 'colours',
             'headerBackground' => '#0000FF',
             'chatbotAvatarPath' => "$odUrl/images/logo.svg",
+            'chatbotName' => 'OpenDialog',
             'useAvatars' => true,
             'comments' => 'comments',
             'commentsEnabled' => false,
