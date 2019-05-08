@@ -6,34 +6,7 @@ This is a sample application that pulls in the [Open Dialog core](https://github
 ## Quickstart
 * [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
 * Add the auth.json file for Laravel Nova (See the "Nova installation" heading in this document)
-* Install dependencies: `composer install`
-* Set up [OpenDialogAi-Webchat](https://github.com/opendialogai/webchat/): `bash update-web-chat.sh`
-* Create your [Laravel environment](https://laravel.com/docs/5.8/configuration) file: `cp .env.example.lando .env`
-* Fire up the required services: `lando start`
-* Set up the database: `lando artisan migrate`
-* Add basic webchat settings: `lando artisan webchat:setup`
-* Create a couple of conversations: `lando artisan conversations:setup`
-* Set up [Nova](https://nova.laravel.com): `lando artisan nova:publish`
-* Add an admin user account: `lando artisan nova:user`
-* Go to: http://opendialog.lndo.site/admin, log in with the user you just created, and create outgoing intents for your conversations:
-  * First, create an outgoing intent with the name intent.core.NoMatchResponse, and then create a message template from its page:
-```
-name: no match
-conditions: <empty>
-Message Mark-up:
-<message>
-<text-message>I'm sorry, but I don't understand</text-message>
-</message>
-```
-  * Next, create an outgoing intent with the name intent.opendialog.welcome_response, and then create a message template from its page:
-```
-name: no match
-conditions: <empty>
-Message Mark-up:
-<message>
-<text-message>Hi there!</text-message>
-</message>
-```
+* Run the setup script: `bash ./scripts/set_up_od.sh`
 * Now you can go to: http://opendialog.lndo.site/demo
 * You should see the no-match message you added when you type a message to your bot.
 * The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
