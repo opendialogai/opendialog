@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class SetUpConversations extends Command
 {
@@ -57,7 +59,17 @@ class SetUpConversations extends Command
         $this->publishConversation('no_match_conversation', $this->getNoMatchConversation());
         $this->publishConversation('welcome', $this->getWelcomeConversation());
 
-        $this->warn("Conversations created. Please make sure you have messages set up for " .
+        foreach ($this->getOutgoingIntents() as $intentName => $messageTemplate) {
+            $intent = OutgoingIntent::updateOrCreate(['name' => $intentName]);
+
+            // Add a default message if none exist.
+            if ($intent->messageTemplates->count() === 0) {
+                $messageTemplate += ['outgoing_intent_id' => $intent->id];
+                MessageTemplate::create($messageTemplate);
+            }
+        }
+
+        $this->warn("Conversations created. Please edit the messages for the " .
             "<options=bold>intent.core.NoMatchResponse</> and <options=bold>intent.opendialog.welcome_response intents</>");
     }
 
@@ -116,5 +128,21 @@ conversation:
             i: intent.opendialog.welcome_response
             completes: true
 EOT;
+    }
+
+    public function getOutgoingIntents()
+    {
+        return [
+            'intent.core.NoMatchResponse' => [
+                'name' => 'Did not understand',
+                'conditions' => '',
+                'message_markup' => '<message><text-message>I\'m sorry, but I did not understand.</text-message></message>',
+            ],
+            'intent.opendialog.welcome_response' => [
+                'name' => 'Welcome',
+                'conditions' => '',
+                'message_markup' => '<message><text-message>Hi there!</text-message></message>',
+            ],
+        ];
     }
 }
