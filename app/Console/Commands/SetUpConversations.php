@@ -15,7 +15,7 @@ class SetUpConversations extends Command
      *
      * @var string
      */
-    protected $signature = 'conversations:setup';
+    protected $signature = 'conversations:setup {--yes}';
 
     /**
      * The console command description.
@@ -36,10 +36,12 @@ class SetUpConversations extends Command
 
     public function handle()
     {
-        if (!$this->confirm('This will clear your local dgraph and all conversations. ' .
-            'Are you sure you want to continue?')) {
-            $this->info("OK, not running");
-            exit;
+        if (!$this->option('yes')) {
+            if (!$this->confirm('This will clear your local dgraph and all conversations. ' .
+                'Are you sure you want to continue?')) {
+                $this->info("OK, not running");
+                exit;
+            }
         }
 
         $client = app()->make(DGraphClient::class);
