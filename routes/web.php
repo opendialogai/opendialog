@@ -15,7 +15,7 @@
 use Illuminate\Support\Facades\Route;
 
 if (env("APP_DEBUG")) {
-    Route::get('/demo', function () {
+        Route::get('/demo', function () {
         return view('demo');
     });
 }
