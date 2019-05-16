@@ -51,6 +51,8 @@ class OdTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson([
+            'teamName' => 'OpenDialog Webchat',
+            'useAvatars' => true,
         ]);
     }
 }
