@@ -41,6 +41,6 @@ echo
 echo "The admin console is available here: http://opendialog.lndo.site/admin"
 echo "You may login with the credentials admin@example.com / opendialog"
 echo
-echo "Finished! Now you may go to: http://opendialog.lndo.site/demo"
+echo "Finished! Now you may go to: https://opendialog.lndo.site/demo"
 
 trap '' EXIT
