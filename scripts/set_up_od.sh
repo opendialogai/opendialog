@@ -11,17 +11,17 @@ if [ ! -f auth.json ]; then
     echo >&2 "Please configure the auth.json file for Nova."; exit 1;
 fi
 
-echo "Installing dependencies..."
-composer install
-
-echo "Setting up the webchat widget..."
-bash update-web-chat.sh
-
 echo "Adding Laravel environment settings..."
-cp -n .env.example.lando .env
+cp -n .env.example.lando .env || echo "A .env file was already present, not copying example..."
 
 echo "Starting services..."
 lando start
+
+echo "Installing dependencies..."
+lando composer install
+
+echo "Setting up the webchat widget..."
+bash update-web-chat.sh
 
 echo "Setting up the database..."
 lando artisan migrate
