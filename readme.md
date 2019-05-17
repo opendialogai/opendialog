@@ -1,19 +1,21 @@
+
 # OpenDialog Demo
 This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
 
-It additionally provides an administrative interface (currently leveraging [Laravel Nova](https://nova.laravel.com) to manage conversations, intents & messages.
-
-> We are conscious that Laravel Nova is a 
+It additionally provides an administrative interface (currently leveraging [Laravel Nova](https://nova.laravel.com) to manage conversations, intents & messages<sup id="nova-note">[1](#f1)</sup>.
 
 # Set Up Instructions
 
 ## Quickstart
+This will get you up and running with minimal manual configuration.
+
 * [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
- - Lando
+ -- Lando is a wrapper around Docker services and it brings together everything that is required for OpenDialog.
+ 
 * Add the auth.json file for Laravel Nova (See the "Nova installation" heading in this document)
 * Run the setup script: `bash ./scripts/set_up_od.sh`
 * Now you can go to: https://opendialog.lndo.site/demo
-* You should see the no-match message you added when you type a message to your bot.
+* You should see the no-match message 
 * The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
 
 ## Manual Configuration
@@ -113,3 +115,6 @@ file so that it can be tested and deployed with all composer changes in place
 ### Running Code Sniffer
 To run code sniffer, run the following command
 ```./vendor/bin/phpcs --standard=psr12 app/ nova-components/*/src/```
+
+--- 
+<a name="nova-note">1</a>: We are conscious of the fact that Laravel Nova is an open-source but paid for product and are working towards a replacement. For the time being, however, it offers a quick solution while we focus on the underlying engine issues!
