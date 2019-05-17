@@ -29,6 +29,9 @@ lando artisan migrate
 echo "Populating default webchat settings..."
 lando artisan webchat:setup
 
+echo "Application level config files"
+php artisan vendor:publish --tag=config
+
 echo "Creating example conversations..."
 lando artisan conversations:setup --yes
 
