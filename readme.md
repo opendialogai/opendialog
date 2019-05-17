@@ -1,13 +1,18 @@
 # OpenDialog Demo
-This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. It additionally provides an administrative interface (leveraging [Laravel Nova](https://nova.laravel.com) to manage conversations, intents & messages.
+This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
+
+It additionally provides an administrative interface (currently leveraging [Laravel Nova](https://nova.laravel.com) to manage conversations, intents & messages.
+
+> We are conscious that Laravel Nova is a 
 
 # Set Up Instructions
 
 ## Quickstart
 * [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
+ - Lando
 * Add the auth.json file for Laravel Nova (See the "Nova installation" heading in this document)
 * Run the setup script: `bash ./scripts/set_up_od.sh`
-* Now you can go to: http://opendialog.lndo.site/demo
+* Now you can go to: https://opendialog.lndo.site/demo
 * You should see the no-match message you added when you type a message to your bot.
 * The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
 
