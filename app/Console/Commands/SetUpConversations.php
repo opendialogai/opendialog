@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class SetUpConversations extends Command
 {
@@ -13,7 +15,7 @@ class SetUpConversations extends Command
      *
      * @var string
      */
-    protected $signature = 'conversations:setup';
+    protected $signature = 'conversations:setup {--yes}';
 
     /**
      * The console command description.
@@ -34,10 +36,12 @@ class SetUpConversations extends Command
 
     public function handle()
     {
-        if (!$this->confirm('This will clear your local dgraph and all conversations. ' .
-            'Are you sure you want to continue?')) {
-            $this->info("OK, not running");
-            exit;
+        if (!$this->option('yes')) {
+            if (!$this->confirm('This will clear your local dgraph and all conversations. ' .
+                'Are you sure you want to continue?')) {
+                $this->info("OK, not running");
+                exit;
+            }
         }
 
         $client = app()->make(DGraphClient::class);
@@ -57,7 +61,17 @@ class SetUpConversations extends Command
         $this->publishConversation('no_match_conversation', $this->getNoMatchConversation());
         $this->publishConversation('welcome', $this->getWelcomeConversation());
 
-        $this->warn("Conversations created. Please make sure you have messages set up for " .
+        foreach ($this->getOutgoingIntents() as $intentName => $messageTemplate) {
+            $intent = OutgoingIntent::updateOrCreate(['name' => $intentName]);
+
+            // Add a default message if none exist.
+            if ($intent->messageTemplates->count() === 0) {
+                $messageTemplate += ['outgoing_intent_id' => $intent->id];
+                MessageTemplate::create($messageTemplate);
+            }
+        }
+
+        $this->warn("Conversations created. Please edit the messages for the " .
             "<options=bold>intent.core.NoMatchResponse</> and <options=bold>intent.opendialog.welcome_response intents</>");
     }
 
@@ -78,7 +92,6 @@ class SetUpConversations extends Command
                 'model_validation_status' => 'validated',
                 'notes' => 'auto generated',
                 'model' => $model,
-
             ]
         );
 
@@ -95,9 +108,9 @@ conversation:
   scenes:
     opening_scene:
       intents:
-        - u: 
+        - u:
             i: intent.core.NoMatch
-        - b: 
+        - b:
             i: intent.core.NoMatchResponse
             completes: true
 EOT;
@@ -111,11 +124,27 @@ conversation:
   scenes:
     opening_scene:
       intents:
-        - u: 
-            i: intent.opendialog.welcome
-        - b: 
-            i: intent.opendialog.welcome_response
+        - u:
+            i: intent.core.chatOpen
+        - b:
+            i: intent.opendialog.WelcomeResponse
             completes: true
 EOT;
+    }
+
+    public function getOutgoingIntents()
+    {
+        return [
+            'intent.core.NoMatchResponse' => [
+                'name' => 'Did not understand',
+                'conditions' => '',
+                'message_markup' => '<message><text-message>This is the default No Match response. It means I didn\'t find any other conversation that could answer what you just said.</text-message></message>',
+            ],
+            'intent.opendialog.WelcomeResponse' => [
+                'name' => 'Welcome',
+                'conditions' => '',
+                'message_markup' => '<message><text-message>Hi! This is my default welcome message. It pops up whenever webchat opens up. You can edit it via the bot\'s admin page.</text-message></message>',
+            ],
+        ];
     }
 }

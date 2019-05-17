@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>BDO OpenDialog Demo Page</title>
+    <title>OpenDialog Demo Page</title>
 </head>
 <body>
 <div class="flex-center position-ref full-height">
@@ -44,11 +44,11 @@
     <script>
         window.openDialogSettings = {
             url: "{{ env("APP_URL") }}",
-            teamName: 'LISA',
+            teamName: 'OpenDialog Webchat',
             user: {
-                first_name: 'Stuart',
-                last_name: 'Haigh',
-                email: 'stuarth@greenshootlabs.com',
+                first_name: 'Example',
+                last_name: 'User',
+                email: 'user@example.com',
                 external_id: '1',
             },
         };

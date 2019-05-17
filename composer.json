@@ -1,12 +1,8 @@
 {
-    "name": "greenshootlabs/laravel",
+    "name": "opendialogai/opendialog",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
-    "license": "MIT",
+    "description": "OpenDialog Demonstration App",
+    "license": "Apache-2.0",
     "require": {
         "php": "^7.1.3",
         "app/message-builder": "*",
@@ -16,12 +12,12 @@
         "laravel/framework": "5.8.*",
         "laravel/nova": "~2.0",
         "laravel/tinker": "^1.0",
-        "opendialogai/core": "dev-develop",
-        "opendialogai/webchat": "dev-develop",
+        "opendialogai/core": "^0.4",
+        "opendialogai/webchat": "^0.4",
         "phalcongelist/php-diff": "^2.0",
         "spatie/laravel-cors": "^1.3",
         "timothyasp/nova-color-field": "^1.0",
-        "greenshootlabs/nova-conversation-log": "dev-s6/feature/opendialog",
+        "opendialogai/nova-conversation-log": "dev-s6/feature/opendialog",
         "doctrine/dbal": "^2.9"
     },
     "require-dev": {
@@ -89,6 +85,10 @@
             "url": "https://github.com/opendialogai/webchat.git"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/opendialogai/nova-conversation-log.git"
+        },
+        {
             "type": "composer",
             "url": "https://nova.laravel.com"
         },
@@ -103,10 +103,6 @@
         {
             "type": "path",
             "url": "./nova-components/RevisionViewer"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/GreenShootLabs/nova-conversation-log.git"
         }
     ]
 }

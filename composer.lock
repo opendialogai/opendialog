@@ -4,16 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25044b7dd3239e02d6ebd9286a531238",
+    "content-hash": "5b9d96f48cea9f619d1830d156942cb2",
     "packages": [
         {
             "name": "App/RevisionViewer",
-            "version": "dev-master",
+            "version": "dev-s8/feature/od_installation",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/RevisionViewer",
-                "reference": "2348abf948714607b390a7648672ffc2d1d17266",
-                "shasum": null
+                "reference": "2348abf948714607b390a7648672ffc2d1d17266"
             },
             "require": {
                 "php": ">=7.1.0"
@@ -42,12 +41,11 @@
         },
         {
             "name": "App/message-builder",
-            "version": "dev-master",
+            "version": "dev-s8/feature/od_installation",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageBuilder",
-                "reference": "db153fff1d382cdd22c847d0f7dd2ba8599a0b2c",
-                "shasum": null
+                "reference": "db153fff1d382cdd22c847d0f7dd2ba8599a0b2c"
             },
             "require": {
                 "php": ">=7.1.0"
@@ -828,44 +826,6 @@
             "time": "2019-01-10T14:06:47+00:00"
         },
         {
-            "name": "greenshootlabs/nova-conversation-log",
-            "version": "dev-s6/feature/opendialog",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:GreenShootLabs/nova-conversation-log.git",
-                "reference": "538fe044147023bb27521ff69acf360afaa70379"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/GreenShootLabs/nova-conversation-log/zipball/538fe044147023bb27521ff69acf360afaa70379",
-                "reference": "538fe044147023bb27521ff69acf360afaa70379",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "~5.7",
-                "php": "^7.1.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "NovaConversationLog\\ToolServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "NovaConversationLog\\": "src/"
-                }
-            },
-            "description": "Laravel package",
-            "support": {
-                "source": "https://github.com/GreenShootLabs/nova-conversation-log/tree/s6/feature/opendialog",
-                "issues": "https://github.com/GreenShootLabs/nova-conversation-log/issues"
-            },
-            "time": "2019-04-10T23:14:02+00:00"
-        },
-        {
             "name": "guzzlehttp/guzzle",
             "version": "6.3.3",
             "source": {
@@ -1204,16 +1164,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.15",
+            "version": "v5.8.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "8a34004aed6ff0aa4072360e3e5bd875edebc223"
+                "reference": "33c04dd2a431adeeb49926a4f2b20590cc033ca2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/8a34004aed6ff0aa4072360e3e5bd875edebc223",
-                "reference": "8a34004aed6ff0aa4072360e3e5bd875edebc223",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/33c04dd2a431adeeb49926a4f2b20590cc033ca2",
+                "reference": "33c04dd2a431adeeb49926a4f2b20590cc033ca2",
                 "shasum": ""
             },
             "require": {
@@ -1347,21 +1307,21 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-04-30T14:05:03+00:00"
+            "time": "2019-05-14T16:02:41+00:00"
         },
         {
             "name": "laravel/nova",
-            "version": "v2.0.3",
+            "version": "v2.0.5",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "84e25f8e3fa29cc441a1797af4d9bce733dec795"
+                "reference": "bba766e6f8f3ecff8d1e8728ff647006f242f6ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-84e25f8e3fa29cc441a1797af4d9bce733dec795-zip-39f3de.zip",
-                "reference": "84e25f8e3fa29cc441a1797af4d9bce733dec795",
-                "shasum": "26b2d8c873cf1ff4b836965e9fc3029548af5dc8"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-bba766e6f8f3ecff8d1e8728ff647006f242f6ef-zip-729ee5.zip",
+                "reference": "bba766e6f8f3ecff8d1e8728ff647006f242f6ef",
+                "shasum": "92ee6106c9fb5dd83f2bcdfb51393ca4cb43532c"
             },
             "require": {
                 "cakephp/chronos": "^1.0",
@@ -1416,7 +1376,7 @@
                 "admin",
                 "laravel"
             ],
-            "time": "2019-05-01T17:03:40+00:00"
+            "time": "2019-05-15T19:21:43+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1805,16 +1765,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-develop",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "29a27143b157dfb83b8b00bf9c9ea065b2dde6b8"
+                "reference": "e385cfa6bbd17dc45409cd30bd69d2a1195b2cfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/29a27143b157dfb83b8b00bf9c9ea065b2dde6b8",
-                "reference": "29a27143b157dfb83b8b00bf9c9ea065b2dde6b8",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/e385cfa6bbd17dc45409cd30bd69d2a1195b2cfb",
+                "reference": "e385cfa6bbd17dc45409cd30bd69d2a1195b2cfb",
                 "shasum": ""
             },
             "require": {
@@ -1845,7 +1805,10 @@
                         "OpenDialogAi\\ContextEngine\\ContextEngineServiceProvider",
                         "OpenDialogAi\\ActionEngine\\ActionEngineServiceProvider",
                         "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider"
-                    ]
+                    ],
+                    "aliases": {
+                        "AttributeResolver": "OpenDialogAi\\ContextEngine\\Facades\\AttributeResolver"
+                    }
                 }
             },
             "autoload": {
@@ -1882,23 +1845,60 @@
             ],
             "description": "The OpenDialog core package",
             "support": {
-                "source": "https://github.com/opendialogai/core/tree/develop",
+                "source": "https://github.com/opendialogai/core/tree/0.4.0",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-05-06T07:08:03+00:00"
+            "time": "2019-05-16T15:49:15+00:00"
         },
         {
-            "name": "opendialogai/webchat",
-            "version": "dev-develop",
+            "name": "opendialogai/nova-conversation-log",
+            "version": "dev-s6/feature/opendialog",
             "source": {
                 "type": "git",
-                "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "c960187d9a3623c39e7ac35bc38623404af1355e"
+                "url": "https://github.com/opendialogai/nova-conversation-log.git",
+                "reference": "922b0ec6735d0a045263e8082b5b71d5bf8c99e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/c960187d9a3623c39e7ac35bc38623404af1355e",
-                "reference": "c960187d9a3623c39e7ac35bc38623404af1355e",
+                "url": "https://api.github.com/repos/opendialogai/nova-conversation-log/zipball/922b0ec6735d0a045263e8082b5b71d5bf8c99e2",
+                "reference": "922b0ec6735d0a045263e8082b5b71d5bf8c99e2",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.7",
+                "php": "^7.1.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NovaConversationLog\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NovaConversationLog\\": "src/"
+                }
+            },
+            "description": "Laravel package",
+            "support": {
+                "source": "https://github.com/opendialogai/nova-conversation-log/tree/s6/feature/opendialog"
+            },
+            "time": "2019-05-08T14:36:26+00:00"
+        },
+        {
+            "name": "opendialogai/webchat",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opendialogai/webchat.git",
+                "reference": "8925caefc3017a7e0d1efb9f28fd31432956afd3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/8925caefc3017a7e0d1efb9f28fd31432956afd3",
+                "reference": "8925caefc3017a7e0d1efb9f28fd31432956afd3",
                 "shasum": ""
             },
             "require": {
@@ -1939,10 +1939,10 @@
             ],
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
-                "source": "https://github.com/opendialogai/webchat/tree/develop",
+                "source": "https://github.com/opendialogai/webchat/tree/0.4.0",
                 "issues": "https://github.com/opendialogai/webchat/issues"
             },
-            "time": "2019-05-06T10:10:06+00:00"
+            "time": "2019-05-16T15:53:42+00:00"
         },
         {
             "name": "opis/closure",
@@ -3024,16 +3024,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v1.0.2",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf"
+                "reference": "d3636025e8253c6144358ec0a62773cae588395b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/1aa7ab2429c3d594dd70689604b5cf7421254cdf",
-                "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/d3636025e8253c6144358ec0a62773cae588395b",
+                "reference": "d3636025e8253c6144358ec0a62773cae588395b",
                 "shasum": ""
             },
             "require": {
@@ -3041,19 +3041,22 @@
             },
             "require-dev": {
                 "psr/cache": "^1.0",
-                "psr/container": "^1.0"
+                "psr/container": "^1.0",
+                "symfony/polyfill-intl-idn": "^1.10"
             },
             "suggest": {
                 "psr/cache": "When using the Cache contracts",
                 "psr/container": "When using the Service contracts",
                 "symfony/cache-contracts-implementation": "",
+                "symfony/event-dispatcher-implementation": "",
+                "symfony/http-client-contracts-implementation": "",
                 "symfony/service-contracts-implementation": "",
                 "symfony/translation-contracts-implementation": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -3088,7 +3091,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2018-12-05T08:06:11+00:00"
+            "time": "2019-04-27T14:29:50+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -5251,16 +5254,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.9",
+            "version": "7.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "134669cf0eeac3f79bc7f0c793efbc158bffc160"
+                "reference": "64cb33f5b520da490a7b13149d39b43cf3c890c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/134669cf0eeac3f79bc7f0c793efbc158bffc160",
-                "reference": "134669cf0eeac3f79bc7f0c793efbc158bffc160",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/64cb33f5b520da490a7b13149d39b43cf3c890c6",
+                "reference": "64cb33f5b520da490a7b13149d39b43cf3c890c6",
                 "shasum": ""
             },
             "require": {
@@ -5331,7 +5334,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-04-19T15:50:46+00:00"
+            "time": "2019-05-14T04:53:02+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -6045,9 +6048,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "opendialogai/core": 20,
-        "opendialogai/webchat": 20,
-        "greenshootlabs/nova-conversation-log": 20
+        "opendialogai/nova-conversation-log": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

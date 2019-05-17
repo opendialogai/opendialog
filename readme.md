@@ -1,11 +1,24 @@
-# OpenDialog
-This is the package that will hold all of the OpenDialog code and logic.
+# OpenDialog Demo
+This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
 
-It pulls in both Open Dialog core and Open Dialog Webchat Package
+It additionally provides an administrative interface (currently leveraging [Laravel Nova](https://nova.laravel.com) to manage conversations, intents & messages.
+
+> We are conscious that Laravel Nova is a 
 
 # Set Up Instructions
 
-## Front end set up
+## Quickstart
+* [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
+ - Lando
+* Add the auth.json file for Laravel Nova (See the "Nova installation" heading in this document)
+* Run the setup script: `bash ./scripts/set_up_od.sh`
+* Now you can go to: https://opendialog.lndo.site/demo
+* You should see the no-match message you added when you type a message to your bot.
+* The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
+
+## Manual Configuration
+
+### Front end set up
 
 After running `composer install` or `composer update`, an update script file should be moved to the root of your project
 directory. Run this script to set up the OpenDialogAI-Webchat and OpenDialogAI-Core packages with
@@ -14,7 +27,7 @@ directory. Run this script to set up the OpenDialogAI-Webchat and OpenDialogAI-C
 
 Run this script every time an underlying package is updated.
 
-### Webchat Configuration 
+#### Webchat Configuration 
 
 The webchat configuration can be found in the `webchat_settings` table. The config table should be seeded by running:
 
@@ -23,11 +36,11 @@ The webchat configuration can be found in the `webchat_settings` table. The conf
 This will set up the `webchat_settings` table with all the requried values.
 For this to work successfully, the `APP_URL` environment variable need to be set
 
-## DGraph configuration
+### DGraph configuration
 
-### Running DGraph
+#### Running DGraph
 
-If you don't have a `dgprah` directory in the root of your project, run
+If you don't have a `dgraph` directory in the root of your project, run
 
 ```php artisan vendor:publish --tag=dgraph```
 
@@ -35,7 +48,7 @@ to copy it over from the OpenDialogAi-Core package.
 
 Now follow the instructions found in `dgraph-setup.md`
 
-### Config
+#### Config
 
 Add (and edit as necessary) the following lines to your .env file to let OD know where to find your DGraph installation:
 ```
@@ -45,7 +58,7 @@ DGRAPH_PORT=8080
 
 These settings should work out of the box if you are using Laravel Homestead. More info in `draph/dgraph-setup.md`
 
-## Example Conversations
+### Example Conversations
 
 To set up with example conversations, run 
 
@@ -53,7 +66,7 @@ To set up with example conversations, run
 
 This will create a no match and a welcome conversation (but without the required messages)
 
-## Nova installation
+### Nova installation
 
 This package makes use of [Laravel Nova](https://nova.laravel.com) for backend administration.
 
@@ -64,7 +77,7 @@ auth file named `auth.json` at the root of your project in the following format:
     {
       "http-basic": {
         "nova.laravel.com": {
-          "username": "{usernbame}",
+          "username": "{username}",
           "password": "{password}"
         }
       }
@@ -81,7 +94,7 @@ To create a user to let you log into the Nova pages, run
 
 Once this has run, you can access Nova by navigating to: ```{APP_URL}/admin``` 
 
-## Local dev
+### Local dev
 
 A `composer-dev.json` file has been created to help with local development. It makes the assumption that you have the 
 Open Dialog and Open Dialog Webchat packages checked out locally to `../OpenDialog` and `../OpenDialog-Webchat`
@@ -97,6 +110,6 @@ Note:
 + Before a final commit for a feature / fix, please be sure to run `composer update` to update the `composer-lock.json`
 file so that it can be tested and deployed with all composer changes in place
 
-## Running Code Sniffer
+### Running Code Sniffer
 To run code sniffer, run the following command
 ```./vendor/bin/phpcs --standard=psr12 app/ nova-components/*/src/```
