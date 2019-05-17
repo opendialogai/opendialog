@@ -125,9 +125,9 @@ conversation:
     opening_scene:
       intents:
         - u:
-            i: intent.opendialog.welcome
+            i: intent.core.chatOpen
         - b:
-            i: intent.opendialog.welcome_response
+            i: intent.opendialog.WelcomeResponse
             completes: true
 EOT;
     }
@@ -138,12 +138,12 @@ EOT;
             'intent.core.NoMatchResponse' => [
                 'name' => 'Did not understand',
                 'conditions' => '',
-                'message_markup' => '<message><text-message>I\'m sorry, but I did not understand.</text-message></message>',
+                'message_markup' => '<message><text-message>This is the default No Match response. It means I didn\'t find any other conversation that could answer what you just said.</text-message></message>',
             ],
-            'intent.opendialog.welcome_response' => [
+            'intent.opendialog.WelcomeResponse' => [
                 'name' => 'Welcome',
                 'conditions' => '',
-                'message_markup' => '<message><text-message>Hi there!</text-message></message>',
+                'message_markup' => '<message><text-message>Hi! This is my default welcome message. It pops up whenever webchat opens up. You can edit it via the bot\'s admin page.</text-message></message>',
             ],
         ];
     }
