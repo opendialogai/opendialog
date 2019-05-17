@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.1.3",
         "app/message-builder": "*",
+        "app/message-tester": "*",
         "app/revisionviewer": "*",
         "carlson/nova-link-field": "^1.0",
         "fideloper/proxy": "^4.0",
@@ -103,6 +104,10 @@
         {
             "type": "path",
             "url": "./nova-components/RevisionViewer"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/MessageTester"
         }
     ]
 }

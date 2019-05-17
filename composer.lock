@@ -4,15 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b9d96f48cea9f619d1830d156942cb2",
+    "content-hash": "11678e875781aecef624d181442f7312",
     "packages": [
         {
             "name": "App/RevisionViewer",
-            "version": "dev-s8/feature/od_installation",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/RevisionViewer",
-                "reference": "2348abf948714607b390a7648672ffc2d1d17266"
+                "reference": "2348abf948714607b390a7648672ffc2d1d17266",
+                "shasum": null
             },
             "require": {
                 "php": ">=7.1.0"
@@ -41,11 +42,12 @@
         },
         {
             "name": "App/message-builder",
-            "version": "dev-s8/feature/od_installation",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageBuilder",
-                "reference": "db153fff1d382cdd22c847d0f7dd2ba8599a0b2c"
+                "reference": "db153fff1d382cdd22c847d0f7dd2ba8599a0b2c",
+                "shasum": null
             },
             "require": {
                 "php": ">=7.1.0"
@@ -67,6 +69,40 @@
                 "MIT"
             ],
             "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ]
+        },
+        {
+            "name": "App/message-tester",
+            "version": "dev-s8/feature/message-tester-page",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/MessageTester",
+                "reference": "3d2f2618e7259064cf2e28f2290aa337f7846997",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "App\\MessageTester\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "App\\MessageTester\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
             "keywords": [
                 "laravel",
                 "nova"
@@ -1654,16 +1690,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.17.1",
+            "version": "2.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "96acbc0c03782e8115156dd4dd8b736267155066"
+                "reference": "8322b7bd1805be31867c13bf3cdaab948a0dd406"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/96acbc0c03782e8115156dd4dd8b736267155066",
-                "reference": "96acbc0c03782e8115156dd4dd8b736267155066",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/8322b7bd1805be31867c13bf3cdaab948a0dd406",
+                "reference": "8322b7bd1805be31867c13bf3cdaab948a0dd406",
                 "shasum": ""
             },
             "require": {
@@ -1710,7 +1746,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-04-27T18:04:27+00:00"
+            "time": "2019-05-16T18:44:35+00:00"
         },
         {
             "name": "nikic/php-parser",
