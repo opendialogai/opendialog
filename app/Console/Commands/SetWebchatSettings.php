@@ -86,6 +86,7 @@ class SetWebchatSettings extends Command
             'webchatHistory' => 'webchatHistory',
             'showHistory' => true,
             'numberOfMessages' => 10,
+            WebchatSetting::COLLECT_USER_IP => true,
         ];
 
         foreach ($settings as $name => $value) {
