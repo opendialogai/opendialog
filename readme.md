@@ -123,7 +123,21 @@ file so that it can be tested and deployed with all composer changes in place
 
 ### Running Code Sniffer
 To run code sniffer, run the following command
-```./vendor/bin/phpcs --standard=psr12 app/ nova-components/*/src/```
+```./vendor/bin/phpcs --standard=psr12 app/ -n```
+
+### Git Hooks
+
+To set up the included git pre-commit hook, first make sure the pre-commit script is executable by running
+
+```chmod +x .githooks/pre-commit```
+
+Then configure your local git to use this directory for git hooks by running:
+
+```git config core.hooksPath .githooks/```
+
+Now every commit you make will trigger php codesniffer to run. If there is a problem with the formatting
+of the code, the script will echo the output of php codesniffer. If there are no issues, the commit will
+go into git.
 
 --- 
 <a name="nova-note">1</a>: We are conscious of the fact that Laravel Nova is an open-source but paid for product and are working towards a replacement. For the time being, however, it offers a quick solution while we focus on the underlying engine issues!
