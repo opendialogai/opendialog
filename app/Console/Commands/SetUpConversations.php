@@ -51,7 +51,8 @@ class SetUpConversations extends Command
     {
         $conversationName = array_last(explode('/', $fileName));
         $this->info(sprintf('Importing conversation %s', $conversationName));
-        Artisan::call('conversation:import',
+        Artisan::call(
+            'conversation:import',
             [
                 'filename' => $fileName,
                 '--publish' => true,
