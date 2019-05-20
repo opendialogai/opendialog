@@ -1,0 +1,59 @@
+# PHP CircleCI 2.1 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2.0
+jobs:
+  build:
+    branches:
+      only:
+        - develop
+        - master
+        - /.*feature.*/
+        - /.*bug.*/
+
+    docker:
+      # specify the version you desire here
+      - image: circleci/php:7.3.5-fpm
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mysql:9.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: Set up Nova auth
+          command: echo "{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${NOVA_USERNAME}\",\"password\":\"${NOVA_PASSWORD}\"}}}" > auth.json
+      - run: sudo apt install -y libsqlite3-dev
+      - run: sudo docker-php-ext-install bcmath
+      - run: sudo docker-php-ext-install exif
+      - run: sudo composer self-update
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "composer.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: composer install -n --prefer-dist --no-scripts
+
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.lock" }}
+
+      # Copy .env file
+      - run: cp .env.example .env
+
+      # Install key
+      - run: php artisan key:generate
+
+      # run tests!
+      - run: ./vendor/bin/phpunit
+
+      - run: ./vendor/bin/phpcs --standard=psr12 app/ -n
