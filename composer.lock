@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b9d96f48cea9f619d1830d156942cb2",
+    "content-hash": "2d7b1f031af3e3f84ba0d03947d60931",
     "packages": [
         {
             "name": "App/RevisionViewer",
@@ -1654,16 +1654,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.17.1",
+            "version": "2.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "96acbc0c03782e8115156dd4dd8b736267155066"
+                "reference": "8322b7bd1805be31867c13bf3cdaab948a0dd406"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/96acbc0c03782e8115156dd4dd8b736267155066",
-                "reference": "96acbc0c03782e8115156dd4dd8b736267155066",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/8322b7bd1805be31867c13bf3cdaab948a0dd406",
+                "reference": "8322b7bd1805be31867c13bf3cdaab948a0dd406",
                 "shasum": ""
             },
             "require": {
@@ -1710,7 +1710,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-04-27T18:04:27+00:00"
+            "time": "2019-05-16T18:44:35+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -1852,16 +1852,16 @@
         },
         {
             "name": "opendialogai/nova-conversation-log",
-            "version": "dev-s6/feature/opendialog",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/nova-conversation-log.git",
-                "reference": "922b0ec6735d0a045263e8082b5b71d5bf8c99e2"
+                "reference": "483bc26b6a603aec12f4af7dd34c1d4bf4010ad3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/nova-conversation-log/zipball/922b0ec6735d0a045263e8082b5b71d5bf8c99e2",
-                "reference": "922b0ec6735d0a045263e8082b5b71d5bf8c99e2",
+                "url": "https://api.github.com/repos/opendialogai/nova-conversation-log/zipball/483bc26b6a603aec12f4af7dd34c1d4bf4010ad3",
+                "reference": "483bc26b6a603aec12f4af7dd34c1d4bf4010ad3",
                 "shasum": ""
             },
             "require": {
@@ -1881,11 +1881,11 @@
                     "NovaConversationLog\\": "src/"
                 }
             },
-            "description": "Laravel package",
+            "description": "Laravel Nova Conversation Log Tool package",
             "support": {
-                "source": "https://github.com/opendialogai/nova-conversation-log/tree/s6/feature/opendialog"
+                "source": "https://github.com/opendialogai/nova-conversation-log/tree/1.1.0"
             },
-            "time": "2019-05-08T14:36:26+00:00"
+            "time": "2019-05-20T13:24:08+00:00"
         },
         {
             "name": "opendialogai/webchat",
@@ -6047,9 +6047,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "opendialogai/nova-conversation-log": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
