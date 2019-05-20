@@ -78,35 +78,35 @@ class Conversation extends Resource
                 ->exceptOnForms()
                 ->failedWhen(['invalid'])
                 ->loadingWhen(['waiting']),
-            Text::make('Outgoing intents', function() {
-                    $output = '';
+            Text::make('Outgoing intents', function () {
+                $output = '';
 
-                    $yaml = Yaml::parse($this->model)['conversation'];
+                $yaml = Yaml::parse($this->model)['conversation'];
 
-                    foreach ($yaml['scenes'] as $sceneId => $scene) {
-                        foreach ($scene['intents'] as $intent) {
-                            foreach ($intent as $tag => $value) {
-                                if ($tag == 'b') {
-                                    foreach ($value as $key => $intent) {
-                                        if ($key == 'i') {
-                                            $outgoingIntent = OutgoingIntent::where('name', $intent)->first();
+                foreach ($yaml['scenes'] as $sceneId => $scene) {
+                    foreach ($scene['intents'] as $intent) {
+                        foreach ($intent as $tag => $value) {
+                            if ($tag == 'b') {
+                                foreach ($value as $key => $intent) {
+                                    if ($key == 'i') {
+                                        $outgoingIntent = OutgoingIntent::where('name', $intent)->first();
 
-                                            if ($outgoingIntent) {
-                                                $output .= '<div><a href="/admin/resources/outgoing-intents/' . $outgoingIntent->id .'">' . $intent . '</a></div>';
-                                            } else {
-                                                $output .= '<div><a href="/admin/resources/outgoing-intents/new">' . $intent . '</a></div>';
-                                            }
-                                            break;
+                                        if ($outgoingIntent) {
+                                            $output .= '<div><a href="/admin/resources/outgoing-intents/' . $outgoingIntent->id . '">' . $intent . '</a></div>';
+                                        } else {
+                                            $output .= '<div><a href="/admin/resources/outgoing-intents/new">' . $intent . '</a></div>';
                                         }
+                                        break;
                                     }
-                                    break;
                                 }
+                                break;
                             }
                         }
                     }
+                }
 
-                    return $output;
-                })
+                return $output;
+            })
                 ->onlyOnDetail()
                 ->asHtml(),
             HasMany::make(__('State Logs'), 'conversationStateLogs', ConversationStateLog::class),
