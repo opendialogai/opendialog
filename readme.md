@@ -29,6 +29,7 @@ directory. Run this script to set up the OpenDialogAI-Webchat and OpenDialogAI-C
 
 ```bash update-web-chat.sh```
 
+
 Run this script every time an underlying package is updated.
 
 #### Webchat Configuration 
@@ -53,6 +54,12 @@ to copy it over from the OpenDialogAi-Core package.
 Now follow the instructions found in `dgraph-setup.md`
 
 #### Config
+
+Publish the opendialog config by running:
+
+```php artisan vendor:publish --tag=opendialog-config```
+
+This will copy over all required config files to `config/opendialog` for you to add you own values
 
 Add (and edit as necessary) the following lines to your .env file to let OD know where to find your DGraph installation:
 ```
