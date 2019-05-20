@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d7b1f031af3e3f84ba0d03947d60931",
+    "content-hash": "3314320deeb27dc5791c7a8b8ed0dfeb",
     "packages": [
         {
             "name": "App/RevisionViewer",
@@ -1765,16 +1765,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "0.4.0",
+            "version": "dev-feature/config-improvements",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "e385cfa6bbd17dc45409cd30bd69d2a1195b2cfb"
+                "reference": "66875ae78f40a3da5d7d48d3c1d45b78b3b0e8f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/e385cfa6bbd17dc45409cd30bd69d2a1195b2cfb",
-                "reference": "e385cfa6bbd17dc45409cd30bd69d2a1195b2cfb",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/66875ae78f40a3da5d7d48d3c1d45b78b3b0e8f0",
+                "reference": "66875ae78f40a3da5d7d48d3c1d45b78b3b0e8f0",
                 "shasum": ""
             },
             "require": {
@@ -1845,10 +1845,10 @@
             ],
             "description": "The OpenDialog core package",
             "support": {
-                "source": "https://github.com/opendialogai/core/tree/0.4.0",
+                "source": "https://github.com/opendialogai/core/tree/feature/config-improvements",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-05-16T15:49:15+00:00"
+            "time": "2019-05-20T13:33:58+00:00"
         },
         {
             "name": "opendialogai/nova-conversation-log",
@@ -6047,7 +6047,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "opendialogai/core": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
