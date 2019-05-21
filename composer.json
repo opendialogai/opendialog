@@ -12,7 +12,7 @@
         "laravel/framework": "5.8.*",
         "laravel/nova": "~2.0",
         "laravel/tinker": "^1.0",
-        "opendialogai/core": "dev-feature/config-improvements",
+        "opendialogai/core": "^0.4",
         "opendialogai/webchat": "^0.4",
         "phalcongelist/php-diff": "^2.0",
         "spatie/laravel-cors": "^1.3",

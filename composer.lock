@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3314320deeb27dc5791c7a8b8ed0dfeb",
+    "content-hash": "2d7b1f031af3e3f84ba0d03947d60931",
     "packages": [
         {
             "name": "App/RevisionViewer",
@@ -1443,16 +1443,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.51",
+            "version": "1.0.52",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "755ba7bf3fb9031e6581d091db84d78275874396"
+                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/755ba7bf3fb9031e6581d091db84d78275874396",
-                "reference": "755ba7bf3fb9031e6581d091db84d78275874396",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c5a5097156387970e6f0ccfcdf03f752856f3391",
+                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391",
                 "shasum": ""
             },
             "require": {
@@ -1523,7 +1523,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-03-30T13:22:34+00:00"
+            "time": "2019-05-20T20:21:14+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1765,16 +1765,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/config-improvements",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "66875ae78f40a3da5d7d48d3c1d45b78b3b0e8f0"
+                "reference": "e7ff6794c943fafaa0c059c50d579e3df132a5db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/66875ae78f40a3da5d7d48d3c1d45b78b3b0e8f0",
-                "reference": "66875ae78f40a3da5d7d48d3c1d45b78b3b0e8f0",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/e7ff6794c943fafaa0c059c50d579e3df132a5db",
+                "reference": "e7ff6794c943fafaa0c059c50d579e3df132a5db",
                 "shasum": ""
             },
             "require": {
@@ -1845,10 +1845,10 @@
             ],
             "description": "The OpenDialog core package",
             "support": {
-                "source": "https://github.com/opendialogai/core/tree/feature/config-improvements",
+                "source": "https://github.com/opendialogai/core/tree/0.4.1",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-05-20T13:33:58+00:00"
+            "time": "2019-05-21T14:12:23+00:00"
         },
         {
             "name": "opendialogai/nova-conversation-log",
@@ -1889,16 +1889,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "0.4.0",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "8925caefc3017a7e0d1efb9f28fd31432956afd3"
+                "reference": "d041711499f286b3f103e9bfae97fc3ab3bc6a38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/8925caefc3017a7e0d1efb9f28fd31432956afd3",
-                "reference": "8925caefc3017a7e0d1efb9f28fd31432956afd3",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/d041711499f286b3f103e9bfae97fc3ab3bc6a38",
+                "reference": "d041711499f286b3f103e9bfae97fc3ab3bc6a38",
                 "shasum": ""
             },
             "require": {
@@ -1939,10 +1939,10 @@
             ],
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
-                "source": "https://github.com/opendialogai/webchat/tree/0.4.0",
+                "source": "https://github.com/opendialogai/webchat/tree/0.4.1",
                 "issues": "https://github.com/opendialogai/webchat/issues"
             },
-            "time": "2019-05-16T15:53:42+00:00"
+            "time": "2019-05-21T14:07:29+00:00"
         },
         {
             "name": "opis/closure",
@@ -6047,9 +6047,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "opendialogai/core": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
