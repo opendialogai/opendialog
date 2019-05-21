@@ -1,4 +1,6 @@
 
+[![CircleCI](https://circleci.com/gh/opendialogai/opendialog/tree/master.svg?style=svg&circle-token=aefbfc509382266413d6667a1aef451c7bf82f22)](https://circleci.com/gh/opendialogai/opendialog/tree/master)
+
 # OpenDialog Demo
 This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
 
@@ -27,6 +29,7 @@ directory. Run this script to set up the OpenDialogAI-Webchat and OpenDialogAI-C
 
 ```bash update-web-chat.sh```
 
+
 Run this script every time an underlying package is updated.
 
 #### Webchat Configuration 
@@ -51,6 +54,12 @@ to copy it over from the OpenDialogAi-Core package.
 Now follow the instructions found in `dgraph-setup.md`
 
 #### Config
+
+Publish the opendialog config by running:
+
+```php artisan vendor:publish --tag=opendialog-config```
+
+This will copy over all required config files to `config/opendialog` for you to add you own values
 
 Add (and edit as necessary) the following lines to your .env file to let OD know where to find your DGraph installation:
 ```
@@ -114,7 +123,21 @@ file so that it can be tested and deployed with all composer changes in place
 
 ### Running Code Sniffer
 To run code sniffer, run the following command
-```./vendor/bin/phpcs --standard=psr12 app/ nova-components/*/src/```
+```./vendor/bin/phpcs --standard=psr12 app/ -n```
+
+### Git Hooks
+
+To set up the included git pre-commit hook, first make sure the pre-commit script is executable by running
+
+```chmod +x .githooks/pre-commit```
+
+Then configure your local git to use this directory for git hooks by running:
+
+```git config core.hooksPath .githooks/```
+
+Now every commit you make will trigger php codesniffer to run. If there is a problem with the formatting
+of the code, the script will echo the output of php codesniffer. If there are no issues, the commit will
+go into git.
 
 --- 
 <a name="nova-note">1</a>: We are conscious of the fact that Laravel Nova is an open-source but paid for product and are working towards a replacement. For the time being, however, it offers a quick solution while we focus on the underlying engine issues!
