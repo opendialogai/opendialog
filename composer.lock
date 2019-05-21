@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d7b1f031af3e3f84ba0d03947d60931",
+    "content-hash": "315c7b2ca59457465395e080fa11010e",
     "packages": [
         {
             "name": "App/RevisionViewer",
@@ -67,6 +67,39 @@
                 "MIT"
             ],
             "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ]
+        },
+        {
+            "name": "App/message-tester",
+            "version": "dev-s8/feature/message-tester-page",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/MessageTester",
+                "reference": "3d2f2618e7259064cf2e28f2290aa337f7846997"
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "App\\MessageTester\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "App\\MessageTester\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
             "keywords": [
                 "laravel",
                 "nova"
