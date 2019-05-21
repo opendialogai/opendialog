@@ -11,7 +11,7 @@ class SetUpConversations extends Command
 {
     protected $signature = 'conversations:setup';
 
-    protected $description = 'Sets up some example conversations for the BDO Lisa project';
+    protected $description = 'Sets up some example conversations for the opendialog project';
 
     private static $conversations = [
         'resources/conversations/no_match_conversation',
