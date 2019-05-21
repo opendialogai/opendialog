@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\MessageTester\MessageTester;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Cards\Help;
 use Illuminate\Support\Facades\Gate;
@@ -58,9 +59,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-        return [
-            new Help(),
-        ];
+        return [];
     }
 
     /**
@@ -72,6 +71,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new ConversationLog(),
+            new MessageTester(),
         ];
     }
 
