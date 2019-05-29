@@ -46,31 +46,31 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
         return ['icon' => 'fa fa-comments'];
     }
 
-		public function columns()
-		{
-				return
+    public function columns()
+    {
+            return
 
         $this
-          ->scaffoldColumns()
+        ->scaffoldColumns()
 
-          ->update('yaml_validation_status', function ($element) {
-              $element->setTitle('Yaml');
-          })
+        ->update('yaml_validation_status', function ($element) {
+                $element->setTitle('Yaml');
+        })
 
-          ->update('yaml_schema_validation_status', function ($element) {
-              $element->setTitle('Schema');
-          })
+        ->update('yaml_schema_validation_status', function ($element) {
+                $element->setTitle('Schema');
+        })
 
-          ->update('scenes_validation_status', function ($element) {
-              $element->setTitle('Scenes');
-          })
+        ->update('scenes_validation_status', function ($element) {
+                $element->setTitle('Scenes');
+        })
 
-          ->update('model_validation_status', function ($element) {
-              $element->setTitle('Model');
-          })
+        ->update('model_validation_status', function ($element) {
+                $element->setTitle('Model');
+        })
 
-          ->without(['model', 'notes']);
-		}
+        ->without(['model', 'notes']);
+    }
 
     public function form()
     {
@@ -106,7 +106,6 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
 
         return $form;
     }
-
 }
 
 class Conversation extends \OpenDialogAi\ConversationBuilder\Conversation implements \Terranet\Presentable\PresentableInterface
@@ -133,9 +132,9 @@ class ConversationPresenter extends \Terranet\Presentable\Presenter
     public function title()
     {
         return link_to_route('scaffold.view', $this->presentable->name, [
-        	'module' => 'conversations',
-        	'id' => $this->presentable
-    	]);
+            'module' => 'conversations',
+            'id' => $this->presentable
+        ]);
     }
 
     public function model()
