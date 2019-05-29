@@ -24,14 +24,13 @@ use Terranet\Administrator\Traits\Module\HasFilters;
 use Terranet\Administrator\Traits\Module\HasForm;
 use Terranet\Administrator\Traits\Module\HasSortable;
 use Terranet\Administrator\Traits\Module\ValidatesForm;
-use App\Http\Terranet\Administrator\Widgets\MessageTemplates;
 
 /**
- * Administrator Resource Outgoing Intent
+ * Administrator Resource Message Template
  *
  * @package Terranet\Administrator
  */
-class OutgoingIntents extends Scaffolding implements Navigable, Filtrable, Editable, Validable, Sortable, Exportable
+class MessageTemplates extends Scaffolding implements Navigable, Filtrable, Editable, Validable, Sortable, Exportable
 {
     use HasFilters, HasForm, HasSortable, ValidatesForm, AllowFormats, AllowsNavigation;
 
@@ -40,20 +39,20 @@ class OutgoingIntents extends Scaffolding implements Navigable, Filtrable, Edita
      *
      * @var string
      */
-    protected $model = 'OpenDialogAi\ResponseEngine\OutgoingIntent';
+    protected $model = 'OpenDialogAi\ResponseEngine\MessageTemplate';
 
     public function linkAttributes()
     {
-        return ['icon' => 'fa fa-cog'];
+        return ['icon' => 'fa fa-comment'];
     }
 
     public function columns()
     {
         $columns = $this->scaffoldColumns();
 
-        $columns->push('messageTemplates', function (Element $element) {
-            $element->setTitle('Related Message Templates');
-        });
+        $columns->without('id');
+        $columns->without('conditions');
+        $columns->without('outgoing_intent_id');
 
         return $columns;
     }
@@ -64,14 +63,4 @@ class OutgoingIntents extends Scaffolding implements Navigable, Filtrable, Edita
 
         return $form;
     }
-
-    public function widgets()
-    {
-        $outgoingIntent = app('scaffold.model');
-
-        # Add widgets.
-        return $this->scaffoldWidgets()
-            ->push(new MessageTemplates($outgoingIntent));
-    }
-
 }
