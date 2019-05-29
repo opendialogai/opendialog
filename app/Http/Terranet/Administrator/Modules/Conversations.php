@@ -51,6 +51,29 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
 
         $this
           ->scaffoldColumns()
+
+          ->push('status')
+
+          ->push('yaml_validation_status')
+          ->update('yaml_validation_status', function ($element) {
+              $element->setTitle('Yaml');
+          })
+
+          ->push('yaml_schema_validation_status')
+          ->update('yaml_schema_validation_status', function ($element) {
+              $element->setTitle('Schema');
+          })
+
+          ->push('scenes_validation_status')
+          ->update('scenes_validation_status', function ($element) {
+              $element->setTitle('Scenes');
+          })
+
+          ->push('model_validation_status')
+          ->update('model_validation_status', function ($element) {
+              $element->setTitle('Model');
+          })
+
           ->without(['model', 'notes']);
 		}
 }
@@ -58,6 +81,18 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
 class Conversation extends \OpenDialogAi\ConversationBuilder\Conversation implements \Terranet\Presentable\PresentableInterface
 {
     use \Terranet\Presentable\PresentableTrait;
+
+    protected $fillable = [
+        'id',
+        'name',
+        'model',
+        'notes',
+        'status',
+        'yaml_validation_status',
+        'yaml_schema_validation_status',
+        'scenes_validation_status',
+        'model_validation_status',
+    ];
 
     protected $presenter = ConversationPresenter::class;
 }
@@ -74,7 +109,6 @@ class ConversationPresenter extends \Terranet\Presentable\Presenter
 
     public function model()
     {
-
         $environment = Environment::createCommonMarkEnvironment();
         $environment->addBlockRenderer(FencedCode::class, new FencedCodeRenderer(['yaml']));
         $environment->addBlockRenderer(IndentedCode::class, new IndentedCodeRenderer(['yaml']));
