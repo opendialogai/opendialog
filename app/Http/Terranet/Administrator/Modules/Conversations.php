@@ -49,28 +49,27 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
 
     public function columns()
     {
-        return
+        $columns = $this->scaffoldColumns();
 
-        $this
-        ->scaffoldColumns()
-
-        ->update('yaml_validation_status', function ($element) {
+        $columns->update('yaml_validation_status', function ($element) {
                 $element->setTitle('Yaml');
-        })
+        });
 
-        ->update('yaml_schema_validation_status', function ($element) {
+        $columns->update('yaml_schema_validation_status', function ($element) {
                 $element->setTitle('Schema');
-        })
+        });
 
-        ->update('scenes_validation_status', function ($element) {
+        $columns->update('scenes_validation_status', function ($element) {
                 $element->setTitle('Scenes');
-        })
+        });
 
-        ->update('model_validation_status', function ($element) {
+        $columns->update('model_validation_status', function ($element) {
                 $element->setTitle('Model');
-        })
+        });
 
-        ->without(['model', 'notes']);
+        $columns->without(['model', 'notes']);
+
+        return $columns;
     }
 
     public function form()
