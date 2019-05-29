@@ -6,6 +6,7 @@ use League\CommonMark\Block\Element\FencedCode;
 use League\CommonMark\Block\Element\IndentedCode;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
 use Spatie\CommonMarkHighlighter\IndentedCodeRenderer;
 use Symfony\Component\Yaml\Yaml;
@@ -132,6 +133,7 @@ class Conversation extends \OpenDialogAi\ConversationBuilder\Conversation implem
         'yaml_schema_validation_status',
         'scenes_validation_status',
         'model_validation_status',
+        'outgoingIntents',
     ];
 
     protected $presenter = ConversationPresenter::class;
@@ -157,4 +159,35 @@ class ConversationPresenter extends \Terranet\Presentable\Presenter
 
         return $commonMarkConverter->convertToHtml("```\n" . $this->presentable->model . "\n```");
     }
+
+    public function outgoingIntents()
+    {
+				$output = '';
+
+				$yaml = Yaml::parse($this->presentable->model)['conversation'];
+
+				foreach ($yaml['scenes'] as $sceneId => $scene) {
+						foreach ($scene['intents'] as $intent) {
+								foreach ($intent as $tag => $value) {
+										if ($tag == 'b') {
+												foreach ($value as $key => $intent) {
+														if ($key == 'i') {
+																$outgoingIntent = OutgoingIntent::where('name', $intent)->first();
+
+																if ($outgoingIntent) {
+																		$output .= '<div><a href="/cms/outgoing_intents/' . $outgoingIntent->id . '">' . $intent . '</a></div>';
+																} else {
+																		$output .= '<div><a href="/cms/outgoing_intents/new">' . $intent . '</a></div>';
+																}
+																break;
+														}
+												}
+												break;
+										}
+								}
+						}
+				}
+
+				return $output;
+		}
 }
