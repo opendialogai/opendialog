@@ -52,4 +52,14 @@ class UnpublishConversation
         $log->type = 'unpublish_conversation';
         $log->save();
     }
+
+    /**
+     * @param Eloquent $entity
+     *
+     * @return string
+     */
+    protected function icon(Eloquent $entity = null)
+    {
+        return 'fa-ban';
+    }
 }

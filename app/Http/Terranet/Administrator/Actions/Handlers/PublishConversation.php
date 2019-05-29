@@ -72,4 +72,14 @@ class PublishConversation
         $log->type = 'publish_conversation';
         $log->save();
     }
+
+    /**
+     * @param Eloquent $entity
+     *
+     * @return string
+     */
+    protected function icon(Eloquent $entity = null)
+    {
+        return 'fa-cloud';
+    }
 }
