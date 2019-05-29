@@ -12,6 +12,7 @@ yarn-error.log
 .idea
 /public/js/app.js
 /public/admin
+/public/fonts/vendor
 /public/vendor
 /public/images/vendor
  resources/assets/administrator
