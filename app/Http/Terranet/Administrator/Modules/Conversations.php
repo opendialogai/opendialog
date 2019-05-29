@@ -2,6 +2,12 @@
 
 namespace App\Http\Terranet\Administrator\Modules;
 
+use League\CommonMark\Block\Element\FencedCode;
+use League\CommonMark\Block\Element\IndentedCode;
+use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\Environment;
+use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
+use Spatie\CommonMarkHighlighter\IndentedCodeRenderer;
 use Symfony\Component\Yaml\Yaml;
 use Terranet\Administrator\Columns\Element;
 use Terranet\Administrator\Contracts\Module\Editable;
@@ -68,8 +74,13 @@ class ConversationPresenter extends \Terranet\Presentable\Presenter
 
     public function model()
     {
-        return '<p class="text-muted">' . $this->presentable->model . '</p>';
+
+        $environment = Environment::createCommonMarkEnvironment();
+        $environment->addBlockRenderer(FencedCode::class, new FencedCodeRenderer(['yaml']));
+        $environment->addBlockRenderer(IndentedCode::class, new IndentedCodeRenderer(['yaml']));
+
+        $commonMarkConverter = new CommonMarkConverter([], $environment);
+
+        return $commonMarkConverter->convertToHtml("```\n" . $this->presentable->model . "\n```");
     }
-
 }
-
