@@ -1,1 +1,0 @@
-new (require('medium-editor'))('[data-editor="medium"]');

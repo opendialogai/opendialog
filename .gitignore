@@ -14,6 +14,7 @@ yarn-error.log
 /public/admin
 /public/vendor
 /public/images/vendor
+ resources/assets/administrator
 /resources/assets/opendialog
 /resources/views/vendor
 update-web-chat.sh
