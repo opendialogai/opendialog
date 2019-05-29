@@ -16,6 +16,7 @@ use Terranet\Administrator\Contracts\Module\Filtrable;
 use Terranet\Administrator\Contracts\Module\Navigable;
 use Terranet\Administrator\Contracts\Module\Sortable;
 use Terranet\Administrator\Contracts\Module\Validable;
+use Terranet\Administrator\Form\Type\Hidden;
 use Terranet\Administrator\Scaffolding;
 use Terranet\Administrator\Traits\Module\AllowFormats;
 use Terranet\Administrator\Traits\Module\AllowsNavigation;
@@ -52,30 +53,60 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
         $this
           ->scaffoldColumns()
 
-          ->push('status')
-
-          ->push('yaml_validation_status')
           ->update('yaml_validation_status', function ($element) {
               $element->setTitle('Yaml');
           })
 
-          ->push('yaml_schema_validation_status')
           ->update('yaml_schema_validation_status', function ($element) {
               $element->setTitle('Schema');
           })
 
-          ->push('scenes_validation_status')
           ->update('scenes_validation_status', function ($element) {
               $element->setTitle('Scenes');
           })
 
-          ->push('model_validation_status')
           ->update('model_validation_status', function ($element) {
               $element->setTitle('Model');
           })
 
           ->without(['model', 'notes']);
 		}
+
+    public function form()
+    {
+        $form = $this->scaffoldForm();
+
+        // Hide columns.
+        $form->without('id');
+        $form->update('status', function ($element) {
+            $element->setInput(
+                new Hidden('status')
+            );
+        });
+        $form->update('yaml_validation_status', function ($element) {
+            $element->setInput(
+                new Hidden('yaml_validation_status')
+            );
+        });
+        $form->update('yaml_schema_validation_status', function ($element) {
+            $element->setInput(
+                new Hidden('yaml_schema_validation_status')
+            );
+        });
+        $form->update('scenes_validation_status', function ($element) {
+            $element->setInput(
+                new Hidden('scenes_validation_status')
+            );
+        });
+        $form->update('model_validation_status', function ($element) {
+            $element->setInput(
+                new Hidden('model_validation_status')
+            );
+        });
+
+        return $form;
+    }
+
 }
 
 class Conversation extends \OpenDialogAi\ConversationBuilder\Conversation implements \Terranet\Presentable\PresentableInterface
