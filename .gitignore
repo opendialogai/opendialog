@@ -15,6 +15,7 @@ yarn-error.log
 /public/vendor
 /public/images/vendor
 /resources/assets/opendialog
+/resources/views/vendor
 update-web-chat.sh
 auth.json
 dgraph
