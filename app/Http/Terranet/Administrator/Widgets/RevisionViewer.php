@@ -33,12 +33,12 @@ class RevisionViewer extends AbstractWidget implements Widgetable
     {
         $rows = $this->getRows();
 
-				return view('admin.revisionViewer', ['rows' => $rows]);
+        return view('admin.revisionViewer', ['rows' => $rows]);
     }
 
     private function getRows()
     {
-				$changes = [];
+        $changes = [];
 
         $activities = Activity::where('subject_id', $this->conversation->id)
             ->where('log_name', 'conversation_log')
@@ -79,8 +79,8 @@ class RevisionViewer extends AbstractWidget implements Widgetable
                 'format' => implode('', $diffs),
                 'class' => 'collapsed',
             ];
-				}
+        }
 
-				return $changes;
+        return $changes;
     }
 }

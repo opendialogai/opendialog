@@ -29,6 +29,6 @@ class StateLogs extends AbstractWidget implements Widgetable
     {
         $stateLogs = $this->conversation->conversationStateLogs->sortByDesc('created_at');
 
-				return view('admin.stateLogs', ['items' => $stateLogs]);
+        return view('admin.stateLogs', ['items' => $stateLogs]);
     }
 }

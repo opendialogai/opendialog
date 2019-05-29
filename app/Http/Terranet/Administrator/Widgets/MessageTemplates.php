@@ -29,6 +29,6 @@ class MessageTemplates extends AbstractWidget implements Widgetable
     {
         $messageTemplates = $this->outgoingIntent->messageTemplates;
 
-				return view('admin.messageTemplates', ['items' => $messageTemplates]);
+        return view('admin.messageTemplates', ['items' => $messageTemplates]);
     }
 }

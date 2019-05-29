@@ -73,5 +73,4 @@ class OutgoingIntents extends Scaffolding implements Navigable, Filtrable, Edita
         return $this->scaffoldWidgets()
             ->push(new MessageTemplates($outgoingIntent));
     }
-
 }

@@ -163,32 +163,32 @@ class ConversationPresenter extends \Terranet\Presentable\Presenter
 
     public function outgoingIntents()
     {
-				$output = '';
+        $output = '';
 
-				$yaml = Yaml::parse($this->presentable->model)['conversation'];
+        $yaml = Yaml::parse($this->presentable->model)['conversation'];
 
-				foreach ($yaml['scenes'] as $sceneId => $scene) {
-						foreach ($scene['intents'] as $intent) {
-								foreach ($intent as $tag => $value) {
-										if ($tag == 'b') {
-												foreach ($value as $key => $intent) {
-														if ($key == 'i') {
-																$outgoingIntent = OutgoingIntent::where('name', $intent)->first();
+        foreach ($yaml['scenes'] as $sceneId => $scene) {
+            foreach ($scene['intents'] as $intent) {
+                foreach ($intent as $tag => $value) {
+                    if ($tag == 'b') {
+                        foreach ($value as $key => $intent) {
+                            if ($key == 'i') {
+                                $outgoingIntent = OutgoingIntent::where('name', $intent)->first();
 
-																if ($outgoingIntent) {
-																		$output .= '<div><a href="/cms/outgoing_intents/' . $outgoingIntent->id . '">' . $intent . '</a></div>';
-																} else {
-																		$output .= '<div><a href="/cms/outgoing_intents/new">' . $intent . '</a></div>';
-																}
-																break;
-														}
-												}
-												break;
-										}
-								}
-						}
-				}
+                                if ($outgoingIntent) {
+                                    $output .= '<div><a href="/cms/outgoing_intents/' . $outgoingIntent->id . '">' . $intent . '</a></div>';
+                                } else {
+                                    $output .= '<div><a href="/cms/outgoing_intents/new">' . $intent . '</a></div>';
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
 
-				return $output;
-		}
+        return $output;
+    }
 }
