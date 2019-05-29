@@ -11,6 +11,7 @@ npm-debug.log
 yarn-error.log
 .idea
 /public/js/app.js
+/public/admin
 /public/vendor
 /public/images/vendor
 /resources/assets/opendialog
