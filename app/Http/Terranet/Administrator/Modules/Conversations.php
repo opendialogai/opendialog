@@ -25,6 +25,7 @@ use Terranet\Administrator\Traits\Module\HasFilters;
 use Terranet\Administrator\Traits\Module\HasForm;
 use Terranet\Administrator\Traits\Module\HasSortable;
 use Terranet\Administrator\Traits\Module\ValidatesForm;
+use App\Http\Terranet\Administrator\Widgets\RevisionViewer;
 use App\Http\Terranet\Administrator\Widgets\StateLogs;
 
 /**
@@ -112,10 +113,10 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
     {
         $conversation = app('scaffold.model');
 
-        # Add a StateLogs widget.
-        return $this->scaffoldWidgets()->push(
-            new StateLogs($conversation)
-        );
+        # Add widgets.
+        return $this->scaffoldWidgets()
+            ->push(new RevisionViewer($conversation))
+            ->push(new StateLogs($conversation));
     }
 }
 
