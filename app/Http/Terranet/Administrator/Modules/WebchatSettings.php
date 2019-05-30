@@ -66,26 +66,25 @@ class WebchatSettings extends Scaffolding implements Navigable, Filtrable, Edita
 
         // Use appropriate widget.
         $form->update('value', function ($element) {
-          switch (app('scaffold.model')->type) {
-              case 'boolean':
-                  $element->setInput(
-                      new Boolean('value')
-                  );
-                  break;
-              case 'number':
-                  $element->setInput(
-                      new Number('value')
-                  );
-                  break;
-              case 'object':
-                  $element->setInput(
-                      new Hidden('value')
-                  );
-                  break;
-              default:
-                  break;
-
-          }
+            switch (app('scaffold.model')->type) {
+                case 'boolean':
+                    $element->setInput(
+                        new Boolean('value')
+                    );
+                    break;
+                case 'number':
+                    $element->setInput(
+                        new Number('value')
+                    );
+                    break;
+                case 'object':
+                    $element->setInput(
+                        new Hidden('value')
+                    );
+                    break;
+                default:
+                    break;
+            }
         });
 
         return $form;
