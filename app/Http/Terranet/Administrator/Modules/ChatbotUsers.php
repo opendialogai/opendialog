@@ -57,15 +57,15 @@ class ChatbotUsers extends Scaffolding implements Navigable, Filtrable, Editable
             'platform'
         ]);
 
-        $columns->update('user_id', function(Element $element) {
+        $columns->update('user_id', function (Element $element) {
             $element->setTitle('User Id');
         });
 
-        $columns->update('os', function(Element $element) {
+        $columns->update('os', function (Element $element) {
             $element->setTitle('Operating System');
         });
 
-        $columns->update('created_at', function(Element $element) {
+        $columns->update('created_at', function (Element $element) {
             $element->setTitle('First Seen');
             $element->sortable();
         });
@@ -89,23 +89,23 @@ class ChatbotUsers extends Scaffolding implements Navigable, Filtrable, Editable
     {
         $scopes = $this->scaffoldScopes();
 
-				$scopes->push(
-						(new Scope('interactedWithChatbot'))
-								->setQuery(function ($query) {
-										return $query
-											->whereRaw('(select count(user_id) from messages where messages.user_id = ' .
-                          'chatbot_users.user_id and author != "them") > 0');
-								})
-				);
+                $scopes->push(
+                    (new Scope('interactedWithChatbot'))
+                                ->setQuery(function ($query) {
+                                        return $query
+                                            ->whereRaw('(select count(user_id) from messages where messages.user_id = ' .
+                                    'chatbot_users.user_id and author != "them") > 0');
+                                })
+                );
 
-				$scopes->push(
-						(new Scope('didNotInteractWithChatbot'))
-								->setQuery(function ($query) {
-										return $query
-											->whereRaw('(select count(user_id) from messages where messages.user_id = ' .
-                          'chatbot_users.user_id and author != "them") = 0');
-								})
-				);
+                $scopes->push(
+                    (new Scope('didNotInteractWithChatbot'))
+                                ->setQuery(function ($query) {
+                                        return $query
+                                            ->whereRaw('(select count(user_id) from messages where messages.user_id = ' .
+                                    'chatbot_users.user_id and author != "them") = 0');
+                                })
+                );
 
         return $scopes;
     }

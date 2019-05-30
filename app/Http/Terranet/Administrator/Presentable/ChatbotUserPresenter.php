@@ -16,8 +16,8 @@ class ChatbotUserPresenter extends Presenter
 
     public function lastSeen()
     {
-      if ($this->presentable->messages->count()) {
-          return $this->presentable->messages->first()->created_at->format('Y-m-d H:i:s');
-      }
+        if ($this->presentable->messages->count()) {
+            return $this->presentable->messages->first()->created_at->format('Y-m-d H:i:s');
+        }
     }
 }
