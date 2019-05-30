@@ -61,7 +61,7 @@
     </script>
 @endpush
 
-<div id="revision-viewer" style=".collapsed { display: none }">
+<div id="revision-viewer">
     <table class="table w-full">
         <thead>
             <th class="text-left">Date</th>

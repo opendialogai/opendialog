@@ -39,7 +39,7 @@ class MessageTemplates extends Scaffolding implements Navigable, Filtrable, Edit
      *
      * @var string
      */
-    protected $model = 'OpenDialogAi\ResponseEngine\MessageTemplate';
+    protected $model = 'App\Http\Terranet\Administrator\Presentable\MessageTemplate';
 
     public function linkAttributes()
     {
@@ -60,6 +60,12 @@ class MessageTemplates extends Scaffolding implements Navigable, Filtrable, Edit
     public function form()
     {
         $form = $this->scaffoldForm();
+
+        $form->update('outgoingintent', function ($element) {
+            $element->setInput(
+                new Hidden('outgoing_intent_id')
+            );
+        });
 
         return $form;
     }
