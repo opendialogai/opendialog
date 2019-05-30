@@ -18,27 +18,25 @@ class UnpublishConversation
      */
     public function handle(Eloquent $conversation)
     {
-                // Ensure that the conversation is published.
+        // Ensure that the conversation is published.
         if ($conversation->status !== 'published') {
-            return back()->with(
-                'messages',
+            return back()->withErrors([
                 'Sorry, I can\'t unpublish a conversation that\'s not published!'
-            );
+            ]);
         }
 
-                // Unpublish the conversation.
+        // Unpublish the conversation.
         if (!$conversation->unPublishConversation()) {
-                $this->logMessage($conversation->id, 'Unable to unpublish conversation from DGraph.');
-            return back()->with(
-                'messages',
+            $this->logMessage($conversation->id, 'Unable to unpublish conversation from DGraph.');
+            return back()->withErrors([
                 'Sorry, I wasn\'t able to unpublish this conversation from DGraph!'
-            );
+            ]);
         }
 
-                return back()->with(
-                    'messages',
-                    'Conversation unpublished.'
-                );
+        return back()->with(
+            'messages',
+            'Conversation unpublished.'
+        );
     }
 
     /**
