@@ -80,14 +80,8 @@ class ChatbotUsers extends Scaffolding implements Navigable, Filtrable, Editable
     {
         $form = $this->scaffoldForm();
 
-        // Hide columns.
-        // $form->without('id');
-        // $form->update('status', function ($element) {
-            // $element->setInput(
-                // new Hidden('status')
-            // );
-        // });
-        //
+        $form->without('lastseen');
+
         return $form;
     }
 
