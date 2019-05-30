@@ -9,6 +9,7 @@ use Terranet\Administrator\Contracts\Module\Filtrable;
 use Terranet\Administrator\Contracts\Module\Navigable;
 use Terranet\Administrator\Contracts\Module\Sortable;
 use Terranet\Administrator\Contracts\Module\Validable;
+use Terranet\Administrator\Filters\Scope;
 use Terranet\Administrator\Form\Type\Hidden;
 use Terranet\Administrator\Scaffolding;
 use Terranet\Administrator\Traits\Module\AllowFormats;
@@ -87,5 +88,30 @@ class ChatbotUsers extends Scaffolding implements Navigable, Filtrable, Editable
         // });
         //
         return $form;
+    }
+
+    public function scopes()
+    {
+        $scopes = $this->scaffoldScopes();
+
+				$scopes->push(
+						(new Scope('interactedWithChatbot'))
+								->setQuery(function ($query) {
+										return $query
+											->whereRaw('(select count(user_id) from messages where messages.user_id = ' .
+                          'chatbot_users.user_id and author != "them") > 0');
+								})
+				);
+
+				$scopes->push(
+						(new Scope('didNotInteractWithChatbot'))
+								->setQuery(function ($query) {
+										return $query
+											->whereRaw('(select count(user_id) from messages where messages.user_id = ' .
+                          'chatbot_users.user_id and author != "them") = 0');
+								})
+				);
+
+        return $scopes;
     }
 }
