@@ -6,21 +6,15 @@
     "require": {
         "php": "^7.1.3",
         "adminarchitect/core": "^1.6",
-        "app/message-builder": "*",
-        "app/revisionviewer": "*",
-        "carlson/nova-link-field": "^1.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
-        "laravel/nova": "~2.0",
         "laravel/tinker": "^1.0",
         "opendialogai/core": "dev-feature/config-improvements",
-        "opendialogai/nova-conversation-log": "1.1.0",
         "opendialogai/webchat": "^0.4",
         "phalcongelist/php-diff": "^2.0",
         "spatie/commonmark-highlighter": "^1.0",
-        "spatie/laravel-cors": "^1.3",
-        "timothyasp/nova-color-field": "^1.0"
+        "spatie/laravel-cors": "^1.3"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -85,26 +79,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/opendialogai/webchat.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/opendialogai/nova-conversation-log.git"
-        },
-        {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/MessageBuilder"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/MessageType"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/RevisionViewer"
         }
     ]
 }

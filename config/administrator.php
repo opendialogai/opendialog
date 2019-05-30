@@ -2,10 +2,10 @@
 
 return [
     // URL Prefix
-    'prefix' => $prefix = 'cms',
+    'prefix' => $prefix = 'admin',
 
-    'title' => '<b>Admin</b> Architect',
-    'abbreviation' => 'AA',
+    'title' => 'OD Admin',
+    'abbreviation' => 'ODA',
     'welcome' => 'Welcome! Please sign In.',
 
     // Authentication options

@@ -42,7 +42,7 @@ class MessageTemplatePresenter extends Presenter
 
     public function outgoingIntent()
     {
-        return '<div><a href="/cms/outgoing_intents/' . $this->presentable->outgoingIntent->id . '">' . $this->presentable->outgoingIntent->name . '</a></div>';
+        return '<div><a href="/admin/outgoing_intents/' . $this->presentable->outgoingIntent->id . '">' . $this->presentable->outgoingIntent->name . '</a></div>';
     }
 
     /**

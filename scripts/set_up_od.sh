@@ -35,7 +35,7 @@ npm run dev
 lando ssh --service database --command 'mysql -uroot laravel -e '"'"'INSERT INTO users (name, email, password, created_at, updated_at) VALUES ("admin", "admin@example.com", "$2y$10$BEhBWA12KObSY9Ua2G0VeOg2hWMT1GIa8huHD83HCEHnJLnRcH8w6", NOW(), NOW())'"'"' '
 
 echo
-echo "The admin console is available here: https://opendialog.lndo.site/cms"
+echo "The admin console is available here: https://opendialog.lndo.site/admin"
 echo "You may login with the credentials admin@example.com / opendialog"
 echo
 echo "Finished! Now you may go to: https://opendialog.lndo.site/demo"
