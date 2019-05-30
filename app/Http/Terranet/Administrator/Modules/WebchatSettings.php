@@ -10,7 +10,9 @@ use Terranet\Administrator\Contracts\Module\Navigable;
 use Terranet\Administrator\Contracts\Module\Sortable;
 use Terranet\Administrator\Contracts\Module\Validable;
 use Terranet\Administrator\Filters\Scope;
+use Terranet\Administrator\Form\Type\Boolean;
 use Terranet\Administrator\Form\Type\Hidden;
+use Terranet\Administrator\Form\Type\Number;
 use Terranet\Administrator\Scaffolding;
 use Terranet\Administrator\Traits\Module\AllowFormats;
 use Terranet\Administrator\Traits\Module\AllowsNavigation;
@@ -49,6 +51,42 @@ class WebchatSettings extends Scaffolding implements Navigable, Filtrable, Edita
     public function form()
     {
         $form = $this->scaffoldForm();
+
+        $form->insert('displayName', 0, function ($element) {
+            $element->setAttributes(['disabled' => true]);
+            $element->setTitle('Name');
+            $element->setValue(app('scaffold.model')->name);
+        });
+
+        $form->update('name', function ($element) {
+            $element->setInput(
+                new Hidden('name')
+            );
+        });
+
+        // Use appropriate widget.
+        $form->update('value', function ($element) {
+          switch (app('scaffold.model')->type) {
+              case 'boolean':
+                  $element->setInput(
+                      new Boolean('value')
+                  );
+                  break;
+              case 'number':
+                  $element->setInput(
+                      new Number('value')
+                  );
+                  break;
+              case 'object':
+                  $element->setInput(
+                      new Hidden('value')
+                  );
+                  break;
+              default:
+                  break;
+
+          }
+        });
 
         return $form;
     }
