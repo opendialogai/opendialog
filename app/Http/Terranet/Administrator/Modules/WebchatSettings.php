@@ -18,6 +18,7 @@ use Terranet\Administrator\Traits\Module\HasFilters;
 use Terranet\Administrator\Traits\Module\HasForm;
 use Terranet\Administrator\Traits\Module\HasSortable;
 use Terranet\Administrator\Traits\Module\ValidatesForm;
+use App\Http\Terranet\Administrator\Widgets\ChildWebchatSettings;
 
 /**
  * Administrator Resource ChatbotUser
@@ -50,5 +51,14 @@ class WebchatSettings extends Scaffolding implements Navigable, Filtrable, Edita
         $form = $this->scaffoldForm();
 
         return $form;
+    }
+
+    public function widgets()
+    {
+        $webchatSetting = app('scaffold.model');
+
+        # Add widgets.
+        return $this->scaffoldWidgets()
+            ->push(new ChildWebchatSettings($webchatSetting));
     }
 }

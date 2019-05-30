@@ -8,12 +8,12 @@
         </tr>
     </thead>
     <tbody>
-         @foreach($items as $item)
-          <tr>
-              <td> {{$item->created_at}} </td>
-              <td> {{$item->type}} </td>
-              <td> {{$item->message}} </td>
-          </tr>
-         @endforeach
+        @foreach($items as $item)
+            <tr>
+                <td> {{$item->created_at}} </td>
+                <td> {{$item->type}} </td>
+                <td> {{$item->message}} </td>
+            </tr>
+        @endforeach
    </tbody>
 </table>
