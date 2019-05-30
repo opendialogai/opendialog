@@ -71,6 +71,7 @@ class ChatbotUsers extends Scaffolding implements Navigable, Filtrable, Editable
         });
         $columns->move('created_at', 'after:os');
 
+        $columns->move('os', 'after:country');
 
         return $columns;
     }

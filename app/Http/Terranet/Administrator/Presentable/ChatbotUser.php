@@ -14,9 +14,17 @@ class ChatbotUser extends OdChatbotUser implements PresentableInterface
     protected $fillable = [
         'user_id',
         'country',
-        'os',
         'created_at',
         'lastSeen',
+        'first_name',
+        'last_name',
+        'ip_address',
+        'country',
+        'browser_language',
+        'os',
+        'browser',
+        'timezone',
+        'platform',
     ];
 
     protected $presenter = ChatbotUserPresenter::class;
