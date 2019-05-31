@@ -2,7 +2,7 @@
 
 return [
     // URL Prefix
-    'prefix' => $prefix = 'admin',
+    'prefix' => $prefix = 'od-admin',
 
     'title' => 'OD Admin',
     'abbreviation' => 'ODA',

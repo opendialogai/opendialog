@@ -26,12 +26,12 @@
                 <td class="actions">
                     <ul class="list-unstyled">
                         <li>
-                            <a data-scaffold-action="webchat_settings-view" href="{{ url('/admin/webchat_settings/' . $child->id) }}">
+                            <a data-scaffold-action="webchat_settings-view" href="{{ url('/' . config('administrator.prefix', 'cms') . '/webchat_settings/' . $child->id) }}">
                                 <i class="fa fa-eye"> View</i>
                             </a>
                         </li>
                         <li>
-                            <a data-scaffold-action="webchat_settings-edit" href="{{ url('/admin/webchat_settings/' . $child->id . '/edit') }}">
+                            <a data-scaffold-action="webchat_settings-edit" href="{{ url('/' . config('administrator.prefix', 'cms') . '/webchat_settings/' . $child->id . '/edit') }}">
                                 <i class="fa fa-pencil"> Edit</i>
                             </a>
                         <li>
@@ -39,7 +39,7 @@
                             <a
                                 data-scaffold-action="webchat_settings-delete"
                                 onclick="return confirm('Are you sure you want to delete this item?');"
-                                href="{{ url('/admin/webchat_settings/' . $child->id . '/delete') }}">
+                                href="{{ url('/' . config('administrator.prefix', 'cms') . '/webchat_settings/' . $child->id . '/delete') }}">
                                 <i class="fa fa-trash"> Delete</i>
                             </a>
                         </li>

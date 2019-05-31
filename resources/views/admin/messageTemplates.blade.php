@@ -17,12 +17,12 @@
                 <td class="actions">
                     <ul class="list-unstyled">
                         <li>
-                            <a data-scaffold-action="message_templates-view" href="{{ url('/admin/message_templates/' . $item->id) }}">
+                            <a data-scaffold-action="message_templates-view" href="{{ url('/' . config('administrator.prefix', 'cms') . '/message_templates/' . $item->id) }}">
                                 <i class="fa fa-eye"> View</i>
                             </a>
                         </li>
                         <li>
-                            <a data-scaffold-action="message_templates-edit" href="{{ url('/admin/message_templates/' . $item->id . '/edit') }}">
+                            <a data-scaffold-action="message_templates-edit" href="{{ url('/' . config('administrator.prefix', 'cms') . '/message_templates/' . $item->id . '/edit') }}">
                                 <i class="fa fa-pencil"> Edit</i>
                             </a>
                         <li>
@@ -30,7 +30,7 @@
                             <a
                                 data-scaffold-action="message_templates-delete"
                                 onclick="return confirm('Are you sure you want to delete this item?');"
-                                href="{{ url('/admin/message_templates/' . $item->id . '/delete') }}">
+                                href="{{ url('/' . config('administrator.prefix', 'cms') . '/message_templates/' . $item->id . '/delete') }}">
                                 <i class="fa fa-trash"> Delete</i>
                             </a>
                         </li>

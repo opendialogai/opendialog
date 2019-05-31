@@ -48,9 +48,9 @@ class ConversationPresenter extends Presenter
                                 $outgoingIntent = OutgoingIntent::where('name', $intent)->first();
 
                                 if ($outgoingIntent) {
-                                    $output .= '<div><a href="/admin/outgoing_intents/' . $outgoingIntent->id . '">' . $intent . '</a></div>';
+                                    $output .= '<div><a href="/' . config('administrator.prefix', 'cms') . '/outgoing_intents/' . $outgoingIntent->id . '">' . $intent . '</a></div>';
                                 } else {
-                                    $output .= '<div><a href="/admin/outgoing_intents/new">' . $intent . '</a></div>';
+                                    $output .= '<div><a href="/' . config('administrator.prefix', 'cms') . '/outgoing_intents/new">' . $intent . '</a></div>';
                                 }
                                 break;
                             }
