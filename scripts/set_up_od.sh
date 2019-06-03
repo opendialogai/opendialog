@@ -13,7 +13,7 @@ echo "Starting services..."
 lando start
 
 echo "Installing dependencies..."
-composer install
+lando composer install
 
 echo "Setting up the webchat widget..."
 bash update-web-chat.sh
@@ -25,12 +25,13 @@ echo "Populating default webchat settings..."
 lando artisan webchat:setup
 
 echo "Application level config files"
-php artisan vendor:publish --tag=od-config
+lando artisan vendor:publish --tag=od-config
 
 echo "Creating example conversations..."
 lando artisan conversations:setup
 
 echo "Setting up the admin interface..."
+npm install
 npm run dev
 lando ssh --service database --command 'mysql -uroot laravel -e '"'"'INSERT INTO users (name, email, password, created_at, updated_at) VALUES ("admin", "admin@example.com", "$2y$10$BEhBWA12KObSY9Ua2G0VeOg2hWMT1GIa8huHD83HCEHnJLnRcH8w6", NOW(), NOW())'"'"' '
 
