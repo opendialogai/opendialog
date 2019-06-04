@@ -21,7 +21,7 @@ class Conversation extends OdConversation implements PresentableInterface
         'yaml_schema_validation_status',
         'scenes_validation_status',
         'model_validation_status',
-        'outgoingIntents',
+        'outgoing_intents',
     ];
 
     protected $presenter = ConversationPresenter::class;
