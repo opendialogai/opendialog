@@ -71,7 +71,7 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
         $form = $this->scaffoldForm();
 
         // Hide columns.
-        $form->without('id');
+        $form->without(['id', 'outgoing_intents']);
         $form->update('status', function ($element) {
             $element->setInput(
                 new Hidden('status')
