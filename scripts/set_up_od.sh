@@ -31,8 +31,8 @@ echo "Creating example conversations..."
 lando artisan conversations:setup
 
 echo "Setting up the admin interface..."
-npm install
-npm run dev
+yarn install
+yarn run dev
 lando ssh --service database --command 'mysql -uroot laravel -e '"'"'INSERT INTO users (name, email, password, created_at, updated_at) VALUES ("admin", "admin@example.com", "$2y$10$BEhBWA12KObSY9Ua2G0VeOg2hWMT1GIa8huHD83HCEHnJLnRcH8w6", NOW(), NOW())'"'"' '
 
 echo
