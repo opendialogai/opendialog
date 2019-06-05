@@ -110,4 +110,9 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
             ->push(new RevisionViewer($conversation))
             ->push(new StateLogs($conversation));
     }
+
+    public function rules()
+    {
+        return [];
+    }
 }
