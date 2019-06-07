@@ -74,27 +74,27 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
         $form->without(['id', 'outgoing_intents']);
         $form->update('status', function ($element) {
             $element->setInput(
-                new Hidden('status')
+                (new Hidden('status'))->setValue('invalid')
             );
         });
         $form->update('yaml_validation_status', function ($element) {
             $element->setInput(
-                new Hidden('yaml_validation_status')
+                (new Hidden('yaml_validation_status'))->setValue('invalid')
             );
         });
         $form->update('yaml_schema_validation_status', function ($element) {
             $element->setInput(
-                new Hidden('yaml_schema_validation_status')
+                (new Hidden('yaml_schema_validation_status'))->setValue('invalid')
             );
         });
         $form->update('scenes_validation_status', function ($element) {
             $element->setInput(
-                new Hidden('scenes_validation_status')
+                (new Hidden('scenes_validation_status'))->setValue('invalid')
             );
         });
         $form->update('model_validation_status', function ($element) {
             $element->setInput(
-                new Hidden('model_validation_status')
+                (new Hidden('model_validation_status'))->setValue('invalid')
             );
         });
 
