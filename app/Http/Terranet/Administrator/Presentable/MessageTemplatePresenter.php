@@ -109,6 +109,35 @@ class MessageTemplatePresenter extends Presenter
                     'link' => (string)$item->link,
                 ];
                 break;
+
+            case 'rich-message':
+                $data = [
+                    'title' => (string)$item->title,
+                    'subtitle' => (string)$item->subtitle,
+                    'text' => (string)$item->text,
+                    'button' => [
+                        'text' => (string)$item->button->text,
+                    ],
+                    'image' => [
+                        'src' => (string)$item->image->src,
+                        'url' => (string)$item->image->url,
+                    ],
+                ];
+                break;
+
+            case 'list-message':
+                $viewType = ($item['view-type']) ? (string)$item['view-type'] : 'horizontal';
+
+                $items = [];
+                foreach ($item->item as $i) {
+                    $items[] = $this->parseMessage($i->children()[0]);
+                }
+
+                $data = [
+                    'view_type' => $viewType,
+                    'items' => $items,
+                ];
+                break;
         }
 
         return [
