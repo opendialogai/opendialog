@@ -13,6 +13,7 @@ class WebchatSetting extends OdWebchatSetting implements PresentableInterface
 
     protected $fillable = [
         'name',
+        'type',
         'value',
     ];
 

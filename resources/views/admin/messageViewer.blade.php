@@ -8,6 +8,10 @@
             background: #eaeaea;
             max-width: 300px;
         }
+
+        .message .image-message img {
+            max-width: 100%;
+        }
     </style>
 @endpush
 

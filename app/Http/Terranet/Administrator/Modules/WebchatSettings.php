@@ -13,6 +13,8 @@ use Terranet\Administrator\Filters\Scope;
 use Terranet\Administrator\Form\Type\Boolean;
 use Terranet\Administrator\Form\Type\Hidden;
 use Terranet\Administrator\Form\Type\Number;
+use Terranet\Administrator\Form\Type\Select;
+use Terranet\Administrator\Form\Type\Text;
 use Terranet\Administrator\Scaffolding;
 use Terranet\Administrator\Traits\Module\AllowFormats;
 use Terranet\Administrator\Traits\Module\AllowsNavigation;
@@ -52,40 +54,65 @@ class WebchatSettings extends Scaffolding implements Navigable, Filtrable, Edita
     {
         $form = $this->scaffoldForm();
 
-        $form->insert('displayName', 0, function ($element) {
-            $element->setAttributes(['disabled' => true]);
-            $element->setTitle('Name');
-            $element->setValue(app('scaffold.model')->name);
-        });
+        if (app('scaffold.model')) {
+            $form->insert('displayType', 0, function ($element) {
+                $element->setAttributes(['disabled' => true]);
+                $element->setTitle('Type');
+                $element->setValue(app('scaffold.model')->type);
+            });
 
-        $form->update('name', function ($element) {
-            $element->setInput(
-                new Hidden('name')
-            );
-        });
+            $form->update('type', function ($element) {
+                $element->setInput(
+                    new Hidden('type')
+                );
+            });
 
-        // Use appropriate widget.
-        $form->update('value', function ($element) {
-            switch (app('scaffold.model')->type) {
-                case 'boolean':
-                    $element->setInput(
-                        new Boolean('value')
-                    );
-                    break;
-                case 'number':
-                    $element->setInput(
-                        new Number('value')
-                    );
-                    break;
-                case 'object':
-                    $element->setInput(
-                        new Hidden('value')
-                    );
-                    break;
-                default:
-                    break;
-            }
-        });
+            $form->insert('displayName', 0, function ($element) {
+                $element->setAttributes(['disabled' => true]);
+                $element->setTitle('Name');
+                $element->setValue(app('scaffold.model')->name);
+            });
+
+            $form->update('name', function ($element) {
+                $element->setInput(
+                    new Hidden('name')
+                );
+            });
+
+            // Use appropriate widget.
+            $form->update('value', function ($element) {
+                switch (app('scaffold.model')->type) {
+                    case 'boolean':
+                        $element->setInput(
+                            new Boolean('value')
+                        );
+                        break;
+                    case 'number':
+                        $element->setInput(
+                            new Number('value')
+                        );
+                        break;
+                    case 'object':
+                        $element->setInput(
+                            new Text('value')
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } else {
+            $form->update('type', function ($element) {
+                $element->setInput(
+                    (new Select('type'))
+                        ->setOptions([
+                            'string' => 'string',
+                            'boolean' => 'boolean',
+                            'object' => 'object',
+                        ])
+                );
+            });
+        }
 
         return $form;
     }
