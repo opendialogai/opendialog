@@ -1,5 +1,7 @@
 @push('scaffold.css')
     <style>
+        .message .list-message,
+        .message .rich-message,
         .message .text-message,
         .message .button-message,
         .message .image-message {
@@ -7,6 +9,17 @@
             padding: 7px 10px;
             background: #eaeaea;
             max-width: 300px;
+        }
+
+        .message .list-message .slider.horizontal {
+            padding-bottom: 30px;
+        }
+        .message .list-message .slider.vertical {
+            padding-right: 30px;
+        }
+
+        .message .image-message img {
+            max-width: 100%;
         }
     </style>
 @endpush
@@ -39,6 +52,73 @@
                     @else
                         <img src="{{ $message['data']['src'] }}" />
                     @endif
+                </div>
+            @endif
+
+            @if ($message['type'] == 'rich-message')
+                <div class="rich-message">
+                    @if (!empty($message['data']['title']))
+                        <div class="rich-message--title mb-1">{{ $message['data']['title'] }}</div>
+                    @endif
+                    @if (!empty($message['data']['subtitle']))
+                        <div class="rich-message--subtitle mb-2">{{ $message['data']['subtitle'] }}</div>
+                    @endif
+                    <div class="rich-message--text">{!! $message['data']['text'] !!}</div>
+
+                    @if (!empty($message['data']['image']['src']))
+                        <div class="rich-message--image mt-2 mb-1">
+                            @if (!empty($message['data']['image']['url']))
+                                <a href="{{ $message['data']['image']['url'] }}">
+                                    <img src="{{ $message['data']['image']['src'] }}" />
+                                </a>
+                            @else
+                                <img src="{{ $message['data']['image']['src'] }}" />
+                            @endif
+                        </div>
+                    @endif
+
+                    @if (!empty($message['data']['button']['text']))
+                        <div class="buttons">
+                            <button class="btn btn-default btn-primary mt-1 mr-2">{{ $message['data']['button']['text'] }}</button>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if ($message['type'] == 'list-message')
+                <div class="list-message">
+                    <slider
+                        direction="{{ $message['data']['view_type'] }}"
+                        :pagination-visible="true"
+                        :pagination-clickable="true"
+                    >
+                        @foreach ($message['data']['items'] as $item)
+                            @if ($item['type'] == 'text-message')
+                                <div class="text-message">{!! $item['data'] !!}</div>
+                            @endif
+                            @if ($item['type'] == 'button-message')
+                                <div class="button-message">
+                                    <div>{!! $item['data']['text'] !!}</div>
+                                    <div class="buttons">
+                                        @foreach ($item['data']['buttons'] as $button)
+                                            <button class="btn btn-default btn-primary mt-1 mr-2">{{ $button['text'] }}</button>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                            @if ($item['type'] == 'image-message')
+                                <div class="image-message">
+                                    @if (!empty($item['data']['link']))
+                                        <a href="{{ $item['data']['link'] }}">
+                                            <img src="{{ $item['data']['src'] }}" />
+                                        </a>
+                                    @else
+                                        <img src="{{ $item['data']['src'] }}" />
+                                    @endif
+                                </div>
+                            @endif
+                        @endforeach
+                    </slider>
                 </div>
             @endif
         </div>

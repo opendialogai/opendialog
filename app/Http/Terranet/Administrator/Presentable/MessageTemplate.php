@@ -11,7 +11,7 @@ class MessageTemplate extends OdMessageTemplate implements PresentableInterface
 {
     use PresentableTrait;
 
-    protected $fillable = ['outgoingIntent', 'name', 'conditions', 'message_markup'];
+    protected $fillable = ['outgoing_intent', 'outgoing_intent_id', 'name', 'conditions', 'message_markup'];
 
     protected $presenter = MessageTemplatePresenter::class;
 }
