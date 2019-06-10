@@ -7,6 +7,8 @@ use League\CommonMark\Block\Element\IndentedCode;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use OpenDialogAi\ResponseEngine\Rules\MessageXML;
+use OpenDialogAi\ResponseEngine\Rules\MessageConditions;
 use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
 use Spatie\CommonMarkHighlighter\IndentedCodeRenderer;
 use Symfony\Component\Yaml\Yaml;
@@ -80,5 +82,15 @@ class MessageTemplates extends Scaffolding implements Navigable, Filtrable, Edit
         });
 
         return $form;
+    }
+
+    public function rules()
+    {
+        $discovered = $this->scaffoldRules();
+
+        return array_merge($discovered, [
+            'conditions' => [new MessageConditions()],
+            'message_markup' => ['required', new MessageXML()],
+        ]);
     }
 }
