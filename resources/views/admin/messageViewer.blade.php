@@ -117,6 +117,35 @@
                                     @endif
                                 </div>
                             @endif
+                            @if ($item['type'] == 'rich-message')
+                                <div class="rich-message">
+                                    @if (!empty($item['data']['title']))
+                                        <div class="rich-message--title mb-1">{{ $item['data']['title'] }}</div>
+                                    @endif
+                                    @if (!empty($item['data']['subtitle']))
+                                        <div class="rich-message--subtitle mb-2">{{ $item['data']['subtitle'] }}</div>
+                                    @endif
+                                    <div class="rich-message--text">{!! $item['data']['text'] !!}</div>
+
+                                    @if (!empty($item['data']['image']['src']))
+                                        <div class="rich-message--image mt-2 mb-1">
+                                            @if (!empty($item['data']['image']['url']))
+                                                <a href="{{ $item['data']['image']['url'] }}">
+                                                    <img src="{{ $item['data']['image']['src'] }}" />
+                                                </a>
+                                            @else
+                                                <img src="{{ $item['data']['image']['src'] }}" />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($item['data']['button']['text']))
+                                        <div class="buttons">
+                                            <button class="btn btn-default btn-primary mt-1 mr-2">{{ $item['data']['button']['text'] }}</button>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
                         @endforeach
                     </slider>
                 </div>
