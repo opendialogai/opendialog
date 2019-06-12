@@ -3,12 +3,15 @@ recipe: laravel
 config:
   webroot: public
   php: 7.3
+  xdebug: true
 proxy:
   dgraph-ratel:
     - dgraph-ratel.lndo.site:8000
   dgraph-alpha:
     - dgraph-alpha.lndo.site:8000
 services:
+  node:
+    type: node
   dgraph-zero:
     type: compose
     services:
@@ -52,3 +55,12 @@ services:
       command: dgraph-ratel -addr http://dgraph-alpha.lndo.site:8081
     volumes:
       dgraph:
+tooling:
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
+  yarn:
+    service: node

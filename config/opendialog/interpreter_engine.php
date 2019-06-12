@@ -25,5 +25,6 @@ return [
      */
     'supported_callbacks' => [
         'WELCOME' => 'intent.core.welcome',
+        'list_message' => 'intent.core.TestListMessage'
     ]
 ];
