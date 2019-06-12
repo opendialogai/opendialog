@@ -80,8 +80,8 @@ class SetWebchatSettings extends Command
             'commentsSectionFilterPathPattern' => 'home\\/posts\\/(\\d*)\\/?',
             'commentsSectionFilterQuery' => 'post',
             'commentsSectionPathPattern' => 'home\\/posts\\/\\d*$',
-            'commentsAxiosConfig' => "{\"baseURL\": \"$commentsUrl/json-api/v1\",\"headers\": {\"Authorization\": " .
-                "\"Bearer $token\",\"Content-Type\": \"application/vnd.api+json\"}}",
+            'commentsEndpoint' => "$commentsUrl/json-api/v1",
+            'commentsAuthToken' => "Bearer $token",
             'disableCloseChat' => false,
             'webchatHistory' => 'webchatHistory',
             'showHistory' => true,
