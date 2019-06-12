@@ -6,6 +6,9 @@ use League\CommonMark\Block\Element\FencedCode;
 use League\CommonMark\Block\Element\IndentedCode;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use OpenDialogAi\ResponseEngine\Rules\MessageXML;
+use OpenDialogAi\ResponseEngine\Rules\MessageConditions;
 use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
 use Spatie\CommonMarkHighlighter\IndentedCodeRenderer;
 use Symfony\Component\Yaml\Yaml;
@@ -17,6 +20,7 @@ use Terranet\Administrator\Contracts\Module\Navigable;
 use Terranet\Administrator\Contracts\Module\Sortable;
 use Terranet\Administrator\Contracts\Module\Validable;
 use Terranet\Administrator\Form\Type\Hidden;
+use Terranet\Administrator\Form\Type\Select;
 use Terranet\Administrator\Scaffolding;
 use Terranet\Administrator\Traits\Module\AllowFormats;
 use Terranet\Administrator\Traits\Module\AllowsNavigation;
@@ -61,12 +65,32 @@ class MessageTemplates extends Scaffolding implements Navigable, Filtrable, Edit
     {
         $form = $this->scaffoldForm();
 
-        $form->update('outgoingintent', function ($element) {
+        $form->without(['outgoing_intent']);
+
+        $form->update('outgoing_intent_id', function ($element) {
+            $outgoingIntents = OutgoingIntent::all();
+
+            $outgoingIntentOptions = [];
+            foreach ($outgoingIntents as $outgoingintent) {
+                $outgoingIntentOptions[$outgoingintent->id] = $outgoingintent->name;
+            }
+
             $element->setInput(
-                new Hidden('outgoing_intent_id')
+                (new Select('outgoing_intent_id'))
+                    ->setOptions($outgoingIntentOptions)
             );
         });
 
         return $form;
+    }
+
+    public function rules()
+    {
+        $discovered = $this->scaffoldRules();
+
+        return array_merge($discovered, [
+            'conditions' => [new MessageConditions()],
+            'message_markup' => ['required', new MessageXML()],
+        ]);
     }
 }
