@@ -138,6 +138,42 @@ class MessageTemplatePresenter extends Presenter
                     'items' => $items,
                 ];
                 break;
+
+            case 'form-message':
+                $elements = [];
+
+                foreach ($item->element as $element) {
+                    $required = ($element->required) ? true : false;
+
+                    $el = [
+                        'element_type' => trim((string)$element->element_type),
+                        'name' => trim((string)$element->name),
+                        'display' => trim((string)$element->display),
+                        'required' => $required,
+                    ];
+
+                    if ($el['element_type'] == 'select') {
+                        $options = [];
+
+                        foreach ($element->options->children() as $option) {
+                            $options[trim((string)$option->key)] = trim((string)$option->value);
+                        }
+                        $el['options'] = $options;
+                    }
+
+                    $elements[] = $el;
+                }
+
+                $autoSubmit = ($item->auto_submit) ? true : false;
+
+                $data = [
+                    'text' => trim((string)$item->text),
+                    'submit_text' => trim((string)$item->submit_text),
+                    'callback' => trim((string)$item->callback),
+                    'auto_submit' => $autoSubmit,
+                    'elements' => $elements,
+                ];
+                break;
         }
 
         return [
