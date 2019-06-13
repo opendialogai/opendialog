@@ -18,6 +18,7 @@
             padding-right: 30px;
         }
 
+        .message .rich-message img,
         .message .image-message img {
             max-width: 100%;
         }
