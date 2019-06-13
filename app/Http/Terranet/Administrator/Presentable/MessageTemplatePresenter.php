@@ -111,13 +111,18 @@ class MessageTemplatePresenter extends Presenter
                 break;
 
             case 'rich-message':
+                $buttons = [];
+                foreach ($item->button as $button) {
+                    $buttons[] = [
+                        'text' => (string)$button->text,
+                    ];
+                }
+
                 $data = [
                     'title' => (string)$item->title,
                     'subtitle' => (string)$item->subtitle,
                     'text' => (string)$item->text,
-                    'button' => [
-                        'text' => (string)$item->button->text,
-                    ],
+                    'buttons' => $buttons,
                     'image' => [
                         'src' => (string)$item->image->src,
                         'url' => (string)$item->image->url,
