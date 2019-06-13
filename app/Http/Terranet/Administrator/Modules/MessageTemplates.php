@@ -67,6 +67,11 @@ class MessageTemplates extends Scaffolding implements Navigable, Filtrable, Edit
 
         $form->without(['outgoing_intent']);
 
+        $form->update('message_markup', function ($element) {
+            $element->setAttributes([
+                'style' => 'min-width: 700px; height: 400px;',
+            ]);
+        });
         $form->update('outgoing_intent_id', function ($element) {
             $outgoingIntents = OutgoingIntent::all();
 
