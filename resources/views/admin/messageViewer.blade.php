@@ -18,6 +18,7 @@
             padding-right: 30px;
         }
 
+        .message .rich-message img,
         .message .image-message img {
             max-width: 100%;
         }
@@ -77,11 +78,11 @@
                         </div>
                     @endif
 
-                    @if (!empty($message['data']['button']['text']))
-                        <div class="buttons">
-                            <button class="btn btn-default btn-primary mt-1 mr-2">{{ $message['data']['button']['text'] }}</button>
-                        </div>
-                    @endif
+                    <div class="buttons">
+                        @foreach ($message['data']['buttons'] as $button)
+                            <button class="btn btn-default btn-primary mt-1 mr-2">{{ $button['text'] }}</button>
+                        @endforeach
+                    </div>
                 </div>
             @endif
 
