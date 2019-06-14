@@ -21,6 +21,7 @@ class Conversation extends OdConversation implements PresentableInterface
         'yaml_schema_validation_status',
         'scenes_validation_status',
         'model_validation_status',
+        'opening_intent',
         'outgoing_intents',
     ];
 

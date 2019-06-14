@@ -2,7 +2,8 @@
 
 namespace App\Http\Terranet\Administrator\Modules;
 
-use Terranet\Administrator\Columns\Element;
+use App\Http\Terranet\Administrator\Widgets\RevisionViewer;
+use App\Http\Terranet\Administrator\Widgets\StateLogs;
 use Terranet\Administrator\Contracts\Module\Editable;
 use Terranet\Administrator\Contracts\Module\Exportable;
 use Terranet\Administrator\Contracts\Module\Filtrable;
@@ -17,8 +18,6 @@ use Terranet\Administrator\Traits\Module\HasFilters;
 use Terranet\Administrator\Traits\Module\HasForm;
 use Terranet\Administrator\Traits\Module\HasSortable;
 use Terranet\Administrator\Traits\Module\ValidatesForm;
-use App\Http\Terranet\Administrator\Widgets\RevisionViewer;
-use App\Http\Terranet\Administrator\Widgets\StateLogs;
 
 /**
  * Administrator Resource Conversation
@@ -45,23 +44,14 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
     {
         $columns = $this->scaffoldColumns();
 
-        $columns->update('yaml_validation_status', function ($element) {
-                $element->setTitle('Yaml');
-        });
-
-        $columns->update('yaml_schema_validation_status', function ($element) {
-                $element->setTitle('Schema');
-        });
-
-        $columns->update('scenes_validation_status', function ($element) {
-                $element->setTitle('Scenes');
-        });
-
-        $columns->update('model_validation_status', function ($element) {
-                $element->setTitle('Model');
-        });
-
-        $columns->without(['model', 'notes']);
+        $columns->without([
+            'model',
+            'notes',
+            'yaml_validation_status',
+            'yaml_schema_validation_status',
+            'scenes_validation_status',
+            'model_validation_status'
+        ]);
 
         return $columns;
     }
@@ -71,7 +61,7 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
         $form = $this->scaffoldForm();
 
         // Hide columns.
-        $form->without(['id', 'outgoing_intents']);
+        $form->without(['id', 'outgoing_intents', 'opening_intent']);
         $form->update('status', function ($element) {
             $element->setInput(
                 (new Hidden('status'))->setValue('invalid')
