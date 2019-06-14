@@ -2101,12 +2101,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "69d22235d0157735605a4c9e7839196c5a716ea6"
+                "reference": "c7114d139c43e726f093d163235794bd71c85dfe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/69d22235d0157735605a4c9e7839196c5a716ea6",
-                "reference": "69d22235d0157735605a4c9e7839196c5a716ea6",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/c7114d139c43e726f093d163235794bd71c85dfe",
+                "reference": "c7114d139c43e726f093d163235794bd71c85dfe",
                 "shasum": ""
             },
             "require": {
@@ -2180,7 +2180,7 @@
                 "source": "https://github.com/opendialogai/core/tree/develop",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-06-14T13:38:16+00:00"
+            "time": "2019-06-14T14:25:35+00:00"
         },
         {
             "name": "opendialogai/webchat",
