@@ -3,7 +3,10 @@ recipe: laravel
 config:
   webroot: public
   php: 7.3
+  via: nginx
   xdebug: true
+  config:
+    php: config/php.ini
 proxy:
   dgraph-ratel:
     - dgraph-ratel.lndo.site:8000
