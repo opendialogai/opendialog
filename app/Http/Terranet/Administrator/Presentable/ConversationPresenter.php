@@ -14,6 +14,8 @@ use Terranet\Presentable\Presenter;
 
 class ConversationPresenter extends Presenter
 {
+    private $conversation;
+
     public function title()
     {
         return link_to_route('scaffold.view', $this->presentable->name, [
@@ -37,7 +39,7 @@ class ConversationPresenter extends Presenter
     {
         $output = '';
 
-        $yaml = Yaml::parse($this->presentable->model)['conversation'];
+        $yaml = $this->getConversation();
 
         foreach ($yaml['scenes'] as $sceneId => $scene) {
             foreach ($scene['intents'] as $intent) {
@@ -62,5 +64,37 @@ class ConversationPresenter extends Presenter
         }
 
         return $output;
+    }
+
+    public function openingIntent()
+    {
+        $conversation = $this->getConversation();
+
+        foreach ($conversation['scenes'] as $sceneId => $scene) {
+            foreach ($scene['intents'] as $intent) {
+                foreach ($intent as $tag => $value) {
+                    if ($tag == 'u') {
+                        foreach ($value as $key => $intent) {
+                            if ($key == 'i') {
+                                return $intent;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConversation()
+    {
+        if (!isset($this->conversation)) {
+            $this->conversation = Yaml::parse($this->presentable->model)['conversation'];
+        }
+        return $this->conversation;
     }
 }
