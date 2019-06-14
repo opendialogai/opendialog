@@ -3,6 +3,7 @@
 namespace App\Http\Terranet\Administrator\Actions\Handlers;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use OpenDialogAi\ConversationBuilder\ConversationStateLog;
 use Terranet\Administrator\Traits\Actions\ActionSkeleton;
 use Terranet\Administrator\Traits\Actions\Skeleton;
 
