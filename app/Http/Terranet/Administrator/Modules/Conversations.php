@@ -4,6 +4,7 @@ namespace App\Http\Terranet\Administrator\Modules;
 
 use App\Http\Terranet\Administrator\Widgets\RevisionViewer;
 use App\Http\Terranet\Administrator\Widgets\StateLogs;
+use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
 use Terranet\Administrator\Contracts\Module\Editable;
 use Terranet\Administrator\Contracts\Module\Exportable;
 use Terranet\Administrator\Contracts\Module\Filtrable;
@@ -108,6 +109,10 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
 
     public function rules()
     {
-        return [];
+        $discovered = $this->scaffoldRules();
+
+        return array_merge($discovered, [
+            'model' => [new ConversationYAML()],
+        ]);
     }
 }
