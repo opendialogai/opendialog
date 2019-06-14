@@ -97,6 +97,11 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
                 (new Hidden('model_validation_status'))->setValue('invalid')
             );
         });
+        $form->update('model', function ($element) {
+            $element->setAttributes([
+                'style' => 'min-width: 700px; height: 400px;',
+            ]);
+        });
 
         return $form;
     }
@@ -109,5 +114,10 @@ class Conversations extends Scaffolding implements Navigable, Filtrable, Editabl
         return $this->scaffoldWidgets()
             ->push(new RevisionViewer($conversation))
             ->push(new StateLogs($conversation));
+    }
+
+    public function rules()
+    {
+        return [];
     }
 }
