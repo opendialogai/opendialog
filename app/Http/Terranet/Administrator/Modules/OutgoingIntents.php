@@ -2,6 +2,7 @@
 
 namespace App\Http\Terranet\Administrator\Modules;
 
+use App\Http\Terranet\Administrator\Presentable\MessageTemplatePresenter;
 use League\CommonMark\Block\Element\FencedCode;
 use League\CommonMark\Block\Element\IndentedCode;
 use League\CommonMark\CommonMarkConverter;
@@ -53,6 +54,17 @@ class OutgoingIntents extends Scaffolding implements Navigable, Filtrable, Edita
 
         $columns->push('messageTemplates', function (Element $element) {
             $element->setTitle('Related Message Templates');
+
+            $element->display(function () {
+                $messages = [];
+
+                foreach ($this->messageTemplates as $messageTemplate) {
+                    $m = MessageTemplatePresenter::resolveForDisplay($messageTemplate->message_markup);
+                    $messages = array_merge($messages, $m);
+                }
+
+                return view('admin.messageViewer', ['messages' => $messages])->render();
+            });
         });
 
         return $columns;
@@ -72,5 +84,80 @@ class OutgoingIntents extends Scaffolding implements Navigable, Filtrable, Edita
         # Add widgets.
         return $this->scaffoldWidgets()
             ->push(new MessageTemplates($outgoingIntent));
+    }
+
+    /**
+     * Parse XML markup and convert to a message array.
+     *
+     * @param SimpleXMLElement $item
+     * @return array
+     */
+    private function parseMessage(SimpleXMLElement $item)
+    {
+        switch ($item->getName()) {
+            case 'text-message':
+                $data = (string)$item;
+                break;
+
+            case 'button-message':
+                $buttons = [];
+                foreach ($item->button as $button) {
+                    $buttons[] = [
+                        'text' => (string)$button->text,
+                    ];
+                }
+
+                $data = [
+                    'text' => (string)$item->text,
+                    'buttons' => $buttons,
+                ];
+                break;
+
+            case 'image-message':
+                $data = [
+                    'src' => (string)$item->src,
+                    'link' => (string)$item->link,
+                ];
+                break;
+
+            case 'rich-message':
+                $buttons = [];
+                foreach ($item->button as $button) {
+                    $buttons[] = [
+                        'text' => (string)$button->text,
+                    ];
+                }
+
+                $data = [
+                    'title' => (string)$item->title,
+                    'subtitle' => (string)$item->subtitle,
+                    'text' => (string)$item->text,
+                    'buttons' => $buttons,
+                    'image' => [
+                        'src' => (string)$item->image->src,
+                        'url' => (string)$item->image->url,
+                    ],
+                ];
+                break;
+
+            case 'list-message':
+                $viewType = ($item['view-type']) ? (string)$item['view-type'] : 'horizontal';
+
+                $items = [];
+                foreach ($item->item as $i) {
+                    $items[] = $this->parseMessage($i->children()[0]);
+                }
+
+                $data = [
+                    'view_type' => $viewType,
+                    'items' => $items,
+                ];
+                break;
+        }
+
+        return [
+            'type' => $item->getName(),
+            'data' => $data,
+        ];
     }
 }

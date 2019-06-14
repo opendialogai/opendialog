@@ -1,5 +1,12 @@
 @push('scaffold.css')
     <style>
+        .messages .message {
+            margin-bottom: 15px;
+        }
+        .messages .message:last-child {
+            margin-bottom: 0;
+        }
+
         .message .list-message,
         .message .rich-message,
         .message .text-message,
@@ -25,7 +32,7 @@
     </style>
 @endpush
 
-<div>
+<div class="messages">
     @foreach ($messages as $message)
         <div class="message mb-6">
             @if ($message['type'] == 'text-message')
