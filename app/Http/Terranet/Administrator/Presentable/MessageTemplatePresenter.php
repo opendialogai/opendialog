@@ -36,7 +36,7 @@ class MessageTemplatePresenter extends Presenter
 
     public function messageMarkup()
     {
-        $messages = $this->resolveForDisplay($this->presentable->message_markup);
+        $messages = self::resolveForDisplay($this->presentable->message_markup);
         return view('admin.messageViewer', ['messages' => $messages])->render();
     }
 
@@ -52,7 +52,7 @@ class MessageTemplatePresenter extends Presenter
      * @param  string|null  $attribute
      * @return array
      */
-    private function resolveForDisplay($value)
+    public static function resolveForDisplay($value)
     {
         $message = new SimpleXMLElement($value);
 
@@ -65,11 +65,11 @@ class MessageTemplatePresenter extends Presenter
                     // Create a text message for string attributes.
                     $markup = "<text-message>{$item}</text-message>";
                     $message = new SimpleXMLElement($markup);
-                    $messages[] = $this->parseMessage($message);
+                    $messages[] = self::parseMessage($message);
                 }
             } else {
                 // Convert the markup to the appropriate type of message.
-                $messages[] = $this->parseMessage($item);
+                $messages[] = self::parseMessage($item);
             }
         }
 
@@ -82,7 +82,7 @@ class MessageTemplatePresenter extends Presenter
      * @param SimpleXMLElement $item
      * @return array
      */
-    private function parseMessage(SimpleXMLElement $item)
+    private static function parseMessage(SimpleXMLElement $item)
     {
         switch ($item->getName()) {
             case 'text-message':
@@ -135,7 +135,7 @@ class MessageTemplatePresenter extends Presenter
 
                 $items = [];
                 foreach ($item->item as $i) {
-                    $items[] = $this->parseMessage($i->children()[0]);
+                    $items[] = self::parseMessage($i->children()[0]);
                 }
 
                 $data = [

@@ -80,10 +80,13 @@ class MessageTemplates extends Scaffolding implements Navigable, Filtrable, Edit
                 $outgoingIntentOptions[$outgoingintent->id] = $outgoingintent->name;
             }
 
-            $element->setInput(
-                (new Select('outgoing_intent_id'))
-                    ->setOptions($outgoingIntentOptions)
-            );
+            $select = (new Select('outgoing_intent_id'))
+                ->setOptions($outgoingIntentOptions);
+            if ($id = request()->get('outgoing_intent')) {
+                $select->setValue($id);
+            }
+
+            $element->setInput($select);
         });
 
         return $form;
