@@ -2,6 +2,8 @@
 
 namespace App\Http\Terranet\Administrator\Actions;
 
+use App\Http\Terranet\Administrator\Actions\Handlers\BulkPublishConversation;
+use App\Http\Terranet\Administrator\Actions\Handlers\BulkUnpublishConversation;
 use App\Http\Terranet\Administrator\Actions\Handlers\PublishConversation;
 use App\Http\Terranet\Administrator\Actions\Handlers\UnpublishConversation;
 use Terranet\Administrator\Services\CrudActions;
@@ -19,7 +21,8 @@ class Conversations extends CrudActions
     public function batchActions()
     {
         return array_merge(parent::batchActions(), [
-            // CustomAction::class
+            BulkPublishConversation::class,
+            BulkUnpublishConversation::class,
         ]);
     }
 }

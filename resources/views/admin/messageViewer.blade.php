@@ -93,6 +93,40 @@
                 </div>
             @endif
 
+            @if ($message['type'] == 'form-message')
+                <div class="form-message">
+                    <div class="sc-message--form--text">{!! $message['data']['text'] !!}</div>
+
+                    @foreach ($message['data']['elements'] as $element)
+                        <div class="sc-message--form--element">
+                            @if ($element['display'])
+                                <span class="sc-message--form--element-label">{{ $element['display'] }}:</span>
+                            @endif
+
+                            @if ($element['element_type'] == 'text')
+                                <input class="sc-message--form--element-input" />
+                            @endif
+                            @if ($element['element_type'] == 'textarea')
+                                <textarea class="sc-message--form--element-textarea" />
+                            @endif
+                            @if ($element['element_type'] == 'select')
+                                <select class="sc-message--form--element-select">
+                                    @foreach ($element['options'] as $option_value => $option_text)
+                                        <option value="{{ $option_value }}">
+                                            {{ $option_text }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @endif
+                        </div>
+                    @endforeach
+
+                    @if (!$message['data']['auto_submit'])
+                        <button>{{ $message['data']['submit_text'] }}</button>
+                    @endif
+                </div>
+            @endif
+
             @if ($message['type'] == 'list-message')
                 <div class="list-message">
                     <slider
