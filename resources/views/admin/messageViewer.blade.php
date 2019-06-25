@@ -133,6 +133,7 @@
                         direction="{{ $message['data']['view_type'] }}"
                         :pagination-visible="true"
                         :pagination-clickable="true"
+                        :drag-enable="false"
                     >
                         @foreach ($message['data']['items'] as $item)
                             @if ($item['type'] == 'text-message')
