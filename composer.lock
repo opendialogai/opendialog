@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f8bef8778cd8e7065c479f1f7f0283a",
+    "content-hash": "c34a57f378a00de91f507feb169838df",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -2756,6 +2756,56 @@
             "time": "2019-06-05T19:59:25+00:00"
         },
         {
+            "name": "spatie/laravel-flash",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-flash.git",
+                "reference": "11bae0af18ca8b4a185900af4762a3860bb8ab97"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-flash/zipball/11bae0af18ca8b4a185900af4762a3860bb8ab97",
+                "reference": "11bae0af18ca8b4a185900af4762a3860bb8ab97",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/session": "^5.5|^5.6|^5.7|^5.8",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.5|^3.6|^3.7|^3.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Flash\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A lightweight package to flash messages",
+            "homepage": "https://github.com/spatie/laravel-flash",
+            "keywords": [
+                "laravel-flash",
+                "spatie"
+            ],
+            "time": "2019-03-15T18:25:43+00:00"
+        },
+        {
             "name": "spatie/string",
             "version": "2.2.2",
             "source": {
@@ -2807,6 +2857,62 @@
                 "string"
             ],
             "time": "2017-11-08T14:28:57+00:00"
+        },
+        {
+            "name": "srmklive/authy",
+            "version": "v0.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/srmklive/laravel-twofactor-authentication.git",
+                "reference": "b8d9749858408bdcbff161ef4829d9f4554d3443"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/srmklive/laravel-twofactor-authentication/zipball/b8d9749858408bdcbff161ef4829d9f4554d3443",
+                "reference": "b8d9749858408bdcbff161ef4829d9f4554d3443",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "illuminate/support": "~5.1|~5.2|~5.3|~5.4|~5.5|~5.6|~5.7|~5.8",
+                "nesbot/carbon": "~1.2|~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Srmklive\\Authy\\Providers\\AuthyServiceProvider"
+                    ],
+                    "aliases": {
+                        "Authy": "Srmklive\\Authy\\Facades\\Authy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Srmklive\\Authy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Raza Mehdi",
+                    "email": "srmk@outlook.com"
+                }
+            ],
+            "description": "Plugin for enabling two-factor authentication in Laravel applications",
+            "homepage": "https://github.com/srmklive/laravel-twofactor-authentication",
+            "keywords": [
+                "Authentication",
+                "api",
+                "authy",
+                "laravel two-factor authentication",
+                "two-factor"
+            ],
+            "time": "2019-06-09T17:46:31+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

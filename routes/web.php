@@ -12,6 +12,7 @@
 */
 
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 if (env("APP_DEBUG")) {
@@ -19,3 +20,9 @@ if (env("APP_DEBUG")) {
         return view('demo');
     });
 }
+
+Auth::routes(['register' => false]);
+
+Route::get('auth/token', 'Auth\TwoFactorController@showTokenForm');
+Route::post('auth/token', 'Auth\TwoFactorController@validateTokenForm');
+Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
