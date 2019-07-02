@@ -11,6 +11,7 @@ npm-debug.log
 yarn-error.log
 .idea
 /public/js/app.js
+/public/css/app.css
 /public/admin
 /public/fonts/vendor
 /public/vendor

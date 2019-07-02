@@ -17,14 +17,15 @@
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.5",
         "popper.js": "^1.12",
-        "resolve-url-loader": "^2.3.1",
+        "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
-        "vue": "^2.5.17",
+        "vue": "^2.6.10",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
         "@coreui/coreui": "^2.1.12",
-        "vue-plain-slider": "^1.1.1"
+        "vue-plain-slider": "^1.1.1",
+        "vue-router": "^3.0.6"
     }
 }
