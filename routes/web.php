@@ -28,7 +28,8 @@ Route::post('auth/token', 'Auth\TwoFactorController@validateTokenForm');
 Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('admin', 'AdminController@handle');
+    Route::get('od-admin', 'AdminController@handle');
+    Route::get('od-admin/webchat-setting', 'AdminController@handle');
 
     Route::get('admin/api/conversation', 'Admin\ConversationController@viewAll');
     Route::get('admin/api/conversation/{id}', 'Admin\ConversationController@view');

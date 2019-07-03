@@ -4,8 +4,8 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// CoreUI
+@import '~@coreui/coreui/scss/coreui';
 
 @media (min-width: 1500px) {
   .container {

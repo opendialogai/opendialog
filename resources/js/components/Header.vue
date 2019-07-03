@@ -14,19 +14,19 @@
 
       <div class="col-5 row">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
+          <li class="nav-item mr-4">
             <router-link :to="{ name: 'home' }" class="nav-link">
               <span>Message Editor</span>
             </router-link>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item mr-4">
             <router-link :to="{ name: 'home' }" class="nav-link">
               <span>Insights</span>
             </router-link>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item mr-4">
             <router-link :to="{ name: 'home' }" class="nav-link">
               <span>Settings</span>
             </router-link>
@@ -68,7 +68,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   .home {
     height: 30px;

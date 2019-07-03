@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "axios": "^0.19",
-        "bootstrap": "^4.0.0",
+        "bootstrap": "^4.3.1",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^4.0.7",
@@ -25,6 +25,9 @@
     },
     "dependencies": {
         "@coreui/coreui": "^2.1.12",
+        "@coreui/vue": "^2.1.2",
+        "bootstrap-vue": "^2.0.0-rc.25",
+        "vue-color": "^2.7.0",
         "vue-plain-slider": "^1.1.1",
         "vue-router": "^3.0.6"
     }
