@@ -29,6 +29,10 @@ class UserObserver
      */
     private function updatePhone(User $user)
     {
+        if (!$user->phone_number) {
+            return;
+        }
+
         $phone = PhoneNumber::make($user->phone_number);
         $user->setAuthPhoneInformation($phone->getPhoneNumberInstance()->getCountryCode(), $phone->formatNational());
 

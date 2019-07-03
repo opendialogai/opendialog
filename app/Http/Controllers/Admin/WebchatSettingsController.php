@@ -30,6 +30,10 @@ class WebchatSettingsController extends Controller
 
     public function update(Request $request, $id)
     {
-        return response()->setStatusCode(200);
+        if ($setting = WebchatSetting::find($id)) {
+            $setting->update($request->all());
+        }
+
+        return response()->noContent(200);
     }
 }

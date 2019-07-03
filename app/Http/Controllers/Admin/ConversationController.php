@@ -25,7 +25,7 @@ class ConversationController extends Controller
 
     public function viewAll()
     {
-        return WebchatSetting::all();
+        return Conversation::all();
     }
 
     public function update(Request $request, $id)
