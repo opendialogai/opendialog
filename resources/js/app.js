@@ -4,9 +4,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-/**
- * Now we import the Vue router.
- */
+import 'core-js/features/promise';
+import 'core-js/features/string';
+import 'core-js/features/array';
+
 import router from '@/router/index';
 
 import App from '@/views/App';
