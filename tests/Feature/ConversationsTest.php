@@ -28,7 +28,7 @@ class ConversationsTest extends TestCase
         $this->get('/admin/api/conversation/' . $conversation->id)
             ->assertStatus(302);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/conversation/' . $conversation->id)
             ->assertStatus(200)
             ->assertJsonFragment(
@@ -50,7 +50,7 @@ class ConversationsTest extends TestCase
         $this->get('/admin/api/conversation')
             ->assertStatus(302);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/conversation')
             ->assertStatus(200)
             ->assertJsonCount(count($conversations))
@@ -65,7 +65,7 @@ class ConversationsTest extends TestCase
     {
         $conversation = Conversation::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/conversation/' . $conversation->id, [
                 'name' => 'updated name',
             ])
@@ -78,7 +78,7 @@ class ConversationsTest extends TestCase
 
     public function testConversationsStoreEndpoint()
     {
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation', [
                 'name' => 'test_conversation',
                 'model' => 'conversation:
@@ -98,7 +98,7 @@ class ConversationsTest extends TestCase
     {
         $conversation = Conversation::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation/' . $conversation->id)
             ->assertStatus(200);
 

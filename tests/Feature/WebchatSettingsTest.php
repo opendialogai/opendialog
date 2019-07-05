@@ -28,7 +28,7 @@ class WebchatSettingsTest extends TestCase
         $this->get('/admin/api/webchat-setting/' . $setting->id)
             ->assertStatus(302);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/webchat-setting/' . $setting->id)
             ->assertStatus(200)
             ->assertJsonFragment(
@@ -46,7 +46,7 @@ class WebchatSettingsTest extends TestCase
         $this->get('/admin/api/webchat-setting')
             ->assertStatus(302);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/webchat-setting')
             ->assertStatus(200)
             ->assertJsonCount(count($settings))
@@ -77,7 +77,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => 'updated value',
                 'type' => 'updated value',
@@ -100,13 +100,13 @@ class WebchatSettingsTest extends TestCase
             'value' => '0',
         ]);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => 'pippo',
             ])
             ->assertStatus(400);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => 10,
             ])
@@ -127,19 +127,19 @@ class WebchatSettingsTest extends TestCase
             'value' => '0',
         ]);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => 'pippo',
             ])
             ->assertStatus(400);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => '1',
             ])
             ->assertStatus(200);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => true,
             ])
@@ -154,19 +154,19 @@ class WebchatSettingsTest extends TestCase
             'value' => '#000000',
         ]);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => '#00000',
             ])
             ->assertStatus(400);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => '#fff',
             ])
             ->assertStatus(200);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => '#ffffff',
             ])
@@ -181,13 +181,13 @@ class WebchatSettingsTest extends TestCase
             'value' => 'test',
         ]);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => Str::random(9000),
             ])
             ->assertStatus(400);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => Str::random(900),
             ])
@@ -202,7 +202,7 @@ class WebchatSettingsTest extends TestCase
             'value' => '',
         ]);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => Str::random(10),
             ])
@@ -219,13 +219,13 @@ class WebchatSettingsTest extends TestCase
             ]),
         ]);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => Str::random(10),
             ])
             ->assertStatus(400);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => json_encode($setting),
             ])
@@ -236,7 +236,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/webchat-setting', [
                 'type' => 'string',
                 'name' => 'new setting',
@@ -249,7 +249,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/webchat-setting/' . $setting->id)
             ->assertStatus(405);
     }

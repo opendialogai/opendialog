@@ -28,7 +28,7 @@ class ChatbotUsersTest extends TestCase
         $this->get('/admin/api/chatbot-user/' . $chatboutUser->id)
             ->assertStatus(302);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/chatbot-user/' . $chatboutUser->id)
             ->assertStatus(200)
             ->assertJsonFragment(
@@ -48,7 +48,7 @@ class ChatbotUsersTest extends TestCase
         $this->get('/admin/api/chatbot-user')
             ->assertStatus(302);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/chatbot-user')
             ->assertStatus(200)
             ->assertJsonCount(count($chatboutUsers))
@@ -63,7 +63,7 @@ class ChatbotUsersTest extends TestCase
     {
         $chatboutUser = ChatbotUser::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/chatbot-user', [
                 'user_id' => 'test',
             ])
@@ -72,7 +72,7 @@ class ChatbotUsersTest extends TestCase
 
     public function testChatbotUsersStoreEndpoint()
     {
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/chatbot-user', [
                 'user_id' => 'test',
             ])
@@ -83,7 +83,7 @@ class ChatbotUsersTest extends TestCase
     {
         $chatboutUser = ChatbotUser::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/chatbot-user/' . $chatboutUser->id)
             ->assertStatus(405);
     }

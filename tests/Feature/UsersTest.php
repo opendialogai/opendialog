@@ -26,7 +26,7 @@ class UsersTest extends TestCase
         $this->get('/admin/api/user/' . $user->id)
             ->assertStatus(302);
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/user/' . $user->id)
             ->assertStatus(200)
             ->assertJsonFragment(
@@ -44,7 +44,7 @@ class UsersTest extends TestCase
         $this->get('/admin/api/user')
             ->assertStatus(302);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/user')
             ->assertStatus(200)
             ->assertJsonCount(count($users))
@@ -59,7 +59,7 @@ class UsersTest extends TestCase
     {
         $user = User::latest()->first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/user/' . $user->id, [
                 'name' => 'updated name',
             ])
@@ -72,7 +72,7 @@ class UsersTest extends TestCase
 
     public function testUsersStoreEndpoint()
     {
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/user', [
                 'name' => 'test',
                 'email' => 'test@test.com',
@@ -91,7 +91,7 @@ class UsersTest extends TestCase
     {
         $user = User::first();
 
-        $this->actingAs($this->user)
+        $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/user/' . $user->id)
             ->assertStatus(405);
     }
