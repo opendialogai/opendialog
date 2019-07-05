@@ -77,11 +77,39 @@ class WebchatSettingsTest extends TestCase
         $setting = WebchatSetting::first();
 
         $this->actingAs($this->user)
-            ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, ['value' => 'updated value'])
+            ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
+                'value' => 'updated value',
+                'type' => 'updated value',
+                'name' => 'updated value'
+            ])
             ->assertStatus(200);
 
         $updatedSetting = WebchatSetting::first();
 
         $this->assertEquals($updatedSetting->value, 'updated value');
+        $this->assertNotEquals($updatedSetting->name, 'updated value');
+        $this->assertNotEquals($updatedSetting->type, 'updated value');
+    }
+
+    public function testWebchatSettingsStoreEndpoint()
+    {
+        $setting = WebchatSetting::first();
+
+        $this->actingAs($this->user)
+            ->json('POST', '/admin/api/webchat-setting', [
+                'type' => 'string',
+                'name' => 'new setting',
+                'value' => 'test',
+            ])
+            ->assertStatus(405);
+    }
+
+    public function testWebchatSettingsDestroyEndpoint()
+    {
+        $setting = WebchatSetting::first();
+
+        $this->actingAs($this->user)
+            ->json('DELETE', '/admin/api/webchat-setting/' . $setting->id)
+            ->assertStatus(405);
     }
 }

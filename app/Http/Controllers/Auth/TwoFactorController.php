@@ -64,7 +64,7 @@ class TwoFactorController extends Controller
 
             flash('You have successfully logged in!', 'success');
 
-            return redirect(url('od-admin'));
+            return redirect(url('admin'));
         } else {
             flash('Invalid two-factor authentication token provided!', 'error');
 
@@ -112,7 +112,7 @@ class TwoFactorController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(url('od-admin'))->withErrors($validator->errors());
+            return redirect(url('admin'))->withErrors($validator->errors());
         }
 
         $user->setAuthPhoneInformation($input['country-code'], $input['authy-cellphone']);
@@ -127,7 +127,7 @@ class TwoFactorController extends Controller
             flash('Unable to enable two-factor authentication due to the following reasons: \n' . $e->getMessage(), 'error');
         }
 
-        return redirect(url('od-admin'));
+        return redirect(url('admin'));
     }
 
     /**
@@ -150,6 +150,6 @@ class TwoFactorController extends Controller
             flash('Unable to disable two-factor authentication due to the following reasons: \n' . $e->getMessage(), 'error');
         }
 
-        return redirect(url('od-admin'));
+        return redirect(url('admin'));
     }
 }

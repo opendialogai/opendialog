@@ -13,7 +13,7 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/od-admin',
+      path: '/admin',
       component: DefaultContainer,
       children: [
         {
