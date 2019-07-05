@@ -12,7 +12,7 @@ export default {
     },
     {
       name: 'Settings',
-      url: '/settings',
+      url: '/admin/webchat-setting',
       icon: 'icon-settings'
     },
   ]

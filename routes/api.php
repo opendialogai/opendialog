@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/api/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'admin/api', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin/api', 'middleware' => 'auth:api'], function () {
     Route::apiResource('conversation', 'API\ConversationsController');
     Route::apiResource('webchat-setting', 'API\WebchatSettingsController', ['except' => ['store', 'destroy']]);
     Route::apiResource('chatbot-user', 'API\ChatbotUsersController', ['except' => ['store', 'update', 'destroy']]);

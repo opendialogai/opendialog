@@ -10,8 +10,8 @@
       <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
       <b-navbar-nav class="d-md-down-none">
         <b-nav-item class="px-3" to="/dashboard">Message Editor</b-nav-item>
-        <b-nav-item class="px-3" to="/users" exact>Insights</b-nav-item>
-        <b-nav-item class="px-3">Settings</b-nav-item>
+        <b-nav-item class="px-3" to="/users">Insights</b-nav-item>
+        <b-nav-item class="px-3" to="/admin/webchat-setting">Settings</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
