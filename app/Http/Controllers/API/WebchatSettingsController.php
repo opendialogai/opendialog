@@ -60,7 +60,14 @@ class WebchatSettingsController extends Controller
     public function update(Request $request, $id)
     {
         if ($setting = WebchatSetting::find($id)) {
-            $setting->update(['value' => $request->get('value')]);
+            $value = $request->get('value');
+            $error = $this->validateValue($setting, $value);
+
+            if ($error) {
+                return response($error, 400);
+            } else {
+                $setting->update(['value' => $value]);
+            }
         }
 
         return response()->noContent(200);
@@ -75,5 +82,46 @@ class WebchatSettingsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * @param WebchatSetting
+     * @param string $newValue
+     * @return string
+     */
+    private function validateValue(WebchatSetting $setting, $newValue)
+    {
+        switch ($setting->type) {
+            case 'string':
+                if (strlen($newValue) > 8192) {
+                    return 'The maximum length for a string value is 8192.';
+                }
+                break;
+            case 'number':
+                if (!is_numeric($newValue)) {
+                    return 'This is not a valid number.';
+                }
+                break;
+            case 'colour':
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $newValue)) {
+                    return 'This is not a valid hex colour.';
+                }
+                break;
+            case 'map':
+                if (json_decode($newValue) == null) {
+                    return 'This is not a valid json value.';
+                }
+                break;
+            case 'object':
+                return 'Cannot update object value';
+                break;
+            case 'boolean':
+                if ($newValue != '0' && $newValue != '1' && $newValue != 'false' && $newValue != 'true') {
+                    return 'This is not a valid boolean value.';
+                }
+                break;
+        }
+
+        return null;
     }
 }
