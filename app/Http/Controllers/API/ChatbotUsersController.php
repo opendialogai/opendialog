@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatbotUserCollection;
+use App\Http\Resources\ChatbotUserResource;
+use App\Http\Resources\MessageCollection;
 use Illuminate\Http\Request;
 use OpenDialogAi\ConversationLog\ChatbotUser;
 
@@ -25,7 +28,7 @@ class ChatbotUsersController extends Controller
      */
     public function index()
     {
-        return ChatbotUser::all();
+        return new ChatbotUserCollection(ChatbotUser::paginate(50));
     }
 
     /**
@@ -47,7 +50,7 @@ class ChatbotUsersController extends Controller
      */
     public function show($id)
     {
-        return ChatbotUser::find($id);
+        return new ChatbotUserResource(ChatbotUser::find($id));
     }
 
     /**
@@ -71,5 +74,10 @@ class ChatbotUsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function messages($id)
+    {
+        return new MessageCollection(ChatbotUser::find($id)->messages()->get());
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use OpenDialogAi\ConversationLog\ChatbotUser;
+use OpenDialogAi\ConversationLog\Message;
 use Tests\TestCase;
 
 class ChatbotUsersTest extends TestCase
@@ -16,20 +17,20 @@ class ChatbotUsersTest extends TestCase
 
         $this->user = factory(User::class)->create();
 
-        factory(ChatbotUser::class)->create();
-        factory(ChatbotUser::class)->create();
-        factory(ChatbotUser::class)->create();
+        for ($i = 0; $i < 52; $i++) {
+            factory(ChatbotUser::class)->create();
+        }
     }
 
     public function testChatbotUsersViewEndpoint()
     {
         $chatboutUser = ChatbotUser::first();
 
-        $this->get('/admin/api/chatbot-user/' . $chatboutUser->id)
+        $this->get('/admin/api/chatbot-user/' . $chatboutUser->user_id)
             ->assertStatus(302);
 
         $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/chatbot-user/' . $chatboutUser->id)
+            ->json('GET', '/admin/api/chatbot-user/' . $chatboutUser->user_id)
             ->assertStatus(200)
             ->assertJsonFragment(
                 [
@@ -49,14 +50,25 @@ class ChatbotUsersTest extends TestCase
             ->assertStatus(302);
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/chatbot-user')
+            ->json('GET', '/admin/api/chatbot-user?page=1')
             ->assertStatus(200)
-            ->assertJsonCount(count($chatboutUsers))
             ->assertJson([
-                $chatboutUsers[0]->toArray(),
-                $chatboutUsers[1]->toArray(),
-                $chatboutUsers[2]->toArray(),
-            ]);
+                'data' => [
+                    $chatboutUsers[0]->toArray(),
+                    $chatboutUsers[1]->toArray(),
+                    $chatboutUsers[2]->toArray(),
+                ],
+            ])
+            ->getData();
+
+        $this->assertEquals(count($response->data), 50);
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/chatbot-user?page=2')
+            ->assertStatus(200)
+            ->getData();
+
+        $this->assertEquals(count($response->data), 2);
     }
 
     public function testChatbotUsersUpdateEndpoint()
@@ -84,7 +96,30 @@ class ChatbotUsersTest extends TestCase
         $chatboutUser = ChatbotUser::first();
 
         $this->actingAs($this->user, 'api')
-            ->json('DELETE', '/admin/api/chatbot-user/' . $chatboutUser->id)
+            ->json('DELETE', '/admin/api/chatbot-user/' . $chatboutUser->user_id)
             ->assertStatus(405);
+    }
+
+    public function testChatbotUsersMessagesEndpoint()
+    {
+        $chatboutUser = ChatbotUser::first();
+
+        for ($i = 0; $i < 10; $i++) {
+            $message = factory(Message::class)->make();
+            $message->user_id = $chatboutUser->user_id;
+            $message->save();
+        }
+
+        for ($i = 0; $i < 5; $i++) {
+            $message = factory(Message::class)->make();
+            $message->save();
+        }
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/chatbot-user/' . $chatboutUser->user_id . '/messages')
+            ->assertStatus(200)
+            ->getData();
+
+        $this->assertEquals(count($response->data), 10);
     }
 }

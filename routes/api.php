@@ -22,4 +22,6 @@ Route::group(['prefix' => 'admin/api', 'middleware' => 'auth:api'], function () 
     Route::apiResource('webchat-setting', 'API\WebchatSettingsController', ['except' => ['store', 'destroy']]);
     Route::apiResource('chatbot-user', 'API\ChatbotUsersController', ['except' => ['store', 'update', 'destroy']]);
     Route::apiResource('user', 'API\UsersController', ['except' => ['destroy']]);
+
+    Route::get('chatbot-user/{id}/messages', 'API\ChatbotUsersController@messages');
 });
