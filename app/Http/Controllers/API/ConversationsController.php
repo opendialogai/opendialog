@@ -119,6 +119,10 @@ class ConversationsController extends Controller
         return response()->json(false);
     }
 
+    /**
+     * @param Conversation $conversation
+     * @return string
+     */
     private function validateValue(Conversation $conversation)
     {
         $rule = new ConversationYAML();

@@ -84,7 +84,7 @@ class WebchatSettingsController extends Controller
     }
 
     /**
-     * @param WebchatSetting
+     * @param WebchatSetting $setting
      * @param string $newValue
      * @return string
      */

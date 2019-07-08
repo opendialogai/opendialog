@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return User::all();
+        return new UserCollection(User::paginate(50));
     }
 
     /**
@@ -36,9 +38,16 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create($request->all());
+        $user = User::make($request->all());
 
-        return $user;
+        if ($error = $this->validateValue($user)) {
+            return response($error, 400);
+        }
+
+        $user->password = str_random(8);
+        $user->save();
+
+        return new UserResource($user);
     }
 
     /**
@@ -49,7 +58,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        return User::find($id);
+        return new UserResource(User::find($id));
     }
 
     /**
@@ -62,7 +71,13 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         if ($user = User::find($id)) {
-            $user->update($request->all());
+            $user->fill($request->all());
+
+            if ($error = $this->validateValue($user)) {
+                return response($error, 400);
+            }
+
+            $user->save();
         }
 
         return response()->noContent(200);
@@ -76,6 +91,31 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if ($user = User::find($id)) {
+            $user->delete();
+        }
+
+        return response()->noContent(200);
+    }
+
+    /**
+     * @param User $user
+     * @return string
+     */
+    private function validateValue(User $user)
+    {
+        if (empty($user->name)) {
+            return 'User name field is required.';
+        }
+
+        if (empty($user->email)) {
+            return 'User email field is required.';
+        }
+
+        if (empty($user->phone_number)) {
+            return 'User phone number field is required.';
+        }
+
+        return null;
     }
 }
