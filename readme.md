@@ -15,10 +15,11 @@ This will get you up and running with minimal manual configuration.
  -- Lando is a wrapper around Docker services and it brings together everything that is required for OpenDialog.
  
 * Add the auth.json file for Laravel Nova (See the "Nova installation" heading in this document)
-* Run the setup script: `bash ./scripts/set_up_od.sh`
+* Run the setup script: `bash ./scripts/set_up_od.sh {appname}` where {appname} is the name of the app
 * Now you can go to: https://opendialog.lndo.site/demo
 * You should see the no-match message 
 * The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
+  * DGraph Alpha should be available at locahost:8081
 
 ## Manual Configuration
 
