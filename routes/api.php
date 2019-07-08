@@ -23,5 +23,7 @@ Route::group(['prefix' => 'admin/api', 'middleware' => 'auth:api'], function () 
     Route::apiResource('chatbot-user', 'API\ChatbotUsersController', ['except' => ['store', 'update', 'destroy']]);
     Route::apiResource('user', 'API\UsersController', ['except' => ['destroy']]);
 
+    Route::get('conversation/{id}/publish', 'API\ConversationsController@publish');
+    Route::get('conversation/{id}/unpublish', 'API\ConversationsController@unpublish');
     Route::get('chatbot-user/{id}/messages', 'API\ChatbotUsersController@messages');
 });

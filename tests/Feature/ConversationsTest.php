@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use Illuminate\Support\Str;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use Tests\TestCase;
 
@@ -14,11 +15,13 @@ class ConversationsTest extends TestCase
     {
         parent::setUp();
 
+        $this->initDDgraph();
+
         $this->user = factory(User::class)->create();
 
-        factory(Conversation::class)->create();
-        factory(Conversation::class)->create();
-        factory(Conversation::class)->create();
+        for ($i = 0; $i < 52; $i++) {
+            factory(Conversation::class)->create();
+        }
     }
 
     public function testConversationsViewEndpoint()
@@ -35,10 +38,10 @@ class ConversationsTest extends TestCase
                 [
                     'name' => $conversation->name,
                     'model' => $conversation->model,
-                    'scenes_validation_status' => 'invalid',
-                    'yaml_schema_validation_status' => 'invalid',
+                    'scenes_validation_status' => 'validated',
+                    'yaml_schema_validation_status' => 'validated',
                     'yaml_validation_status' => 'validated',
-                    'model_validation_status' => 'invalid',
+                    'model_validation_status' => 'validated',
                 ]
             );
     }
@@ -51,14 +54,25 @@ class ConversationsTest extends TestCase
             ->assertStatus(302);
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation')
+            ->json('GET', '/admin/api/conversation?page=1')
             ->assertStatus(200)
-            ->assertJsonCount(count($conversations))
             ->assertJson([
-                $conversations[0]->toArray(),
-                $conversations[1]->toArray(),
-                $conversations[2]->toArray(),
-            ]);
+                'data' => [
+                    $conversations[0]->toArray(),
+                    $conversations[1]->toArray(),
+                    $conversations[2]->toArray(),
+                ],
+            ])
+            ->getData();
+
+        $this->assertEquals(count($response->data), 50);
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation?page=2')
+            ->assertStatus(200)
+            ->getData();
+
+        $this->assertEquals(count($response->data), 2);
     }
 
     public function testConversationsUpdateEndpoint()
@@ -67,13 +81,23 @@ class ConversationsTest extends TestCase
 
         $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/conversation/' . $conversation->id, [
-                'name' => 'updated name',
+                'name' => 'updated_name',
+                'model' => 'conversation:
+  id: updated_name
+  scenes:
+    opening_scene:
+      intents:
+        - u: 
+            i: intent.core.hello_bot
+        - b: 
+            i: intent.core.hello_human
+            completes: true',
             ])
             ->assertStatus(200);
 
         $updatedConversation = Conversation::first();
 
-        $this->assertEquals($updatedConversation->name, 'updated name');
+        $this->assertEquals($updatedConversation->name, 'updated_name');
     }
 
     public function testConversationsStoreEndpoint()
@@ -82,14 +106,30 @@ class ConversationsTest extends TestCase
             ->json('POST', '/admin/api/conversation', [
                 'name' => 'test_conversation',
                 'model' => 'conversation:
-  id: test_conversation',
+  id: test_conversation
+  scenes:
+    opening_scene:
+      intents:
+        - u: 
+            i: intent.core.hello_bot
+        - b: 
+            i: intent.core.hello_human
+            completes: true',
             ])
             ->assertStatus(201)
             ->assertJsonFragment(
                 [
                     'name' => 'test_conversation',
                     'model' => 'conversation:
-  id: test_conversation',
+  id: test_conversation
+  scenes:
+    opening_scene:
+      intents:
+        - u: 
+            i: intent.core.hello_bot
+        - b: 
+            i: intent.core.hello_human
+            completes: true',
                 ]
             );
     }
@@ -103,5 +143,91 @@ class ConversationsTest extends TestCase
             ->assertStatus(200);
 
         $this->assertEquals(Conversation::find($conversation->id), null);
+    }
+
+    public function testConversationsPublishEndpoint()
+    {
+        $conversation = Conversation::first();
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/publish')
+            ->assertStatus(200);
+
+        $this->assertEquals($response->content(), 'true');
+    }
+
+    public function testConversationsUnpublishEndpoint()
+    {
+        $conversation = Conversation::first();
+
+        $conversation->publishConversation($conversation->buildConversation());
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/unpublish')
+            ->assertStatus(200);
+
+        $this->assertEquals($response->content(), 'true');
+    }
+
+    public function testConversationsInvalidStoreEndpoint()
+    {
+        $response = $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation', [
+                'name' => 'test_conversation',
+                'model' => 'conversation:
+  id: test_conversation',
+            ])
+            ->assertStatus(400);
+
+        $this->assertEquals($response->content(), 'Conversation must have at least 1 scene.');
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation', [
+                'name' => 'test',
+                'model' => 'conversation:
+  id: test_conversation
+  scenes:
+    opening_scene:
+      intents:
+        - u: 
+            i: intent.core.hello_bot
+        - b: 
+            i: intent.core.hello_human
+            completes: true',
+            ])
+            ->assertStatus(400);
+
+        $this->assertEquals($response->content(), 'Conversation name must be the same of model conversation id.');
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation', [
+                'name' => Str::random(1000),
+                'model' => 'conversation:
+  id: test_conversation
+  scenes:
+    opening_scene:
+      intents:
+        - u: 
+            i: intent.core.hello_bot
+        - b: 
+            i: intent.core.hello_human
+            completes: true',
+            ])
+            ->assertStatus(400);
+
+        $this->assertEquals($response->content(), 'The maximum length for conversation name is 512.');
+    }
+
+    public function testConversationsInvalidUpdateEndpoint()
+    {
+        $conversation = Conversation::first();
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('PATCH', '/admin/api/conversation/' . $conversation->id, [
+                'name' => 'updated_name',
+            ])
+            ->assertStatus(400);
+
+        $this->assertEquals($response->content(), 'Conversation name must be the same of model conversation id.');
     }
 }

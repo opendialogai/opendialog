@@ -17,11 +17,12 @@ use Faker\Generator as Faker;
 
 $factory->define(Conversation::class, function (Faker $faker) {
     $intent = Str::random(10);
+    $name = Str::random(10);
 
     return [
-        'name' => $faker->name,
+        'name' => $name,
         'model' => "conversation:
-  id: $faker->name
+  id: $name
   scenes:
     opening_scene:
       intents:

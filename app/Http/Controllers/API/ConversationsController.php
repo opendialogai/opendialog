@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ConversationCollection;
+use App\Http\Resources\ConversationResource;
 use Illuminate\Http\Request;
 use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
+use Symfony\Component\Yaml\Yaml;
 
 class ConversationsController extends Controller
 {
@@ -25,7 +29,7 @@ class ConversationsController extends Controller
      */
     public function index()
     {
-        return Conversation::all();
+        return new ConversationCollection(Conversation::paginate(50));
     }
 
     /**
@@ -38,7 +42,11 @@ class ConversationsController extends Controller
     {
         $conversation = Conversation::create($request->all());
 
-        return $conversation;
+        if ($error = $this->validateValue($conversation)) {
+            return response($error, 400);
+        }
+
+        return new ConversationResource($conversation);
     }
 
     /**
@@ -49,7 +57,7 @@ class ConversationsController extends Controller
      */
     public function show($id)
     {
-        return Conversation::find($id);
+        return new ConversationResource(Conversation::find($id));
     }
 
     /**
@@ -62,7 +70,13 @@ class ConversationsController extends Controller
     public function update(Request $request, $id)
     {
         if ($conversation = Conversation::find($id)) {
-            $conversation->update($request->all());
+            $conversation->fill($request->all());
+
+            if ($error = $this->validateValue($conversation)) {
+                return response($error, 400);
+            }
+
+            $conversation->save();
         }
 
         return response()->noContent(200);
@@ -81,5 +95,48 @@ class ConversationsController extends Controller
         }
 
         return response()->noContent(200);
+    }
+
+    public function publish($id)
+    {
+        if ($conversation = Conversation::find($id)) {
+            $ret = $conversation->publishConversation($conversation->buildConversation());
+
+            return response()->json($ret);
+        }
+
+        return response()->json(false);
+    }
+
+    public function unpublish($id)
+    {
+        if ($conversation = Conversation::find($id)) {
+            $ret = $conversation->unPublishConversation();
+
+            return response()->json($ret);
+        }
+
+        return response()->json(false);
+    }
+
+    private function validateValue(Conversation $conversation)
+    {
+        $rule = new ConversationYAML();
+
+        if (strlen($conversation->name) > 512) {
+            return 'The maximum length for conversation name is 512.';
+        }
+
+        if (!$rule->passes(null, $conversation->model)) {
+            return $rule->message() . '.';
+        }
+
+        $yaml = Yaml::parse($conversation->model)['conversation'];
+
+        if ($yaml['id'] != $conversation->name) {
+            return 'Conversation name must be the same of model conversation id.';
+        }
+
+        return null;
     }
 }

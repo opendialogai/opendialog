@@ -61,13 +61,12 @@ class WebchatSettingsController extends Controller
     {
         if ($setting = WebchatSetting::find($id)) {
             $value = $request->get('value');
-            $error = $this->validateValue($setting, $value);
 
-            if ($error) {
+            if ($error = $this->validateValue($setting, $value)) {
                 return response($error, 400);
-            } else {
-                $setting->update(['value' => $value]);
             }
+
+            $setting->update(['value' => $value]);
         }
 
         return response()->noContent(200);
