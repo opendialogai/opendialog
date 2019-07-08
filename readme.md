@@ -28,8 +28,17 @@ This will get you up and running with minimal manual configuration.
 After running `composer install` or `composer update`, an update script file should be moved to the root of your project
 directory. Run this script to set up the OpenDialogAI-Webchat and OpenDialogAI-Core packages with
 
-```bash update-web-chat.sh```
+```bash update-web-chat.sh -i```
 
+#### Options
+
+The following options are available on the script:
+
++ `-h` Get help
++ `-p` Set if this is to be run in the production environment
++ `-l` Set if you are using Lando for local development. Will run the commands from within Lando
++ `-i` Set if you need to install the node dependencies. This defaults to false, so you should always set this for the fist run
++ `-f` Whether to force updating by deleting local dependencies. If set, will remove the vue-beautiful-chat node module before reinstalling 
 
 Run this script every time an underlying package is updated.
 
