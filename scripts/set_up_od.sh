@@ -17,7 +17,7 @@ echo "Adding Laravel environment settings..."
 cp -n .env.example.lando .env || echo "A .env file was already present, not copying example..."
 
 echo "Updating name of app in .env file"
-sed -i -e "s/APP_NAME=OpenDialog*/APP_NAME=$1/g" .env
+sed -i -e "s/APP_NAME=.*/APP_NAME=\"$1\"/g" .env
 
 
 echo "Creating local Lando file"
