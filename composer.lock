@@ -2105,12 +2105,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "16573bc6dc203d313504ca765a42b0ed337ee8d7"
+                "reference": "70a9e3234604aa0bcbc222e0f48389c8d7c79d08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/16573bc6dc203d313504ca765a42b0ed337ee8d7",
-                "reference": "16573bc6dc203d313504ca765a42b0ed337ee8d7",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/70a9e3234604aa0bcbc222e0f48389c8d7c79d08",
+                "reference": "70a9e3234604aa0bcbc222e0f48389c8d7c79d08",
                 "shasum": ""
             },
             "require": {
@@ -2123,6 +2123,8 @@
                 "symfony/yaml": "^4.2"
             },
             "require-dev": {
+                "barryvdh/laravel-ide-helper": "^2.6",
+                "matthewbdaly/artisan-standalone": "^0.0.8",
                 "mockery/mockery": "^1.2",
                 "orchestra/testbench": "^3.8",
                 "phpunit/phpunit": "^7.5",
@@ -2184,7 +2186,7 @@
                 "source": "https://github.com/opendialogai/core/tree/develop",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-07-05T08:05:48+00:00"
+            "time": "2019-07-09T11:00:35+00:00"
         },
         {
             "name": "opendialogai/webchat",
@@ -2192,12 +2194,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "7411a3c2d9bd3cf2372692a52c36db80e5776a37"
+                "reference": "b44a52cfc4f2a152a3da104568d2637b09a62dde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/7411a3c2d9bd3cf2372692a52c36db80e5776a37",
-                "reference": "7411a3c2d9bd3cf2372692a52c36db80e5776a37",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/b44a52cfc4f2a152a3da104568d2637b09a62dde",
+                "reference": "b44a52cfc4f2a152a3da104568d2637b09a62dde",
                 "shasum": ""
             },
             "require": {
@@ -2242,7 +2244,7 @@
                 "source": "https://github.com/opendialogai/webchat/tree/develop",
                 "issues": "https://github.com/opendialogai/webchat/issues"
             },
-            "time": "2019-07-05T15:28:01+00:00"
+            "time": "2019-07-09T10:54:20+00:00"
         },
         {
             "name": "opis/closure",
