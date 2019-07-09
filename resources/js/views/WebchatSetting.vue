@@ -29,6 +29,11 @@
         </b-card-body>
       </b-card>
     </template>
+
+    <div class="spinner" v-if="showSpinner">
+      <img src="/images/loader.svg" />
+      <span>Saving</span>
+    </div>
   </div>
 </template>
 
@@ -45,6 +50,7 @@ export default {
   data() {
     return {
       displayPicker: 0,
+      showSpinner: false,
       webchatSettings: [],
     };
   },
@@ -78,7 +84,13 @@ export default {
       this.saveSetting(setting);
     },
     saveSetting(setting) {
-      axios.patch('/admin/api/webchat-setting/' + setting.id, { value: setting.value });
+      this.showSpinner = true;
+      axios.patch('/admin/api/webchat-setting/' + setting.id, { value: setting.value })
+        .then(() => {
+          setTimeout(() => {
+            this.showSpinner = false;
+          }, 200);
+        });
     },
   },
 };
@@ -116,6 +128,22 @@ export default {
     top: 35px;
     right: 0;
     z-index: 9;
+  }
+}
+
+.spinner {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+  width: 115px;
+  background: rgba(255, 255, 255, .8);
+  box-shadow: #ddd 0px 0px 5px 0px;
+  z-index: 9999;
+
+  img {
+    width: 50px;
+    height: 50px;
   }
 }
 </style>
