@@ -19,13 +19,15 @@ cp -n .env.example.lando .env || echo "A .env file was already present, not copy
 echo "Updating name of app in .env file"
 sed -i -e "s/APP_NAME=.*/APP_NAME=\"$1\"/g" .env
 
-
 echo "Creating local Lando file"
 cp -n .lando.yml.example .lando.yml || echo "A Lando file was already created, not copying example..."
 
 echo "Updating name of app in .lando file"
 name=`echo $1 | sed 's/ //g'`
 sed -i -e "s/{appname}*/${name}/g" .lando.yml
+
+echo "Updating app url"
+sed -i -e "s/https:\/\/.*.lndo.site/https:\/\/$1.lndo.site/g" .env
 
 echo "Starting services..."
 lando start
@@ -34,7 +36,7 @@ echo "Installing dependencies..."
 lando composer install
 
 echo "Setting up the webchat widget..."
-bash update-web-chat.sh -l
+bash update-web-chat.sh -li
 
 echo "Setting up the database..."
 lando artisan migrate
@@ -60,6 +62,6 @@ echo
 echo "The admin console is available here: https://opendialog.lndo.site/od-admin"
 echo "You may login with the credentials admin@example.com / opendialog"
 echo
-echo "Finished! Now you may go to: https://opendialog.lndo.site/demo"
+echo "Finished! Now you may go to: https://$1.lndo.site/demo"
 
 trap '' EXIT
