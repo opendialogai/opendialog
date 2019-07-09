@@ -40,11 +40,13 @@ class ConversationsController extends Controller
      */
     public function store(Request $request)
     {
-        $conversation = Conversation::create($request->all());
+        $conversation = Conversation::make($request->all());
 
         if ($error = $this->validateValue($conversation)) {
             return response($error, 400);
         }
+
+        $conversation->save();
 
         return new ConversationResource($conversation);
     }
