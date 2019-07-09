@@ -34,7 +34,7 @@ echo "Installing dependencies..."
 lando composer install
 
 echo "Setting up the webchat widget..."
-bash update-web-chat.sh
+bash update-web-chat.sh -l
 
 echo "Setting up the database..."
 lando artisan migrate
