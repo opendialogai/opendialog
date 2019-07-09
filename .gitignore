@@ -18,7 +18,6 @@ yarn-error.log
 /resources/assets/opendialog
 /resources/views/vendor/pingpong
 update-web-chat.sh
-auth.json
 dgraph
 xdebug.log
 .lando.yml
