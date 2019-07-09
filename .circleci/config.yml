@@ -25,9 +25,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: Set up Nova auth
-          command: echo "{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${NOVA_USERNAME}\",\"password\":\"${NOVA_PASSWORD}\"}}}" > auth.json
       - run: sudo apt install -y libsqlite3-dev
       - run: sudo docker-php-ext-install bcmath
       - run: sudo docker-php-ext-install exif
