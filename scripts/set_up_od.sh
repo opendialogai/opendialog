@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 errormsg() { echo >&2 "Unfortunately there was an error, please try re-running or a manual installation."; }
 trap errormsg EXIT
@@ -6,8 +7,25 @@ trap errormsg EXIT
 # Ensure that lando is installed.
 command -v lando >/dev/null 2>&1 || { echo >&2 "Please install lando: https://docs.devwithlando.io/installation/system-requirements.html"; exit 1; }
 
+if [ $# -eq 0 ]
+  then
+    echo >&2 "Please supply the name of the application as the second argument"
+    exit
+fi
+
 echo "Adding Laravel environment settings..."
 cp -n .env.example.lando .env || echo "A .env file was already present, not copying example..."
+
+echo "Updating name of app in .env file"
+sed -i -e "s/APP_NAME=.*/APP_NAME=\"$1\"/g" .env
+
+
+echo "Creating local Lando file"
+cp -n .lando.yml.example .lando.yml || echo "A Lando file was already created, not copying example..."
+
+echo "Updating name of app in .lando file"
+name=`echo $1 | sed 's/ //g'`
+sed -i -e "s/{appname}*/${name}/g" .lando.yml
 
 echo "Starting services..."
 lando start
@@ -30,9 +48,12 @@ lando artisan vendor:publish --tag=od-config
 echo "Creating example conversations..."
 lando artisan conversations:setup
 
+echo "Generating key..."
+lando php artisan key:generate
+
 echo "Setting up the admin interface..."
-yarn install
-yarn run dev
+lando yarn install
+lanod yarn run dev
 lando ssh --service database --command 'mysql -uroot laravel -e '"'"'INSERT INTO users (name, email, password, created_at, updated_at) VALUES ("admin", "admin@example.com", "$2y$10$BEhBWA12KObSY9Ua2G0VeOg2hWMT1GIa8huHD83HCEHnJLnRcH8w6", NOW(), NOW())'"'"' '
 
 echo

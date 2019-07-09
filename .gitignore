@@ -21,3 +21,4 @@ update-web-chat.sh
 auth.json
 dgraph
 xdebug.log
+.lando.yml
