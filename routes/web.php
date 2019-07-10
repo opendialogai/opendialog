@@ -30,4 +30,7 @@ Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('admin', 'AdminController@handle');
     Route::get('admin/webchat-setting', 'AdminController@handle');
+    Route::get('admin/conversations', 'AdminController@handle');
+    Route::get('admin/conversations/{id}', 'AdminController@handle');
+    Route::get('admin/conversations/{id}/edit', 'AdminController@handle');
 });
