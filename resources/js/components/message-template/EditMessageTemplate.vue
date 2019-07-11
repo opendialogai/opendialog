@@ -1,0 +1,101 @@
+<template>
+  <div v-if="messageTemplate">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <b-card header="Edit Message Template">
+      <b-form-group>
+        <label>Name</label>
+        <b-form-input type="text" v-model="messageTemplate.name" />
+      </b-form-group>
+
+      <b-form-group>
+        <label>Conditions</label>
+        <codemirror v-model="messageTemplate.conditions" :options="cmConditionsOptions" />
+      </b-form-group>
+
+      <b-form-group>
+        <label>Message Mark-up</label>
+        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" />
+      </b-form-group>
+
+      <b-btn variant="primary" @click="saveMessageTemplate">Save</b-btn>
+    </b-card>
+  </div>
+</template>
+
+<script>
+import { codemirror } from 'vue-codemirror';
+import 'codemirror/mode/yaml/yaml';
+import 'codemirror/mode/xml/xml';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/dracula.css';
+
+export default {
+  name: 'edit-message-template',
+  props: ['outgoingIntent', 'id'],
+  components: {
+    codemirror,
+  },
+  data() {
+    return {
+      cmConditionsOptions: {
+        tabSize: 4,
+        mode: 'text/yaml',
+        theme: 'dracula',
+        lineNumbers: true,
+        line: true,
+      },
+      cmMarkupOptions: {
+        tabSize: 4,
+        mode: 'application/xml',
+        theme: 'dracula',
+        lineNumbers: true,
+        line: true,
+      },
+      messageTemplate: null,
+      errorMessage: '',
+    };
+  },
+  mounted() {
+    axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id).then(
+      (response) => {
+        this.messageTemplate = response.data.data;
+      },
+    );
+  },
+  methods: {
+    saveMessageTemplate() {
+      this.errorMessage = '';
+
+      const data = {
+        name: this.messageTemplate.name,
+        conditions: this.messageTemplate.conditions,
+        message_markup: this.messageTemplate.message_markup,
+      };
+
+      axios.patch('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id, data).then(
+        (response) => {
+          this.$router.push({ name: 'view-message-template', params: { outgoingIntent: this.outgoingIntent, id: this.messageTemplate.id } });
+        },
+      ).catch(
+        (error) => {
+          if (error.response.status === 400) {
+            this.errorMessage = error.response.data;
+          }
+        },
+      );
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.vue-codemirror {
+  font-size: 14px;
+}
+</style>
