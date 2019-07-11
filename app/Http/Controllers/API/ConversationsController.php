@@ -77,9 +77,11 @@ class ConversationsController extends Controller
             }
 
             $conversation->save();
+
+            return response()->noContent(200);
         }
 
-        return response()->noContent(200);
+        return response()->noContent(404);
     }
 
     /**
@@ -92,9 +94,11 @@ class ConversationsController extends Controller
     {
         if ($conversation = Conversation::find($id)) {
             $conversation->delete();
+
+            return response()->noContent(200);
         }
 
-        return response()->noContent(200);
+        return response()->noContent(404);
     }
 
     public function publish($id)

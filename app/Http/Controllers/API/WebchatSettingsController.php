@@ -67,9 +67,11 @@ class WebchatSettingsController extends Controller
             }
 
             $setting->update(['value' => $value]);
+
+            return response()->noContent(200);
         }
 
-        return response()->noContent(200);
+        return response()->noContent(404);
     }
 
     /**

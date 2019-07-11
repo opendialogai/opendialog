@@ -7,6 +7,7 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -44,7 +45,7 @@ class UsersController extends Controller
             return response($error, 400);
         }
 
-        $user->password = str_random(8);
+        $user->password = Hash::make(str_random(8));
         $user->save();
 
         return new UserResource($user);
@@ -78,9 +79,11 @@ class UsersController extends Controller
             }
 
             $user->save();
+
+            return response()->noContent(200);
         }
 
-        return response()->noContent(200);
+        return response()->noContent(404);
     }
 
     /**
@@ -93,9 +96,10 @@ class UsersController extends Controller
     {
         if ($user = User::find($id)) {
             $user->delete();
+            return response()->noContent(200);
         }
 
-        return response()->noContent(200);
+        return response()->noContent(404);
     }
 
     /**
