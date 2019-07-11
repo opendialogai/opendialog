@@ -1,4 +1,4 @@
-name: opendialog
+name: {appname}
 recipe: laravel
 config:
   webroot: public

@@ -4,7 +4,6 @@
 # OpenDialog Demo
 This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
 
-It additionally provides an administrative interface (currently leveraging [Laravel Nova](https://nova.laravel.com) to manage conversations, intents & messages<sup id="nova-note">[1](#f1)</sup>.
 
 # Set Up Instructions
 
@@ -14,11 +13,11 @@ This will get you up and running with minimal manual configuration.
 * [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
  -- Lando is a wrapper around Docker services and it brings together everything that is required for OpenDialog.
  
-* Add the auth.json file for Laravel Nova (See the "Nova installation" heading in this document)
-* Run the setup script: `bash ./scripts/set_up_od.sh`
+* Run the setup script: `bash ./scripts/set_up_od.sh {appname}` where {appname} is the name of the app
 * Now you can go to: https://opendialog.lndo.site/demo
 * You should see the no-match message 
 * The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
+  * DGraph Alpha should be available at locahost:8081
 
 ## Manual Configuration
 
@@ -27,8 +26,17 @@ This will get you up and running with minimal manual configuration.
 After running `composer install` or `composer update`, an update script file should be moved to the root of your project
 directory. Run this script to set up the OpenDialogAI-Webchat and OpenDialogAI-Core packages with
 
-```bash update-web-chat.sh```
+```bash update-web-chat.sh -i```
 
+#### Options
+
+The following options are available on the script:
+
++ `-h` Get help
++ `-p` Set if this is to be run in the production environment
++ `-l` Set if you are using Lando for local development. Will run the commands from within Lando
++ `-i` Set if you need to install the node dependencies. This defaults to false, so you should always set this for the fist run
++ `-f` Whether to force updating by deleting local dependencies. If set, will remove the vue-beautiful-chat node module before reinstalling 
 
 Run this script every time an underlying package is updated.
 
@@ -69,43 +77,42 @@ DGRAPH_PORT=8080
 
 These settings should work out of the box if you are using Laravel Homestead. More info in `draph/dgraph-setup.md`
 
-### Example Conversations
+## Conversations
 
-To set up with example conversations, run 
+Conversations in OpenDialog are managed in the mysql database, and published to DGraph when they are ready to be used.
+
+There are 2 scripts included with this application that allow you to import and export conversations that can be checked into 
+the repo and shared
+
+### Configuration
+
+There is a config file `opendialog/active_conversations.php` in the config directory. This contains a list of all conversation
+names that should be exported / imported. This list is used by both scripts and should be kept up to date with your local conversations.
+Just the conversation name is needed.
+
+### Import Conversations
+
+To import all conversations, run
 
 ```php artisan conversations:setup```
 
-This will create a no match and a welcome conversation (but without the required messages)
+This will import all conversations that are listed in `opendialog/active_conversations.php` and exist in `resources/conversartions`
 
-### Nova installation
+#### Example Conversations
 
-This package makes use of [Laravel Nova](https://nova.laravel.com) for backend administration.
+By default, the welcome and no match conversations are included with OpenDialog. Running the script will create a no match
+and a welcome conversation (but without the required messages)
 
-It is added as a composer requirement, but to install, you will need to add your Laravel Nova credentials to a composer
-auth file named `auth.json` at the root of your project in the following format:
+### Exporting Conversations
 
-```json
-    {
-      "http-basic": {
-        "nova.laravel.com": {
-          "username": "{username}",
-          "password": "{password}"
-        }
-      }
-    }
-```
+Run:
 
-Make sure to install Nova with
+```php artisan conversations:export```
 
-``` php artisan nova:install```
+To export all conversations in the `opendialog/active_conversations.php` config file. This will dump the current conversation
+YAML and all related outgoing intents and message templates
 
-To create a user to let you log into the Nova pages, run 
-
-```php artisan nova:user```
-
-Once this has run, you can access Nova by navigating to: ```{APP_URL}/admin``` 
-
-### Local dev
+## Local dev
 
 A `composer-dev.json` file has been created to help with local development. It makes the assumption that you have the 
 Open Dialog and Open Dialog Webchat packages checked out locally to `../OpenDialog` and `../OpenDialog-Webchat`
@@ -121,11 +128,11 @@ Note:
 + Before a final commit for a feature / fix, please be sure to run `composer update` to update the `composer-lock.json`
 file so that it can be tested and deployed with all composer changes in place
 
-### Running Code Sniffer
+## Running Code Sniffer
 To run code sniffer, run the following command
 ```./vendor/bin/phpcs --standard=psr12 app/ -n```
 
-### Git Hooks
+## Git Hooks
 
 To set up the included git pre-commit hook, first make sure the pre-commit script is executable by running
 
@@ -138,6 +145,3 @@ Then configure your local git to use this directory for git hooks by running:
 Now every commit you make will trigger php codesniffer to run. If there is a problem with the formatting
 of the code, the script will echo the output of php codesniffer. If there are no issues, the commit will
 go into git.
-
---- 
-<a name="nova-note">1</a>: We are conscious of the fact that Laravel Nova is an open-source but paid for product and are working towards a replacement. For the time being, however, it offers a quick solution while we focus on the underlying engine issues!
