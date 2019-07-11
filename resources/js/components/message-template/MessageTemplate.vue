@@ -21,7 +21,7 @@
     </b-card>
 
     <b-card header="Message Mark-up">
-      <prism language="xml">{{ messageTemplate.message_markup }}</prism>
+      <MessageBuilder :message="messageTemplate" />
     </b-card>
 
     <div class="modal modal-danger fade" id="deleteMessageTemplateModal" role="dialog" aria-hidden="true">
@@ -50,10 +50,13 @@
 import Prism from 'vue-prismjs';
 import 'prismjs/themes/prism.css';
 
+import MessageBuilder from './MessageBuilder';
+
 export default {
   name: 'message-template',
   props: ['outgoingIntent', 'id'],
   components: {
+    MessageBuilder,
     Prism,
   },
   data() {
