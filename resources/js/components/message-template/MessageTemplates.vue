@@ -36,6 +36,22 @@
       </tbody>
     </table>
 
+    <nav aria-label="navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" :class="(currentPage == 1) ? 'disabled' : ''">
+          <a class="page-link" href="#">Previous</a>
+        </li>
+
+        <li class="page-item" v-for="pageNumber in totalPages">
+          <a class="page-link" :href="'?page=' + pageNumber">{{ pageNumber }}</a>
+        </li>
+
+        <li class="page-item" :class="(currentPage == totalPages) ? 'disabled' : ''">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+
     <div class="modal modal-danger fade" id="deleteMessageTemplateModal" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

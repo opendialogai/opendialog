@@ -7,6 +7,7 @@ import DefaultContainer from '@/containers/DefaultContainer';
 import Home from '@/views/Home';
 import WebchatSetting from '@/views/WebchatSetting';
 import MessageTemplate from '@/views/MessageTemplate';
+import OutgoingIntent from '@/views/OutgoingIntent';
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,23 @@ const router = new VueRouter({
         {
           path: 'webchat-setting/:id',
           component: WebchatSetting,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/',
+          name: 'outgoing-intents',
+          component: OutgoingIntent,
+        },
+        {
+          path: 'outgoing-intents/:id',
+          name: 'view-outgoing-intent',
+          component: OutgoingIntent,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/:id/edit',
+          name: 'edit-outgoing-intent',
+          component: OutgoingIntent,
           props: true,
         },
         {
