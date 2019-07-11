@@ -1222,16 +1222,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.27",
+            "version": "v5.8.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "f1dccffb96f614895393e27e4667105a05407af5"
+                "reference": "341fb54bea9693cada2a5b8d398621a57f82862d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/f1dccffb96f614895393e27e4667105a05407af5",
-                "reference": "f1dccffb96f614895393e27e4667105a05407af5",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/341fb54bea9693cada2a5b8d398621a57f82862d",
+                "reference": "341fb54bea9693cada2a5b8d398621a57f82862d",
                 "shasum": ""
             },
             "require": {
@@ -1365,7 +1365,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-07-02T13:43:47+00:00"
+            "time": "2019-07-09T14:00:02+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1833,12 +1833,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "16573bc6dc203d313504ca765a42b0ed337ee8d7"
+                "reference": "84bb186e985ed3fae82bedc046504a7105bf2911"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/16573bc6dc203d313504ca765a42b0ed337ee8d7",
-                "reference": "16573bc6dc203d313504ca765a42b0ed337ee8d7",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/84bb186e985ed3fae82bedc046504a7105bf2911",
+                "reference": "84bb186e985ed3fae82bedc046504a7105bf2911",
                 "shasum": ""
             },
             "require": {
@@ -1851,6 +1851,8 @@
                 "symfony/yaml": "^4.2"
             },
             "require-dev": {
+                "barryvdh/laravel-ide-helper": "^2.6",
+                "matthewbdaly/artisan-standalone": "^0.0.8",
                 "mockery/mockery": "^1.2",
                 "orchestra/testbench": "^3.8",
                 "phpunit/phpunit": "^7.5",
@@ -1912,7 +1914,7 @@
                 "source": "https://github.com/opendialogai/core/tree/develop",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-07-05T08:05:48+00:00"
+            "time": "2019-07-11T08:06:04+00:00"
         },
         {
             "name": "opendialogai/webchat",
@@ -1920,12 +1922,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "7411a3c2d9bd3cf2372692a52c36db80e5776a37"
+                "reference": "ab99e2ad5c8fea1d36c3d8781273eb286a006d3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/7411a3c2d9bd3cf2372692a52c36db80e5776a37",
-                "reference": "7411a3c2d9bd3cf2372692a52c36db80e5776a37",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/ab99e2ad5c8fea1d36c3d8781273eb286a006d3f",
+                "reference": "ab99e2ad5c8fea1d36c3d8781273eb286a006d3f",
                 "shasum": ""
             },
             "require": {
@@ -1970,20 +1972,20 @@
                 "source": "https://github.com/opendialogai/webchat/tree/develop",
                 "issues": "https://github.com/opendialogai/webchat/issues"
             },
-            "time": "2019-07-05T15:28:01+00:00"
+            "time": "2019-07-09T16:41:18+00:00"
         },
         {
             "name": "opis/closure",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opis/closure.git",
-                "reference": "f846725591203098246276b2e7b9e8b7814c4965"
+                "reference": "92927e26d7fc3f271efe1f55bdbb073fbb2f0722"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/f846725591203098246276b2e7b9e8b7814c4965",
-                "reference": "f846725591203098246276b2e7b9e8b7814c4965",
+                "url": "https://api.github.com/repos/opis/closure/zipball/92927e26d7fc3f271efe1f55bdbb073fbb2f0722",
+                "reference": "92927e26d7fc3f271efe1f55bdbb073fbb2f0722",
                 "shasum": ""
             },
             "require": {
@@ -2031,7 +2033,7 @@
                 "serialization",
                 "serialize"
             ],
-            "time": "2019-05-31T20:04:32+00:00"
+            "time": "2019-07-09T21:58:11+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -5656,16 +5658,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "c99e3be9d3e85f60646f152f9002d46ed7770d18"
+                "reference": "c4a66b97f040e3e20b3aa2a243230a1c3a9f7c8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/c99e3be9d3e85f60646f152f9002d46ed7770d18",
-                "reference": "c99e3be9d3e85f60646f152f9002d46ed7770d18",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/c4a66b97f040e3e20b3aa2a243230a1c3a9f7c8c",
+                "reference": "c4a66b97f040e3e20b3aa2a243230a1c3a9f7c8c",
                 "shasum": ""
             },
             "require": {
@@ -5701,7 +5703,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2018-10-30T05:52:18+00:00"
+            "time": "2019-07-08T05:24:54+00:00"
         },
         {
             "name": "phpunit/phpunit",
