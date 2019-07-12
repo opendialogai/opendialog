@@ -7,6 +7,7 @@ import DefaultContainer from '@/containers/DefaultContainer';
 import Home from '@/views/Home';
 import WebchatSetting from '@/views/WebchatSetting';
 import ChatbotUsers from '@/views/ChatbotUsers';
+import ConversationLog from '@/views/ConversationLog';
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,12 @@ const router = new VueRouter({
           path: 'chatbot-users/:id',
           name: 'view-chatbot-user',
           component: ChatbotUsers,
+          props: true,
+        },
+        {
+          path: 'chatbot-users/:id/conversation-log',
+          name: 'conversation-log',
+          component: ConversationLog,
           props: true,
         },
       ],

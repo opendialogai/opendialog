@@ -2,6 +2,10 @@
   <div v-if="chatbotUser">
     <b-card header="General">
       <b-row class="border-bottom mb-2 pb-2">
+        <b-col class="font-weight-bold" cols="2">Conversation Log</b-col>
+        <b-col cols="10"><router-link :to="{ name: 'conversation-log', params: { id: chatbotUser.user_id } }">view</router-link></b-col>
+      </b-row>
+      <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">User ID</b-col>
         <b-col cols="10">{{ chatbotUser.user_id }}</b-col>
       </b-row>

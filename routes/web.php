@@ -32,4 +32,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/webchat-setting', 'AdminController@handle');
     Route::get('admin/chatbot-users', 'AdminController@handle');
     Route::get('admin/chatbot-users/{id}', 'AdminController@handle');
+    Route::get('admin/chatbot-users/{id}/conversation-log', 'AdminController@handle');
 });
