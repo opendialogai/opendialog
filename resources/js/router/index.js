@@ -6,6 +6,7 @@ import DefaultContainer from '@/containers/DefaultContainer';
 
 import Home from '@/views/Home';
 import WebchatSetting from '@/views/WebchatSetting';
+import User from '@/views/User';
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,23 @@ const router = new VueRouter({
         {
           path: 'webchat-setting/:id',
           component: WebchatSetting,
+          props: true,
+        },
+        {
+          path: 'users',
+          name: 'users',
+          component: User,
+        },
+        {
+          path: 'users/:id',
+          name: 'view-user',
+          component: User,
+          props: true,
+        },
+        {
+          path: 'users/:id/edit',
+          name: 'edit-user',
+          component: User,
           props: true,
         },
       ],
