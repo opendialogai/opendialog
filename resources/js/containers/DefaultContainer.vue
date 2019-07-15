@@ -9,7 +9,7 @@
       </b-link>
       <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
       <b-navbar-nav class="d-md-down-none">
-        <b-nav-item class="px-3" to="/dashboard">Message Editor</b-nav-item>
+        <b-nav-item class="px-3" to="/admin/outgoing-intents">Message Editor</b-nav-item>
         <b-nav-item class="px-3" to="/users">Insights</b-nav-item>
         <b-nav-item class="px-3" to="/admin/webchat-setting">Settings</b-nav-item>
       </b-navbar-nav>
