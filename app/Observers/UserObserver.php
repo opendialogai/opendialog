@@ -38,12 +38,14 @@ class UserObserver
         $phone = PhoneNumber::make($user->phone_number);
         $user->setAuthPhoneInformation($phone->getPhoneNumberInstance()->getCountryCode(), $phone->formatNational());
 
-        try {
-           // Second parameter enforces SMS.
-            Authy::getProvider()->register($user, true);
-        } catch (\Exception $e) {
-            app(ExceptionHandler::class)->report($e);
-            return response()->json(['error' => ['Unable To Register User For 2 Factor Authentication']], 422);
+        if (env('USE_2FA')) {
+            try {
+               // Second parameter enforces SMS.
+                Authy::getProvider()->register($user, true);
+            } catch (\Exception $e) {
+                app(ExceptionHandler::class)->report($e);
+                return response()->json(['error' => ['Unable To Register User For 2 Factor Authentication']], 422);
+            }
         }
     }
 }

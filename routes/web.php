@@ -23,9 +23,11 @@ if (env("APP_DEBUG")) {
 
 Auth::routes(['register' => false]);
 
-Route::get('auth/token', 'Auth\TwoFactorController@showTokenForm');
-Route::post('auth/token', 'Auth\TwoFactorController@validateTokenForm');
-Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
+if (env("USE_2FA")) {
+    Route::get('auth/token', 'Auth\TwoFactorController@showTokenForm');
+    Route::post('auth/token', 'Auth\TwoFactorController@validateTokenForm');
+    Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
+}
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('admin', 'AdminController@handle');
