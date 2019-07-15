@@ -60,15 +60,15 @@
       <nav aria-label="navigation">
         <ul class="pagination justify-content-center">
           <li class="page-item" :class="(currentPage == 1) ? 'disabled' : ''">
-            <a class="page-link" href="#">Previous</a>
+            <router-link class="page-link" :to="{ name: 'view-outgoing-intent', params: { id }, query: { page: currentPage - 1 } }">Previous</router-link>
           </li>
 
           <li class="page-item" v-for="pageNumber in totalPages">
-            <a class="page-link" :href="'?page=' + pageNumber">{{ pageNumber }}</a>
+            <router-link class="page-link" :to="{ name: 'view-outgoing-intent', params: { id }, query: { page: pageNumber } }">{{ pageNumber }}</router-link>
           </li>
 
           <li class="page-item" :class="(currentPage == totalPages) ? 'disabled' : ''">
-            <a class="page-link" href="#">Next</a>
+            <router-link class="page-link" :to="{ name: 'view-outgoing-intent', params: { id }, query: { page: currentPage + 1 } }">Next</router-link>
           </li>
         </ul>
       </nav>
