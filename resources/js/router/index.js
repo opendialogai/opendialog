@@ -38,6 +38,11 @@ const router = new VueRouter({
           component: Conversation,
         },
         {
+          path: 'conversations/add',
+          name: 'add-conversation',
+          component: Conversation,
+        },
+        {
           path: 'conversations/:id',
           name: 'view-conversation',
           component: Conversation,

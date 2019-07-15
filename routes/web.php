@@ -33,4 +33,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/conversations', 'AdminController@handle');
     Route::get('admin/conversations/{id}', 'AdminController@handle');
     Route::get('admin/conversations/{id}/edit', 'AdminController@handle');
+    Route::get('admin/conversations/add', 'AdminController@handle');
 });

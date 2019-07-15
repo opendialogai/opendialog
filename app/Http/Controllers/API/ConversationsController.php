@@ -40,11 +40,13 @@ class ConversationsController extends Controller
      */
     public function store(Request $request)
     {
-        $conversation = Conversation::create($request->all());
+        $conversation = Conversation::make($request->all());
 
         if ($error = $this->validateValue($conversation)) {
             return response($error, 400);
         }
+
+        $conversation->save();
 
         return new ConversationResource($conversation);
     }
@@ -133,6 +135,14 @@ class ConversationsController extends Controller
 
         if (strlen($conversation->name) > 512) {
             return 'The maximum length for conversation name is 512.';
+        }
+
+        if (!$conversation->name) {
+            return 'Conversation name field is required.';
+        }
+
+        if (!$conversation->model) {
+            return 'Conversation model field is required.';
         }
 
         if (!$rule->passes(null, $conversation->model)) {

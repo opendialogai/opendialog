@@ -6,6 +6,9 @@
     <template v-else-if="currentRouteName == 'edit-conversation'">
       <EditConversation :id="id" />
     </template>
+    <template v-if="currentRouteName == 'add-conversation'">
+      <AddConversation />
+    </template>
     <template v-else>
       <Conversations />
     </template>
@@ -13,6 +16,7 @@
 </template>
 
 <script>
+import AddConversation from '@/components/conversation/AddConversation';
 import Conversation from '@/components/conversation/Conversation';
 import Conversations from '@/components/conversation/Conversations';
 import EditConversation from '@/components/conversation/EditConversation';
@@ -21,6 +25,7 @@ export default {
   name: 'conversation',
   props: ['id'],
   components: {
+    AddConversation,
     Conversation,
     Conversations,
     EditConversation,
