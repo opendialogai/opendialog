@@ -13,13 +13,10 @@ class SetUpConversations extends Command
 
     protected $description = 'Sets up some example conversations for the opendialog project';
 
-    private static $conversations = [
-        'resources/conversations/no_match_conversation',
-        'resources/conversations/welcome'
-    ];
-
     public function handle()
     {
+        $conversations = config('opendialog.active_conversations');
+
         if (!$this->confirm('This will clear your local dgraph and all conversations. ' .
             'Are you sure you want to continue?')) {
             $this->info("OK, not running");
@@ -40,21 +37,20 @@ class SetUpConversations extends Command
             $conversation->save();
         });
 
-        foreach (self::$conversations as $conversation) {
+        foreach ($conversations as $conversation) {
             $this->importConversation($conversation);
         }
 
         $this->info('Imports finished');
     }
 
-    protected function importConversation($fileName): void
+    protected function importConversation($conversationName): void
     {
-        $conversationName = array_last(explode('/', $fileName));
         $this->info(sprintf('Importing conversation %s', $conversationName));
         Artisan::call(
             'conversation:import',
             [
-                'filename' => $fileName,
+                'filename' => "resources/conversations/$conversationName",
                 '--publish' => true,
                 '--yes' => true
             ]

@@ -6,7 +6,7 @@
           <div class="card-title mt-2 mb-0 col-6">{{ setting.name }}</div>
           <div class="card-text col-6 row">
             <template v-if="setting.type == 'boolean'">
-              <b-switch variant="pill" color="dark" :checked="setting.value === '1'" />
+              <b-switch variant="pill" color="dark" v-model="setting.value" @change="saveSetting(setting)" />
             </template>
             <template v-else-if="setting.type == 'string'">
               <input class="form-control" v-model="setting.value" @blur="saveSetting(setting)" />
@@ -62,6 +62,9 @@ export default {
         this.webchatSettings.forEach((setting, i) => {
           if (setting.type === 'colour' && setting.value === null) {
             this.webchatSettings[i].value = '';
+          }
+          if (setting.type === 'boolean') {
+            this.webchatSettings[i].value = (setting.value === '1') ? true : false;
           }
         });
       },
