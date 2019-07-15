@@ -12,6 +12,7 @@
         <b-nav-item class="px-3" to="/dashboard">Message Editor</b-nav-item>
         <b-nav-item class="px-3" to="/users">Insights</b-nav-item>
         <b-nav-item class="px-3" to="/admin/webchat-setting">Settings</b-nav-item>
+        <b-nav-item class="px-3" to="/admin/conversations">Conversations</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
