@@ -33,7 +33,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/outgoing-intents', 'AdminController@handle');
     Route::get('admin/outgoing-intents/{outgoingIntent}', 'AdminController@handle');
     Route::get('admin/outgoing-intents/{outgoingIntent}/edit', 'AdminController@handle');
+    Route::get('admin/outgoing-intents/add', 'AdminController@handle');
     Route::get('admin/outgoing-intents/{outgoingIntent}/message-templates', 'AdminController@handle');
     Route::get('admin/outgoing-intents/{outgoingIntent}/message-templates/{id}', 'AdminController@handle');
     Route::get('admin/outgoing-intents/{outgoingIntent}/message-templates/{id}/edit', 'AdminController@handle');
+    Route::get('admin/outgoing-intents/{outgoingIntent}/message-templates/add', 'AdminController@handle');
 });

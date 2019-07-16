@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="float-right">
+          <b-btn variant="primary" @click="createOutgoingIntent">Create</b-btn>
+        </div>
+      </div>
+    </div>
+
     <table class="table table-striped">
       <thead class="thead-light">
         <tr>
@@ -89,6 +97,9 @@ export default {
     );
   },
   methods: {
+    createOutgoingIntent() {
+      this.$router.push({ name: 'add-outgoing-intent' });
+    },
     viewOutgoingIntent(id) {
       this.$router.push({ name: 'view-outgoing-intent', params: { id } });
     },

@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="float-right">
+          <b-btn variant="primary" @click="createMessageTemplate">Create</b-btn>
+        </div>
+      </div>
+    </div>
+
     <table class="table table-striped">
       <thead class="thead-light">
         <tr>
@@ -98,6 +106,9 @@ export default {
     );
   },
   methods: {
+    createMessageTemplate() {
+      this.$router.push({ name: 'add-message-template', params: { outgoingIntent } });
+    },
     viewMessageTemplate(id) {
       this.$router.push({ name: 'view-message-template', params: { outgoingIntent, id } });
     },

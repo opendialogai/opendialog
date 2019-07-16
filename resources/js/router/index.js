@@ -39,6 +39,11 @@ const router = new VueRouter({
           component: OutgoingIntent,
         },
         {
+          path: 'outgoing-intents/add',
+          name: 'add-outgoing-intent',
+          component: OutgoingIntent,
+        },
+        {
           path: 'outgoing-intents/:id',
           name: 'view-outgoing-intent',
           component: OutgoingIntent,
@@ -53,6 +58,12 @@ const router = new VueRouter({
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates',
           name: 'message-templates',
+          component: MessageTemplate,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/:outgoingIntent/message-templates/add',
+          name: 'add-message-template',
           component: MessageTemplate,
           props: true,
         },

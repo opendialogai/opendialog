@@ -21,6 +21,14 @@
     </b-card>
 
     <b-card header="Message Templates">
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="float-right">
+            <b-btn variant="primary" @click="createMessageTemplate">Create</b-btn>
+          </div>
+        </div>
+      </div>
+
       <table class="table table-striped">
         <thead class="thead-light">
           <tr>
@@ -159,6 +167,9 @@ export default {
       axios.delete('/admin/api/outgoing-intents/' + this.outgoingIntent.id);
 
       this.$router.push({ name: 'outgoing-intents', params: { outgoingIntent: this.outgoingIntent } });
+    },
+    createMessageTemplate() {
+      this.$router.push({ name: 'add-message-template', params: { outgoingIntent: this.id } });
     },
     viewMessageTemplate(id) {
       this.$router.push({ name: 'view-message-template', params: { outgoingIntent: this.id, id } });
