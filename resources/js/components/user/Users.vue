@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="float-right">
+          <b-btn variant="primary" @click="createUser">Create</b-btn>
+        </div>
+      </div>
+    </div>
+
     <table class="table table-striped">
       <thead class="thead-light">
         <tr>
@@ -110,6 +118,9 @@ export default {
           });
         },
       );
+    },
+    createUser() {
+      this.$router.push({ name: 'add-user' });
     },
     viewUser(id) {
       this.$router.push({ name: 'view-user', params: { id } });

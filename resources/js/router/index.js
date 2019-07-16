@@ -38,6 +38,11 @@ const router = new VueRouter({
           component: User,
         },
         {
+          path: 'users/add',
+          name: 'add-user',
+          component: User,
+        },
+        {
           path: 'users/:id',
           name: 'view-user',
           component: User,

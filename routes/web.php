@@ -33,4 +33,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/users', 'AdminController@handle');
     Route::get('admin/users/{id}', 'AdminController@handle');
     Route::get('admin/users/{id}/edit', 'AdminController@handle');
+    Route::get('admin/users/add', 'AdminController@handle');
 });

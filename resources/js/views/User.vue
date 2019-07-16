@@ -6,6 +6,9 @@
     <template v-else-if="currentRouteName == 'edit-user'">
       <EditUser :id="id" />
     </template>
+    <template v-if="currentRouteName == 'add-user'">
+      <AddUser />
+    </template>
     <template v-else>
       <Users />
     </template>
@@ -13,6 +16,7 @@
 </template>
 
 <script>
+import AddUser from '@/components/user/AddUser';
 import User from '@/components/user/User';
 import Users from '@/components/user/Users';
 import EditUser from '@/components/user/EditUser';
@@ -21,6 +25,7 @@ export default {
   name: 'user',
   props: ['id'],
   components: {
+    AddUser,
     User,
     Users,
     EditUser,
