@@ -105,18 +105,25 @@ export default {
       totalPages: 1,
     };
   },
+  watch: {
+    '$route' () {
+      this.fetchConversations();
+    }
+  },
   mounted() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this.currentPage = (urlParams.get('page')) ? urlParams.get('page') : 1;
-
-    axios.get('/admin/api/conversation?page=' + this.currentPage).then(
-      (response) => {
-        this.totalPages = response.data.meta.last_page;
-        this.conversations = response.data.data;
-      },
-    );
+    this.fetchConversations();
   },
   methods: {
+    fetchConversations() {
+      this.currentPage = this.$route.query.page || 1;
+
+      axios.get('/admin/api/conversation?page=' + this.currentPage).then(
+        (response) => {
+          this.totalPages = response.data.meta.last_page;
+          this.conversations = response.data.data;
+        },
+      );
+    },
     createConversation() {
       this.$router.push({ name: 'add-conversation' });
     },
