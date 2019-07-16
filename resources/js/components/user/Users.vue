@@ -33,6 +33,9 @@
             {{ user.phone_number }}
           </td>
           <td>
+            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewUser(user.id)">
+              <i class="fa fa-eye"></i>
+            </button>
             <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editUser(user.id)">
               <i class="fa fa-edit"></i>
             </button>
