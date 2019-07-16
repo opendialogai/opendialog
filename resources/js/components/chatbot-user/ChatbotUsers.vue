@@ -9,6 +9,7 @@
           <th scope="col">Last Name</th>
           <th scope="col">First Seen</th>
           <th scope="col">Last Seen</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,11 @@
           </td>
           <td>
             {{ chatbotUser.last_seen }}
+          </td>
+          <td>
+            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewChatbotUser(chatbotUser.user_id)">
+              <i class="fa fa-eye"></i>
+            </button>
           </td>
         </tr>
       </tbody>
