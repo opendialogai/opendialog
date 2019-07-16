@@ -85,18 +85,25 @@ export default {
       totalPages: 1,
     };
   },
+  watch: {
+    '$route' () {
+      this.fetchOutgoingIntents();
+    }
+  },
   mounted() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this.currentPage = (urlParams.get('page')) ? urlParams.get('page') : 1;
-
-    axios.get('/admin/api/outgoing-intents?page=' + this.currentPage).then(
-      (response) => {
-        this.totalPages = response.data.meta.last_page;
-        this.outgoingIntents = response.data.data;
-      },
-    );
+    this.fetchOutgoingIntents();
   },
   methods: {
+    fetchOutgoingIntents() {
+      this.currentPage = this.$route.query.page || 1;
+
+      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage).then(
+        (response) => {
+          this.totalPages = response.data.meta.last_page;
+          this.outgoingIntents = response.data.data;
+        },
+      );
+    },
     createOutgoingIntent() {
       this.$router.push({ name: 'add-outgoing-intent' });
     },

@@ -94,18 +94,25 @@ export default {
       totalPages: 1,
     };
   },
+  watch: {
+    '$route' () {
+      this.fetchMessageTemplates();
+    }
+  },
   mounted() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this.currentPage = (urlParams.get('page')) ? urlParams.get('page') : 1;
-
-    axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates?page=' + this.currentPage).then(
-      (response) => {
-        this.totalPages = response.data.meta.last_page;
-        this.messageTemplates = response.data.data;
-      },
-    );
+    this.fetchMessageTemplates();
   },
   methods: {
+    fetchMessageTemplates() {
+      this.currentPage = this.$route.query.page || 1;
+
+      axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates?page=' + this.currentPage).then(
+        (response) => {
+          this.totalPages = response.data.meta.last_page;
+          this.messageTemplates = response.data.data;
+        },
+      );
+    },
     createMessageTemplate() {
       this.$router.push({ name: 'add-message-template', params: { outgoingIntent } });
     },
