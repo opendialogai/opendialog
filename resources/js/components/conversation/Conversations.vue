@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <table class="table table-striped">
+    <table class="table table-hover">
       <thead class="thead-light">
         <tr>
           <th scope="col">#</th>
