@@ -45,6 +45,9 @@
             {{ conversation.model_validation_status }}
           </td>
           <td>
+            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewConversation(conversation.id)">
+              <i class="fa fa-eye"></i>
+            </button>
             <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editConversation(conversation.id)">
               <i class="fa fa-edit"></i>
             </button>
