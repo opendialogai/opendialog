@@ -21,7 +21,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        logout as parentLogout;
+    }
 
     /**
      * @var \Srmklive\Authy\Services\Authy
