@@ -33,6 +33,9 @@
             {{ messageTemplate.updated_at }}
           </td>
           <td>
+            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewMessageTemplate(messageTemplate.id)">
+              <i class="fa fa-eye"></i>
+            </button>
             <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editMessageTemplate(messageTemplate.id)">
               <i class="fa fa-edit"></i>
             </button>
@@ -114,13 +117,13 @@ export default {
       );
     },
     createMessageTemplate() {
-      this.$router.push({ name: 'add-message-template', params: { outgoingIntent } });
+      this.$router.push({ name: 'add-message-template', params: { outgoingIntent: this.outgoingIntent } });
     },
     viewMessageTemplate(id) {
-      this.$router.push({ name: 'view-message-template', params: { outgoingIntent, id } });
+      this.$router.push({ name: 'view-message-template', params: { outgoingIntent: this.outgoingIntent, id } });
     },
     editMessageTemplate(id) {
-      this.$router.push({ name: 'edit-message-template', params: { outgoingIntent, id } });
+      this.$router.push({ name: 'edit-message-template', params: { outgoingIntent: this.outgoingIntent, id } });
     },
     showDeleteMessageTemplateModal(id) {
       this.currentMessageTemplate = id;
