@@ -12,7 +12,7 @@
         <b-nav-item class="px-3" to="/dashboard">Message Editor</b-nav-item>
         <b-nav-item class="px-3" to="/users">Insights</b-nav-item>
         <b-nav-item class="px-3" to="/admin/users">Users</b-nav-item>
-        <b-nav-item class="px-3" to="/admin/webchat-setting">Settings</b-nav-item>
+        <b-nav-item class="px-3" to="/admin/webchat-setting">Webchat settings</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import nav from '@/_nav';
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, Footer as TheFooter, Breadcrumb } from '@coreui/vue';
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt';
 
@@ -66,16 +65,78 @@ export default {
   },
   data () {
     return {
-      nav: nav.items,
+      nav: [],
     };
   },
   computed: {
-    name () {
-      return this.$route.name
-    },
-    list () {
+    list() {
       return this.$route.matched.filter((route) => route.name || route.meta.label )
     },
+  },
+  created() {
+    axios.get('/admin/api/webchat-setting').then(
+      (response) => {
+        let generalId = '';
+        let coloursId = '';
+        let commentsId = '';
+        let historyId = '';
+
+        response.data.forEach((setting) => {
+          if (setting.type === 'object') {
+            switch (setting.name) {
+              case 'general':
+                generalId = setting.id;
+                break;
+              case 'colours':
+                coloursId = setting.id;
+                break;
+              case 'comments':
+                commentsId = setting.id;
+                break;
+              case 'webchatHistory':
+                historyId = setting.id;
+                break;
+            }
+          }
+        });
+
+        this.nav = [
+          {
+            name: 'Message Editor',
+            url: '/messages',
+            icon: 'icon-list',
+          },
+          {
+            name: 'Insights',
+            url: '/insights',
+            icon: 'icon-layers'
+          },
+          {
+            name: 'Webchat settings',
+            url: '/admin/webchat-setting',
+            icon: 'icon-settings',
+            children: [
+              {
+                name: 'General',
+                url: '/admin/webchat-setting/' + generalId,
+              },
+              {
+                name: 'Colours',
+                url: '/admin/webchat-setting/' + coloursId,
+              },
+              {
+                name: 'Comments',
+                url: '/admin/webchat-setting/' + commentsId,
+              },
+              {
+                name: 'History',
+                url: '/admin/webchat-setting/' + historyId,
+              },
+            ],
+          },
+        ];
+      },
+    );
   },
 };
 </script>
