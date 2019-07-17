@@ -137,6 +137,14 @@ class ConversationsController extends Controller
             return 'The maximum length for conversation name is 512.';
         }
 
+        if (!$conversation->name) {
+            return 'Conversation name field is required.';
+        }
+
+        if (!$conversation->model) {
+            return 'Conversation model field is required.';
+        }
+
         if (!$rule->passes(null, $conversation->model)) {
             return $rule->message() . '.';
         }

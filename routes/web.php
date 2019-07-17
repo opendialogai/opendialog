@@ -33,6 +33,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin', 'AdminController@handle');
     Route::get('admin/webchat-setting', 'AdminController@handle');
     Route::get('admin/webchat-setting/{id}', 'AdminController@handle');
+    Route::get('admin/conversations', 'AdminController@handle');
+    Route::get('admin/conversations/{id}', 'AdminController@handle');
+    Route::get('admin/conversations/{id}/edit', 'AdminController@handle');
+    Route::get('admin/conversations/add', 'AdminController@handle');
     Route::get('admin/outgoing-intents', 'AdminController@handle');
     Route::get('admin/outgoing-intents/{outgoingIntent}', 'AdminController@handle');
     Route::get('admin/outgoing-intents/{outgoingIntent}/edit', 'AdminController@handle');
