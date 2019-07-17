@@ -32,4 +32,5 @@ if (env("USE_2FA")) {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('admin', 'AdminController@handle');
     Route::get('admin/webchat-setting', 'AdminController@handle');
+    Route::get('admin/webchat-setting/{id}', 'AdminController@handle');
 });
