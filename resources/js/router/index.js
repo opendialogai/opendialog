@@ -6,6 +6,9 @@ import DefaultContainer from '@/containers/DefaultContainer';
 
 import Home from '@/views/Home';
 import WebchatSetting from '@/views/WebchatSetting';
+import Conversation from '@/views/Conversation';
+import MessageTemplate from '@/views/MessageTemplate';
+import OutgoingIntent from '@/views/OutgoingIntent';
 
 Vue.use(VueRouter);
 
@@ -29,6 +32,74 @@ const router = new VueRouter({
         {
           path: 'webchat-setting/:id',
           component: WebchatSetting,
+          props: true,
+        },
+        {
+          path: 'conversations',
+          name: 'conversations',
+          component: Conversation,
+        },
+        {
+          path: 'conversations/add',
+          name: 'add-conversation',
+          component: Conversation,
+        },
+        {
+          path: 'conversations/:id',
+          name: 'view-conversation',
+          component: Conversation,
+          props: true,
+        },
+        {
+          path: 'conversations/:id/edit',
+          name: 'edit-conversation',
+          component: Conversation,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/',
+          name: 'outgoing-intents',
+          component: OutgoingIntent,
+        },
+        {
+          path: 'outgoing-intents/add',
+          name: 'add-outgoing-intent',
+          component: OutgoingIntent,
+        },
+        {
+          path: 'outgoing-intents/:id',
+          name: 'view-outgoing-intent',
+          component: OutgoingIntent,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/:id/edit',
+          name: 'edit-outgoing-intent',
+          component: OutgoingIntent,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/:outgoingIntent/message-templates',
+          name: 'message-templates',
+          component: MessageTemplate,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/:outgoingIntent/message-templates/add',
+          name: 'add-message-template',
+          component: MessageTemplate,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/:outgoingIntent/message-templates/:id',
+          name: 'view-message-template',
+          component: MessageTemplate,
+          props: true,
+        },
+        {
+          path: 'outgoing-intents/:outgoingIntent/message-templates/:id/edit',
+          name: 'edit-message-template',
+          component: MessageTemplate,
           props: true,
         },
       ],

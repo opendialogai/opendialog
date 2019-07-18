@@ -22,6 +22,8 @@ Route::group(['prefix' => 'admin/api', 'middleware' => 'auth:api'], function () 
     Route::apiResource('webchat-setting', 'API\WebchatSettingsController', ['except' => ['store', 'destroy']]);
     Route::apiResource('chatbot-user', 'API\ChatbotUsersController', ['except' => ['store', 'update', 'destroy']]);
     Route::apiResource('user', 'API\UsersController');
+    Route::apiResource('outgoing-intents', 'API\OutgoingIntentsController');
+    Route::apiResource('outgoing-intents/{id}/message-templates', 'API\MessageTemplatesController');
 
     Route::get('conversation/{id}/publish', 'API\ConversationsController@publish');
     Route::get('conversation/{id}/unpublish', 'API\ConversationsController@unpublish');
