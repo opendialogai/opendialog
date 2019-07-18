@@ -8,6 +8,7 @@ use App\Http\Resources\ChatbotUserResource;
 use App\Http\Resources\MessageCollection;
 use Illuminate\Http\Request;
 use OpenDialogAi\ConversationLog\ChatbotUser;
+use OpenDialogAi\ConversationLog\Message;
 
 class ChatbotUsersController extends Controller
 {
@@ -78,6 +79,12 @@ class ChatbotUsersController extends Controller
 
     public function messages($id)
     {
-        return new MessageCollection(ChatbotUser::find($id)->messages()->get());
+        $messages = Message::where('user_id', $id)
+            ->where('type', '<>', 'chat_open')
+            ->where('type', '<>', 'trigger')
+            ->orderBy('microtime')
+            ->get();
+
+        return new MessageCollection($messages);
     }
 }
