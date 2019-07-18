@@ -6,7 +6,7 @@
     <template v-else-if="currentRouteName == 'edit-conversation'">
       <EditConversation :id="id" />
     </template>
-    <template v-if="currentRouteName == 'add-conversation'">
+    <template v-else-if="currentRouteName == 'add-conversation'">
       <AddConversation />
     </template>
     <template v-else>
