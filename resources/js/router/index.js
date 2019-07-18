@@ -11,6 +11,7 @@ import MessageTemplate from '@/views/MessageTemplate';
 import OutgoingIntent from '@/views/OutgoingIntent';
 import ChatbotUsers from '@/views/ChatbotUsers';
 import ConversationLog from '@/views/ConversationLog';
+import User from '@/views/User';
 
 Vue.use(VueRouter);
 
@@ -119,6 +120,28 @@ const router = new VueRouter({
           path: 'outgoing-intents/:outgoingIntent/message-templates/:id/edit',
           name: 'edit-message-template',
           component: MessageTemplate,
+          props: true,
+        },
+        {
+          path: 'users',
+          name: 'users',
+          component: User,
+        },
+        {
+          path: 'users/add',
+          name: 'add-user',
+          component: User,
+        },
+        {
+          path: 'users/:id',
+          name: 'view-user',
+          component: User,
+          props: true,
+        },
+        {
+          path: 'users/:id/edit',
+          name: 'edit-user',
+          component: User,
           props: true,
         },
       ],

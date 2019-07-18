@@ -12,6 +12,7 @@
         <b-nav-item class="px-3" to="/admin/outgoing-intents">Message Editor</b-nav-item>
         <b-nav-item class="px-3" to="/users">Insights</b-nav-item>
         <b-nav-item class="px-3" to="/admin/chatbot-users">Chatbot Users</b-nav-item>
+        <b-nav-item class="px-3" to="/admin/users">Users</b-nav-item>
         <b-nav-item class="px-3" to="/admin/webchat-setting">Webchat settings</b-nav-item>
         <b-nav-item class="px-3" to="/admin/conversations">Conversations</b-nav-item>
       </b-navbar-nav>

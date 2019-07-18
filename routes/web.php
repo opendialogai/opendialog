@@ -48,4 +48,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/chatbot-users', 'AdminController@handle');
     Route::get('admin/chatbot-users/{id}', 'AdminController@handle');
     Route::get('admin/chatbot-users/{id}/conversation-log', 'AdminController@handle');
+    Route::get('admin/users', 'AdminController@handle');
+    Route::get('admin/users/{id}', 'AdminController@handle');
+    Route::get('admin/users/{id}/edit', 'AdminController@handle');
+    Route::get('admin/users/add', 'AdminController@handle');
 });
