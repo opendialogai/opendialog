@@ -77,3 +77,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.vue-codemirror {
+  font-size: 14px;
+}
+</style>
