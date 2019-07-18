@@ -7,23 +7,23 @@
       </button>
     </div>
 
-    <b-card header="Add Conversation">
+    <b-card header="Add Message Template">
       <b-form-group>
         <label>Name</label>
         <b-form-input type="text" v-model="name" />
       </b-form-group>
 
       <b-form-group>
-        <label>Model</label>
-        <codemirror v-model="model" :options="cmOptions" />
+        <label>Conditions</label>
+        <codemirror v-model="conditions" :options="cmConditionsOptions" />
       </b-form-group>
 
       <b-form-group>
-        <label>Notes</label>
-        <b-form-textarea v-model="notes" />
+        <label>Message Mark-up</label>
+        <codemirror v-model="message_markup" :options="cmMarkupOptions" />
       </b-form-group>
 
-      <b-btn variant="primary" @click="addConversation">Create</b-btn>
+      <b-btn variant="primary" @click="addMessageTemplate">Create</b-btn>
     </b-card>
   </div>
 </template>
@@ -31,40 +31,49 @@
 <script>
 import { codemirror } from 'vue-codemirror';
 import 'codemirror/mode/yaml/yaml';
+import 'codemirror/mode/xml/xml';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 
 export default {
-  name: 'add-conversation',
+  name: 'add-message-template',
+  props: ['outgoingIntent'],
   components: {
     codemirror,
   },
   data() {
     return {
-      cmOptions: {
+      cmConditionsOptions: {
         tabSize: 4,
         mode: 'text/yaml',
         theme: 'dracula',
         lineNumbers: true,
         line: true,
       },
+      cmMarkupOptions: {
+        tabSize: 4,
+        mode: 'application/xml',
+        theme: 'dracula',
+        lineNumbers: true,
+        line: true,
+      },
       name: '',
-      model: '',
-      notes: '',
+      conditions: '',
+      message_markup: '',
       errorMessage: '',
     };
   },
   methods: {
-    addConversation() {
+    addMessageTemplate() {
       const data = {
         name: this.name,
-        model: this.model,
-        notes: this.notes,
+        conditions: this.conditions,
+        message_markup: this.message_markup,
       };
 
-      axios.post('/admin/api/conversation', data).then(
+      axios.post('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates', data).then(
         (response) => {
-          this.$router.push({ name: 'view-conversation', params: { id: response.data.data.id } });
+          this.$router.push({ name: 'view-message-template', params: { outgoingIntent: this.outgoingIntent, id: response.data.data.id } });
         },
       ).catch(
         (error) => {
