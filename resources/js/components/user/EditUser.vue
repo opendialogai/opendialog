@@ -2,8 +2,8 @@
   <div v-if="user">
     <div class="alert alert-danger" role="alert" v-if="errorMessage">
       <span>{{ errorMessage }}</span>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
       </button>
     </div>
 
