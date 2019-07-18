@@ -21,9 +21,17 @@
         <b-col class="font-weight-bold" cols="2">Email</b-col>
         <b-col cols="10">{{ user.email }}</b-col>
       </b-row>
-      <b-row>
+      <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Phone Number</b-col>
         <b-col cols="10">{{ user.phone_number }}</b-col>
+      </b-row>
+      <b-row class="border-bottom mb-2 pb-2">
+        <b-col class="font-weight-bold" cols="2">Created at</b-col>
+        <b-col cols="10">{{ user.created_at }}</b-col>
+      </b-row>
+      <b-row>
+        <b-col class="font-weight-bold" cols="2">Updated at</b-col>
+        <b-col cols="10">{{ user.updated_at }}</b-col>
       </b-row>
     </b-card>
 

@@ -27,9 +27,17 @@
         <b-col class="font-weight-bold" cols="2">Scenes</b-col>
         <b-col cols="10">{{ conversation.scenes_validation_status }}</b-col>
       </b-row>
-      <b-row>
+      <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Model</b-col>
         <b-col cols="10">{{ conversation.model_validation_status }}</b-col>
+      </b-row>
+      <b-row class="border-bottom mb-2 pb-2">
+        <b-col class="font-weight-bold" cols="2">Created at</b-col>
+        <b-col cols="10">{{ conversation.created_at }}</b-col>
+      </b-row>
+      <b-row>
+        <b-col class="font-weight-bold" cols="2">Updated at</b-col>
+        <b-col cols="10">{{ conversation.updated_at }}</b-col>
       </b-row>
     </b-card>
     <b-card header="Model">

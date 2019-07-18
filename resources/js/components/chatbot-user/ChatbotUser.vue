@@ -53,9 +53,17 @@
         <b-col class="font-weight-bold" cols="2">Timezone</b-col>
         <b-col cols="10">{{ chatbotUser.timezone }}</b-col>
       </b-row>
-      <b-row>
+      <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Platform</b-col>
         <b-col cols="10">{{ chatbotUser.platform }}</b-col>
+      </b-row>
+      <b-row class="border-bottom mb-2 pb-2">
+        <b-col class="font-weight-bold" cols="2">Created at</b-col>
+        <b-col cols="10">{{ chatbotUser.created_at }}</b-col>
+      </b-row>
+      <b-row>
+        <b-col class="font-weight-bold" cols="2">Updated at</b-col>
+        <b-col cols="10">{{ chatbotUser.updated_at }}</b-col>
       </b-row>
     </b-card>
   </div>
