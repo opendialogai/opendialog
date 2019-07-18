@@ -9,6 +9,8 @@ import WebchatSetting from '@/views/WebchatSetting';
 import Conversation from '@/views/Conversation';
 import MessageTemplate from '@/views/MessageTemplate';
 import OutgoingIntent from '@/views/OutgoingIntent';
+import ChatbotUsers from '@/views/ChatbotUsers';
+import ConversationLog from '@/views/ConversationLog';
 
 Vue.use(VueRouter);
 
@@ -32,6 +34,23 @@ const router = new VueRouter({
         {
           path: 'webchat-setting/:id',
           component: WebchatSetting,
+          props: true,
+        },
+        {
+          path: 'chatbot-users',
+          name: 'chatbot-users',
+          component: ChatbotUsers,
+        },
+        {
+          path: 'chatbot-users/:id',
+          name: 'view-chatbot-user',
+          component: ChatbotUsers,
+          props: true,
+        },
+        {
+          path: 'chatbot-users/:id/conversation-log',
+          name: 'conversation-log',
+          component: ConversationLog,
           props: true,
         },
         {
