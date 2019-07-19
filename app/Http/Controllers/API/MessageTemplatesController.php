@@ -112,6 +112,10 @@ class MessageTemplatesController extends Controller
             return 'The maximum length for message template name is 255.';
         }
 
+        if (!$messageTemplate->name) {
+            return 'Message template name field is required.';
+        }
+
         if (MessageTemplate::where('name', $messageTemplate->name)->where('id', '<>', $messageTemplate->id)->count()) {
             return 'Message template name is already in use.';
         }
