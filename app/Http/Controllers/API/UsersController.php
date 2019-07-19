@@ -74,6 +74,10 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         if ($user = User::find($id)) {
+            if ($user->phone_number) {
+                $user->phone_number = '+' . $user->phone_country_code . ' ' . $user->phone_number;
+            }
+
             $user->fill($request->all());
 
             if ($error = $this->validateValue($user)) {
