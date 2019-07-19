@@ -1,5 +1,19 @@
 <template>
   <div>
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
@@ -59,18 +73,18 @@
             </button>
 
             <template v-if="conversation.status == 'published'">
-              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation.id)" disabled>
+              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)" disabled>
                 <i class="fa fa-upload"></i>
               </button>
-              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation.id)">
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)">
                 <i class="fa fa-download"></i>
               </button>
             </template>
             <template v-else>
-              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation.id)">
+              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)">
                 <i class="fa fa-upload"></i>
               </button>
-              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation.id)" disabled>
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)" disabled>
                 <i class="fa fa-download"></i>
               </button>
             </template>
@@ -122,6 +136,8 @@ export default {
   name: 'conversations',
   data() {
     return {
+      errorMessage: '',
+      successMessage: '',
       conversations: [],
       currentConversation: null,
       currentPage: 1,
@@ -156,11 +172,35 @@ export default {
     editConversation(id) {
       this.$router.push({ name: 'edit-conversation', params: { id } });
     },
-    publishConversation(id) {
-      axios.get('/admin/api/conversation/' + id + '/publish');
+    publishConversation(conversation) {
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      axios.get('/admin/api/conversation/' + conversation.id + '/publish').then(
+        (response) => {
+          if (response.data) {
+            this.successMessage = 'Conversation published.';
+            conversation.status = 'published';
+          } else {
+            this.errorMessage = 'Sorry, I wasn\'t able to publish this conversation to DGraph.';
+          }
+        },
+      );
     },
-    unpublishConversation(id) {
-      axios.get('/admin/api/conversation/' + id + '/unpublish');
+    unpublishConversation(conversation) {
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      axios.get('/admin/api/conversation/' + conversation.id + '/unpublish').then(
+        (response) => {
+          if (response.data) {
+            this.successMessage = 'Conversation unpublished.';
+            conversation.status = 'validated';
+          } else {
+            this.errorMessage = 'Sorry, I wasn\'t able to unpublish this conversation from DGraph.';
+          }
+        },
+      );
     },
     showDeleteConversationModal(id) {
       this.currentConversation = id;

@@ -1,5 +1,19 @@
 <template>
   <div v-if="conversation">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
@@ -110,6 +124,8 @@ export default {
   data() {
     return {
       conversation: null,
+      errorMessage: '',
+      successMessage: '',
     };
   },
   watch: {
@@ -144,10 +160,34 @@ export default {
       this.$router.push({ name: 'conversations' });
     },
     publishConversation() {
-      axios.get('/admin/api/conversation/' + this.conversation.id + '/publish');
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/publish').then(
+        (response) => {
+          if (response.data) {
+            this.successMessage = 'Conversation published.';
+            this.conversation.status = 'published';
+          } else {
+            this.errorMessage = 'Sorry, I wasn\'t able to publish this conversation to DGraph.';
+          }
+        },
+      );
     },
     unpublishConversation() {
-      axios.get('/admin/api/conversation/' + this.conversation.id + '/unpublish');
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/unpublish').then(
+        (response) => {
+          if (response.data) {
+            this.successMessage = 'Conversation unpublished.';
+            this.conversation.status = 'validated';
+          } else {
+            this.errorMessage = 'Sorry, I wasn\'t able to unpublish this conversation from DGraph.';
+          }
+        },
+      );
     },
   },
 };
