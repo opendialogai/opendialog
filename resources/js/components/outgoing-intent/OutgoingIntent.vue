@@ -35,8 +35,7 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Created at</th>
-            <th scope="col">Updated at</th>
+            <th scope="col">Message Preview</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -49,10 +48,7 @@
               {{ messageTemplate.name }}
             </td>
             <td>
-              {{ messageTemplate.created_at }}
-            </td>
-            <td>
-              {{ messageTemplate.updated_at }}
+              <MessageBuilder :message="messageTemplate" />
             </td>
             <td>
               <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewMessageTemplate(messageTemplate.id)">
@@ -129,9 +125,14 @@
 </template>
 
 <script>
+import MessageBuilder from '@/components/message-template/MessageBuilder';
+
 export default {
   name: 'outgoing-intent',
   props: ['id'],
+  components: {
+    MessageBuilder,
+  },
   data() {
     return {
       outgoingIntent: null,
@@ -195,3 +196,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.table tr:hover {
+  .message {
+    .text-message,
+    .button-message,
+    .image-message,
+    .rich-message {
+      background: #fff;
+    }
+  }
+}
+</style>
