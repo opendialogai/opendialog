@@ -30,6 +30,7 @@
         "@coreui/icons": "^0.3.0",
         "@coreui/vue": "^2.1.2",
         "babel-runtime": "^6.26.0",
+        "bcryptjs": "^2.4.3",
         "bootstrap-vue": "^2.0.0-rc.25",
         "chart.js": "^2.8.0",
         "core-js": "^3.1.4",

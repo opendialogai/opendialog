@@ -23,12 +23,26 @@
         <b-form-input type="text" v-model="user.phone_number" />
       </b-form-group>
 
+      <template v-if="id == userId">
+        <b-form-group>
+          <label>Update password</label>
+          <b-form-input type="password" v-model="password" />
+        </b-form-group>
+
+        <b-form-group>
+          <label>Repeat Password</label>
+          <b-form-input type="password" v-model="password2" />
+        </b-form-group>
+      </template>
+
       <b-btn variant="primary" @click="saveUser">Save</b-btn>
     </b-card>
   </div>
 </template>
 
 <script>
+import bcrypt from 'bcryptjs';
+
 export default {
   name: 'edit-user',
   props: ['id'],
@@ -36,7 +50,14 @@ export default {
     return {
       user: null,
       errorMessage: '',
+      password: '',
+      password2: '',
     };
+  },
+  computed: {
+    userId() {
+      return window.Laravel.userId;
+    },
   },
   mounted() {
     axios.get('/admin/api/user/' + this.id).then(
@@ -53,11 +74,19 @@ export default {
     saveUser() {
       this.errorMessage = '';
 
+      if ((this.password || this.password2) && this.password != this.password2) {
+        this.errorMessage = 'Your password and confirmation password do not match.';
+        return;
+      }
+
       const data = {
         name: this.user.name,
         email: this.user.model,
         phone_number: this.user.phone_number,
       };
+      if (this.password) {
+        data.password = bcrypt.hashSync(this.password);
+      }
 
       axios.patch('/admin/api/user/' + this.id, data).then(
         (response) => {
