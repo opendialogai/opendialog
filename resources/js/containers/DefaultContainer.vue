@@ -10,7 +10,6 @@
       <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
       <b-navbar-nav class="d-md-down-none">
         <b-nav-item class="px-3" to="/admin/outgoing-intents">Message Editor</b-nav-item>
-        <b-nav-item class="px-3" to="/users">Insights</b-nav-item>
         <b-nav-item class="px-3" to="/admin/chatbot-users">Chatbot Users</b-nav-item>
         <b-nav-item class="px-3" to="/admin/users">Users</b-nav-item>
         <b-nav-item class="px-3" to="/admin/webchat-setting">Webchat settings</b-nav-item>
@@ -109,9 +108,14 @@ export default {
             icon: 'icon-list',
           },
           {
-            name: 'Insights',
-            url: '/insights',
+            name: 'Chatbot Users',
+            url: '/admin/chatbot-users',
             icon: 'icon-layers'
+          },
+          {
+            name: 'Users',
+            url: '/admin/users',
+            icon: 'icon-people'
           },
           {
             name: 'Webchat settings',
@@ -135,6 +139,11 @@ export default {
                 url: '/admin/webchat-setting/' + historyId,
               },
             ],
+          },
+          {
+            name: 'Conversations',
+            url: '/admin/conversations',
+            icon: 'icon-speech'
           },
         ];
       },
