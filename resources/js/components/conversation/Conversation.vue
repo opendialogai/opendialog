@@ -5,8 +5,15 @@
         <div class="float-right">
           <b-btn variant="primary" @click="editConversation">Edit</b-btn>
           <b-btn variant="danger mr-4" @click="showDeleteConversationModal">Delete</b-btn>
-          <b-btn variant="primary" @click="publishConversation">Publish</b-btn>
-          <b-btn variant="primary" @click="unpublishConversation">Unpublish</b-btn>
+
+          <template v-if="conversation.status == 'published'">
+            <b-btn variant="primary" @click="publishConversation" disabled>Publish</b-btn>
+            <b-btn variant="primary" @click="unpublishConversation">Unpublish</b-btn>
+          </template>
+          <template v-else>
+            <b-btn variant="primary" @click="publishConversation">Publish</b-btn>
+            <b-btn variant="primary" @click="unpublishConversation" disabled>Unpublish</b-btn>
+          </template>
         </div>
       </div>
     </div>
@@ -14,6 +21,10 @@
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Name</b-col>
         <b-col cols="10">{{ conversation.name }}</b-col>
+      </b-row>
+      <b-row class="border-bottom mb-2 pb-2">
+        <b-col class="font-weight-bold" cols="2">Status</b-col>
+        <b-col cols="10">{{ conversation.status }}</b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Yaml</b-col>

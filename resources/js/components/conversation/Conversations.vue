@@ -54,6 +54,23 @@
             <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation.id)">
               <i class="fa fa-close"></i>
             </button>
+
+            <template v-if="conversation.status == 'published'">
+              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation.id)" disabled>
+                <i class="fa fa-upload"></i>
+              </button>
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation.id)">
+                <i class="fa fa-download"></i>
+              </button>
+            </template>
+            <template v-else>
+              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation.id)">
+                <i class="fa fa-upload"></i>
+              </button>
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation.id)" disabled>
+                <i class="fa fa-download"></i>
+              </button>
+            </template>
           </td>
         </tr>
       </tbody>
@@ -135,6 +152,12 @@ export default {
     },
     editConversation(id) {
       this.$router.push({ name: 'edit-conversation', params: { id } });
+    },
+    publishConversation(id) {
+      axios.get('/admin/api/conversation/' + id + '/publish');
+    },
+    unpublishConversation(id) {
+      axios.get('/admin/api/conversation/' + id + '/unpublish');
     },
     showDeleteConversationModal(id) {
       this.currentConversation = id;
