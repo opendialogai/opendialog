@@ -39,9 +39,11 @@
             <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editUser(user.id)">
               <i class="fa fa-edit"></i>
             </button>
-            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteUserModal(user.id)">
-              <i class="fa fa-close"></i>
-            </button>
+            <template v-if="user.id != userId">
+              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteUserModal(user.id)">
+                <i class="fa fa-close"></i>
+              </button>
+            </template>
           </td>
         </tr>
       </tbody>
@@ -95,6 +97,11 @@ export default {
       currentPage: 1,
       totalPages: 1,
     };
+  },
+  computed: {
+    userId() {
+      return window.Laravel.userId;
+    },
   },
   watch: {
     '$route' () {

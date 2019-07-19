@@ -9,7 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <script>window.Laravel = {!! json_encode(['apiToken' => auth()->user()->api_token ?? null]) !!};</script>
+    <script>window.Laravel = {!! json_encode(['apiToken' => auth()->user()->api_token ?? null, 'userId' => auth()->user()->id]) !!};</script>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>

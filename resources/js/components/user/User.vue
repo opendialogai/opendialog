@@ -4,7 +4,9 @@
       <div class="col-12">
         <div class="float-right">
           <b-btn variant="primary" @click="editUser">Edit</b-btn>
-          <b-btn variant="danger mr-4" @click="showDeleteUserModal">Delete</b-btn>
+          <template v-if="user.id != userId">
+            <b-btn variant="danger mr-4" @click="showDeleteUserModal">Delete</b-btn>
+          </template>
         </div>
       </div>
     </div>
@@ -65,6 +67,11 @@ export default {
     return {
       user: null,
     };
+  },
+  computed: {
+    userId() {
+      return window.Laravel.userId;
+    },
   },
   mounted() {
     axios.get('/admin/api/user/' + this.id).then(
