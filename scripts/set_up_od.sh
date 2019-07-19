@@ -36,7 +36,7 @@ echo "Installing dependencies..."
 lando composer install
 
 echo "Setting up the webchat widget..."
-bash update-web-chat.sh -li
+bash update-web-chat.sh -liy
 
 echo "Setting up the database..."
 lando artisan migrate
@@ -55,7 +55,7 @@ lando php artisan key:generate
 
 echo "Setting up the admin interface..."
 lando yarn install
-lanod yarn run dev
+lando yarn run dev
 lando ssh --service database --command 'mysql -uroot laravel -e '"'"'INSERT INTO users (name, email, password, created_at, updated_at) VALUES ("admin", "admin@example.com", "$2y$10$BEhBWA12KObSY9Ua2G0VeOg2hWMT1GIa8huHD83HCEHnJLnRcH8w6", NOW(), NOW())'"'"' '
 
 echo
