@@ -112,14 +112,24 @@ export default {
       conversation: null,
     };
   },
+  watch: {
+    '$route' () {
+      this.fetchConversation();
+    },
+  },
   mounted() {
-    axios.get('/admin/api/conversation/' + this.id).then(
-      (response) => {
-        this.conversation = response.data.data;
-      },
-    );
+    this.fetchConversation();
   },
   methods: {
+    fetchConversation() {
+      this.conversation = null;
+
+      axios.get('/admin/api/conversation/' + this.id).then(
+        (response) => {
+          this.conversation = response.data.data;
+        },
+      );
+    },
     editConversation() {
       this.$router.push({ name: 'edit-conversation', params: { id: this.conversation.id } });
     },

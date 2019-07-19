@@ -20769,3 +20769,12 @@ body {
     height: 100%;
   }
 }
+.sidebar .nav-item {
+  max-width: 100%;
+}
+.sidebar .nav-dropdown .nav-link {
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

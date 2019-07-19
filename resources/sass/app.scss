@@ -27,3 +27,15 @@ $simple-line-font-path: '~simple-line-icons/fonts/';
     height: 100%;
   }
 }
+
+.sidebar {
+  .nav-item {
+    max-width: 100%;
+  }
+  .nav-dropdown .nav-link {
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
