@@ -168,7 +168,10 @@ class ConversationsController extends Controller
         }
 
         if (!$rule->passes(null, $conversation->model)) {
-            return $rule->message() . '.';
+            return [
+                'field' => 'model',
+                'message' => $rule->message() . '.',
+            ];
         }
 
         $yaml = Yaml::parse($conversation->model)['conversation'];

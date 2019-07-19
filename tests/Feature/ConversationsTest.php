@@ -179,7 +179,7 @@ class ConversationsTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'Conversation must have at least 1 scene.');
+        $this->assertEquals($response->content(), '{"field":"model","message":"Conversation must have at least 1 scene."}');
 
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation', [
@@ -197,7 +197,7 @@ class ConversationsTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'Conversation name must be the same of model conversation id.');
+        $this->assertEquals($response->content(), '{"field":"name","message":"Conversation name must be the same of model conversation id."}');
 
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation', [
@@ -215,7 +215,7 @@ class ConversationsTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'The maximum length for conversation name is 512.');
+        $this->assertEquals($response->content(), '{"field":"name","message":"The maximum length for conversation name is 512."}');
     }
 
     public function testConversationsInvalidUpdateEndpoint()
@@ -228,6 +228,6 @@ class ConversationsTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'Conversation name must be the same of model conversation id.');
+        $this->assertEquals($response->content(), '{"field":"name","message":"Conversation name must be the same of model conversation id."}');
     }
 }

@@ -140,7 +140,7 @@ class MessageTemplatesTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'Text messages must have "text".');
+        $this->assertEquals($response->content(), '{"field":"message_markup","message":"Text messages must have \"text\"."}');
 
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates', [
@@ -175,6 +175,6 @@ class MessageTemplatesTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'Text messages must have "text".');
+        $this->assertEquals($response->content(), '{"field":"message_markup","message":"Text messages must have \"text\"."}');
     }
 }
