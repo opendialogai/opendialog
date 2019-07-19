@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="alert alert-danger" role="alert" v-if="errorMessage">
-      <span>{{ errorMessage }}</span>
-      <button type="button" class="close" @click="errorMessage = ''">
+    <div class="alert alert-danger" role="alert" v-if="error.message">
+      <span>{{ error.message }}</span>
+      <button type="button" class="close" @click="error.message = ''">
         <span>&times;</span>
       </button>
     </div>
@@ -10,17 +10,17 @@
     <b-card header="Add Message Template">
       <b-form-group>
         <label>Name</label>
-        <b-form-input type="text" v-model="name" />
+        <b-form-input type="text" v-model="name" :class="(error.field == 'name') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
         <label>Conditions</label>
-        <codemirror v-model="conditions" :options="cmConditionsOptions" />
+        <codemirror v-model="conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
         <label>Message Mark-up</label>
-        <codemirror v-model="message_markup" :options="cmMarkupOptions" />
+        <codemirror v-model="message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-btn variant="primary" @click="addMessageTemplate">Create</b-btn>
@@ -60,7 +60,7 @@ export default {
       name: '',
       conditions: '',
       message_markup: '',
-      errorMessage: '',
+      error: {},
     };
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
       ).catch(
         (error) => {
           if (error.response.status === 400) {
-            this.errorMessage = error.response.data;
+            this.error = error.response.data;
           }
         },
       );
@@ -90,5 +90,8 @@ export default {
 <style lang="scss" scoped>
 .vue-codemirror {
   font-size: 14px;
+  &.is-invalid {
+    border: 3px solid #e3342f;
+  }
 }
 </style>

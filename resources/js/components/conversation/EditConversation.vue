@@ -1,8 +1,8 @@
 <template>
   <div v-if="conversation">
-    <div class="alert alert-danger" role="alert" v-if="errorMessage">
-      <span>{{ errorMessage }}</span>
-      <button type="button" class="close" @click="errorMessage = ''">
+    <div class="alert alert-danger" role="alert" v-if="error.message">
+      <span>{{ error.message }}</span>
+      <button type="button" class="close" @click="error.message = ''">
         <span>&times;</span>
       </button>
     </div>
@@ -10,17 +10,17 @@
     <b-card header="Edit Conversation">
       <b-form-group>
         <label>Name</label>
-        <b-form-input type="text" v-model="conversation.name" />
+        <b-form-input type="text" v-model="conversation.name" :class="(error.field == 'name') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
         <label>Model</label>
-        <codemirror v-model="conversation.model" :options="cmOptions" />
+        <codemirror v-model="conversation.model" :options="cmOptions" :class="(error.field == 'model') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
         <label>Notes</label>
-        <b-form-textarea v-model="conversation.notes" />
+        <b-form-textarea v-model="conversation.notes" :class="(error.field == 'notes') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-btn variant="primary" @click="saveConversation">Save</b-btn>
@@ -50,7 +50,7 @@ export default {
         line: true,
       },
       conversation: null,
-      errorMessage: '',
+      error: {},
     };
   },
   mounted() {
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     saveConversation() {
-      this.errorMessage = '';
+      this.error = {};
 
       const data = {
         name: this.conversation.name,
@@ -77,7 +77,7 @@ export default {
       ).catch(
         (error) => {
           if (error.response.status === 400) {
-            this.errorMessage = error.response.data;
+            this.error = error.response.data;
           }
         },
       );
@@ -89,5 +89,8 @@ export default {
 <style lang="scss" scoped>
 .vue-codemirror {
   font-size: 14px;
+  &.is-invalid {
+    border: 3px solid #e3342f;
+  }
 }
 </style>

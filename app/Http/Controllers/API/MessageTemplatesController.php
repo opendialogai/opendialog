@@ -109,23 +109,38 @@ class MessageTemplatesController extends Controller
         $ruleConditions = new MessageConditions();
 
         if (strlen($messageTemplate->name) > 255) {
-            return 'The maximum length for message template name is 255.';
+            return [
+                'field' => 'name',
+                'message' => 'The maximum length for message template name is 255.',
+            ];
         }
 
         if (!$messageTemplate->name) {
-            return 'Message template name field is required.';
+            return [
+                'field' => 'name',
+                'message' => 'Message template name field is required.',
+            ];
         }
 
         if (MessageTemplate::where('name', $messageTemplate->name)->where('id', '<>', $messageTemplate->id)->count()) {
-            return 'Message template name is already in use.';
+            return [
+                'field' => 'name',
+                'message' => 'Message template name is already in use.',
+            ];
         }
 
         if (!$ruleConditions->passes(null, $messageTemplate->conditions)) {
-            return $ruleConditions->message();
+            return [
+                'field' => 'conditions',
+                'message' => $ruleConditions->message(),
+            ];
         }
 
         if (!$ruleXML->passes(null, $messageTemplate->message_markup)) {
-            return $ruleXML->message() . '.';
+            return [
+                'field' => 'message_markup',
+                'message' => $ruleXML->message() . '.',
+            ];
         }
 
         return null;

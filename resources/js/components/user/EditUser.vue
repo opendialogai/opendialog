@@ -1,8 +1,8 @@
 <template>
   <div v-if="user">
-    <div class="alert alert-danger" role="alert" v-if="errorMessage">
-      <span>{{ errorMessage }}</span>
-      <button type="button" class="close" @click="errorMessage = ''">
+    <div class="alert alert-danger" role="alert" v-if="error.message">
+      <span>{{ error.message }}</span>
+      <button type="button" class="close" @click="error.message = ''">
         <span>&times;</span>
       </button>
     </div>
@@ -10,17 +10,17 @@
     <b-card header="Edit User">
       <b-form-group>
         <label>Name</label>
-        <b-form-input type="text" v-model="user.name" />
+        <b-form-input type="text" v-model="user.name" :class="(error.field == 'name') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
         <label>Email</label>
-        <b-form-input type="email" v-model="user.email" />
+        <b-form-input type="email" v-model="user.email" :class="(error.field == 'email') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
         <label>Phone Number</label>
-        <b-form-input type="text" v-model="user.phone_number" />
+        <b-form-input type="text" v-model="user.phone_number" :class="(error.field == 'phone_number') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <template v-if="id == userId">
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       user: null,
-      errorMessage: '',
+      error: {},
       password: '',
       password2: '',
     };
@@ -72,10 +72,12 @@ export default {
   },
   methods: {
     saveUser() {
-      this.errorMessage = '';
+      this.error = {};
 
       if ((this.password || this.password2) && this.password != this.password2) {
-        this.errorMessage = 'Your password and confirmation password do not match.';
+        this.error = {
+          message: 'Your password and confirmation password do not match.'
+        };
         return;
       }
 
@@ -95,7 +97,7 @@ export default {
       ).catch(
         (error) => {
           if (error.response.status === 400) {
-            this.errorMessage = error.response.data;
+            this.error = error.response.data;
           }
         },
       );

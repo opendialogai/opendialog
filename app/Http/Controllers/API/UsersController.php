@@ -115,22 +115,41 @@ class UsersController extends Controller
     private function validateValue(User $user)
     {
         if (empty($user->name)) {
-            return 'User name field is required.';
+            return [
+                'field' => 'name',
+                'message' => 'User name field is required.',
+            ];
         }
 
         if (empty($user->email)) {
-            return 'User email field is required.';
+            return [
+                'field' => 'email',
+                'message' => 'User email field is required.',
+            ];
         }
 
         if (empty($user->phone_number)) {
-            return 'User phone number field is required.';
+            return [
+                'field' => 'phone_number',
+                'message' => 'User phone number field is required.',
+            ];
+        }
+
+        if (!filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
+            return [
+                'field' => 'email',
+                'message' => 'Enter a valid email.',
+            ];
         }
 
         $phoneUtil = PhoneNumberUtil::getInstance();
         try {
             $phoneUtil->parse($user->phone_number);
         } catch (NumberParseException $e) {
-            return 'Enter a valid phone number with prefix.';
+            return [
+                'field' => 'phone_number',
+                'message' => 'Enter a valid phone number with prefix.',
+            ];
         }
 
         return null;

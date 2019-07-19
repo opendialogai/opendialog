@@ -147,15 +147,24 @@ class ConversationsController extends Controller
         $rule = new ConversationYAML();
 
         if (strlen($conversation->name) > 512) {
-            return 'The maximum length for conversation name is 512.';
+            return [
+                'field' => 'name',
+                'message' => 'The maximum length for conversation name is 512.',
+            ];
         }
 
         if (!$conversation->name) {
-            return 'Conversation name field is required.';
+            return [
+                'field' => 'name',
+                'message' => 'Conversation name field is required.',
+            ];
         }
 
         if (!$conversation->model) {
-            return 'Conversation model field is required.';
+            return [
+                'field' => 'model',
+                'message' => 'Conversation model field is required.',
+            ];
         }
 
         if (!$rule->passes(null, $conversation->model)) {
@@ -165,7 +174,10 @@ class ConversationsController extends Controller
         $yaml = Yaml::parse($conversation->model)['conversation'];
 
         if ($yaml['id'] != $conversation->name) {
-            return 'Conversation name must be the same of model conversation id.';
+            return [
+                'field' => 'name',
+                'message' => 'Conversation name must be the same of model conversation id.',
+            ];
         }
 
         return null;

@@ -104,11 +104,17 @@ class OutgoingIntentsController extends Controller
     private function validateValue(OutgoingIntent $outgoingIntent)
     {
         if (strlen($outgoingIntent->name) > 255) {
-            return 'The maximum length for outgoing intent name is 255.';
+            return [
+                'field' => 'name',
+                'message' => 'The maximum length for outgoing intent name is 255.',
+            ];
         }
 
         if (!$outgoingIntent->name) {
-            return 'Outgoing intent name field is required.';
+            return [
+                'field' => 'name',
+                'message' => 'Outgoing intent name field is required.',
+            ];
         }
 
         return null;
