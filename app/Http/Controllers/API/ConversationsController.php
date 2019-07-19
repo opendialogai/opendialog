@@ -8,6 +8,7 @@ use App\Http\Resources\ConversationResource;
 use Illuminate\Http\Request;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Symfony\Component\Yaml\Yaml;
 
 class ConversationsController extends Controller
@@ -29,7 +30,14 @@ class ConversationsController extends Controller
      */
     public function index()
     {
-        return new ConversationCollection(Conversation::paginate(50));
+        $conversations = Conversation::paginate(50);
+
+        foreach ($conversations as $conversation) {
+            $conversation->outgoing_intents = $this->outgoingIntents($conversation);
+            $conversation->opening_intent = $this->openingIntent($conversation);
+        }
+
+        return new ConversationCollection($conversations);
     }
 
     /**
@@ -59,7 +67,12 @@ class ConversationsController extends Controller
      */
     public function show($id)
     {
-        return new ConversationResource(Conversation::find($id));
+        $conversation = Conversation::find($id);
+
+        $conversation->outgoing_intents = $this->outgoingIntents($conversation);
+        $conversation->opening_intent = $this->openingIntent($conversation);
+
+        return new ConversationResource($conversation);
     }
 
     /**
@@ -156,5 +169,68 @@ class ConversationsController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * @param Conversation $conversation
+     * @return array
+     */
+    private function outgoingIntents(Conversation $conversation)
+    {
+        $outgoingIntents = [];
+        $yaml = Yaml::parse($conversation->model)['conversation'];
+
+        foreach ($yaml['scenes'] as $sceneId => $scene) {
+            foreach ($scene['intents'] as $intent) {
+                foreach ($intent as $tag => $value) {
+                    if ($tag == 'b') {
+                        foreach ($value as $key => $intent) {
+                            if ($key == 'i') {
+                                $outgoingIntent = OutgoingIntent::where('name', $intent)->first();
+                                if ($outgoingIntent) {
+                                    $outgoingIntents[] = [
+                                        'id' => $outgoingIntent->id,
+                                        'name' => $intent,
+                                    ];
+                                } else {
+                                    $outgoingIntents[] = [
+                                        'name' => $intent,
+                                    ];
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $outgoingIntents;
+    }
+
+    /**
+     * @param Conversation $conversation
+     * @return string
+     */
+    private function openingIntent(Conversation $conversation)
+    {
+        $yaml = Yaml::parse($conversation->model)['conversation'];
+
+        foreach ($yaml['scenes'] as $sceneId => $scene) {
+            foreach ($scene['intents'] as $intent) {
+                foreach ($intent as $tag => $value) {
+                    if ($tag == 'u') {
+                        foreach ($value as $key => $intent) {
+                            if ($key == 'i') {
+                                return $intent;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return '';
     }
 }

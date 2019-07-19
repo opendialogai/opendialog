@@ -15,9 +15,8 @@
           <th scope="col">Name</th>
           <th scope="col">Status</th>
           <th scope="col">Yaml</th>
-          <th scope="col">Schema</th>
-          <th scope="col">Scenes</th>
-          <th scope="col">Model</th>
+          <th scope="col">Opening Intent</th>
+          <th scope="col">Outgoing Intents</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -36,13 +35,17 @@
             {{ conversation.yaml_validation_status }}
           </td>
           <td>
-            {{ conversation.yaml_schema_validation_status }}
+            {{ conversation.opening_intent }}
           </td>
           <td>
-            {{ conversation.scenes_validation_status }}
-          </td>
-          <td>
-            {{ conversation.model_validation_status }}
+            <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
+              <template v-if="outgoing_intent.id">
+                <router-link :to="{ name: 'view-outgoing-intent', params: { id: outgoing_intent.id } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+              </template>
+              <template v-else>
+                <router-link :to="{ name: 'add-outgoing-intent', query: { name: outgoing_intent.name } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+              </template>
+            </span>
           </td>
           <td>
             <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewConversation(conversation.id)">

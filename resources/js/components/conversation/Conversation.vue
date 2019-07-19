@@ -43,6 +43,23 @@
         <b-col cols="10">{{ conversation.model_validation_status }}</b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
+        <b-col class="font-weight-bold" cols="2">Opening Intent</b-col>
+        <b-col cols="10">{{ conversation.opening_intent }}</b-col>
+      </b-row>
+      <b-row class="border-bottom mb-2 pb-2">
+        <b-col class="font-weight-bold" cols="2">Outgoing Intents</b-col>
+        <b-col cols="10">
+          <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
+            <template v-if="outgoing_intent.id">
+              <router-link :to="{ name: 'view-outgoing-intent', params: { id: outgoing_intent.id } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+            </template>
+            <template v-else>
+              <router-link :to="{ name: 'add-outgoing-intent', query: { name: outgoing_intent.name } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+            </template>
+          </span>
+        </b-col>
+      </b-row>
+      <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Created at</b-col>
         <b-col cols="10">{{ conversation.created_at }}</b-col>
       </b-row>

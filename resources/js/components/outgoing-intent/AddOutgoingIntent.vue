@@ -27,6 +27,9 @@ export default {
       errorMessage: '',
     };
   },
+  mounted() {
+    this.name = this.$route.query.name || '';
+  },
   methods: {
     addOutgoingIntent() {
       const data = {
