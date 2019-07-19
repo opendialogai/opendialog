@@ -8,6 +8,8 @@ use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberUtil;
 
 class UsersController extends Controller
 {
@@ -118,6 +120,13 @@ class UsersController extends Controller
 
         if (empty($user->phone_number)) {
             return 'User phone number field is required.';
+        }
+
+        $phoneUtil = PhoneNumberUtil::getInstance();
+        try {
+            $phoneUtil->parse($user->phone_number);
+        } catch (NumberParseException $e) {
+            return 'Enter a valid phone number with prefix.';
         }
 
         return null;
