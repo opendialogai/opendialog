@@ -4,7 +4,7 @@
       <div class="col-12">
         <div class="float-right">
           <b-btn variant="primary" @click="editMessageTemplate">Edit</b-btn>
-          <b-btn variant="danger mr-4" @click="showDeleteMessageTemplateModal">Delete</b-btn>
+          <b-btn variant="danger" @click="showDeleteMessageTemplateModal">Delete</b-btn>
         </div>
       </div>
     </div>

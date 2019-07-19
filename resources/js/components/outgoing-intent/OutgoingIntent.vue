@@ -3,8 +3,9 @@
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
+          <b-btn variant="primary mr-4" @click="createMessageTemplate">Create Message Template</b-btn>
           <b-btn variant="primary" @click="editOutgoingIntent">Edit</b-btn>
-          <b-btn variant="danger mr-4" @click="showDeleteOutgoingIntentModal">Delete</b-btn>
+          <b-btn variant="danger" @click="showDeleteOutgoingIntentModal">Delete</b-btn>
         </div>
       </div>
     </div>
@@ -29,14 +30,6 @@
     </b-card>
 
     <b-card header="Message Templates">
-      <div class="row mb-4">
-        <div class="col-12">
-          <div class="float-right">
-            <b-btn variant="primary" @click="createMessageTemplate">Create</b-btn>
-          </div>
-        </div>
-      </div>
-
       <table class="table table-hover">
         <thead class="thead-light">
           <tr>

@@ -5,7 +5,7 @@
         <div class="float-right">
           <b-btn variant="primary" @click="editUser">Edit</b-btn>
           <template v-if="user.id != userId">
-            <b-btn variant="danger mr-4" @click="showDeleteUserModal">Delete</b-btn>
+            <b-btn variant="danger" @click="showDeleteUserModal">Delete</b-btn>
           </template>
         </div>
       </div>
