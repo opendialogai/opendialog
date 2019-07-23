@@ -20778,3 +20778,7 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.img-avatar, .avatar > img {
+  border-radius: 0;
+}

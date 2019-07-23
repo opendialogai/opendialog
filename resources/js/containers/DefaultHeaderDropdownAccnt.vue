@@ -2,7 +2,7 @@
   <AppHeaderDropdown right no-caret>
     <template slot="header">
       <img
-        src="/images/avatars/6.jpg"
+        src="/images/logo.svg"
         class="img-avatar" />
     </template>
     <template slot="dropdown">
