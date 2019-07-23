@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h2 class="mb-3">User</h2>
+
     <div class="alert alert-danger" role="alert" v-if="error.message">
       <span>{{ error.message }}</span>
       <button type="button" class="close" @click="error.message = ''">

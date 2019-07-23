@@ -1,5 +1,7 @@
 <template>
   <div v-if="outgoingIntent">
+    <h2 class="mb-3">Outgoing Intent</h2>
+
     <div class="alert alert-danger" role="alert" v-if="error.message">
       <span>{{ error.message }}</span>
       <button type="button" class="close" @click="error.message = ''">

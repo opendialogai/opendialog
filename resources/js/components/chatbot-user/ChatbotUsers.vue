@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h2 class="mb-3">Chatbot Users</h2>
+
     <table class="table table-hover">
       <thead class="thead-light">
         <tr>

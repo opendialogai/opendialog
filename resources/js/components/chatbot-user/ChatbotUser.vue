@@ -1,5 +1,7 @@
 <template>
   <div v-if="chatbotUser">
+    <h2 class="mb-3">Chatbot User</h2>
+
     <b-card header="General">
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Conversation Log</b-col>

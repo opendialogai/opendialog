@@ -28,8 +28,7 @@
         <SidebarMinimizer/>
       </AppSidebar>
       <main class="main">
-        <Breadcrumb :list="list"/>
-        <div class="container-fluid">
+        <div class="container-fluid mt-4">
           <router-view></router-view>
         </div>
       </main>
@@ -45,7 +44,7 @@
 </template>
 
 <script>
-import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, Footer as TheFooter, Breadcrumb } from '@coreui/vue';
+import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, Footer as TheFooter } from '@coreui/vue';
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt';
 
 export default {
@@ -55,7 +54,6 @@ export default {
     AppSidebar,
     AppAside,
     TheFooter,
-    Breadcrumb,
     DefaultHeaderDropdownAccnt,
     SidebarForm,
     SidebarFooter,
@@ -68,11 +66,6 @@ export default {
     return {
       nav: [],
     };
-  },
-  computed: {
-    list() {
-      return this.$route.matched.filter((route) => route.name || route.meta.label )
-    },
   },
   created() {
     this.buildSidebarMenu();

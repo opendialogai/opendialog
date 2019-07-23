@@ -1,5 +1,7 @@
 <template>
   <div v-if="outgoingIntent">
+    <h2 class="mb-3">Outgoing Intent</h2>
+
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
