@@ -151,7 +151,7 @@ class MessageTemplatesTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'Invalid condition found.');
+        $this->assertEquals($response->content(), '{"field":"conditions","message":"Invalid condition found."}');
 
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates', [
@@ -162,7 +162,7 @@ class MessageTemplatesTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), 'Message template name is already in use.');
+        $this->assertEquals($response->content(), '{"field":"name","message":"Message template name is already in use."}');
     }
 
     public function testMessageTemplatesInvalidUpdateEndpoint()
