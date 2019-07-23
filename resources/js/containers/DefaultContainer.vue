@@ -102,7 +102,7 @@ export default {
       this.nav = [
         {
           name: 'Message Editor',
-          url: '/messages',
+          url: '/admin/outgoing-intents',
           icon: 'icon-list',
         },
         {
