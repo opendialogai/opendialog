@@ -52,4 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/users/{id}', 'AdminController@handle');
     Route::get('admin/users/{id}/edit', 'AdminController@handle');
     Route::get('admin/users/add', 'AdminController@handle');
+
+    Route::get('stats/users', 'StatisticsController@users');
+    Route::get('stats/cost', 'StatisticsController@cost');
 });
