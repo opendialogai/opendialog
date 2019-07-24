@@ -2,46 +2,48 @@
   <div>
     <h2 class="mb-3">Chatbot Users</h2>
 
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">User ID</th>
-          <th scope="col">Email</th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">First Seen</th>
-          <th scope="col">Last Seen</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="chatbotUser in chatbotUsers" @click="viewChatbotUser(chatbotUser.user_id)">
-          <td>
-            {{ chatbotUser.user_id }}
-          </td>
-          <td>
-            {{ chatbotUser.email }}
-          </td>
-          <td>
-            {{ chatbotUser.first_name }}
-          </td>
-          <td>
-            {{ chatbotUser.last_name }}
-          </td>
-          <td>
-            {{ chatbotUser.first_seen }}
-          </td>
-          <td>
-            {{ chatbotUser.last_seen }}
-          </td>
-          <td>
-            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewChatbotUser(chatbotUser.user_id)">
-              <i class="fa fa-eye"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-auto">
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">User ID</th>
+            <th scope="col">Email</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">First Seen</th>
+            <th scope="col">Last Seen</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="chatbotUser in chatbotUsers" @click="viewChatbotUser(chatbotUser.user_id)">
+            <td>
+              {{ chatbotUser.user_id }}
+            </td>
+            <td>
+              {{ chatbotUser.email }}
+            </td>
+            <td>
+              {{ chatbotUser.first_name }}
+            </td>
+            <td>
+              {{ chatbotUser.last_name }}
+            </td>
+            <td>
+              {{ chatbotUser.first_seen }}
+            </td>
+            <td>
+              {{ chatbotUser.last_seen }}
+            </td>
+            <td>
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewChatbotUser(chatbotUser.user_id)">
+                <i class="fa fa-eye"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <nav aria-label="navigation">
       <ul class="pagination justify-content-center">

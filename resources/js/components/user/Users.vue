@@ -10,46 +10,48 @@
       </div>
     </div>
 
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col">Email</th>
-          <th scope="col">Phone Number</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" @click="viewUser(user.id)">
-          <td>
-            {{ user.id }}
-          </td>
-          <td>
-            {{ user.name }}
-          </td>
-          <td>
-            {{ user.email }}
-          </td>
-          <td>
-            {{ user.phone_number }}
-          </td>
-          <td>
-            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewUser(user.id)">
-              <i class="fa fa-eye"></i>
-            </button>
-            <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editUser(user.id)">
-              <i class="fa fa-edit"></i>
-            </button>
-            <template v-if="user.id != userId">
-              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteUserModal(user.id)">
-                <i class="fa fa-close"></i>
+    <div class="overflow-auto">
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="user in users" @click="viewUser(user.id)">
+            <td>
+              {{ user.id }}
+            </td>
+            <td>
+              {{ user.name }}
+            </td>
+            <td>
+              {{ user.email }}
+            </td>
+            <td>
+              {{ user.phone_number }}
+            </td>
+            <td class="actions">
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewUser(user.id)">
+                <i class="fa fa-eye"></i>
               </button>
-            </template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editUser(user.id)">
+                <i class="fa fa-edit"></i>
+              </button>
+              <template v-if="user.id != userId">
+                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteUserModal(user.id)">
+                  <i class="fa fa-close"></i>
+                </button>
+              </template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <nav aria-label="navigation">
       <ul class="pagination justify-content-center">
@@ -154,3 +156,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+table td.actions {
+  min-width: 160px;
+}
+</style>

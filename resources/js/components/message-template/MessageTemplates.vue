@@ -10,44 +10,46 @@
       </div>
     </div>
 
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Created at</th>
-          <th scope="col">Updated at</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="messageTemplate in messageTemplates" @click="viewMessageTemplate(messageTemplate.id)">
-          <td>
-            {{ messageTemplate.id }}
-          </td>
-          <td>
-            {{ messageTemplate.name }}
-          </td>
-          <td>
-            {{ messageTemplate.created_at }}
-          </td>
-          <td>
-            {{ messageTemplate.updated_at }}
-          </td>
-          <td>
-            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewMessageTemplate(messageTemplate.id)">
-              <i class="fa fa-eye"></i>
-            </button>
-            <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editMessageTemplate(messageTemplate.id)">
-              <i class="fa fa-edit"></i>
-            </button>
-            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteMessageTemplateModal(messageTemplate.id)">
-              <i class="fa fa-close"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-auto">
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Updated at</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="messageTemplate in messageTemplates" @click="viewMessageTemplate(messageTemplate.id)">
+            <td>
+              {{ messageTemplate.id }}
+            </td>
+            <td>
+              {{ messageTemplate.name }}
+            </td>
+            <td>
+              {{ messageTemplate.created_at }}
+            </td>
+            <td>
+              {{ messageTemplate.updated_at }}
+            </td>
+            <td>
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewMessageTemplate(messageTemplate.id)">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editMessageTemplate(messageTemplate.id)">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteMessageTemplateModal(messageTemplate.id)">
+                <i class="fa fa-close"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <nav aria-label="navigation">
       <ul class="pagination justify-content-center">

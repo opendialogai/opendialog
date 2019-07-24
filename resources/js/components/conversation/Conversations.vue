@@ -24,76 +24,78 @@
       </div>
     </div>
 
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Status</th>
-          <th scope="col">Yaml</th>
-          <th scope="col">Opening Intent</th>
-          <th scope="col">Outgoing Intents</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="conversation in conversations" @click="viewConversation(conversation.id)">
-          <td>
-            {{ conversation.id }}
-          </td>
-          <td>
-            {{ conversation.name }}
-          </td>
-          <td>
-            {{ conversation.status }}
-          </td>
-          <td>
-            {{ conversation.yaml_validation_status }}
-          </td>
-          <td>
-            {{ conversation.opening_intent }}
-          </td>
-          <td>
-            <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
-              <template v-if="outgoing_intent.id">
-                <router-link :to="{ name: 'view-outgoing-intent', params: { id: outgoing_intent.id } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+    <div class="overflow-auto">
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Yaml</th>
+            <th scope="col">Opening Intent</th>
+            <th scope="col">Outgoing Intents</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="conversation in conversations" @click="viewConversation(conversation.id)">
+            <td>
+              {{ conversation.id }}
+            </td>
+            <td>
+              {{ conversation.name }}
+            </td>
+            <td>
+              {{ conversation.status }}
+            </td>
+            <td>
+              {{ conversation.yaml_validation_status }}
+            </td>
+            <td>
+              {{ conversation.opening_intent }}
+            </td>
+            <td>
+              <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
+                <template v-if="outgoing_intent.id">
+                  <router-link :to="{ name: 'view-outgoing-intent', params: { id: outgoing_intent.id } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+                </template>
+                <template v-else>
+                  <router-link :to="{ name: 'add-outgoing-intent', query: { name: outgoing_intent.name } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+                </template>
+              </span>
+            </td>
+            <td class="actions">
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewConversation(conversation.id)">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editConversation(conversation.id)">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation.id)">
+                <i class="fa fa-close"></i>
+              </button>
+
+              <template v-if="conversation.status == 'published'">
+                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)" disabled>
+                  <i class="fa fa-upload"></i>
+                </button>
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)">
+                  <i class="fa fa-download"></i>
+                </button>
               </template>
               <template v-else>
-                <router-link :to="{ name: 'add-outgoing-intent', query: { name: outgoing_intent.name } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)">
+                  <i class="fa fa-upload"></i>
+                </button>
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)" disabled>
+                  <i class="fa fa-download"></i>
+                </button>
               </template>
-            </span>
-          </td>
-          <td>
-            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewConversation(conversation.id)">
-              <i class="fa fa-eye"></i>
-            </button>
-            <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editConversation(conversation.id)">
-              <i class="fa fa-edit"></i>
-            </button>
-            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation.id)">
-              <i class="fa fa-close"></i>
-            </button>
-
-            <template v-if="conversation.status == 'published'">
-              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)" disabled>
-                <i class="fa fa-upload"></i>
-              </button>
-              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)">
-                <i class="fa fa-download"></i>
-              </button>
-            </template>
-            <template v-else>
-              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)">
-                <i class="fa fa-upload"></i>
-              </button>
-              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)" disabled>
-                <i class="fa fa-download"></i>
-              </button>
-            </template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <nav aria-label="navigation">
       <ul class="pagination justify-content-center">
@@ -218,3 +220,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+table td.actions {
+  min-width: 250px;
+}
+</style>
