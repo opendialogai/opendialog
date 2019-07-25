@@ -75,12 +75,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.daterangepicker.show-calendar {
-  min-width: 0 !important;
-  .drp-calendar {
-    display: none;
-  }
-}
-</style>

@@ -6,18 +6,22 @@
           <h4>{{ chartData.total }}</h4>
           <p class="mb-0">{{ name }}</p>
         </b-card-body>
-        <LineChart class="px-3" :data="chartData" chart-id="ciao" :height="120"></LineChart>
+        <LineChart class="px-3" :data="chartData" :chart-id="chartId" :height="104"></LineChart>
       </template>
       <template v-else>
-        <div class="text-center w-10 py-5">
-          <b-spinner />
-        </div>
+        <b-card-body class="px-0 py-4">
+          <div class="text-center w-10 py-5">
+            <b-spinner />
+          </div>
+        </b-card-body>
       </template>
     </b-card>
   </b-col>
 </template>
 
 <script>
+import shortid from 'shortid';
+
 import LineChart from '@/components/charts/LineChart';
 
 export default {
@@ -50,14 +54,39 @@ export default {
   data() {
     return {
       chartData: null,
+      chartId: shortid.generate(),
     };
   },
+  computed: {
+    query() {
+      let query = '?';
+      if (this.startDate) {
+        query = query + 'startdate=' + this.startDate + '&';
+      }
+      if (this.endDate) {
+        query = query + 'enddate=' + this.endDate;
+      }
+      return query;
+    },
+  },
+  watch: {
+    query() {
+      this.fetchData();
+    },
+  },
   mounted() {
-    axios.get(this.endpoint).then(
-      (response) => {
-        this.chartData = response.data;
-      },
-    );
+    this.fetchData();
+  },
+  methods: {
+    fetchData() {
+      this.chartData = null;
+
+      axios.get(this.endpoint + this.query).then(
+        (response) => {
+          this.chartData = response.data;
+        },
+      );
+    },
   },
 };
 </script>

@@ -8,9 +8,11 @@
         </b-card-body>
       </template>
       <template v-else>
-        <div class="text-center w-10 py-3">
-          <b-spinner />
-        </div>
+        <b-card-body class="px-0 py-1">
+          <div class="text-center w-10 py-4">
+            <b-spinner />
+          </div>
+        </b-card-body>
       </template>
     </b-card>
   </b-col>
@@ -46,12 +48,36 @@ export default {
       data: null,
     };
   },
+  computed: {
+    query() {
+      let query = '?';
+      if (this.startDate) {
+        query = query + 'startdate=' + this.startDate + '&';
+      }
+      if (this.endDate) {
+        query = query + 'enddate=' + this.endDate;
+      }
+      return query;
+    },
+  },
+  watch: {
+    query() {
+      this.fetchData();
+    },
+  },
   mounted() {
-    axios.get(this.endpoint).then(
-      (response) => {
-        this.data = response.data;
-      },
-    );
+    this.fetchData();
+  },
+  methods: {
+    fetchData() {
+      this.data = null;
+
+      axios.get(this.endpoint + this.query).then(
+        (response) => {
+          this.data = response.data;
+        },
+      );
+    },
   },
 };
 </script>

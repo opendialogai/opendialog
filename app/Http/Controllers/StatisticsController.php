@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class StatisticsController extends Controller
 {
-    public function users()
+    public function users(Request $request)
     {
+        $startDate = $request->query->get('startdate');
+        $endDate = $request->query->get('enddate');
+
         $labels = [];
         $values = [];
 
@@ -23,8 +28,11 @@ class StatisticsController extends Controller
         return $data;
     }
 
-    public function cost()
+    public function cost(Request $request)
     {
+        $startDate = $request->query->get('startdate');
+        $endDate = $request->query->get('enddate');
+
         return [
             'value' => '100%',
         ];
