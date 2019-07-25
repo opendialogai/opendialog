@@ -1,13 +1,45 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// CoreUI Icons Set
+@import '~@coreui/icons/css/coreui-icons.min.css';
 
-.navbar-laravel {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// Font Awesome Icons Set
+$fa-font-path: '~font-awesome/fonts/';
+@import '~font-awesome/scss/font-awesome.scss';
+
+// Simple Line Icons Set
+$simple-line-font-path: '~simple-line-icons/fonts/';
+@import '~simple-line-icons/scss/simple-line-icons.scss';
+
+// Flag Icons Set
+@import '~flag-icon-css/css/flag-icon.min.css';
+
+// Bootstrap Vue Styles
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+
+// CoreUI
+@import "~@coreui/coreui/scss/coreui";
+
+//IE fix for sticky footer
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .app {
+    height: 100%;
+  }
+}
+
+.sidebar {
+  .nav-item {
+    max-width: 100%;
+  }
+  .nav-dropdown .nav-link {
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+.img-avatar {
+  border-radius: 0;
 }
