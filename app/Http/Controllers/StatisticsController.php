@@ -15,8 +15,8 @@ class StatisticsController extends Controller
         $values = [];
 
         for ($i = 1; $i <= 15; $i++) {
-          $labels[] = $i;
-          $values[] = rand(2, 10);
+            $labels[] = $i;
+            $values[] = rand(2, 10);
         }
 
         $data = [
