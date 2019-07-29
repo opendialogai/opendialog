@@ -36,8 +36,8 @@
     <TheFooter>
       <!--footer-->
       <div>
-        <a href="https://coreui.io">CoreUI</a>
-        <span class="ml-1">&copy; 2019 creativeLabs.</span>
+        <a href="https://opendialog.ai">OpenDialog</a>
+        <span class="ml-1">&copy; 2019 Greenshoot Labs.</span>
       </div>
     </TheFooter>
   </div>
