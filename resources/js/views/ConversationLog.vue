@@ -62,6 +62,44 @@
             <div class="list-message">
             </div>
           </template>
+          <template v-if="message.type == 'webchat_form'">
+            <div class="form-message">
+              <div class="form-message--text" v-html="message.data.text"></div>
+              <div v-for="element in message.data.elements" class="form-message--element mt-2">
+                <span v-if="element.display" class="form-message--element-label">{{ element.display }}:</span>
+
+                <template v-if="element.element_type == 'text'">
+                  <input class="form-message--element-input" disabled />
+                </template>
+                <template v-if="element.element_type == 'number'">
+                  <input type="number" class="form-message--element-input" disabled />
+                </template>
+                <template v-if="element.element_type == 'textarea'">
+                  <textarea class="form-message--element-textarea" />
+                </template>
+                <template v-if="element.element_type == 'select'">
+                  <select class="form-message--element-select">
+                    <option v-for="(option_text, option_value) in element.options" v-bind:value="option_value">
+                      {{ option_text }}
+                    </option>
+                  </select>
+                </template>
+                <template v-if="element.element_type == 'auto-select'">
+                  <select class="form-message--element-select">
+                    <option v-for="option in element.options" v-bind:value="option.value">
+                      {{ option.key }}
+                    </option>
+                  </select>
+                </template>
+              </div>
+              <div class="submit-button btn btn-default btn-primary mt-2">{{ message.data.submit_text }}</div>
+            </div>
+          </template>
+          <template v-if="message.type == 'form_response'">
+            <div class="form-response-message">
+              <div class="form-response" v-html="message.data.text"></div>
+            </div>
+          </template>
           <div class="time font-xs text-muted mt-1">{{ message.created_at }}</div>
         </div>
       </div>
@@ -96,6 +134,8 @@ export default {
 <style lang="scss" scoped>
 .message {
   .list-message,
+  .form-message,
+  .form-response-message,
   .button-response-message,
   .text-message,
   .button-message,
@@ -104,11 +144,21 @@ export default {
     border-radius: 6px;
     padding: 7px 10px;
     background: #eaeaea;
-    max-width: 300px;
+    max-width: 350px;
+  }
+
+  .form-message {
+    select {
+      max-width: 100%;
+    }
+    .submit-button {
+      width: 100%;
+    }
   }
 
   .me {
     .button-response-message,
+    .form-response-message,
     .text-message {
       background: #4e8cff;
       color: white;
