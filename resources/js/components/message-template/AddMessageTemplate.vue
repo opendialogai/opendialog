@@ -71,6 +71,7 @@ export default {
         name: this.name,
         conditions: this.conditions,
         message_markup: this.message_markup,
+        outgoing_intent_id: this.outgoingIntent,
       };
 
       axios.post('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates', data).then(
