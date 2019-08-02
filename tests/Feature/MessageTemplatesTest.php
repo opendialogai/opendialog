@@ -102,7 +102,6 @@ class MessageTemplatesTest extends TestCase
                 'name' => 'test',
                 'conditions' => "conditions:\n- condition:\n    attribute: user.name\n    operation: eq\n    value: test",
                 'message_markup' => '<message><text-message>Test</text-message></message>',
-                'outgoing_intent_id' => $outgoingIntent->id,
             ])
             ->assertStatus(201)
             ->assertJsonFragment(
@@ -110,7 +109,7 @@ class MessageTemplatesTest extends TestCase
                     'name' => 'test',
                     'conditions' => "conditions:\n- condition:\n    attribute: user.name\n    operation: eq\n    value: test",
                     'message_markup' => '<message><text-message>Test</text-message></message>',
-                    'outgoing_intent_id' => $outgoingIntent->id,
+                    'outgoing_intent_id' => (string) $outgoingIntent->id,
                 ]
             );
     }

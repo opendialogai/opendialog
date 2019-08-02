@@ -7,6 +7,7 @@ use App\Http\Resources\MessageTemplateCollection;
 use App\Http\Resources\MessageTemplateResource;
 use Illuminate\Http\Request;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use OpenDialogAi\ResponseEngine\Rules\MessageConditions;
 use OpenDialogAi\ResponseEngine\Rules\MessageXML;
 
@@ -35,12 +36,18 @@ class MessageTemplatesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $outgoingIntentId
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($outgoingIntentId, Request $request)
     {
+        if (!OutgoingIntent::find($outgoingIntentId)) {
+            return response("The requested Outgoing Intent ID does not exist.", 404);
+        }
+
         $messageTemplate = MessageTemplate::make($request->all());
+        $messageTemplate->outgoing_intent_id = $outgoingIntentId;
 
         if ($error = $this->validateValue($messageTemplate)) {
             return response($error, 400);
