@@ -129,12 +129,6 @@ class MessageTemplatesController extends Controller
             ];
         }
 
-        if (!$messageTemplate->outgoing_intent_id) {
-            return [
-                'message' => 'Outgoing Intent ID is required.',
-            ];
-        }
-
         if (!$ruleConditions->passes(null, $messageTemplate->conditions)) {
             return [
                 'field' => 'conditions',
