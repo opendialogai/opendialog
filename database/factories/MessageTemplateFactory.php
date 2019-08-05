@@ -17,7 +17,7 @@ use Faker\Generator as Faker;
 
 $factory->define(MessageTemplate::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->unique()->name,
         'conditions' => '',
         'message_markup' => '<message><text-message>Test</text-message></message>',
     ];
