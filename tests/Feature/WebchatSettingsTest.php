@@ -75,28 +75,28 @@ class WebchatSettingsTest extends TestCase
 
     public function testWebchatSettingsUpdateEndpoint()
     {
-        $setting = WebchatSetting::where('type', 'string')->first();
+        $setting = WebchatSetting::where('type', WebchatSetting::STRING)->first();
 
         $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
                 'value' => 100,
-                'type' => 'number',
+                'type' => WebchatSetting::NUMBER,
                 'name' => 'updated value'
             ])
             ->assertStatus(200);
 
-        $updatedSetting = WebchatSetting::where('type', 'string')->first();
+        $updatedSetting = WebchatSetting::where('type', WebchatSetting::STRING)->first();
 
         $this->assertEquals($updatedSetting->value, 100);
         $this->assertNotEquals($updatedSetting->name, 'updated value');
-        $this->assertNotEquals($updatedSetting->type, 'number');
+        $this->assertNotEquals($updatedSetting->type, WebchatSetting::NUMBER);
     }
 
     public function testWebchatSettingsUpdateEndpointValidationNumber()
     {
         $setting = WebchatSetting::create([
             'name' => 'testSetting',
-            'type' => 'number',
+            'type' => WebchatSetting::NUMBER,
             'value' => '0',
         ]);
 
@@ -123,7 +123,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::create([
             'name' => 'testSetting',
-            'type' => 'boolean',
+            'type' => WebchatSetting::BOOLEAN,
             'value' => '0',
         ]);
 
@@ -150,7 +150,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::create([
             'name' => 'testSetting',
-            'type' => 'colour',
+            'type' => WebchatSetting::COLOUR,
             'value' => '#000000',
         ]);
 
@@ -177,7 +177,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::create([
             'name' => 'testSetting',
-            'type' => 'string',
+            'type' => WebchatSetting::STRING,
             'value' => 'test',
         ]);
 
@@ -198,7 +198,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::create([
             'name' => 'testSetting',
-            'type' => 'object',
+            'type' => WebchatSetting::OBJECT,
             'value' => '',
         ]);
 
@@ -213,7 +213,7 @@ class WebchatSettingsTest extends TestCase
     {
         $setting = WebchatSetting::create([
             'name' => 'testSetting',
-            'type' => 'map',
+            'type' => WebchatSetting::MAP,
             'value' => json_encode([
                 'key' => 'value',
             ]),
@@ -234,11 +234,9 @@ class WebchatSettingsTest extends TestCase
 
     public function testWebchatSettingsStoreEndpoint()
     {
-        $setting = WebchatSetting::first();
-
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/webchat-setting', [
-                'type' => 'string',
+                'type' => WebchatSetting::STRING,
                 'name' => 'new setting',
                 'value' => 'test',
             ])
