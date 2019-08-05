@@ -75,21 +75,21 @@ class WebchatSettingsTest extends TestCase
 
     public function testWebchatSettingsUpdateEndpoint()
     {
-        $setting = WebchatSetting::first();
+        $setting = WebchatSetting::where('type', 'string')->first();
 
         $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/webchat-setting/' . $setting->id, [
-                'value' => 'updated value',
-                'type' => 'updated value',
+                'value' => 100,
+                'type' => 'number',
                 'name' => 'updated value'
             ])
             ->assertStatus(200);
 
-        $updatedSetting = WebchatSetting::first();
+        $updatedSetting = WebchatSetting::where('type', 'string')->first();
 
-        $this->assertEquals($updatedSetting->value, 'updated value');
+        $this->assertEquals($updatedSetting->value, 100);
         $this->assertNotEquals($updatedSetting->name, 'updated value');
-        $this->assertNotEquals($updatedSetting->type, 'updated value');
+        $this->assertNotEquals($updatedSetting->type, 'number');
     }
 
     public function testWebchatSettingsUpdateEndpointValidationNumber()
