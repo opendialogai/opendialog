@@ -16,6 +16,12 @@ use Tests\TestCase;
 
 class OdTest extends TestCase
 {
+    public function setup(): void
+    {
+        parent::setUp();
+        $this->webchatSetup();
+    }
+
     /**
      * Verify that the demo endpoint is present.
      *
