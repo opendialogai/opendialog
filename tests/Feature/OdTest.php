@@ -11,10 +11,17 @@ use OpenDialogAi\InterpreterEngine\Service\InterpreterServiceInterface;
 use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 use OpenDialogAi\SensorEngine\Service\SensorService;
 use OpenDialogAi\Webchat\Console\Commands\WebchatSettings;
+use OpenDialogAi\Webchat\WebchatSetting;
 use Tests\TestCase;
 
 class OdTest extends TestCase
 {
+    public function setup(): void
+    {
+        parent::setUp();
+        $this->webchatSetup();
+    }
+
     /**
      * Verify that the demo endpoint is present.
      *
@@ -59,8 +66,11 @@ class OdTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson([
-            'teamName' => 'OpenDialog Webchat',
-            'useAvatars' => true,
+            WebchatSetting::GENERAL => [
+                WebchatSetting::TEAM_NAME => 'OpenDialog Webchat',
+                WebchatSetting::USE_HUMAN_AVATAR => true,
+                WebchatSetting::USE_BOT_AVATAR => true,
+            ]
         ]);
     }
 

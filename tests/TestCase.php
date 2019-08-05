@@ -22,7 +22,6 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         Artisan::call('migrate');
-        $this->artisan('webchat:setup');
 
         try {
             $env = parse_ini_file(__DIR__ . '/../.env');
@@ -44,5 +43,10 @@ abstract class TestCase extends BaseTestCase
             $client->initSchema();
             $this->dgraphInitialised = true;
         }
+    }
+
+    protected function webchatSetup(): void
+    {
+        $this->artisan('webchat:setup');
     }
 }
