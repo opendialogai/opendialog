@@ -40,7 +40,7 @@ export default {
 
       axios.post('/admin/api/outgoing-intents', data).then(
         (response) => {
-          this.$router.push({ name: 'view-message-template', params: { id: response.data.data.id } });
+          this.$router.push({ name: 'view-outgoing-intent', params: { id: response.data.data.id } });
         },
       ).catch(
         (error) => {
