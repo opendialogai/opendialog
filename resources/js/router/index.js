@@ -12,6 +12,7 @@ import OutgoingIntent from '@/views/OutgoingIntent';
 import ChatbotUsers from '@/views/ChatbotUsers';
 import ConversationLog from '@/views/ConversationLog';
 import User from '@/views/User';
+import WebchatDemo from '@/views/WebchatDemo';
 
 Vue.use(VueRouter);
 
@@ -144,6 +145,11 @@ const router = new VueRouter({
           component: User,
           props: true,
         },
+        {
+          path: 'demo',
+          name: 'webchat-demo',
+          component: WebchatDemo,
+        }
       ],
     },
   ],
