@@ -1,82 +1,84 @@
 <template>
-  <div>
-    <b-card header="Webchat settings">
-      <form @submit.prevent="updateWebchatSettings">
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">URL</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="url" />
+  <div class="row">
+    <div class="col-sm-6">
+      <b-card header="Webchat settings">
+        <form @submit.prevent="updateWebchatSettings">
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">URL</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="url" />
+            </div>
           </div>
-        </div>
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">Team Name</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="teamName" />
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">Team Name</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="teamName" />
+            </div>
           </div>
-        </div>
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">User First Name</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="userFirstName" />
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">User First Name</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="userFirstName" />
+            </div>
           </div>
-        </div>
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">User Last Name</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="userLastName" />
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">User Last Name</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="userLastName" />
+            </div>
           </div>
-        </div>
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">User Email</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="userEmail" />
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">User Email</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="userEmail" />
+            </div>
           </div>
-        </div>
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">User External ID</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="userExternalId" />
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">User External ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="userExternalId" />
+            </div>
           </div>
-        </div>
-        <button class="btn btn-primary">Update webchat settings</button>
-      </form>
-    </b-card>
+          <button class="btn btn-primary">Update webchat settings</button>
+        </form>
+      </b-card>
 
-    <b-card header="Send Trigger message">
-      <form @submit.prevent="sendTriggerMessage">
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">Callback id</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="callbackId" />
+      <b-card header="Send Trigger message">
+        <form @submit.prevent="sendTriggerMessage">
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">Callback id</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="callbackId" />
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-1 col-form-label">Value</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="triggerValue" />
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Value</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="triggerValue" />
+            </div>
           </div>
-        </div>
-        <button class="btn btn-primary">Send trigger message</button>
-      </form>
-    </b-card>
+          <button class="btn btn-primary">Send trigger message</button>
+        </form>
+      </b-card>
 
-    <b-card header="Set custom user attribute">
-      <form @submit.prevent="updateCustomAttributes">
-        <div class="form-group mb-2 row">
-          <label class="col-sm-1 col-form-label">Attribute ID</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="attributeName" />
+      <b-card header="Set custom user attribute">
+        <form @submit.prevent="updateCustomAttributes">
+          <div class="form-group mb-2 row">
+            <label class="col-sm-3 col-form-label">Attribute ID</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="attributeName" />
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-1 col-form-label">Value</label>
-          <div class="col-sm-11">
-            <input class="form-control" v-model="attributeValue" />
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Value</label>
+            <div class="col-sm-9">
+              <input class="form-control" v-model="attributeValue" />
+            </div>
           </div>
-        </div>
-        <button class="btn btn-primary">Update User attribute</button>
-      </form>
-    </b-card>
+          <button class="btn btn-primary">Update User attribute</button>
+        </form>
+      </b-card>
+    </div>
   </div>
 </template>
 

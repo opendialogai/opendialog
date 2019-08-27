@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use OpenDialogAi\ActionEngine\Service\ActionEngineInterface;
 use OpenDialogAi\ContextEngine\AttributeResolver\AttributeResolver;
 use OpenDialogAi\ContextEngine\ContextManager\ContextService;
@@ -29,14 +30,11 @@ class OdTest extends TestCase
      */
     public function testDemoEndpoint()
     {
-        $response = $this->get('/demo');
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->get('/admin/demo');
 
         $response->assertStatus(200);
-        $response->assertSeeTextInOrder([
-            'Send Trigger message',
-            'Set custom user attribute',
-            'window.openDialogSettings',
-        ]);
     }
 
     /**
