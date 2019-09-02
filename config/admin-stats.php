@@ -1,40 +1,42 @@
 <?php
 
+use App\StatsContants;
+
 return [
 
     'cards' => [
         [
             [
-                'type' => 'line-chart',
+                'type' => StatsContants::LINE_CHART,
                 'name' => 'Users',
                 'endpoint' => '/stats/users',
-                'width' => 2,
+                'width' => StatsContants::HALF,
             ],
             [
-                'type' => 'line-chart',
+                'type' => StatsContants::LINE_CHART,
                 'name' => 'Users',
                 'endpoint' => '/stats/users',
-                'width' => 2,
+                'width' => StatsContants::HALF,
             ],
         ],
         [
             [
-                'type' => 'single-number',
+                'type' => StatsContants::NUMBER,
                 'name' => 'Cost',
                 'endpoint' => '/stats/cost',
-                'width' => 3,
+                'width' => StatsContants::THIRD,
             ],
             [
-                'type' => 'single-number',
+                'type' => StatsContants::NUMBER,
                 'name' => 'Cost',
                 'endpoint' => '/stats/cost',
-                'width' => 3,
+                'width' => StatsContants::THIRD,
             ],
             [
-                'type' => 'single-number',
+                'type' => StatsContants::NUMBER,
                 'name' => 'Cost',
                 'endpoint' => '/stats/cost',
-                'width' => 3,
+                'width' => StatsContants::THIRD,
             ],
         ],
     ],
