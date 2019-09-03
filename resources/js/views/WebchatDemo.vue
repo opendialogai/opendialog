@@ -1,45 +1,33 @@
 <template>
   <div class="row">
     <div class="col-sm-6">
-      <b-card header="Webchat settings">
+      <b-card header="User Settings">
         <form @submit.prevent="updateWebchatSettings">
           <div class="form-group mb-2 row">
-            <label class="col-sm-3 col-form-label">URL</label>
-            <div class="col-sm-9">
-              <input class="form-control" v-model="url" />
-            </div>
-          </div>
-          <div class="form-group mb-2 row">
-            <label class="col-sm-3 col-form-label">Team Name</label>
-            <div class="col-sm-9">
-              <input class="form-control" v-model="teamName" />
-            </div>
-          </div>
-          <div class="form-group mb-2 row">
-            <label class="col-sm-3 col-form-label">User First Name</label>
+            <label class="col-sm-3 col-form-label">First Name</label>
             <div class="col-sm-9">
               <input class="form-control" v-model="userFirstName" />
             </div>
           </div>
           <div class="form-group mb-2 row">
-            <label class="col-sm-3 col-form-label">User Last Name</label>
+            <label class="col-sm-3 col-form-label">Last Name</label>
             <div class="col-sm-9">
               <input class="form-control" v-model="userLastName" />
             </div>
           </div>
           <div class="form-group mb-2 row">
-            <label class="col-sm-3 col-form-label">User Email</label>
+            <label class="col-sm-3 col-form-label">Email</label>
             <div class="col-sm-9">
               <input class="form-control" v-model="userEmail" />
             </div>
           </div>
           <div class="form-group mb-2 row">
-            <label class="col-sm-3 col-form-label">User External ID</label>
+            <label class="col-sm-3 col-form-label">External ID</label>
             <div class="col-sm-9">
               <input class="form-control" v-model="userExternalId" />
             </div>
           </div>
-          <button class="btn btn-primary">Update webchat settings</button>
+          <button class="btn btn-primary">Update User settings</button>
         </form>
       </b-card>
 
@@ -57,7 +45,7 @@
               <input class="form-control" v-model="triggerValue" />
             </div>
           </div>
-          <button class="btn btn-primary">Send trigger message</button>
+          <button class="btn btn-primary">Send Trigger message</button>
         </form>
       </b-card>
 
@@ -90,9 +78,7 @@ export default {
       attributeName: '',
       attributeValue: '',
       callbackId: '',
-      teamName: window.openDialogSettings.general.teamName,
       triggerValue: '',
-      url: window.openDialogSettings.url,
       userEmail: window.openDialogSettings.user.email,
       userExternalId: window.openDialogSettings.user.external_id,
       userFirstName: window.openDialogSettings.user.first_name,
@@ -142,19 +128,13 @@ export default {
       });
     },
     updateWebchatSettings() {
-      const teamName = this.teamName;
       const userEmail = this.userEmail;
       const userExternalId = this.userExternalId;
       const userFirstName = this.userFirstName;
       const userLastName = this.userLastName;
-      const url = this.url;
 
       document.querySelector('#opendialog-chatwindow').contentWindow.postMessage({
         openDialogSettings: {
-          url,
-          general: {
-            teamName,
-          },
           user: {
             first_name: userFirstName,
             last_name: userLastName,
