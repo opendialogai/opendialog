@@ -20,7 +20,7 @@ services:
   dgraph-zero:
     type: compose
     services:
-      image: dgraph/dgraph:latest
+      image: dgraph/dgraph:v1.0.17
       volumes:
       - type: volume
         source: dgraph
@@ -35,7 +35,7 @@ services:
   dgraph-alpha:
     type: compose
     services:
-      image: dgraph/dgraph:latest
+      image: dgraph/dgraph:v1.0.17
       volumes:
       - type: volume
         source: dgraph
@@ -50,7 +50,7 @@ services:
   dgraph-ratel:
     type: compose
     services:
-      image: dgraph/dgraph:latest
+      image: dgraph/dgraph:v1.0.17
       volumes:
       - type: volume
         source: dgraph
