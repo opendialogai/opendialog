@@ -72,5 +72,5 @@ jobs:
 
       - run:
           name: Output logs on failure
-          command: cat ./vendor/orchestra/testbench-core/laravel/storage/logs/*
+          command: cat ./storage/logs/*
           when: on_fail
