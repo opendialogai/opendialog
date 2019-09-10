@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a732819698df1223b9ec3bdd7ddccebf",
+    "content-hash": "c17d9e1a2d9725533d3e484d25edf6b4",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1843,18 +1843,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "55968ceea72badd4602730b145f5119e54180be4"
+                "reference": "7a681037720645c7ce62ce66cb95e608aae7c149"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/55968ceea72badd4602730b145f5119e54180be4",
-                "reference": "55968ceea72badd4602730b145f5119e54180be4",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/7a681037720645c7ce62ce66cb95e608aae7c149",
+                "reference": "7a681037720645c7ce62ce66cb95e608aae7c149",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^2.9",
                 "guzzlehttp/guzzle": "~6.3",
                 "justinrainbow/json-schema": "^5.2",
+                "opendialogai/dgraph-docker": "dev-master",
                 "php": "^7.1.3",
                 "php-ds/php-ds": "~1.2.",
                 "spatie/laravel-activitylog": "^3.2",
@@ -1862,9 +1863,11 @@
             },
             "require-dev": {
                 "barryvdh/laravel-ide-helper": "^2.6",
+                "friendsofphp/php-cs-fixer": "^2.15",
                 "matthewbdaly/artisan-standalone": "^0.0.8",
                 "mockery/mockery": "^1.2",
                 "orchestra/testbench": "^3.8",
+                "phpro/grumphp": "^0.16.0",
                 "phpunit/phpunit": "^7.5",
                 "squizlabs/php_codesniffer": "^3.4"
             },
@@ -1901,11 +1904,7 @@
                     "OpenDialogAi\\Core\\Database\\": "database/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "OpenDialogAi\\Core\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -1920,11 +1919,39 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "support": {
-                "source": "https://github.com/opendialogai/core/tree/develop",
-                "issues": "https://github.com/opendialogai/core/issues"
+            "time": "2019-09-10T11:22:05+00:00"
+        },
+        {
+            "name": "opendialogai/dgraph-docker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opendialogai/dgraph-docker.git",
+                "reference": "7af3e5129d529638090b8f66469927a015c8a875"
             },
-            "time": "2019-09-02T16:15:48+00:00"
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/7af3e5129d529638090b8f66469927a015c8a875",
+                "reference": "7af3e5129d529638090b8f66469927a015c8a875",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stuart Haigh",
+                    "email": "stuarth@greenshootlabs.com"
+                },
+                {
+                    "name": "Ronald Ashri",
+                    "email": "ronalda@greenshootlabs.com"
+                }
+            ],
+            "description": "The OpenDialog DGraph Docker compose file",
+            "time": "2019-09-05T18:55:43+00:00"
         },
         {
             "name": "opendialogai/webchat",
@@ -1932,12 +1959,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "3b33990e6900f018cd0b8d14fb18aa7da8d2f3e4"
+                "reference": "9e3d3e3a119be6b0400298f4a43eb1139f4ec903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/3b33990e6900f018cd0b8d14fb18aa7da8d2f3e4",
-                "reference": "3b33990e6900f018cd0b8d14fb18aa7da8d2f3e4",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/9e3d3e3a119be6b0400298f4a43eb1139f4ec903",
+                "reference": "9e3d3e3a119be6b0400298f4a43eb1139f4ec903",
                 "shasum": ""
             },
             "require": {
@@ -1963,11 +1990,7 @@
                     "OpenDialogAi\\Webchat\\Database\\": "database/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "OpenDialogAi\\Webchat\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "proprietary"
             ],
@@ -1978,11 +2001,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "support": {
-                "source": "https://github.com/opendialogai/webchat/tree/develop",
-                "issues": "https://github.com/opendialogai/webchat/issues"
-            },
-            "time": "2019-09-02T16:18:28+00:00"
+            "time": "2019-09-10T12:54:02+00:00"
         },
         {
             "name": "opis/closure",
@@ -2859,9 +2878,9 @@
             "authors": [
                 {
                     "name": "Sebastian De Deyne",
-                    "role": "Developer",
                     "email": "sebastian@spatie.be",
-                    "homepage": "https://spatie.be"
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Highlight your markdown code blocks with league/commonmark",
@@ -2986,9 +3005,9 @@
             "authors": [
                 {
                     "name": "Freek Van der Herten",
-                    "role": "Developer",
                     "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be"
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Send CORS headers in a Laravel or Lumen application",
@@ -4747,9 +4766,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
-                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de"
+                    "homepage": "https://beyondco.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -4931,8 +4950,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "role": "Developer",
-                    "homepage": "https://github.com/filp"
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
                 }
             ],
             "description": "php error handling for cool kids",
