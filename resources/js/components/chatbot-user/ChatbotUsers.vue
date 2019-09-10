@@ -2,6 +2,13 @@
   <div>
     <h2 class="mb-3">Chatbot Users</h2>
 
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" v-model="usersInteract" id="usersInteract" @change="changeUsersInteract">
+      <label class="form-check-label" for="usersInteract">
+        Show only users that have had an interaction with the chatbot
+      </label>
+    </div>
+
     <div class="overflow-auto">
       <table class="table table-hover">
         <thead class="thead-light">
@@ -86,6 +93,7 @@ export default {
       firstSeenSort: 1,
       lastSeenSort: 1,
       currentOrder: 'last_seen',
+      usersInteract: false,
     };
   },
   computed: {
@@ -98,6 +106,9 @@ export default {
         sort = 'desc';
       }
       return sort;
+    },
+    interact() {
+      return (this.usersInteract) ? '1' : '0';
     },
   },
   watch: {
@@ -116,13 +127,15 @@ export default {
       }
     }
 
+    this.usersInteract = (this.$route.query.interact == '1') ? true : false;
+
     this.fetchChatbotUsers();
   },
   methods: {
     fetchChatbotUsers() {
       this.currentPage = this.$route.query.page || 1;
 
-      axios.get('/admin/api/chatbot-user?page=' + this.currentPage + '&order=' + this.currentOrder + '&sort=' + this.currentSort).then(
+      axios.get('/admin/api/chatbot-user?page=' + this.currentPage + '&order=' + this.currentOrder + '&sort=' + this.currentSort + '&interact=' + this.interact).then(
         (response) => {
           this.totalPages = response.data.meta.last_page;
           this.chatbotUsers = response.data.data;
@@ -136,14 +149,17 @@ export default {
       this.firstSeenSort = (this.firstSeenSort) ? 0 : 1;
       this.currentOrder = 'first_seen';
 
-      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort } });
+      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort, interact: this.interact } });
     },
     sortByLastSeen() {
       this.lastSeenSort = (this.lastSeenSort) ? 0 : 1;
       this.currentOrder = 'last_seen';
 
-      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort } });
+      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort, interact: this.interact } });
     },
+    changeUsersInteract() {
+      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort, interact: this.interact } });
+    }
   },
 };
 </script>

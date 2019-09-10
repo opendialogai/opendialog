@@ -32,8 +32,9 @@ class ChatbotUsersController extends Controller
     {
         $order = $request->get('order');
         $sort = ($request->get('sort')) ? $request->get('sort') : 'desc';
+        $interact = ($request->get('interact')) ? true : false;
 
-        $chatbotUsers = ChatbotUser::when($order, function ($query, $order) use ($sort) {
+        $chatbotUsersQuery = ChatbotUser::when($order, function ($query, $order) use ($sort) {
                 if ($order == 'first_seen') {
                     $query->orderBy('created_at', $sort);
                 } elseif ($order == 'last_seen') {
@@ -44,8 +45,16 @@ class ChatbotUsersController extends Controller
                 }
             }, function ($query) {
                 $query;
-            })
-            ->paginate(50);
+            });
+
+        if ($interact) {
+            $chatbotUsersQuery
+                ->join('messages as m', 'chatbot_users.user_id', '=', 'm.user_id')
+                ->where('m.author', '<>', 'them')
+                ->where('m.type', '<>', 'chat_open');
+        }
+
+        $chatbotUsers = $chatbotUsersQuery->paginate(50);
 
         return new ChatbotUserCollection($chatbotUsers);
     }
