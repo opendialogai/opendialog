@@ -15,15 +15,18 @@
       </b-col>
     </b-row>
 
-    <b-row>
-      <line-chart-card name="Users" :start-date="startDate" :end-date="endDate" endpoint="/stats/users" :width="2"></line-chart-card>
-      <line-chart-card name="Users" :start-date="startDate" :end-date="endDate" endpoint="/stats/users" :width="2"></line-chart-card>
-    </b-row>
-    <b-row>
-      <single-number-card name="Cost" :start-date="startDate" :end-date="endDate" endpoint="/stats/cost" :width="3"></single-number-card>
-      <single-number-card name="Cost" :start-date="startDate" :end-date="endDate" endpoint="/stats/cost" :width="3"></single-number-card>
-      <single-number-card name="Cost" :start-date="startDate" :end-date="endDate" endpoint="/stats/cost" :width="3"></single-number-card>
-    </b-row>
+    <template v-for="row in dashboardCards">
+      <b-row>
+        <template v-for="card in row">
+          <template v-if="card.type == 'line-chart'">
+            <line-chart-card :name="card.name" :start-date="startDate" :end-date="endDate" :endpoint="card.endpoint" :width="card.width"></line-chart-card>
+          </template>
+          <template v-else-if="card.type == 'single-number'">
+            <single-number-card :name="card.name" :start-date="startDate" :end-date="endDate" :endpoint="card.endpoint" :width="card.width"></single-number-card>
+          </template>
+        </template>
+      </b-row>
+    </template>
   </div>
 </template>
 
@@ -66,6 +69,11 @@ export default {
       startDate: moment().subtract(6, 'days').format('YYYY-MM-DD'),
       endDate: moment().format('YYYY-MM-DD'),
     };
+  },
+  computed: {
+    dashboardCards() {
+      return window.DashboardCards;
+    },
   },
   methods: {
     updateDateRange() {
