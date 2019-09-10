@@ -36,7 +36,7 @@ class ChatbotUsersController extends Controller
 
         $chatbotUsersQuery = ChatbotUser::when($order, function ($query, $order) use ($sort) {
                 if ($order == 'first_seen') {
-                    $query->orderBy('created_at', $sort);
+                    $query->orderBy('chatbot_users.created_at', $sort);
                 } elseif ($order == 'last_seen') {
                     $query->leftJoin('messages', 'chatbot_users.user_id', '=', 'messages.user_id')
                         ->select('chatbot_users.*', DB::raw('greatest(ifnull(max(messages.created_at), 0), chatbot_users.created_at) last_seen'))

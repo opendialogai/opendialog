@@ -67,15 +67,20 @@
     <nav aria-label="navigation">
       <ul class="pagination justify-content-center">
         <li class="page-item" :class="(currentPage == 1) ? 'disabled' : ''">
-          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage - 1 } }">Previous</router-link>
+          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage - 1, order: currentOrder, sort: currentSort, interact } }">Previous</router-link>
         </li>
 
-        <li class="page-item" v-for="pageNumber in totalPages">
-          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: pageNumber } }">{{ pageNumber }}</router-link>
+        <li class="page-item" :class="(pageNumber == currentPage) ? 'active' : ''" v-for="pageNumber in totalPages">
+          <template v-if="showPageNumber(pageNumber)">
+            <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: pageNumber, order: currentOrder, sort: currentSort, interact } }">{{ pageNumber }}</router-link>
+          </template>
+          <template v-if="showPageEllipsis(pageNumber)">
+            <span class="page-link">...</span>
+          </template>
         </li>
 
         <li class="page-item" :class="(currentPage == totalPages) ? 'disabled' : ''">
-          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage + 1 } }">Next</router-link>
+          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage + 1, order: currentOrder, sort: currentSort, interact } }">Next</router-link>
         </li>
       </ul>
     </nav>
@@ -83,13 +88,14 @@
 </template>
 
 <script>
+import Pager from '@/mixins/Pager';
+
 export default {
   name: 'chatbot-users',
+  mixins: [Pager],
   data() {
     return {
       chatbotUsers: [],
-      currentPage: 1,
-      totalPages: 1,
       firstSeenSort: 1,
       lastSeenSort: 1,
       currentOrder: 'last_seen',
@@ -133,11 +139,11 @@ export default {
   },
   methods: {
     fetchChatbotUsers() {
-      this.currentPage = this.$route.query.page || 1;
+      this.currentPage = parseInt(this.$route.query.page || 1);
 
       axios.get('/admin/api/chatbot-user?page=' + this.currentPage + '&order=' + this.currentOrder + '&sort=' + this.currentSort + '&interact=' + this.interact).then(
         (response) => {
-          this.totalPages = response.data.meta.last_page;
+          this.totalPages = parseInt(response.data.meta.last_page);
           this.chatbotUsers = response.data.data;
         },
       );
@@ -159,7 +165,7 @@ export default {
     },
     changeUsersInteract() {
       this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort, interact: this.interact } });
-    }
+    },
   },
 };
 </script>
