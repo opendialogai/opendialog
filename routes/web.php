@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 if (env("APP_DEBUG")) {
-        Route::get('/demo', function () {
+    Route::get('/demo', function () {
         return view('demo');
     });
 }
@@ -92,7 +92,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/{id}', 'AdminController@handle');
         Route::get('/{id}/edit', 'AdminController@handle');
     });
-
 });
 
 /**
