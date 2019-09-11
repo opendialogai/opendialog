@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c58ac67137e8659bd5c0460782656a4",
+    "content-hash": "cd3ad6042a534430c1620c0603d06edd",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1839,16 +1839,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/laravel6",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "391dab01ec5098da4818f2e8fd6462df6dedc006"
+                "reference": "e62e96962a9637f482274096d15cbdfc60a9bd95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/391dab01ec5098da4818f2e8fd6462df6dedc006",
-                "reference": "391dab01ec5098da4818f2e8fd6462df6dedc006",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/e62e96962a9637f482274096d15cbdfc60a9bd95",
+                "reference": "e62e96962a9637f482274096d15cbdfc60a9bd95",
                 "shasum": ""
             },
             "require": {
@@ -1920,7 +1920,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2019-09-10T19:38:52+00:00"
+            "time": "2019-09-11T08:51:10+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -1956,21 +1956,20 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "dev-feature/laravel6",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "ff8dc395fcf3c60fa33176b43dc174b541c9edae"
+                "reference": "3bc701c5724a5bf771c421021456c9104b1d0444"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/ff8dc395fcf3c60fa33176b43dc174b541c9edae",
-                "reference": "ff8dc395fcf3c60fa33176b43dc174b541c9edae",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/3bc701c5724a5bf771c421021456c9104b1d0444",
+                "reference": "3bc701c5724a5bf771c421021456c9104b1d0444",
                 "shasum": ""
             },
             "require": {
                 "genealabs/laravel-caffeine": "^1.0",
-                "laravel/framework": "^6.0",
                 "php": "^7.3.0"
             },
             "require-dev": {
@@ -1992,11 +1991,7 @@
                     "OpenDialogAi\\Webchat\\Database\\": "database/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "OpenDialogAi\\Webchat\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "proprietary"
             ],
@@ -2007,11 +2002,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "support": {
-                "source": "https://github.com/opendialogai/webchat/tree/feature/laravel6",
-                "issues": "https://github.com/opendialogai/webchat/issues"
-            },
-            "time": "2019-09-06T09:57:49+00:00"
+            "time": "2019-09-11T08:54:14+00:00"
         },
         {
             "name": "opis/closure",
