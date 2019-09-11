@@ -99,17 +99,17 @@ class WebchatSettingsController extends Controller
                 }
                 break;
             case 'number':
-                if (!is_numeric($newValue)) {
+                if ($newValue && !is_numeric($newValue)) {
                     return 'This is not a valid number.';
                 }
                 break;
             case 'colour':
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $newValue)) {
+                if ($newValue && !preg_match('/#([a-f0-9]{3}){1,2}\b/i', $newValue)) {
                     return 'This is not a valid hex colour.';
                 }
                 break;
             case 'map':
-                if (json_decode($newValue) == null) {
+                if ($newValue && json_decode($newValue) == null) {
                     return 'This is not a valid json value.';
                 }
                 break;

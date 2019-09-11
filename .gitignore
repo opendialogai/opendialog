@@ -12,6 +12,7 @@ yarn-error.log
 .idea
 /public/js/app.js
 /public/css/app.css
+/public/css/*.css
 /public/admin
 /public/fonts/vendor
 /public/vendor
@@ -23,3 +24,5 @@ auth.json
 dgraph
 xdebug.log
 .lando.yml
+.env-e
+.lando.yml-e

@@ -69,3 +69,8 @@ jobs:
       - run: ./vendor/bin/phpunit
 
       - run: ./vendor/bin/phpcs --standard=psr12 app/ -n
+
+      - run:
+          name: Output logs on failure
+          command: cat ./storage/logs/*
+          when: on_fail
