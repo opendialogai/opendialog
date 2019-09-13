@@ -30,7 +30,13 @@ class MessageTemplatesController extends Controller
      */
     public function index($outgoingIntentId)
     {
-        return new MessageTemplateCollection(MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->paginate(50));
+        $messageTemplates = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->paginate(50);
+
+        foreach ($messageTemplates as $messageTemplate) {
+            $messageTemplate->makeVisible('id');
+        }
+
+        return new MessageTemplateCollection($messageTemplates);
     }
 
     /**
@@ -55,6 +61,8 @@ class MessageTemplatesController extends Controller
 
         $messageTemplate->save();
 
+        $messageTemplate->makeVisible('id');
+
         return new MessageTemplateResource($messageTemplate);
     }
 
@@ -66,7 +74,11 @@ class MessageTemplatesController extends Controller
      */
     public function show($outgoingIntentId, $id)
     {
-        return new MessageTemplateResource(MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->find($id));
+        $messageTemplate = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->find($id);
+
+        $messageTemplate->makeVisible('id');
+
+        return new MessageTemplateResource($messageTemplate);
     }
 
     /**
