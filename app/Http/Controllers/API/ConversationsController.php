@@ -35,6 +35,10 @@ class ConversationsController extends Controller
         foreach ($conversations as $conversation) {
             $conversation->outgoing_intents = $this->outgoingIntents($conversation);
             $conversation->opening_intent = $this->openingIntent($conversation);
+
+            $conversation->makeVisible('id');
+            $conversation->makeVisible('outgoing_intents');
+            $conversation->makeVisible('opening_intent');
         }
 
         return new ConversationCollection($conversations);
@@ -56,6 +60,8 @@ class ConversationsController extends Controller
 
         $conversation->save();
 
+        $conversation->makeVisible('id');
+
         return new ConversationResource($conversation);
     }
 
@@ -71,6 +77,10 @@ class ConversationsController extends Controller
 
         $conversation->outgoing_intents = $this->outgoingIntents($conversation);
         $conversation->opening_intent = $this->openingIntent($conversation);
+
+        $conversation->makeVisible('id');
+        $conversation->makeVisible('outgoing_intents');
+        $conversation->makeVisible('opening_intent');
 
         return new ConversationResource($conversation);
     }
