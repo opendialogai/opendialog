@@ -2,6 +2,13 @@
   <div>
     <h2 class="mb-3">Chatbot Users</h2>
 
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" v-model="usersInteract" id="usersInteract" @change="changeUsersInteract">
+      <label class="form-check-label" for="usersInteract">
+        Show only users that have had an interaction with the chatbot
+      </label>
+    </div>
+
     <div class="overflow-auto">
       <table class="table table-hover">
         <thead class="thead-light">
@@ -10,8 +17,20 @@
             <th scope="col">Email</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
-            <th scope="col">First Seen</th>
-            <th scope="col">Last Seen</th>
+            <th scope="col" :class="(currentOrder == 'first_seen') ? 'sort selected-sort' : 'sort'" @click="sortByFirstSeen">
+              First Seen
+              <template v-if="currentOrder == 'first_seen'">
+                <img v-if="firstSeenSort" class="sort-icon" src="/images/arrow-down.svg">
+                <img v-if="!firstSeenSort" class="sort-icon" src="/images/arrow-up.svg">
+              </template>
+            </th>
+            <th scope="col" :class="(currentOrder == 'last_seen') ? 'sort selected-sort' : 'sort'" @click="sortByLastSeen">
+              Last Seen
+              <template v-if="currentOrder == 'last_seen'">
+                <img v-if="lastSeenSort" class="sort-icon" src="/images/arrow-down.svg">
+                <img v-if="!lastSeenSort" class="sort-icon" src="/images/arrow-up.svg">
+              </template>
+            </th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -48,15 +67,20 @@
     <nav aria-label="navigation">
       <ul class="pagination justify-content-center">
         <li class="page-item" :class="(currentPage == 1) ? 'disabled' : ''">
-          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage - 1 } }">Previous</router-link>
+          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage - 1, order: currentOrder, sort: currentSort, interact } }">Previous</router-link>
         </li>
 
-        <li class="page-item" v-for="pageNumber in totalPages">
-          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: pageNumber } }">{{ pageNumber }}</router-link>
+        <li class="page-item" :class="(pageNumber == currentPage) ? 'active' : ''" v-for="pageNumber in totalPages">
+          <template v-if="showPageNumber(pageNumber)">
+            <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: pageNumber, order: currentOrder, sort: currentSort, interact } }">{{ pageNumber }}</router-link>
+          </template>
+          <template v-if="showPageEllipsis(pageNumber)">
+            <span class="page-link">...</span>
+          </template>
         </li>
 
         <li class="page-item" :class="(currentPage == totalPages) ? 'disabled' : ''">
-          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage + 1 } }">Next</router-link>
+          <router-link class="page-link" :to="{ name: 'chatbot-users', query: { page: currentPage + 1, order: currentOrder, sort: currentSort, interact } }">Next</router-link>
         </li>
       </ul>
     </nav>
@@ -64,14 +88,34 @@
 </template>
 
 <script>
+import Pager from '@/mixins/Pager';
+
 export default {
   name: 'chatbot-users',
+  mixins: [Pager],
   data() {
     return {
       chatbotUsers: [],
-      currentPage: 1,
-      totalPages: 1,
+      firstSeenSort: 1,
+      lastSeenSort: 1,
+      currentOrder: 'last_seen',
+      usersInteract: false,
     };
+  },
+  computed: {
+    currentSort() {
+      let sort = 'asc';
+      if (this.currentOrder == 'first_seen' && this.firstSeenSort) {
+        sort = 'desc';
+      }
+      if (this.currentOrder == 'last_seen' && this.lastSeenSort) {
+        sort = 'desc';
+      }
+      return sort;
+    },
+    interact() {
+      return (this.usersInteract) ? '1' : '0';
+    },
   },
   watch: {
     '$route' () {
@@ -79,15 +123,27 @@ export default {
     }
   },
   mounted() {
+    this.currentOrder = this.$route.query.order || 'last_seen';
+
+    if (this.$route.query.sort == 'asc') {
+      if (this.currentOrder == 'first_seen') {
+        this.firstSeenSort = 0;
+      } else if (this.currentOrder == 'last_seen') {
+        this.lastSeenSort = 0;
+      }
+    }
+
+    this.usersInteract = (this.$route.query.interact == '1') ? true : false;
+
     this.fetchChatbotUsers();
   },
   methods: {
     fetchChatbotUsers() {
-      this.currentPage = this.$route.query.page || 1;
+      this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/chatbot-user?page=' + this.currentPage).then(
+      axios.get('/admin/api/chatbot-user?page=' + this.currentPage + '&order=' + this.currentOrder + '&sort=' + this.currentSort + '&interact=' + this.interact).then(
         (response) => {
-          this.totalPages = response.data.meta.last_page;
+          this.totalPages = parseInt(response.data.meta.last_page);
           this.chatbotUsers = response.data.data;
         },
       );
@@ -95,6 +151,30 @@ export default {
     viewChatbotUser(id) {
       this.$router.push({ name: 'view-chatbot-user', params: { id } });
     },
+    sortByFirstSeen() {
+      this.firstSeenSort = (this.firstSeenSort) ? 0 : 1;
+      this.currentOrder = 'first_seen';
+
+      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort, interact: this.interact } });
+    },
+    sortByLastSeen() {
+      this.lastSeenSort = (this.lastSeenSort) ? 0 : 1;
+      this.currentOrder = 'last_seen';
+
+      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort, interact: this.interact } });
+    },
+    changeUsersInteract() {
+      this.$router.push({ name: 'chatbot-users', query: { page: this.currentPage, order: this.currentOrder, sort: this.currentSort, interact: this.interact } });
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+th.sort {
+  text-decoration: underline;
+  &.selected-sort {
+    background-color: #c2cfd6;
+  }
+}
+</style>

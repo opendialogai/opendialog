@@ -75,8 +75,13 @@
             <router-link class="page-link" :to="{ name: 'view-outgoing-intent', params: { id }, query: { page: currentPage - 1 } }">Previous</router-link>
           </li>
 
-          <li class="page-item" v-for="pageNumber in totalPages">
-            <router-link class="page-link" :to="{ name: 'view-outgoing-intent', params: { id }, query: { page: pageNumber } }">{{ pageNumber }}</router-link>
+          <li class="page-item" :class="(pageNumber == currentPage) ? 'active' : ''" v-for="pageNumber in totalPages">
+            <template v-if="showPageNumber(pageNumber)">
+              <router-link class="page-link" :to="{ name: 'view-outgoing-intent', params: { id }, query: { page: pageNumber } }">{{ pageNumber }}</router-link>
+            </template>
+            <template v-if="showPageEllipsis(pageNumber)">
+              <span class="page-link">...</span>
+            </template>
           </li>
 
           <li class="page-item" :class="(currentPage == totalPages) ? 'disabled' : ''">
@@ -130,9 +135,11 @@
 
 <script>
 import MessageBuilder from '@/components/message-template/MessageBuilder';
+import Pager from '@/mixins/Pager';
 
 export default {
   name: 'outgoing-intent',
+  mixins: [Pager],
   props: ['id'],
   components: {
     MessageBuilder,
@@ -142,8 +149,6 @@ export default {
       outgoingIntent: null,
       messageTemplates: [],
       currentMessageTemplate: null,
-      currentPage: 1,
-      totalPages: 1,
     };
   },
   mounted() {
@@ -158,7 +163,7 @@ export default {
 
     axios.get('/admin/api/outgoing-intents/' + this.id + '/message-templates?page=' + this.currentPage).then(
       (response) => {
-        this.totalPages = response.data.meta.last_page;
+        this.totalPages = parseInt(response.data.meta.last_page);
         this.messageTemplates = response.data.data;
       },
     );
