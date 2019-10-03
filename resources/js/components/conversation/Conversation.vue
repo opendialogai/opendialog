@@ -22,13 +22,13 @@
           <b-btn variant="primary" @click="editConversation">Edit</b-btn>
           <b-btn variant="danger mr-4" @click="showDeleteConversationModal">Delete</b-btn>
 
-          <template v-if="conversation.status == 'published'">
-            <b-btn variant="primary" @click="publishConversation" disabled>Publish</b-btn>
-            <b-btn variant="primary" @click="unpublishConversation">Unpublish</b-btn>
+          <template v-if="conversation.status == 'activated'">
+            <b-btn variant="primary" @click="publishConversation" disabled>Activate</b-btn>
+            <b-btn variant="primary" @click="unpublishConversation">Deactivate</b-btn>
           </template>
           <template v-else>
-            <b-btn variant="primary" @click="publishConversation">Publish</b-btn>
-            <b-btn variant="primary" @click="unpublishConversation" disabled>Unpublish</b-btn>
+            <b-btn variant="primary" @click="publishConversation">Activate</b-btn>
+            <b-btn variant="primary" @click="unpublishConversation" disabled>Deactivate</b-btn>
           </template>
         </div>
       </div>
@@ -90,6 +90,18 @@
     <b-card header="Notes">
       <b-form-textarea :value="conversation.notes" disabled />
     </b-card>
+      <b-card header="History">
+          <b-row class="border-bottom mb-2 pb-2">
+              <b-col class="font-weight-bold" cols="1">Version</b-col>
+              <b-col class="font-weight-bold" cols="1">Status</b-col>
+              <b-col class="font-weight-bold" cols="1">Actions</b-col>
+          </b-row>
+          <b-row v-for="(history_item, index) in conversation.history" class="border-bottom mb-2 pb-2">
+              <b-col cols="1">{{history_item.version_number}}</b-col>
+              <b-col cols="1">{{history_item.status}}</b-col>
+              <b-col cols="1">...</b-col>
+          </b-row>
+      </b-card>
 
     <div class="modal modal-danger fade" id="deleteConversationModal" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -168,10 +180,11 @@ export default {
       axios.get('/admin/api/conversation/' + this.conversation.id + '/publish').then(
         (response) => {
           if (response.data) {
-            this.successMessage = 'Conversation published.';
-            this.conversation.status = 'published';
+            this.successMessage = 'Conversation activated.';
+            this.conversation.status = 'activated';
+            this.conversation.version_number++;
           } else {
-            this.errorMessage = 'Sorry, I wasn\'t able to publish this conversation to DGraph.';
+            this.errorMessage = 'Sorry, I wasn\'t able to activate this conversation to DGraph.';
           }
         },
       );
@@ -183,10 +196,10 @@ export default {
       axios.get('/admin/api/conversation/' + this.conversation.id + '/unpublish').then(
         (response) => {
           if (response.data) {
-            this.successMessage = 'Conversation unpublished.';
-            this.conversation.status = 'validated';
+            this.successMessage = 'Conversation deactivated.';
+            this.conversation.status = 'deactivated';
           } else {
-            this.errorMessage = 'Sorry, I wasn\'t able to unpublish this conversation from DGraph.';
+            this.errorMessage = 'Sorry, I wasn\'t able to deactivate this conversation from DGraph.';
           }
         },
       );

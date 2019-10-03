@@ -29,6 +29,7 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
     Route::prefix('conversation/{id}')->group(function () {
         Route::get('/publish', 'ConversationsController@publish');
         Route::get('/unpublish', 'ConversationsController@unpublish');
+        Route::get('/archive', 'ConversationsController@archive');
     });
 
     Route::get('chatbot-user/{id}/messages', 'ChatbotUsersController@messages');

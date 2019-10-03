@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\Yaml\Yaml;
 
 class ConversationsController extends Controller
@@ -77,10 +78,12 @@ class ConversationsController extends Controller
 
         $conversation->outgoing_intents = $this->outgoingIntents($conversation);
         $conversation->opening_intent = $this->openingIntent($conversation);
+        $conversation->history = $this->getHistory($conversation);
 
         $conversation->makeVisible('id');
         $conversation->makeVisible('outgoing_intents');
         $conversation->makeVisible('opening_intent');
+        $conversation->makeVisible('history');
 
         return new ConversationResource($conversation);
     }
@@ -104,6 +107,27 @@ class ConversationsController extends Controller
             $conversation->save();
 
             return response()->noContent(200);
+        }
+
+        return response()->noContent(404);
+    }
+
+    /**
+     * Archive the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function archive($id)
+    {
+        if ($conversation = Conversation::find($id)) {
+            $result = $conversation->archiveConversation();
+
+            if ($result) {
+                return response()->noContent(200);
+            } else {
+                return response()->noContent(404);
+            }
         }
 
         return response()->noContent(404);
@@ -257,5 +281,21 @@ class ConversationsController extends Controller
         }
 
         return '';
+    }
+
+    /**
+     * @param Conversation $conversation
+     * @return mixed
+     */
+    public function getHistory(Conversation $conversation)
+    {
+        $history = Activity::where('subject_id', $conversation->id)->orderBy('id', 'desc')->get();
+
+        return $history->filter(function ($item) {
+            return isset($item["properties"]["old"])
+                && $item["properties"]["attributes"]["version_number"] != $item["properties"]["old"]["version_number"];
+        })->values()->map(function ($item) {
+            return $item["properties"]["attributes"];
+        });
     }
 }
