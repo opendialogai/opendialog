@@ -136,13 +136,17 @@ class ConversationsTest extends TestCase
 
     public function testConversationsDestroyEndpoint()
     {
+        /** @var Conversation $firstConversation */
         $conversation = Conversation::first();
+        $conversation->publishConversation($conversation->buildConversation());
+        $conversation->unPublishConversation();
+        $conversation->archiveConversation();
 
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation/' . $conversation->id)
             ->assertStatus(200);
 
-        $this->assertEquals(Conversation::find($conversation->id), null);
+        $this->assertEquals(Conversation::find($conversation->id),  null);
     }
 
     public function testConversationsPublishEndpoint()
@@ -167,6 +171,18 @@ class ConversationsTest extends TestCase
             ->assertStatus(200);
 
         $this->assertEquals($response->content(), 'true');
+    }
+
+    public function testConversationsArchiveEndpoint()
+    {
+        $conversation = Conversation::first();
+
+        $conversation->publishConversation($conversation->buildConversation());
+        $conversation->unpublishConversation();
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/archive')
+            ->assertStatus(200);
     }
 
     public function testConversationsInvalidStoreEndpoint()

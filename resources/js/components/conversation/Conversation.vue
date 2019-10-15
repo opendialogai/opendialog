@@ -19,16 +19,20 @@
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
-          <b-btn variant="primary" @click="editConversation">Edit</b-btn>
-          <b-btn variant="danger mr-4" @click="showDeleteConversationModal">Delete</b-btn>
+          <b-btn v-if="conversation.status != 'archived'" variant="primary mr-4" @click="editConversation">Edit</b-btn>
+          <template v-else>
+              <b-btn variant="danger mr-4" @click="showDeleteConversationModal">Delete</b-btn>
+              <b-btn variant="primary" @click="unarchiveConversation">Unarchive</b-btn>
+          </template>
 
           <template v-if="conversation.status == 'activated'">
-            <b-btn variant="primary" @click="publishConversation" disabled>Activate</b-btn>
-            <b-btn variant="primary" @click="unpublishConversation">Deactivate</b-btn>
+              <b-btn variant="primary" @click="publishConversation" disabled>Activate</b-btn>
+              <b-btn variant="primary" @click="unpublishConversation">Deactivate</b-btn>
           </template>
-          <template v-else>
-            <b-btn variant="primary" @click="publishConversation">Activate</b-btn>
-            <b-btn variant="primary" @click="unpublishConversation" disabled>Deactivate</b-btn>
+          <template v-else-if="['activatable', 'deactivated'].includes(conversation.status)">
+              <b-btn v-if="conversation.status == 'deactivated'" variant="danger mr-4" @click="showArchiveConversationModal">Archive</b-btn>
+              <b-btn variant="primary" @click="publishConversation">Activate</b-btn>
+              <b-btn variant="primary" @click="unpublishConversation" disabled>Deactivate</b-btn>
           </template>
         </div>
       </div>
@@ -90,18 +94,30 @@
     <b-card header="Notes">
       <b-form-textarea :value="conversation.notes" disabled />
     </b-card>
-      <b-card header="History">
-          <b-row class="border-bottom mb-2 pb-2">
-              <b-col class="font-weight-bold" cols="1">Version</b-col>
-              <b-col class="font-weight-bold" cols="1">Status</b-col>
-              <b-col class="font-weight-bold" cols="1">Actions</b-col>
-          </b-row>
-          <b-row v-for="(history_item, index) in conversation.history" class="border-bottom mb-2 pb-2">
-              <b-col cols="1">{{history_item.version_number}}</b-col>
-              <b-col cols="1">{{history_item.status}}</b-col>
-              <b-col cols="1">...</b-col>
-          </b-row>
-      </b-card>
+    <b-card header="History">
+      <b-row class="border-bottom mb-2 pb-2">
+          <b-col class="font-weight-bold" cols="1">Version</b-col>
+          <b-col class="font-weight-bold" cols="2">Date</b-col>
+          <b-col class="font-weight-bold" cols="1">Actions</b-col>
+      </b-row>
+      <b-row v-for="history_item in conversation.history" v-bind:key="history_item.id" class="border-bottom mb-2 pb-2">
+          <b-col cols="1">{{ history_item.attributes.version_number }}</b-col>
+          <b-col cols="2">{{ history_item.timestamp | date }}</b-col>
+          <b-col>
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="showViewConversationModel(history_item.attributes.model)">
+                  <i class="fa fa-eye"></i>
+              </button>
+
+              <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="showEditConversationModel(history_item.id)">
+                  <i class="fa fa-edit"></i>
+              </button>
+
+              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="showActivateConversationModel(history_item.id)">
+                  <i class="fa fa-upload"></i>
+              </button>
+          </b-col>
+      </b-row>
+    </b-card>
 
     <div class="modal modal-danger fade" id="deleteConversationModal" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -122,12 +138,90 @@
         </div>
       </div>
     </div>
+
+    <div class="modal modal-danger fade" id="archiveConversationModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Archive Conversation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to archive this conversation?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" @click="archiveConversation">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-primary fade" id="editConversationModal" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Restore Previous Conversation Version</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Are you sure you want to restore this version? The conversation model will be updated and automatically set as deactivated.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="button" class="btn btn-primary" @click="editPreviousVersion">Yes</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="modal modal-primary fade" id="activateConversationModal" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Restore Previous Conversation Version</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Are you sure you want to activate this version?</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="button" class="btn btn-primary" @click="activatePreviousVersion">Yes</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="modal modal-primary fade" id="viewConversationModal" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Viewing Previous Conversation Version</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <prism language="yaml" :code="currentHistoryModel"></prism>
+              </div>
+          </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Prism from 'vue-prismjs';
 import 'prismjs/themes/prism.css';
+
+const moment = require('moment');
 
 export default {
   name: 'conversation',
@@ -140,6 +234,8 @@ export default {
       conversation: null,
       errorMessage: '',
       successMessage: '',
+      currentHistoryModel: null,
+      currentHistoryId: null
     };
   },
   watch: {
@@ -149,6 +245,13 @@ export default {
   },
   mounted() {
     this.fetchConversation();
+  },
+  filters: {
+    date: (value) => {
+      if (value) {
+        return moment(value).format('MMMM D, YYYY HH:mm');
+      }
+    },
   },
   methods: {
     fetchConversation() {
@@ -173,6 +276,45 @@ export default {
 
       this.$router.push({ name: 'conversations' });
     },
+    showViewConversationModel(model) {
+      this.currentHistoryModel = model;
+      $('#viewConversationModal').modal();
+    },
+    showEditConversationModel(id) {
+      this.currentHistoryId = id;
+      $('#editConversationModal').modal();
+    },
+    showActivateConversationModel(id) {
+      this.currentHistoryId = id;
+      $('#activateConversationModal').modal();
+    },
+    showArchiveConversationModal() {
+      $('#archiveConversationModal').modal();
+    },
+    activatePreviousVersion() {
+      this.errorMessage = '';
+      this.successMessage = '';
+      $('#activateConversationModal').modal('hide');
+
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/reactivate/' + this.currentHistoryId).then(
+        (response) => {
+            this.successMessage = 'Conversation reactivated.';
+            this.fetchConversation();
+        },
+      ).catch(() => this.errorMessage = 'Sorry, I wasn\'t able to reactivate this conversation version.');
+    },
+    editPreviousVersion() {
+      this.errorMessage = '';
+      this.successMessage = '';
+      $('#editConversationModal').modal('hide');
+
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/restore/' + this.currentHistoryId).then(
+        (response) => {
+            this.successMessage = 'Conversation restored.';
+            this.fetchConversation();
+        }
+      ).catch(() => this.errorMessage = 'Sorry, I wasn\'t able to restore this conversation version.');
+    },
     publishConversation() {
       this.errorMessage = '';
       this.successMessage = '';
@@ -183,6 +325,7 @@ export default {
             this.successMessage = 'Conversation activated.';
             this.conversation.status = 'activated';
             this.conversation.version_number++;
+            this.fetchConversation();
           } else {
             this.errorMessage = 'Sorry, I wasn\'t able to activate this conversation to DGraph.';
           }
@@ -204,6 +347,34 @@ export default {
         },
       );
     },
+    archiveConversation() {
+      this.errorMessage = '';
+      this.successMessage = '';
+      $('#archiveConversationModal').modal('hide');
+
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/archive').then(
+        (response) => {
+          this.successMessage = 'Conversation archived.';
+          this.fetchConversation();
+        },
+      ).catch(() => this.errorMessage = 'Sorry, I wasn\'t able to archive this conversation version.');
+    },
+    unarchiveConversation() {
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/unpublish').then(
+        (response) => {
+          if (response.data) {
+            this.successMessage = 'Conversation unarchived.';
+            this.conversation.status = 'deactivated';
+            this.fetchConversation();
+          } else {
+            this.errorMessage = 'Sorry, I wasn\'t able to unarchive this conversation.';
+          }
+        },
+      );
+    }
   },
 };
 </script>

@@ -8,6 +8,7 @@ use App\Http\Resources\ConversationResource;
 use Illuminate\Http\Request;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
+use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\Yaml\Yaml;
@@ -27,11 +28,32 @@ class ConversationsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return ConversationCollection
      */
     public function index()
     {
-        $conversations = Conversation::paginate(50);
+        $conversations = Conversation::where('status', '!=', ConversationNode::ARCHIVED)->paginate(50);
+
+        foreach ($conversations as $conversation) {
+            $conversation->outgoing_intents = $this->outgoingIntents($conversation);
+            $conversation->opening_intent = $this->openingIntent($conversation);
+
+            $conversation->makeVisible('id');
+            $conversation->makeVisible('outgoing_intents');
+            $conversation->makeVisible('opening_intent');
+        }
+
+        return new ConversationCollection($conversations);
+    }
+
+    /**
+     * Display an archive listing.
+     *
+     * @return ConversationCollection
+     */
+    public function viewArchive()
+    {
+        $conversations = Conversation::where('status', ConversationNode::ARCHIVED)->paginate(50);
 
         foreach ($conversations as $conversation) {
             $conversation->outgoing_intents = $this->outgoingIntents($conversation);
@@ -142,9 +164,9 @@ class ConversationsController extends Controller
     public function destroy($id)
     {
         if ($conversation = Conversation::find($id)) {
-            $conversation->delete();
-
-            return response()->noContent(200);
+            if ($conversation->delete()) {
+                return response()->noContent(200);
+            }
         }
 
         return response()->noContent(404);
@@ -170,6 +192,80 @@ class ConversationsController extends Controller
         }
 
         return response()->json(false);
+    }
+
+    /**
+     * @param int $id
+     * @param int $versionId
+     * @return ConversationResource
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function restore(int $id, int $versionId)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        /** @var Activity $version */
+        $version = Activity::where([
+            ['subject_id', $id],
+            ['id', $versionId]
+        ])->first();
+
+        // Deactivate current version if activated
+        if ($conversation->status == ConversationNode::ACTIVATED) {
+            $unpublishResult = $conversation->unPublishConversation();
+
+            if (!$unpublishResult) {
+                return response()->noContent(500);
+            }
+        }
+
+        // Update, persist and re-validate conversation with previous model
+        $conversation->model = $version->properties->first()["model"];
+        $conversation->graph_uid = null;
+        $conversation->save();
+
+        // Return
+        return response()->noContent(200);
+    }
+
+    /**
+     * @param int $id
+     * @param int $versionId
+     * @return ConversationResource
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function reactivate(int $id, int $versionId)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        /** @var Activity $version */
+        $version = Activity::where([
+            ['subject_id', $id],
+            ['id', $versionId]
+        ])->first();
+
+        // Deactivate current version if activated
+        if ($conversation->status == ConversationNode::ACTIVATED) {
+            $unpublishResult = $conversation->unPublishConversation();
+
+            if (!$unpublishResult) {
+                return response()->noContent(500);
+            }
+        }
+
+        // Update, persist, re-validate and activate conversation with previous model if activatable
+        $conversation->model = $version->properties->first()["model"];
+        $conversation->graph_uid = null;
+        $conversation->save();
+
+        // There's no reason for the previous version to not be valid, but just in case of any future changes we check
+        if ($conversation->status == ConversationNode::ACTIVATABLE) {
+            $conversation->publishConversation($conversation->buildConversation());
+        }
+
+        return response()->noContent(200);
     }
 
     /**
@@ -292,10 +388,15 @@ class ConversationsController extends Controller
         $history = Activity::where('subject_id', $conversation->id)->orderBy('id', 'desc')->get();
 
         return $history->filter(function ($item) {
-            return isset($item["properties"]["old"])
-                && $item["properties"]["attributes"]["version_number"] != $item["properties"]["old"]["version_number"];
+            // Retain if it's the first activity record or if it's a record with the version has incremented
+            return isset($item['properties']['old'])
+                && $item['properties']['attributes']['version_number'] != $item['properties']['old']['version_number'];
         })->values()->map(function ($item) {
-            return $item["properties"]["attributes"];
+            return [
+                'id' => $item['id'],
+                'timestamp' => $item['updated_at'],
+                'attributes' => $item['properties']['attributes']
+            ];
         });
     }
 }

@@ -60,6 +60,11 @@ const router = new VueRouter({
           component: Conversation,
         },
         {
+            path: 'conversations/archive',
+            name: 'conversations-archive',
+            component: Conversation,
+        },
+        {
           path: 'conversations/add',
           name: 'add-conversation',
           component: Conversation,
