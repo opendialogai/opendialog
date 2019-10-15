@@ -172,10 +172,10 @@ class ConversationsController extends Controller
         return response()->noContent(404);
     }
 
-    public function publish($id)
+    public function activate($id)
     {
         if ($conversation = Conversation::find($id)) {
-            $ret = $conversation->publishConversation($conversation->buildConversation());
+            $ret = $conversation->activateConversation($conversation->buildConversation());
 
             return response()->json($ret);
         }
@@ -183,10 +183,10 @@ class ConversationsController extends Controller
         return response()->json(false);
     }
 
-    public function unpublish($id)
+    public function deactivate($id)
     {
         if ($conversation = Conversation::find($id)) {
-            $ret = $conversation->unPublishConversation();
+            $ret = $conversation->deactivateConversation();
 
             return response()->json($ret);
         }
@@ -213,9 +213,9 @@ class ConversationsController extends Controller
 
         // Deactivate current version if activated
         if ($conversation->status == ConversationNode::ACTIVATED) {
-            $unpublishResult = $conversation->unPublishConversation();
+            $deactivateResult = $conversation->deactivateConversation();
 
-            if (!$unpublishResult) {
+            if (!$deactivateResult) {
                 return response()->noContent(500);
             }
         }
@@ -248,9 +248,9 @@ class ConversationsController extends Controller
 
         // Deactivate current version if activated
         if ($conversation->status == ConversationNode::ACTIVATED) {
-            $unpublishResult = $conversation->unPublishConversation();
+            $deactivateResult = $conversation->deactivateConversation();
 
-            if (!$unpublishResult) {
+            if (!$deactivateResult) {
                 return response()->noContent(500);
             }
         }
@@ -262,7 +262,7 @@ class ConversationsController extends Controller
 
         // There's no reason for the previous version to not be valid, but just in case of any future changes we check
         if ($conversation->status == ConversationNode::ACTIVATABLE) {
-            $conversation->publishConversation($conversation->buildConversation());
+            $conversation->activateConversation($conversation->buildConversation());
         }
 
         return response()->noContent(200);

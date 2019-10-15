@@ -117,9 +117,9 @@
 </template>
 
 <script>
-import Pager from '@/mixins/Pager';
+  import Pager from '@/mixins/Pager';
 
-export default {
+  export default {
   name: 'conversations-archive',
   mixins: [Pager],
   data() {
@@ -174,7 +174,7 @@ export default {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + id + '/unpublish').then(
+      axios.get('/admin/api/conversation/' + id + '/deactivate').then(
         (response) => {
           if (response.data) {
             this.successMessage = 'Conversation unarchived.';

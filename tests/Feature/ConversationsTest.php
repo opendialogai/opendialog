@@ -138,8 +138,8 @@ class ConversationsTest extends TestCase
     {
         /** @var Conversation $firstConversation */
         $conversation = Conversation::first();
-        $conversation->publishConversation($conversation->buildConversation());
-        $conversation->unPublishConversation();
+        $conversation->activateConversation($conversation->buildConversation());
+        $conversation->deactivateConversation();
         $conversation->archiveConversation();
 
         $this->actingAs($this->user, 'api')
@@ -149,25 +149,25 @@ class ConversationsTest extends TestCase
         $this->assertEquals(Conversation::find($conversation->id),  null);
     }
 
-    public function testConversationsPublishEndpoint()
+    public function testConversationsActivateEndpoint()
     {
         $conversation = Conversation::first();
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/publish')
+            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/activate')
             ->assertStatus(200);
 
         $this->assertEquals($response->content(), 'true');
     }
 
-    public function testConversationsUnpublishEndpoint()
+    public function testConversationsDeactivateEndpoint()
     {
         $conversation = Conversation::first();
 
-        $conversation->publishConversation($conversation->buildConversation());
+        $conversation->activateConversation($conversation->buildConversation());
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/unpublish')
+            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/deactivate')
             ->assertStatus(200);
 
         $this->assertEquals($response->content(), 'true');
@@ -177,10 +177,10 @@ class ConversationsTest extends TestCase
     {
         $conversation = Conversation::first();
 
-        $conversation->publishConversation($conversation->buildConversation());
-        $conversation->unpublishConversation();
+        $conversation->activateConversation($conversation->buildConversation());
+        $conversation->deactivateConversation();
 
-        $response = $this->actingAs($this->user, 'api')
+        $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/conversation/' . $conversation->id . '/archive')
             ->assertStatus(200);
     }

@@ -80,18 +80,18 @@
               </button>
 
               <template v-if="conversation.status == 'activated'">
-                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="publishConversation(conversation)" disabled>
+                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)" disabled>
                   <i class="fa fa-upload"></i>
                 </button>
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="unpublishConversation(conversation)">
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)">
                   <i class="fa fa-download"></i>
                 </button>
               </template>
               <template v-else>
-                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="publishConversation(conversation)">
+                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)">
                   <i class="fa fa-upload"></i>
                 </button>
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="unpublishConversation(conversation)" disabled>
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)" disabled>
                   <i class="fa fa-download"></i>
                 </button>
               </template>
@@ -165,9 +165,9 @@
 </template>
 
 <script>
-import Pager from '@/mixins/Pager';
+  import Pager from '@/mixins/Pager';
 
-export default {
+  export default {
   name: 'conversations',
   mixins: [Pager],
   data() {
@@ -209,11 +209,11 @@ export default {
     viewArchive() {
       this.$router.push({ name: 'conversations-archive' });
     },
-    publishConversation(conversation) {
+    activateConversation(conversation) {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + conversation.id + '/publish').then(
+      axios.get('/admin/api/conversation/' + conversation.id + '/activate').then(
         (response) => {
           if (response.data) {
             this.successMessage = 'Conversation activated.';
@@ -225,11 +225,11 @@ export default {
         },
       );
     },
-    unpublishConversation(conversation) {
+    deactivateConversation(conversation) {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + conversation.id + '/unpublish').then(
+      axios.get('/admin/api/conversation/' + conversation.id + '/deactivate').then(
         (response) => {
           if (response.data) {
             this.successMessage = 'Conversation deactivated.';

@@ -28,8 +28,8 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
 
     Route::get('conversation-archive', 'ConversationsController@viewArchive');
     Route::prefix('conversation/{id}')->group(function () {
-        Route::get('/publish', 'ConversationsController@publish');
-        Route::get('/unpublish', 'ConversationsController@unpublish');
+        Route::get('/activate', 'ConversationsController@activate');
+        Route::get('/deactivate', 'ConversationsController@deactivate');
         Route::get('/archive', 'ConversationsController@archive');
 
         Route::get('/restore/{versionId}', 'ConversationsController@restore');

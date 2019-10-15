@@ -26,13 +26,13 @@
           </template>
 
           <template v-if="conversation.status == 'activated'">
-              <b-btn variant="primary" @click="publishConversation" disabled>Activate</b-btn>
-              <b-btn variant="primary" @click="unpublishConversation">Deactivate</b-btn>
+              <b-btn variant="primary" @click="activateConversation" disabled>Activate</b-btn>
+              <b-btn variant="primary" @click="deactivateConversation">Deactivate</b-btn>
           </template>
           <template v-else-if="['activatable', 'deactivated'].includes(conversation.status)">
               <b-btn v-if="conversation.status == 'deactivated'" variant="danger mr-4" @click="showArchiveConversationModal">Archive</b-btn>
-              <b-btn variant="primary" @click="publishConversation">Activate</b-btn>
-              <b-btn variant="primary" @click="unpublishConversation" disabled>Deactivate</b-btn>
+              <b-btn variant="primary" @click="activateConversation">Activate</b-btn>
+              <b-btn variant="primary" @click="deactivateConversation" disabled>Deactivate</b-btn>
           </template>
         </div>
       </div>
@@ -218,10 +218,10 @@
 </template>
 
 <script>
-import Prism from 'vue-prismjs';
-import 'prismjs/themes/prism.css';
+  import Prism from 'vue-prismjs';
+  import 'prismjs/themes/prism.css';
 
-const moment = require('moment');
+  const moment = require('moment');
 
 export default {
   name: 'conversation',
@@ -315,11 +315,11 @@ export default {
         }
       ).catch(() => this.errorMessage = 'Sorry, I wasn\'t able to restore this conversation version.');
     },
-    publishConversation() {
+    activateConversation() {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + this.conversation.id + '/publish').then(
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/activate').then(
         (response) => {
           if (response.data) {
             this.successMessage = 'Conversation activated.';
@@ -332,11 +332,11 @@ export default {
         },
       );
     },
-    unpublishConversation() {
+    deactivateConversation() {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + this.conversation.id + '/unpublish').then(
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/deactivate').then(
         (response) => {
           if (response.data) {
             this.successMessage = 'Conversation deactivated.';
@@ -363,7 +363,7 @@ export default {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + this.conversation.id + '/unpublish').then(
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/deactivate').then(
         (response) => {
           if (response.data) {
             this.successMessage = 'Conversation unarchived.';

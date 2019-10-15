@@ -1843,12 +1843,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "2da3df10d34fc661ad286a51bba7c66bddb9217d"
+                "reference": "b511966d43f71447786a7de926c5250d461b2562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/2da3df10d34fc661ad286a51bba7c66bddb9217d",
-                "reference": "2da3df10d34fc661ad286a51bba7c66bddb9217d",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/b511966d43f71447786a7de926c5250d461b2562",
+                "reference": "b511966d43f71447786a7de926c5250d461b2562",
                 "shasum": ""
             },
             "require": {
@@ -1934,7 +1934,7 @@
                 "source": "https://github.com/opendialogai/core/tree/feature/conversation-improvements",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-10-15T12:45:23+00:00"
+            "time": "2019-10-15T14:20:42+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
