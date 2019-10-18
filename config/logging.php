@@ -40,6 +40,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'stack_with_dedupe' => [
+            'driver' => 'stack',
+            'channels' => ['stack', 'dedupe'],
+            'ignore_exceptions' => false,
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
@@ -49,7 +55,7 @@ return [
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
-            'level' => 'debug',
+            'level' => env('LOG_LEVEL', \Monolog\Logger::DEBUG),
             'days' => 14,
         ],
 
@@ -58,7 +64,12 @@ return [
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
-            'level' => 'critical',
+            'level' => 'error',
+        ],
+
+        'dedupe' => [
+            'driver' => 'custom',
+            'via' => App\Logging\CreateDedupeLogger::class,
         ],
 
         'papertrail' => [
