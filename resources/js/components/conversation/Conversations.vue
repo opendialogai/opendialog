@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="conversation in conversations" @click="viewConversation(conversation.id)">
+          <tr v-for="conversation in conversations">
             <td>
               {{ conversation.id }}
             </td>
