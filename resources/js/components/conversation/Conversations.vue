@@ -75,12 +75,12 @@
               <button v-if="conversation.status == 'archived'" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation.id)">
                 <i class="fa fa-close"></i>
               </button>
-              <button v-else class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Archive" @click.stop="showArchiveConversationModal(conversation.id)" :disabled="conversation.status != 'deactivated'">
+              <button v-else v-bind:class="[conversation.status != 'deactivated' ? 'disabled' : '', 'btn', 'btn-danger']" data-toggle="tooltip" data-placement="top" title="Archive" @click.stop="showArchiveConversationModal(conversation.id)" :disabled="conversation.status != 'deactivated'" :aria-disabled="conversation.status != 'deactivated'">
                 <i class="fa fa-trash"></i>
               </button>
 
               <template v-if="conversation.status == 'activated'">
-                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)" disabled>
+                <button class="btn btn-primary ml-2 disabled" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)" disabled aria-disabled>
                   <i class="fa fa-upload"></i>
                 </button>
                 <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)">
@@ -91,7 +91,7 @@
                 <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)">
                   <i class="fa fa-upload"></i>
                 </button>
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)" disabled>
+                <button class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)" disabled aria-disabled>
                   <i class="fa fa-download"></i>
                 </button>
               </template>
