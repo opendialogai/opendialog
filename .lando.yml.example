@@ -20,7 +20,7 @@ services:
   dgraph-zero:
     type: compose
     services:
-      image: dgraph/dgraph:v1.0.17
+      image: dgraph/dgraph:v1.1.0
       volumes:
       - type: volume
         source: dgraph
@@ -35,7 +35,7 @@ services:
   dgraph-alpha:
     type: compose
     services:
-      image: dgraph/dgraph:v1.0.17
+      image: dgraph/dgraph:v1.1.0
       volumes:
       - type: volume
         source: dgraph
@@ -44,13 +44,13 @@ services:
           nocopy: true
       ports:
       - 8081:8080
-      - 9080:9080    
+      - 9080:9080
       restart: on-failure
       command: dgraph alpha --my=dgraph-alpha:7080 --lru_mb=2048 --zero=dgraph-zero:5080
   dgraph-ratel:
     type: compose
     services:
-      image: dgraph/dgraph:v1.0.17
+      image: dgraph/dgraph:v1.1.0
       volumes:
       - type: volume
         source: dgraph
