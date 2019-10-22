@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
@@ -198,32 +200,18 @@ class ConversationsController extends Controller
      * @param int $id
      * @param int $versionId
      * @return ConversationResource
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function restore(int $id, int $versionId)
     {
         /** @var Conversation $conversation */
         $conversation = Conversation::find($id);
 
-        /** @var Activity $version */
-        $version = Activity::where([
-            ['subject_id', $id],
-            ['id', $versionId]
-        ])->first();
-
-        // Deactivate current version if activated
-        if ($conversation->status == ConversationNode::ACTIVATED) {
-            $deactivateResult = $conversation->deactivateConversation();
-
-            if (!$deactivateResult) {
-                return response()->noContent(500);
-            }
+        try {
+            $this->restoreConversation($conversation, $id, $versionId);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->noContent(500);
         }
-
-        // Update, persist and re-validate conversation with previous model
-        $conversation->model = $version->properties->first()["model"];
-        $conversation->graph_uid = null;
-        $conversation->save();
 
         // Return
         return response()->noContent(200);
@@ -240,25 +228,12 @@ class ConversationsController extends Controller
         /** @var Conversation $conversation */
         $conversation = Conversation::find($id);
 
-        /** @var Activity $version */
-        $version = Activity::where([
-            ['subject_id', $id],
-            ['id', $versionId]
-        ])->first();
-
-        // Deactivate current version if activated
-        if ($conversation->status == ConversationNode::ACTIVATED) {
-            $deactivateResult = $conversation->deactivateConversation();
-
-            if (!$deactivateResult) {
-                return response()->noContent(500);
-            }
+        try {
+            $this->restoreConversation($conversation, $id, $versionId);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->noContent(500);
         }
-
-        // Update, persist, re-validate and activate conversation with previous model if activatable
-        $conversation->model = $version->properties->first()["model"];
-        $conversation->graph_uid = null;
-        $conversation->save();
 
         // There's no reason for the previous version to not be valid, but just in case of any future changes we check
         if ($conversation->status == ConversationNode::ACTIVATABLE) {
@@ -398,5 +373,43 @@ class ConversationsController extends Controller
                 'attributes' => $item['properties']['attributes']
             ];
         });
+    }
+
+    private function conversationHasBeenUsed(Conversation $conversation)
+    {
+        return $conversation->hasBeenUsed();
+    }
+
+    /**
+     * @param Conversation $conversation
+     * @param int $id
+     * @param int $versionId
+     * @throws Exception
+     */
+    private function restoreConversation(Conversation $conversation, int $id, int $versionId)
+    {
+        /** @var Activity $version */
+        $version = Activity::where([
+            ['subject_id', $id],
+            ['id', $versionId]
+        ])->first();
+
+        if (is_null($version)) {
+            throw new Exception("Could not find a previous version for restoration.");
+        }
+
+        // Deactivate current version if activated
+        if ($conversation->status == ConversationNode::ACTIVATED) {
+            $deactivateResult = $conversation->deactivateConversation();
+
+            if (!$deactivateResult) {
+                throw new Exception("Tried to deactivate the current version during a restoration but failed.");
+            }
+        }
+
+        // Update, persist and re-validate conversation with previous model
+        $conversation->model = $version->properties->first()["model"];
+        $conversation->graph_uid = null;
+        $conversation->save();
     }
 }
