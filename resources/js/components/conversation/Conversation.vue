@@ -129,7 +129,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Are you sure you want to delete this conversation?</p>
+              <p v-if="conversation.has_been_used">This conversation has already been used, are you sure you want to delete it rather than keeping it in the archive?</p>
+              <p v-else>Are you sure you want to delete this conversation?</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>

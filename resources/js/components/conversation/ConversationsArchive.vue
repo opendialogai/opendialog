@@ -64,7 +64,7 @@
               <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Unarchive" @click.stop="unarchiveConversation(conversation.id)">
                   <i class="fa fa-refresh"></i>
               </button>
-              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation.id)">
+              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation)">
                 <i class="fa fa-close"></i>
               </button>
             </td>
@@ -104,7 +104,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Are you sure you want to delete this conversation?</p>
+            <p v-if="currentConversationHasBeenUsed">This conversation has already been used, are you sure you want to delete it rather than keeping it in the archive?</p>
+            <p v-else>Are you sure you want to delete this conversation?</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
@@ -128,6 +129,7 @@
       successMessage: '',
       conversations: [],
       currentConversation: null,
+      currentConversationHasBeenUsed: false
     };
   },
   watch: {
@@ -158,8 +160,9 @@
     viewConversation(id) {
       this.$router.push({ name: 'view-conversation', params: { id } });
     },
-    showDeleteConversationModal(id) {
-      this.currentConversation = id;
+    showDeleteConversationModal(conversation) {
+      this.currentConversation = conversation.id;
+      this.currentConversationHasBeenUsed = conversation.has_been_used; 
       $('#deleteConversationModal').modal();
     },
     deleteConversation() {
