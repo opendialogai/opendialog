@@ -1,0 +1,48 @@
+version: "3.2"
+services:
+  dgraph-test-zero:
+    type: compose
+    services:
+      image: dgraph/dgraph:v1.1.0
+      volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+      ports:
+      - 5081:5080
+      - 6081:6080
+      restart: on-failure
+      command: dgraph zero --my=dgraph-zero:5081
+  dgraph-test-alpha:
+    type: compose
+    services:
+      image: dgraph/dgraph:v1.1.0
+      volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+      ports:
+      - 8082:8080
+      - 9081:9080
+      restart: on-failure
+      command: dgraph alpha --my=dgraph-alpha:7080 --lru_mb=2048 --zero=dgraph-zero:5081
+  dgraph-test-ratel:
+    type: compose
+    services:
+      image: dgraph/dgraph:v1.1.0
+      volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+      command: dgraph-ratel -addr http://dgraph-alpha.lndo.site:8083
+    volumes:
+      dgraph:
+
+volumes:
+  dgraph:
