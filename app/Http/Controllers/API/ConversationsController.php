@@ -7,11 +7,11 @@ use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\Yaml\Yaml;
 
@@ -34,17 +34,7 @@ class ConversationsController extends Controller
      */
     public function index()
     {
-        $conversations = Conversation::where('status', '!=', ConversationNode::ARCHIVED)->paginate(50);
-
-        foreach ($conversations as $conversation) {
-            $conversation->outgoing_intents = $this->outgoingIntents($conversation);
-            $conversation->opening_intent = $this->openingIntent($conversation);
-
-            $conversation->makeVisible('id');
-            $conversation->makeVisible('outgoing_intents');
-            $conversation->makeVisible('opening_intent');
-        }
-
+        $conversations = Conversation::withoutStatus(ConversationNode::ARCHIVED)->paginate(50);
         return new ConversationCollection($conversations);
     }
 
@@ -55,25 +45,15 @@ class ConversationsController extends Controller
      */
     public function viewArchive()
     {
-        $conversations = Conversation::where('status', ConversationNode::ARCHIVED)->paginate(50);
-
-        foreach ($conversations as $conversation) {
-            $conversation->outgoing_intents = $this->outgoingIntents($conversation);
-            $conversation->opening_intent = $this->openingIntent($conversation);
-
-            $conversation->makeVisible('id');
-            $conversation->makeVisible('outgoing_intents');
-            $conversation->makeVisible('opening_intent');
-        }
-
+        $conversations = Conversation::withStatus(ConversationNode::ARCHIVED)->paginate(50);
         return new ConversationCollection($conversations);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -85,39 +65,27 @@ class ConversationsController extends Controller
 
         $conversation->save();
 
-        $conversation->makeVisible('id');
-
         return new ConversationResource($conversation);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return ConversationResource
      */
     public function show($id)
     {
         $conversation = Conversation::find($id);
-
-        $conversation->outgoing_intents = $this->outgoingIntents($conversation);
-        $conversation->opening_intent = $this->openingIntent($conversation);
-        $conversation->history = $this->getHistory($conversation);
-
-        $conversation->makeVisible('id');
-        $conversation->makeVisible('outgoing_intents');
-        $conversation->makeVisible('opening_intent');
-        $conversation->makeVisible('history');
-
         return new ConversationResource($conversation);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -140,7 +108,7 @@ class ConversationsController extends Controller
      * Archive the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function archive($id)
     {
@@ -161,7 +129,7 @@ class ConversationsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -289,95 +257,6 @@ class ConversationsController extends Controller
         }
 
         return null;
-    }
-
-    /**
-     * @param Conversation $conversation
-     * @return array
-     */
-    private function outgoingIntents(Conversation $conversation)
-    {
-        $outgoingIntents = [];
-        $yaml = Yaml::parse($conversation->model)['conversation'];
-
-        foreach ($yaml['scenes'] as $sceneId => $scene) {
-            foreach ($scene['intents'] as $intent) {
-                foreach ($intent as $tag => $value) {
-                    if ($tag == 'b') {
-                        foreach ($value as $key => $intent) {
-                            if ($key == 'i') {
-                                $outgoingIntent = OutgoingIntent::where('name', $intent)->first();
-                                if ($outgoingIntent) {
-                                    $outgoingIntents[] = [
-                                        'id' => $outgoingIntent->id,
-                                        'name' => $intent,
-                                    ];
-                                } else {
-                                    $outgoingIntents[] = [
-                                        'name' => $intent,
-                                    ];
-                                }
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $outgoingIntents;
-    }
-
-    /**
-     * @param Conversation $conversation
-     * @return string
-     */
-    private function openingIntent(Conversation $conversation)
-    {
-        $yaml = Yaml::parse($conversation->model)['conversation'];
-
-        foreach ($yaml['scenes'] as $sceneId => $scene) {
-            foreach ($scene['intents'] as $intent) {
-                foreach ($intent as $tag => $value) {
-                    if ($tag == 'u') {
-                        foreach ($value as $key => $intent) {
-                            if ($key == 'i') {
-                                return $intent;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return '';
-    }
-
-    /**
-     * @param Conversation $conversation
-     * @return mixed
-     */
-    public function getHistory(Conversation $conversation)
-    {
-        $history = Activity::where('subject_id', $conversation->id)->orderBy('id', 'desc')->get();
-
-        return $history->filter(function ($item) {
-            // Retain if it's the first activity record or if it's a record with the version has incremented
-            return isset($item['properties']['old'])
-                && $item['properties']['attributes']['version_number'] != $item['properties']['old']['version_number'];
-        })->values()->map(function ($item) {
-            return [
-                'id' => $item['id'],
-                'timestamp' => $item['updated_at'],
-                'attributes' => $item['properties']['attributes']
-            ];
-        });
-    }
-
-    private function conversationHasBeenUsed(Conversation $conversation)
-    {
-        return $conversation->hasBeenUsed();
     }
 
     /**
