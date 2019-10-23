@@ -115,7 +115,7 @@ YAML and all related outgoing intents and message templates
 ## Local dev
 
 A `composer-dev.json` file has been created to help with local development. It makes the assumption that you have the 
-Open Dialog and Open Dialog Webchat packages checked out locally to `../OpenDialog` and `../OpenDialog-Webchat`
+Open Dialog and Open Dialog Webchat packages checked out locally to `../opendialog-core` and `../opendialog-webchat`
 respectively.
 
 To install dependencies using it, you can run `./composer-dev install` or `./composer-dev update`
