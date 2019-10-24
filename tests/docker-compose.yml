@@ -1,6 +1,6 @@
 version: "3.2"
 services:
-  zero:
+  zero-test:
     image: dgraph/dgraph:v1.1.0
     volumes:
     - type: volume
@@ -13,7 +13,7 @@ services:
     - 6081:6080
     restart: on-failure
     command: dgraph zero --my=zero:5080
-  server:
+  server-test:
     image: dgraph/dgraph:v1.1.0
     volumes:
     - type: volume
@@ -26,7 +26,7 @@ services:
     - 9081:9080
     restart: on-failure
     command: dgraph alpha --my=server:7081 --lru_mb=2048 --zero=zero:5080
-  ratel:
+  ratel-test:
     image: dgraph/dgraph:v1.1.0
     volumes:
     - type: volume
