@@ -9,6 +9,9 @@
     <template v-else-if="currentRouteName == 'add-conversation'">
       <AddConversation />
     </template>
+    <template v-else-if="currentRouteName == 'conversations-archive'">
+        <ConversationArchive />
+    </template>
     <template v-else>
       <Conversations />
     </template>
@@ -20,6 +23,7 @@ import AddConversation from '@/components/conversation/AddConversation';
 import Conversation from '@/components/conversation/Conversation';
 import Conversations from '@/components/conversation/Conversations';
 import EditConversation from '@/components/conversation/EditConversation';
+import ConversationArchive from '@/components/conversation/ConversationsArchive';
 
 export default {
   name: 'conversation',
@@ -29,6 +33,7 @@ export default {
     Conversation,
     Conversations,
     EditConversation,
+    ConversationArchive
   },
   computed: {
     currentRouteName() {

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
 
 class SetUpConversations extends Command
@@ -31,9 +32,9 @@ class SetUpConversations extends Command
         $this->info('Init Schema');
         $client->initSchema();
 
-        $this->info('Setting all existing conversations to unpublished');
+        $this->info('Setting all existing conversations to activatable');
         Conversation::all()->each(function (Conversation $conversation) {
-            $conversation->status = 'validated';
+            $conversation->status = ConversationNode::SAVED;
             $conversation->save();
         });
 
@@ -51,7 +52,7 @@ class SetUpConversations extends Command
             'conversation:import',
             [
                 'filename' => "resources/conversations/$conversationName",
-                '--publish' => true,
+                '--activate' => true,
                 '--yes' => true
             ]
         );

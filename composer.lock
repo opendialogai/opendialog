@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd3ad6042a534430c1620c0603d06edd",
+    "content-hash": "b26e6b7ec49f10b10a3d00cbe984117c",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1839,16 +1839,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-develop",
+            "version": "dev-feature/conversation-improvements",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "e62e96962a9637f482274096d15cbdfc60a9bd95"
+                "reference": "9958faca73bc42d06e90b9ccd104e8a0170e3b10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/e62e96962a9637f482274096d15cbdfc60a9bd95",
-                "reference": "e62e96962a9637f482274096d15cbdfc60a9bd95",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/9958faca73bc42d06e90b9ccd104e8a0170e3b10",
+                "reference": "9958faca73bc42d06e90b9ccd104e8a0170e3b10",
                 "shasum": ""
             },
             "require": {
@@ -1869,7 +1869,7 @@
                 "mockery/mockery": "^1.2",
                 "orchestra/testbench": "^4.0",
                 "phpro/grumphp": "^0.16.0",
-                "phpunit/phpunit": "^8.3",
+                "phpunit/phpunit": "8.3.5",
                 "squizlabs/php_codesniffer": "^3.4"
             },
             "type": "library",
@@ -1882,6 +1882,7 @@
                         "OpenDialogAi\\ConversationLog\\ConversationLogServiceProvider",
                         "OpenDialogAi\\ResponseEngine\\ResponseEngineServiceProvider",
                         "OpenDialogAi\\InterpreterEngine\\InterpreterEngineServiceProvider",
+                        "OpenDialogAi\\OperationEngine\\OperationEngineServiceProvider",
                         "OpenDialogAi\\ContextEngine\\ContextEngineServiceProvider",
                         "OpenDialogAi\\ActionEngine\\ActionEngineServiceProvider",
                         "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider"
@@ -1901,11 +1902,20 @@
                     "OpenDialogAi\\ConversationLog\\": "src/ConversationLog",
                     "OpenDialogAi\\ResponseEngine\\": "src/ResponseEngine",
                     "OpenDialogAi\\InterpreterEngine\\": "src/InterpreterEngine",
+                    "OpenDialogAi\\OperationEngine\\": "src/OperationEngine",
                     "OpenDialogAi\\SensorEngine\\": "src/SensorEngine",
-                    "OpenDialogAi\\Core\\Database\\": "database/"
+                    "OpenDialogAi\\Core\\Database\\": "database/",
+                    "OpenDialogAi\\Core\\Tests\\": "tests/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit"
+                ],
+                "cs": [
+                    "./vendor/bin/phpcbf --standard=PSR12 --report=full src/"
+                ]
+            },
             "license": [
                 "Apache-2.0"
             ],
@@ -1920,7 +1930,11 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2019-09-11T08:51:10+00:00"
+            "support": {
+                "source": "https://github.com/opendialogai/core/tree/feature/conversation-improvements",
+                "issues": "https://github.com/opendialogai/core/issues"
+            },
+            "time": "2019-10-23T09:41:39+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4954,8 +4968,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "role": "Developer",
-                    "homepage": "https://github.com/filp"
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
                 }
             ],
             "description": "php error handling for cool kids",

@@ -9,7 +9,7 @@
         "fideloper/proxy": "^4.2",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
-        "opendialogai/core": "dev-develop",
+        "opendialogai/core": "dev-feature/conversation-improvements",
         "opendialogai/webchat": "dev-develop",
         "phalcongelist/php-diff": "^2.0",
         "propaganistas/laravel-phone": "^4.2",
@@ -73,5 +73,11 @@
             "@php artisan vendor:publish --tag=scripts --force",
             "@php artisan vendor:publish --tag=dgraph --force"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/opendialogai/core.git"
+        }
+    ]
 }
