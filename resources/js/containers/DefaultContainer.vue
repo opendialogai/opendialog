@@ -14,7 +14,7 @@
         <b-nav-item class="px-3" to="/admin/users">Users</b-nav-item>
         <b-nav-item class="px-3" to="/admin/webchat-setting">Webchat settings</b-nav-item>
         <b-nav-item class="px-3" to="/admin/conversations">Conversations</b-nav-item>
-        <b-nav-item class="px-3" to="/admin/demo">Try out chatbot</b-nav-item>
+        <b-nav-item class="px-3" to="/admin/demo">Test Bot</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
@@ -146,7 +146,7 @@ export default {
           children: conversations,
         },
         {
-          name: 'Try out chatbot',
+          name: 'Test Bot',
           url: '/admin/demo',
           icon: 'icon-control-play',
         },

@@ -30,16 +30,11 @@
         window.openDialogSettings = {
           url: "{{ env("APP_URL") }}",
           validPath: 'admin/demo',
-          general: {
-            teamName: 'OpenDialog Webchat',
-            open: true,
-            hideOpenCloseIcons: true,
-          },
           user: {
-            first_name: 'Example',
-            last_name: 'User',
-            email: 'user@example.com',
-            external_id: '1',
+            first_name: '{!! auth()->user()->name !!}',
+            last_name: '',
+            email: '{!! auth()->user()->email !!}',
+            external_id: '{!! auth()->user()->id !!}',
           },
         };
       </script>
