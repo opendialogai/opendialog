@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b26e6b7ec49f10b10a3d00cbe984117c",
+    "content-hash": "67dfe7c96baf3af3edb12b6a1f477b27",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1839,16 +1839,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/conversation-improvements",
+            "version": "dev-feature/conditions-intents",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "9958faca73bc42d06e90b9ccd104e8a0170e3b10"
+                "reference": "12fb23585e07709ea05834466ddf518f2648bfbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/9958faca73bc42d06e90b9ccd104e8a0170e3b10",
-                "reference": "9958faca73bc42d06e90b9ccd104e8a0170e3b10",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/12fb23585e07709ea05834466ddf518f2648bfbc",
+                "reference": "12fb23585e07709ea05834466ddf518f2648bfbc",
                 "shasum": ""
             },
             "require": {
@@ -1931,10 +1931,10 @@
             ],
             "description": "The OpenDialog core package",
             "support": {
-                "source": "https://github.com/opendialogai/core/tree/feature/conversation-improvements",
+                "source": "https://github.com/opendialogai/core/tree/feature/conditions-intents",
                 "issues": "https://github.com/opendialogai/core/issues"
             },
-            "time": "2019-10-23T09:41:39+00:00"
+            "time": "2019-10-25T09:56:42+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",

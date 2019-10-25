@@ -45,7 +45,9 @@
               {{ conversation.name }}
             </td>
             <td>
-              {{ conversation.opening_intent }}
+                <span v-for="(opening_intent, index) in conversation.opening_intents">
+                    {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>
+                </span>
             </td>
             <td>
               <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
@@ -162,7 +164,7 @@
     },
     showDeleteConversationModal(conversation) {
       this.currentConversation = conversation.id;
-      this.currentConversationHasBeenUsed = conversation.has_been_used; 
+      this.currentConversationHasBeenUsed = conversation.has_been_used;
       $('#deleteConversationModal').modal();
     },
     deleteConversation() {
