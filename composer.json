@@ -73,11 +73,5 @@
             "@php artisan vendor:publish --tag=scripts --force",
             "@php artisan vendor:publish --tag=dgraph --force"
         ]
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/opendialogai/core.git"
-        }
-    ]
+    }
 }
