@@ -3,12 +3,13 @@
     "type": "project",
     "description": "OpenDialog Demonstration App",
     "license": "Apache-2.0",
-    "repositories": [{
-	"type": "vcs",
-	"url": "../opendialog-core"
-    },
+    "repositories": [
         {
-            "type": "vcs",
+            "type": "path",
+            "url": "../opendialog-core"
+        },
+        {
+            "type": "path",
             "url": "../opendialog-webchat"
         }
     ],
