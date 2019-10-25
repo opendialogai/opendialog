@@ -1,5 +1,56 @@
 <template>
   <div>
+    <b-card no-body>
+      <b-button block href="#" v-b-toggle.filters>Filters</b-button>
+
+      <b-collapse id="filters">
+        <b-card-body>
+          <b-form-group
+            label-cols-sm="2"
+            label="Url"
+          >
+            <b-form-input type="text" v-model="urlFilter" />
+          </b-form-group>
+          <b-form-group
+            label-cols-sm="2"
+            label="Http status"
+          >
+            <b-form-input type="text" v-model="httpStatusFilter" />
+          </b-form-group>
+          <b-form-group
+            label-cols-sm="2"
+            label="Source ip"
+          >
+            <b-form-input type="text" v-model="sourceIpFilter" />
+          </b-form-group>
+          <b-form-group
+            label-cols-sm="2"
+            label="Username"
+          >
+            <b-form-input type="text" v-model="userIdFilter" />
+          </b-form-group>
+
+          <b-btn
+            v-if="updatingFilters"
+            class="btn-filter"
+            variant="primary"
+            @click="updateFilters"
+            disabled
+          >
+            Updating ...
+          </b-btn>
+          <b-btn
+            v-else
+            class="btn-filter"
+            variant="primary"
+            @click="updateFilters"
+          >
+            Update
+          </b-btn>
+        </b-card-body>
+      </b-collapse>
+    </b-card>
+
     <div class="overflow-auto">
       <table class="table table-hover">
         <thead class="thead-light">
@@ -73,6 +124,11 @@ export default {
   data() {
     return {
       requests: [],
+      urlFilter: '',
+      httpStatusFilter: '',
+      sourceIpFilter: '',
+      userIdFilter: '',
+      updatingFilters: false,
     };
   },
   watch: {
@@ -87,16 +143,42 @@ export default {
     fetchRequests() {
       this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/requests?page=' + this.currentPage).then(
+      const filters = {};
+      if (this.urlFilter) {
+        filters.url = this.urlFilter;
+      }
+      if (this.httpStatusFilter) {
+        filters.http_status = this.httpStatusFilter;
+      }
+      if (this.sourceIpFilter) {
+        filters.source_ip = this.sourceIpFilter;
+      }
+      if (this.userIdFilter) {
+        filters.user_id = this.userIdFilter;
+      }
+
+      axios.get('/admin/api/requests?page=' + this.currentPage, { params: filters }).then(
         (response) => {
           this.totalPages = parseInt(response.data.meta.last_page);
           this.requests = response.data.data;
+
+          this.updatingFilters = false;
         },
       );
     },
     viewRequest(id) {
       this.$router.push({ name: 'view-request', params: { id } });
     },
+    updateFilters() {
+      this.updatingFilters = true;
+      this.fetchRequests();
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.btn-filter {
+  min-width: 150px;
+}
+</style>
