@@ -27,7 +27,13 @@ class OutgoingIntentsController extends Controller
      */
     public function index()
     {
-        return new OutgoingIntentCollection(OutgoingIntent::paginate(50));
+        $outgoingIntents = OutgoingIntent::paginate(50);
+
+        foreach ($outgoingIntents as $outgoingIntent) {
+            $outgoingIntent->makeVisible('id');
+        }
+
+        return new OutgoingIntentCollection($outgoingIntents);
     }
 
     /**
@@ -46,6 +52,8 @@ class OutgoingIntentsController extends Controller
 
         $outgoingIntent->save();
 
+        $outgoingIntent->makeVisible('id');
+
         return new OutgoingIntentResource($outgoingIntent);
     }
 
@@ -57,7 +65,11 @@ class OutgoingIntentsController extends Controller
      */
     public function show($id)
     {
-        return new OutgoingIntentResource(OutgoingIntent::find($id));
+        $outgoingIntent = OutgoingIntent::find($id);
+
+        $outgoingIntent->makeVisible('id');
+
+        return new OutgoingIntentResource($outgoingIntent);
     }
 
     /**

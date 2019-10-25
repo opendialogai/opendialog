@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
 
@@ -47,7 +48,7 @@ class UsersController extends Controller
             return response($error, 400);
         }
 
-        $user->password = Hash::make(str_random(8));
+        $user->password = Hash::make(Str::random(8));
         $user->save();
 
         return new UserResource($user);

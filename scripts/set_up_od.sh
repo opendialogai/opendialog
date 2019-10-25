@@ -59,7 +59,7 @@ lando yarn run dev
 lando ssh --service database --command 'mysql -uroot laravel -e '"'"'INSERT INTO users (name, email, password, api_token, created_at, updated_at) VALUES ("admin", "admin@example.com", "$2y$10$BEhBWA12KObSY9Ua2G0VeOg2hWMT1GIa8huHD83HCEHnJLnRcH8w6", "aa4eyvtfiundw6xu3jjgbmn6dzw51si34vlozci6bovy00h2j2a2dqk2d68b", NOW(), NOW())'"'"' '
 
 echo
-echo "The admin console is available here: https://$1.lndo.site/od-admin"
+echo "The admin console is available here: https://$1.lndo.site/admin"
 echo "You may login with the credentials admin@example.com / opendialog"
 echo
 echo "Finished! Now you may go to: https://$1.lndo.site/demo"

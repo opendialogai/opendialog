@@ -49,8 +49,13 @@
           <router-link class="page-link" :to="{ name: 'outgoing-intents', query: { page: currentPage - 1 } }">Previous</router-link>
         </li>
 
-        <li class="page-item" v-for="pageNumber in totalPages">
-          <router-link class="page-link" :to="{ name: 'outgoing-intents', query: { page: pageNumber } }">{{ pageNumber }}</router-link>
+        <li class="page-item" :class="(pageNumber == currentPage) ? 'active' : ''" v-for="pageNumber in totalPages">
+          <template v-if="showPageNumber(pageNumber)">
+            <router-link class="page-link" :to="{ name: 'outgoing-intents', query: { page: pageNumber } }">{{ pageNumber }}</router-link>
+          </template>
+          <template v-if="showPageEllipsis(pageNumber)">
+            <span class="page-link">...</span>
+          </template>
         </li>
 
         <li class="page-item" :class="(currentPage == totalPages) ? 'disabled' : ''">
@@ -82,14 +87,15 @@
 </template>
 
 <script>
+import Pager from '@/mixins/Pager';
+
 export default {
   name: 'outgoing-intents',
+  mixins: [Pager],
   data() {
     return {
       outgoingIntents: [],
       currentOutgoingIntent: null,
-      currentPage: 1,
-      totalPages: 1,
     };
   },
   watch: {
@@ -102,11 +108,11 @@ export default {
   },
   methods: {
     fetchOutgoingIntents() {
-      this.currentPage = this.$route.query.page || 1;
+      this.currentPage = parseInt(this.$route.query.page || 1);
 
       axios.get('/admin/api/outgoing-intents?page=' + this.currentPage).then(
         (response) => {
-          this.totalPages = response.data.meta.last_page;
+          this.totalPages = parseInt(response.data.meta.last_page);
           this.outgoingIntents = response.data.data;
         },
       );

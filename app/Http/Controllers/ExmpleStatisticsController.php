@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class StatisticsController extends Controller
+class ExmpleStatisticsController extends Controller
 {
     public function users(Request $request)
     {

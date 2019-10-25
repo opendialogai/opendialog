@@ -88,13 +88,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/{id}', 'AdminController@handle');
         Route::get('/{id}/edit', 'AdminController@handle');
     });
-
 });
 
 /**
  * Statistics Routes
  */
 Route::prefix('stats')->middleware(['auth'])->group(function () {
-    Route::get('users', 'StatisticsController@users');
-    Route::get('cost', 'StatisticsController@cost');
+    Route::get('users', 'ExmpleStatisticsController@users');
+    Route::get('cost', 'ExmpleStatisticsController@cost');
 });
