@@ -37,17 +37,11 @@ abstract class TestCase extends BaseTestCase
     protected function initDDgraph(): void
     {
         if (!$this->dgraphInitialised) {
-            try {
-                /** @var DGraphClient $client */
-                $client = $this->app->make(DGraphClient::class);
-                $client->dropSchema();
-                $client->initSchema();
-                $this->dgraphInitialised = true;
-            } catch (\Exception $e) {
-                print_r("DGRAPH Error: " .
-                    $e->getMessage() .
-                    " ( Make sure test DGRAPH containers are running from /tests/docker-compose.yml )");
-            }
+            /** @var DGraphClient $client */
+            $client = $this->app->make(DGraphClient::class);
+            $client->dropSchema();
+            $client->initSchema();
+            $this->dgraphInitialised = true;
         }
     }
 

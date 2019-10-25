@@ -22,21 +22,10 @@ services:
       volume:
         nocopy: true
     ports:
-    - 8081:8080
+    - 8082:8080
     - 9081:9080
     restart: on-failure
-    command: dgraph alpha --my=server:7081 --lru_mb=2048 --zero=zero:5080
-  ratel-test:
-    image: dgraph/dgraph:v1.1.0
-    volumes:
-    - type: volume
-      source: dgraph
-      target: /dgraph
-      volume:
-        nocopy: true
-    ports:
-    - 8001:8000
-    command: dgraph-ratel
+    command: dgraph alpha --my=server:7080 --lru_mb=2048 --zero=zero:5081
 
 volumes:
   dgraph:
