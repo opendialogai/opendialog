@@ -37,4 +37,7 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
     });
 
     Route::get('chatbot-user/{id}/messages', 'ChatbotUsersController@messages');
+
+    Route::get('requests', 'RequestsController@index');
+    Route::get('requests/{id}', 'RequestsController@show');
 });

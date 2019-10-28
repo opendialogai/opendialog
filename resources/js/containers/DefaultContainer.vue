@@ -14,6 +14,7 @@
         <b-nav-item class="px-3" to="/admin/users">Users</b-nav-item>
         <b-nav-item class="px-3" to="/admin/webchat-setting">Webchat settings</b-nav-item>
         <b-nav-item class="px-3" to="/admin/conversations">Conversations</b-nav-item>
+        <b-nav-item class="px-3" to="/admin/request">Requests</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
@@ -143,6 +144,11 @@ export default {
           url: '/admin/conversations',
           icon: 'icon-speech',
           children: conversations,
+        },
+        {
+          name: 'Requests',
+          url: '/admin/requests',
+          icon: 'cui-inbox',
         },
       ];
     },
