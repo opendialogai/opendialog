@@ -27,3 +27,4 @@ xdebug.log
 .lando.yml
 .env-e
 .lando.yml-e
+tests/_dgraphdata
