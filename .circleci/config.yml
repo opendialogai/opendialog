@@ -66,7 +66,10 @@ jobs:
       - run: php artisan key:generate
 
       # run tests!
-      - run: ./vendor/bin/phpunit
+      - run: phpdbg -qrr ./vendor/bin/phpunit --coverage-html build/coverage-report --configuration phpunit-ci.xml
+
+      - store_artifacts:
+          path:  build/coverage-report
 
       - run: ./vendor/bin/phpcs --standard=psr12 app/ -n
 
