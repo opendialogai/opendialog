@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use OpenDialogAi\Webchat\WebchatSetting;
 
 class WebchatSettingsController extends Controller
@@ -21,7 +22,7 @@ class WebchatSettingsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return WebchatSetting[]
      */
     public function index()
     {
@@ -29,21 +30,10 @@ class WebchatSettingsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -53,9 +43,9 @@ class WebchatSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param  int    $id
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -74,18 +64,13 @@ class WebchatSettingsController extends Controller
         return response()->noContent(404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
-    public function getCategories()
+    /**
+     * Returns a list of webchat settings with links that can be used in menus
+     *
+     * @return array
+     */
+    public function getCategories() : array
     {
         $generalId = WebchatSetting::where('name', WebchatSetting::GENERAL)->first()->id;
         $coloursId = WebchatSetting::where('name', WebchatSetting::COLOURS)->first()->id;

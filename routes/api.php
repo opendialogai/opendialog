@@ -40,4 +40,7 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
 
     Route::get('requests', 'RequestsController@index');
     Route::get('requests/{id}', 'RequestsController@show');
+
+    Route::get('conversations-list', 'ConversationsController@adminList');
+    Route::get('webchat-settings-categories', 'WebchatSettingsController@getCategories');
 });
