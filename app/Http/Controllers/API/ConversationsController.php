@@ -212,7 +212,13 @@ class ConversationsController extends Controller
         return response()->noContent(200);
     }
 
-    public function adminList()
+
+    /**
+     * Returns a list of conversations that can be used in a menu system
+     *
+     * @return array
+     */
+    public function adminList() : array
     {
         $conversations = [];
 
