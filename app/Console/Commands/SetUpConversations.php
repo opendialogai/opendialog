@@ -18,8 +18,11 @@ class SetUpConversations extends Command
     {
         $conversations = config('opendialog.active_conversations');
 
-        if (!$this->confirm('This will clear your local dgraph and all conversations. ' .
-            'Are you sure you want to continue?')) {
+        if (
+            !$this->confirm(
+                'This will clear your local dgraph and all conversations. Are you sure you want to continue?'
+            )
+        ) {
             $this->info("OK, not running");
             exit;
         }
