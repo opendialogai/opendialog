@@ -134,7 +134,7 @@ Information on setting up phpstorm to run tests on the (OpenDialog Wiki)[https:/
 
 ## Running Code Sniffer
 To run code sniffer, run the following command
-```./vendor/bin/phpcs --standard=psr12 app/ -n```
+```./vendor/bin/phpcs --standard=od-cs-ruleset.xml app/ --ignore=*/migrations/*,*/tests/*```
 
 ## Git Hooks
 

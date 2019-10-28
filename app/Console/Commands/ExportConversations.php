@@ -15,7 +15,12 @@ class ExportConversations extends Command
     {
         $conversations = config('opendialog.active_conversations');
 
-        $continue = $this->confirm(sprintf('Do you want to export the %d active conversations listed in opendialog.active_conversations config?', count($conversations)));
+        $continue = $this->confirm(
+            sprintf(
+                'Do you want to export the %d active conversations listed in opendialog.active_conversations config?',
+                count($conversations)
+            )
+        );
 
         if (!$continue) {
             $this->info("Bye");
