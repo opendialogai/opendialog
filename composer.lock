@@ -1843,12 +1843,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "e62e96962a9637f482274096d15cbdfc60a9bd95"
+                "reference": "a14d88384c1bb669cda89b0141719690b533e05f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/e62e96962a9637f482274096d15cbdfc60a9bd95",
-                "reference": "e62e96962a9637f482274096d15cbdfc60a9bd95",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/a14d88384c1bb669cda89b0141719690b533e05f",
+                "reference": "a14d88384c1bb669cda89b0141719690b533e05f",
                 "shasum": ""
             },
             "require": {
@@ -1869,7 +1869,7 @@
                 "mockery/mockery": "^1.2",
                 "orchestra/testbench": "^4.0",
                 "phpro/grumphp": "^0.16.0",
-                "phpunit/phpunit": "^8.3",
+                "phpunit/phpunit": "8.3.5",
                 "squizlabs/php_codesniffer": "^3.4"
             },
             "type": "library",
@@ -1882,6 +1882,7 @@
                         "OpenDialogAi\\ConversationLog\\ConversationLogServiceProvider",
                         "OpenDialogAi\\ResponseEngine\\ResponseEngineServiceProvider",
                         "OpenDialogAi\\InterpreterEngine\\InterpreterEngineServiceProvider",
+                        "OpenDialogAi\\OperationEngine\\OperationEngineServiceProvider",
                         "OpenDialogAi\\ContextEngine\\ContextEngineServiceProvider",
                         "OpenDialogAi\\ActionEngine\\ActionEngineServiceProvider",
                         "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider"
@@ -1901,8 +1902,10 @@
                     "OpenDialogAi\\ConversationLog\\": "src/ConversationLog",
                     "OpenDialogAi\\ResponseEngine\\": "src/ResponseEngine",
                     "OpenDialogAi\\InterpreterEngine\\": "src/InterpreterEngine",
+                    "OpenDialogAi\\OperationEngine\\": "src/OperationEngine",
                     "OpenDialogAi\\SensorEngine\\": "src/SensorEngine",
-                    "OpenDialogAi\\Core\\Database\\": "database/"
+                    "OpenDialogAi\\Core\\Database\\": "database/",
+                    "OpenDialogAi\\Core\\Tests\\": "tests/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1920,7 +1923,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2019-09-11T08:51:10+00:00"
+            "time": "2019-10-28T09:15:38+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4770,9 +4773,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
+                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de",
-                    "role": "Developer"
+                    "homepage": "https://beyondco.de"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
