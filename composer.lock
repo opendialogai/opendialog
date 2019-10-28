@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd3ad6042a534430c1620c0603d06edd",
+    "content-hash": "16bfe663f8917140933f3b1cb6481abe",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1843,12 +1843,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "a14d88384c1bb669cda89b0141719690b533e05f"
+                "reference": "6f82c8acd8300f4bcd231c5bc1323d2313c5547b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/a14d88384c1bb669cda89b0141719690b533e05f",
-                "reference": "a14d88384c1bb669cda89b0141719690b533e05f",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/6f82c8acd8300f4bcd231c5bc1323d2313c5547b",
+                "reference": "6f82c8acd8300f4bcd231c5bc1323d2313c5547b",
                 "shasum": ""
             },
             "require": {
@@ -1908,7 +1908,14 @@
                     "OpenDialogAi\\Core\\Tests\\": "tests/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit"
+                ],
+                "cs": [
+                    "./vendor/bin/phpcbf --standard=PSR12 --report=full src/"
+                ]
+            },
             "license": [
                 "Apache-2.0"
             ],
@@ -1923,7 +1930,11 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2019-10-28T09:15:38+00:00"
+            "support": {
+                "source": "https://github.com/opendialogai/core/tree/develop",
+                "issues": "https://github.com/opendialogai/core/issues"
+            },
+            "time": "2019-10-25T16:44:55+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4773,9 +4784,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
-                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de"
+                    "homepage": "https://beyondco.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -4957,8 +4968,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "role": "Developer",
-                    "homepage": "https://github.com/filp"
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
                 }
             ],
             "description": "php error handling for cool kids",

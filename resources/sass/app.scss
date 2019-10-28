@@ -43,3 +43,9 @@ $simple-line-font-path: '~simple-line-icons/fonts/';
 .img-avatar {
   border-radius: 0;
 }
+
+.actions {
+    .disabled {
+        cursor: not-allowed;
+    }
+}

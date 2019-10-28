@@ -12,6 +12,7 @@ import OutgoingIntent from '@/views/OutgoingIntent';
 import ChatbotUsers from '@/views/ChatbotUsers';
 import ConversationLog from '@/views/ConversationLog';
 import User from '@/views/User';
+import Request from '@/views/Request';
 
 Vue.use(VueRouter);
 
@@ -58,6 +59,11 @@ const router = new VueRouter({
           path: 'conversations',
           name: 'conversations',
           component: Conversation,
+        },
+        {
+            path: 'conversations/archive',
+            name: 'conversations-archive',
+            component: Conversation,
         },
         {
           path: 'conversations/add',
@@ -142,6 +148,17 @@ const router = new VueRouter({
           path: 'users/:id/edit',
           name: 'edit-user',
           component: User,
+          props: true,
+        },
+        {
+          path: 'requests',
+          name: 'requests',
+          component: Request,
+        },
+        {
+          path: 'requests/:id',
+          name: 'view-request',
+          component: Request,
           props: true,
         },
       ],
