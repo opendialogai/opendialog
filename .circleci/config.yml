@@ -66,7 +66,7 @@ jobs:
       - run: php artisan key:generate
 
       # run tests!
-      - run: phpdbg -qrr ./vendor/bin/phpunit --coverage-html build/coverage-report --configuration phpunit-ci.xml -d memory_limit=1024M
+      - run: phpdbg -qrr ./vendor/bin/phpunit --coverage-html build/coverage-report --configuration phpunit-ci.xml -d memory_limit=2048M
 
       - store_artifacts:
           path:  build/coverage-report
