@@ -28,3 +28,4 @@ xdebug.log
 .env-e
 .lando.yml-e
 tests/_dgraphdata
+build
