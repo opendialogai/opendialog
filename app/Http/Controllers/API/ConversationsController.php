@@ -212,6 +212,20 @@ class ConversationsController extends Controller
         return response()->noContent(200);
     }
 
+    public function adminList()
+    {
+        $conversations = [];
+
+        foreach (Conversation::all() as $conversation) {
+            $conversations[] = [
+                'name' => $conversation->name,
+                'url' => '/admin/conversations/' . $conversation->id,
+            ];
+        }
+
+        return $conversations;
+    }
+
     /**
      * @param Conversation $conversation
      * @return string
@@ -284,7 +298,9 @@ class ConversationsController extends Controller
             $deactivateResult = $conversation->deactivateConversation();
 
             if (!$deactivateResult) {
-                throw new ConversationRestorationException("Tried to deactivate the current version during a restoration but failed.");
+                throw new ConversationRestorationException(
+                    "Tried to deactivate the current version during a restoration but failed."
+                );
             }
         }
 
