@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RequestCollection;
+use App\Http\Resources\RequestResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use OpenDialogAi\Core\RequestLog;
@@ -27,9 +29,7 @@ class RequestsController extends Controller
      */
     public function index(Request $request)
     {
-        $requests = [];
-
-        $query = RequestLog::orderByDesc('microtime');
+        $query = RequestLog::orderByDesc('microtime')->with('responseLog');
 
         if ($request->url) {
             $query->where('url', 'like', '%' . $request->url . '%');
@@ -50,27 +50,7 @@ class RequestsController extends Controller
 
         $requestLogs = $query->paginate(50);
 
-        foreach ($requestLogs as $requestLog) {
-            $responseLog = ResponseLog::where('request_id', $requestLog->request_id)->first();
-
-            $requests[] = [
-                'requestLog' => $requestLog->toArray(),
-                'responseLog' => ($responseLog) ? $responseLog->toArray() : false,
-            ];
-        }
-
-        $paginated = $requestLogs->toArray();
-
-        return [
-            'data' => $requests,
-            'meta' => Arr::except($paginated, [
-                'data',
-                'first_page_url',
-                'last_page_url',
-                'prev_page_url',
-                'next_page_url',
-            ]),
-        ];
+        return new RequestCollection($requestLogs);
     }
 
     /**
@@ -81,14 +61,10 @@ class RequestsController extends Controller
      */
     public function show($id)
     {
-        $requestLog = RequestLog::where('request_id', $id)->first();
-        $responseLog = ResponseLog::where('request_id', $id)->first();
+        $requestLog = RequestLog::where('request_id', $id)->with('responseLog')->first();
 
         if ($requestLog) {
-            return [
-                'requestLog' => $requestLog->toArray(),
-                'responseLog' => ($responseLog) ? $responseLog->toArray() : false,
-            ];
+            return new RequestResource($requestLog);
         }
 
         return response()->noContent(404);

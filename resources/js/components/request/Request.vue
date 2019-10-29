@@ -23,49 +23,62 @@
         <b-col class="font-weight-bold" cols="2">Source ip</b-col>
         <b-col cols="10">{{ requestLog.source_ip }}</b-col>
       </b-row>
-      <b-row>
+      <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Time</b-col>
         <b-col cols="10">{{ requestLog.microtime }}</b-col>
       </b-row>
+      <b-row>
+        <b-col class="font-weight-bold" cols="2">Raw request</b-col>
+        <b-col cols="10">
+          <prism language="json" :code="jsonPretty(requestLog.raw_request)"></prism>
+        </b-col>
+      </b-row>
     </b-card>
 
-    <b-card header="Response log" v-if="responseLog">
+    <b-card header="Response log" v-if="requestLog.response_log">
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Request id</b-col>
-        <b-col cols="10">{{ responseLog.request_id }}</b-col>
+        <b-col cols="10">{{ requestLog.response_log.request_id }}</b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Http status</b-col>
-        <b-col cols="10">{{ responseLog.http_status }}</b-col>
+        <b-col cols="10">{{ requestLog.response_log.http_status }}</b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Headers</b-col>
-        <b-col cols="10">{{ responseLog.headers }}</b-col>
+        <b-col cols="10"><pre>{{ requestLog.response_log.headers }}</pre></b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Raw response</b-col>
-        <b-col cols="10">{{ responseLog.raw_response }}</b-col>
+        <b-col cols="10">
+          <prism language="json" :code="jsonPretty(requestLog.response_log.raw_response)"></prism>
+        </b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Request length</b-col>
-        <b-col cols="10">{{ responseLog.request_length }}</b-col>
+        <b-col cols="10">{{ requestLog.response_log.request_length }}</b-col>
       </b-row>
       <b-row>
         <b-col class="font-weight-bold" cols="2">Memory usage</b-col>
-        <b-col cols="10">{{ responseLog.memory_usage }}</b-col>
+        <b-col cols="10">{{ requestLog.response_log.memory_usage }}</b-col>
       </b-row>
     </b-card>
   </div>
 </template>
 
 <script>
+import Prism from 'vue-prismjs';
+import 'prismjs/themes/prism.css';
+
 export default {
   name: 'request',
   props: ['id'],
+  components: {
+    Prism,
+  },
   data() {
     return {
       requestLog: null,
-      responseLog: null,
     };
   },
   watch: {
@@ -82,10 +95,12 @@ export default {
 
       axios.get('/admin/api/requests/' + this.id).then(
         (response) => {
-          this.requestLog = response.data.requestLog;
-          this.responseLog = response.data.responseLog;
+          this.requestLog = response.data.data;
         },
       );
+    },
+    jsonPretty(jsonString) {
+      return JSON.stringify(JSON.parse(jsonString), null, 2);
     },
   },
 };
