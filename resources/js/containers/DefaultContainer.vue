@@ -90,80 +90,8 @@ export default {
           }
         }
 
-<<<<<<< HEAD
-      this.nav = [
-        {
-          name: 'Message Editor',
-          url: '/admin/outgoing-intents',
-          icon: 'icon-list',
-        },
-        {
-          name: 'Chatbot Users',
-          url: '/admin/chatbot-users',
-          icon: 'icon-layers'
-        },
-        {
-          name: 'Users',
-          url: '/admin/users',
-          icon: 'icon-people'
-        },
-        {
-          name: 'Webchat settings',
-          url: '/admin/webchat-setting',
-          icon: 'icon-settings',
-          children: [
-            {
-              name: 'General',
-              url: '/admin/webchat-setting/' + generalId,
-            },
-            {
-              name: 'Colours',
-              url: '/admin/webchat-setting/' + coloursId,
-            },
-            {
-              name: 'Comments',
-              url: '/admin/webchat-setting/' + commentsId,
-            },
-            {
-              name: 'History',
-              url: '/admin/webchat-setting/' + historyId,
-            },
-          ],
-        },
-        {
-          name: 'Conversations',
-          url: '/admin/conversations',
-          icon: 'icon-speech',
-          children: conversations,
-        },
-        {
-          name: 'Test Bot',
-          url: '/admin/demo',
-          icon: 'icon-control-play',
-        },
-      ];
-    },
-    async getConversations() {
-      const promise = axios.get('/admin/api/conversation').then(
-        (response) => {
-          const conversations = [];
-
-          response.data.data.forEach((conversation) => {
-            conversations.push({
-              name: conversation.name,
-              url: '/admin/conversations/' + conversation.id,
-            });
-          });
-
-          return conversations;
-        },
-      );
-
-      return await Promise.resolve(promise);
-=======
         this.nav.push(navigationItem);
       });
->>>>>>> develop
     },
     async getChildren(url) {
       const promise = axios.get(url).then(

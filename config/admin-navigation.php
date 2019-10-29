@@ -35,6 +35,11 @@ return [
             'url' => '/admin/requests',
             'icon' => 'cui-inbox',
         ],
+        [
+            'title' => 'Test Bot',
+            'url' => '/admin/demo',
+            'icon' => 'icon-control-play',
+        ],
     ],
 
 ];
