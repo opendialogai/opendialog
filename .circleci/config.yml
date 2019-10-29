@@ -66,9 +66,12 @@ jobs:
       - run: php artisan key:generate
 
       # run tests!
-      - run: ./vendor/bin/phpunit
+      - run: phpdbg -qrr ./vendor/bin/phpunit --coverage-html build/coverage-report --configuration phpunit-ci.xml -d memory_limit=2048M
 
-      - run: ./vendor/bin/phpcs --standard=psr12 app/ -n
+      - store_artifacts:
+          path:  build/coverage-report
+
+      - run: ./vendor/bin/phpcs --standard=od-cs-ruleset.xml app/ --ignore=*/migrations/*,*/tests/*
 
       - run:
           name: Output logs on failure

@@ -15,18 +15,22 @@ class ExportConversations extends Command
     {
         $conversations = config('opendialog.active_conversations');
 
-        $continue = $this->confirm(sprintf('Do you want to export the %d active conversations listed in opendialog.active_conversations config?', count($conversations)));
+        $continue = $this->confirm(
+            sprintf(
+                'Do you want to export the %d active conversations listed in opendialog.active_conversations config?',
+                count($conversations)
+            )
+        );
 
-        if (!$continue) {
-            $this->info("Bye");
-            exit;
+        if ($continue) {
+            foreach ($conversations as $conversation) {
+                $this->exportConversation($conversation);
+            }
+
+            $this->info('Imports finished');
+        } else {
+            $this->info('Bye');
         }
-
-        foreach ($conversations as $conversation) {
-            $this->exportConversation($conversation);
-        }
-
-        $this->info('Imports finished');
     }
 
     protected function exportConversation($conversationName): void

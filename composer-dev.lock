@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd3ad6042a534430c1620c0603d06edd",
+    "content-hash": "b34a32c0b5024613f730d281846de3be",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -91,16 +91,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.8.1",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c"
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/d4374ae95b36062d02ef310100ed33d78738d76c",
-                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d768d58baee9a4862ca783840eca1b9add7a7f57",
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57",
                 "shasum": ""
             },
             "require": {
@@ -136,16 +136,16 @@
             ],
             "authors": [
                 {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Benjamin Eberlei",
                     "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
                 },
                 {
                     "name": "Jonathan Wage",
@@ -162,7 +162,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2019-10-28T09:31:32+00:00"
+            "time": "2018-08-21T18:01:43+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -1790,16 +1790,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.5",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2"
+                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
-                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/97e59c7a16464196a8b9c77c47df68e4a39a45c4",
+                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4",
                 "shasum": ""
             },
             "require": {
@@ -1807,7 +1807,6 @@
                 "php": ">=7.0"
             },
             "require-dev": {
-                "ircmaxell/php-yacc": "0.0.4",
                 "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
             },
             "bin": [
@@ -1838,21 +1837,15 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-10-25T18:33:07+00:00"
+            "time": "2019-09-01T07:51:21+00:00"
         },
         {
             "name": "opendialogai/core",
             "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/opendialogai/core.git",
-                "reference": "a14d88384c1bb669cda89b0141719690b533e05f"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/a14d88384c1bb669cda89b0141719690b533e05f",
-                "reference": "a14d88384c1bb669cda89b0141719690b533e05f",
-                "shasum": ""
+                "type": "path",
+                "url": "../opendialog-core",
+                "reference": "d665274e43cb9b16d99614dd5306279a6060285c"
             },
             "require": {
                 "doctrine/dbal": "^2.9",
@@ -1911,7 +1904,14 @@
                     "OpenDialogAi\\Core\\Tests\\": "tests/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit"
+                ],
+                "cs": [
+                    "./vendor/bin/phpcbf --standard=PSR12 --report=full src/"
+                ]
+            },
             "license": [
                 "Apache-2.0"
             ],
@@ -1925,8 +1925,7 @@
                     "email": "ronalda@greenshootlabs.com"
                 }
             ],
-            "description": "The OpenDialog core package",
-            "time": "2019-10-28T09:15:38+00:00"
+            "description": "The OpenDialog core package"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -1963,16 +1962,10 @@
         {
             "name": "opendialogai/webchat",
             "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "37681ecdc258f7e27b78f4d57176254778e9d20a"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/37681ecdc258f7e27b78f4d57176254778e9d20a",
-                "reference": "37681ecdc258f7e27b78f4d57176254778e9d20a",
-                "shasum": ""
+                "type": "path",
+                "url": "../opendialog-webchat",
+                "reference": "c7fa89ee1edaec9c6d593b7b51705fe33e0fa61d"
             },
             "require": {
                 "genealabs/laravel-caffeine": "^0.8|^1.0",
@@ -1997,7 +1990,11 @@
                     "OpenDialogAi\\Webchat\\Database\\": "database/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "OpenDialogAi\\Webchat\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "proprietary"
             ],
@@ -2007,8 +2004,7 @@
                     "email": "stuarth@greenshootlabs.com"
                 }
             ],
-            "description": "Webchat front end component for the Open Dialog project",
-            "time": "2019-10-28T09:44:15+00:00"
+            "description": "Webchat front end component for the Open Dialog project"
         },
         {
             "name": "opis/closure",
@@ -6730,16 +6726,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.2",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "65b12cdeaaa6cd276d4c3033a95b9b88b12701e7"
+                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/65b12cdeaaa6cd276d4c3033a95b9b88b12701e7",
-                "reference": "65b12cdeaaa6cd276d4c3033a95b9b88b12701e7",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/82cd0f854ceca17731d6d019c7098e3755c45060",
+                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060",
                 "shasum": ""
             },
             "require": {
@@ -6777,7 +6773,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-10-28T04:36:32+00:00"
+            "time": "2019-10-16T21:14:26+00:00"
         },
         {
             "name": "symfony/config",
@@ -7113,10 +7109,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "opendialogai/core": 20,
-        "opendialogai/webchat": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

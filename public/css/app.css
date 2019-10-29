@@ -23007,3 +23007,7 @@ body {
   border-radius: 0;
 }
 
+.actions .disabled {
+  cursor: not-allowed;
+}
+

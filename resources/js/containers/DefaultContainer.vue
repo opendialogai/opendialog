@@ -9,12 +9,9 @@
       </b-link>
       <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
       <b-navbar-nav class="d-md-down-none">
-        <b-nav-item class="px-3" to="/admin/outgoing-intents">Message Editor</b-nav-item>
-        <b-nav-item class="px-3" to="/admin/chatbot-users">Chatbot Users</b-nav-item>
-        <b-nav-item class="px-3" to="/admin/users">Users</b-nav-item>
-        <b-nav-item class="px-3" to="/admin/webchat-setting">Webchat settings</b-nav-item>
-        <b-nav-item class="px-3" to="/admin/conversations">Conversations</b-nav-item>
-        <b-nav-item class="px-3" to="/admin/demo">Test Bot</b-nav-item>
+        <b-nav-item v-for="item in navigationItems" class="px-3" :key="item.url" :to="item.url">
+          {{ item.title }}
+        </b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
@@ -68,38 +65,32 @@ export default {
       nav: [],
     };
   },
+  computed: {
+    navigationItems() {
+      return window.NavigationItems;
+    },
+  },
   created() {
     this.buildSidebarMenu();
   },
   methods: {
-    async buildSidebarMenu() {
-      const conversations = await this.getConversations();
-      const webchatSettings = await this.getWebchatSettings();
+    buildSidebarMenu() {
+      this.asyncForEach(this.navigationItems, async (item) => {
+        const navigationItem = {
+          name: item.title,
+          url: item.url,
+          icon: item.icon,
+        };
 
-      let generalId = '';
-      let coloursId = '';
-      let commentsId = '';
-      let historyId = '';
-
-      webchatSettings.forEach((setting) => {
-        if (setting.type === 'object') {
-          switch (setting.name) {
-            case 'general':
-              generalId = setting.id;
-              break;
-            case 'colours':
-              coloursId = setting.id;
-              break;
-            case 'comments':
-              commentsId = setting.id;
-              break;
-            case 'webchatHistory':
-              historyId = setting.id;
-              break;
+        if (item.children) {
+          if (Array.isArray(item.children)) {
+            navigationItem.children = item.children;
+          } else {
+            navigationItem.children = await this.getChildren(item.children);
           }
         }
-      });
 
+<<<<<<< HEAD
       this.nav = [
         {
           name: 'Message Editor',
@@ -169,15 +160,24 @@ export default {
       );
 
       return await Promise.resolve(promise);
+=======
+        this.nav.push(navigationItem);
+      });
+>>>>>>> develop
     },
-    async getWebchatSettings() {
-      const promise = axios.get('/admin/api/webchat-setting').then(
+    async getChildren(url) {
+      const promise = axios.get(url).then(
         (response) => {
           return response.data;
         },
       );
 
       return await Promise.resolve(promise);
+    },
+    async asyncForEach(array, callback) {
+      for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+      }
     },
   },
 };

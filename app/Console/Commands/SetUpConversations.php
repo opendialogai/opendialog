@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
 
 class SetUpConversations extends Command
@@ -17,31 +18,33 @@ class SetUpConversations extends Command
     {
         $conversations = config('opendialog.active_conversations');
 
-        if (!$this->confirm('This will clear your local dgraph and all conversations. ' .
-            'Are you sure you want to continue?')) {
-            $this->info("OK, not running");
-            exit;
+        $continue = $this->confirm(
+            'This will clear your local dgraph and all conversations. Are you sure you want to continue?'
+        );
+
+        if ($continue) {
+            $client = app()->make(DGraphClient::class);
+
+            $this->info('Dropping Schema');
+            $client->dropSchema();
+
+            $this->info('Init Schema');
+            $client->initSchema();
+
+            $this->info('Setting all existing conversations to activatable');
+            Conversation::all()->each(function (Conversation $conversation) {
+                $conversation->status = ConversationNode::SAVED;
+                $conversation->save();
+            });
+
+            foreach ($conversations as $conversation) {
+                $this->importConversation($conversation);
+            }
+
+            $this->info('Imports finished');
+        } else {
+            $this->info('OK, not running');
         }
-
-        $client = app()->make(DGraphClient::class);
-
-        $this->info('Dropping Schema');
-        $client->dropSchema();
-
-        $this->info('Init Schema');
-        $client->initSchema();
-
-        $this->info('Setting all existing conversations to unpublished');
-        Conversation::all()->each(function (Conversation $conversation) {
-            $conversation->status = 'validated';
-            $conversation->save();
-        });
-
-        foreach ($conversations as $conversation) {
-            $this->importConversation($conversation);
-        }
-
-        $this->info('Imports finished');
     }
 
     protected function importConversation($conversationName): void
@@ -51,7 +54,7 @@ class SetUpConversations extends Command
             'conversation:import',
             [
                 'filename' => "resources/conversations/$conversationName",
-                '--publish' => true,
+                '--activate' => true,
                 '--yes' => true
             ]
         );

@@ -51,16 +51,6 @@ For this to work successfully, the `APP_URL` environment variable need to be set
 
 ### DGraph configuration
 
-#### Running DGraph
-
-If you don't have a `dgraph` directory in the root of your project, run
-
-```php artisan vendor:publish --tag=dgraph```
-
-to copy it over from the OpenDialogAi-Core package.
-
-Now follow the instructions found in `dgraph-setup.md`
-
 #### Config
 
 Publish the opendialog config by running:
@@ -71,11 +61,11 @@ This will copy over all required config files to `config/opendialog` for you to 
 
 Add (and edit as necessary) the following lines to your .env file to let OD know where to find your DGraph installation:
 ```
-DGRAPH_URL=http://10.0.2.2
+DGRAPH_URL=http://dgraph-alpha
 DGRAPH_PORT=8080
 ```
 
-These settings should work out of the box if you are using Laravel Homestead. More info in `draph/dgraph-setup.md`
+(`http://dgraph-alpha` is the internally resolvable hostname for DGraph in the lando set up)
 
 ## Conversations
 
@@ -115,7 +105,7 @@ YAML and all related outgoing intents and message templates
 ## Local dev
 
 A `composer-dev.json` file has been created to help with local development. It makes the assumption that you have the 
-Open Dialog and Open Dialog Webchat packages checked out locally to `../OpenDialog` and `../OpenDialog-Webchat`
+Open Dialog and Open Dialog Webchat packages checked out locally to `../opendialog-core` and `../opendialog-webchat`
 respectively.
 
 To install dependencies using it, you can run `./composer-dev install` or `./composer-dev update`
@@ -128,9 +118,23 @@ Note:
 + Before a final commit for a feature / fix, please be sure to run `composer update` to update the `composer-lock.json`
 file so that it can be tested and deployed with all composer changes in place
 
+## Testing
+
+The project is set up to run all commits through (CircleCI)[https://circleci.com], which runs tests and checks for code 
+standards.
+
+To run the tests locally, first spin up the test Docker DGraph by running the following from the `/tests` directory:
+
+    docker-compose up
+    
+This should spin up a `DGraph Zero` container and a `DGraph Alpha` container with ports that won't clash with your local
+Lando setup.
+
+Information on setting up phpstorm to run tests on the (OpenDialog Wiki)[https://github.com/opendialogai/opendialog/wiki]
+
 ## Running Code Sniffer
 To run code sniffer, run the following command
-```./vendor/bin/phpcs --standard=psr12 app/ -n```
+```./vendor/bin/phpcs --standard=od-cs-ruleset.xml app/ --ignore=*/migrations/*,*/tests/*```
 
 ## Git Hooks
 

@@ -18,6 +18,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <script>window.DashboardCards = {!! json_encode(config('admin-stats.cards')) !!};</script>
+
+    <script>window.NavigationItems = {!! json_encode(config('admin-navigation.items')) !!};</script>
   </head>
 
   <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">

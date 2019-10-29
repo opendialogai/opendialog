@@ -5,10 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
+use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\Yaml\Yaml;
 
 class ConversationsController extends Controller
@@ -26,29 +30,30 @@ class ConversationsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return ConversationCollection
      */
     public function index()
     {
-        $conversations = Conversation::paginate(50);
+        $conversations = Conversation::withoutStatus(ConversationNode::ARCHIVED)->paginate(50);
+        return new ConversationCollection($conversations);
+    }
 
-        foreach ($conversations as $conversation) {
-            $conversation->outgoing_intents = $this->outgoingIntents($conversation);
-            $conversation->opening_intent = $this->openingIntent($conversation);
-
-            $conversation->makeVisible('id');
-            $conversation->makeVisible('outgoing_intents');
-            $conversation->makeVisible('opening_intent');
-        }
-
+    /**
+     * Display an archive listing.
+     *
+     * @return ConversationCollection
+     */
+    public function viewArchive()
+    {
+        $conversations = Conversation::withStatus(ConversationNode::ARCHIVED)->paginate(50);
         return new ConversationCollection($conversations);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -60,37 +65,27 @@ class ConversationsController extends Controller
 
         $conversation->save();
 
-        $conversation->makeVisible('id');
-
         return new ConversationResource($conversation);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return ConversationResource
      */
     public function show($id)
     {
         $conversation = Conversation::find($id);
-
-        $conversation->outgoing_intents = $this->outgoingIntents($conversation);
-        $conversation->opening_intent = $this->openingIntent($conversation);
-
-        $conversation->makeVisible('id');
-        $conversation->makeVisible('outgoing_intents');
-        $conversation->makeVisible('opening_intent');
-
         return new ConversationResource($conversation);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -110,26 +105,47 @@ class ConversationsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Archive the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function archive($id)
     {
         if ($conversation = Conversation::find($id)) {
-            $conversation->delete();
+            $result = $conversation->archiveConversation();
 
-            return response()->noContent(200);
+            if ($result) {
+                return response()->noContent(200);
+            } else {
+                return response()->noContent(404);
+            }
         }
 
         return response()->noContent(404);
     }
 
-    public function publish($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
     {
         if ($conversation = Conversation::find($id)) {
-            $ret = $conversation->publishConversation($conversation->buildConversation());
+            if ($conversation->delete()) {
+                return response()->noContent(200);
+            }
+        }
+
+        return response()->noContent(404);
+    }
+
+    public function activate($id)
+    {
+        if ($conversation = Conversation::find($id)) {
+            $ret = $conversation->activateConversation($conversation->buildConversation());
 
             return response()->json($ret);
         }
@@ -137,15 +153,83 @@ class ConversationsController extends Controller
         return response()->json(false);
     }
 
-    public function unpublish($id)
+    public function deactivate($id)
     {
         if ($conversation = Conversation::find($id)) {
-            $ret = $conversation->unPublishConversation();
+            $ret = $conversation->deactivateConversation();
 
             return response()->json($ret);
         }
 
         return response()->json(false);
+    }
+
+    /**
+     * @param int $id
+     * @param int $versionId
+     * @return ConversationResource
+     * @throws BindingResolutionException
+     */
+    public function restore(int $id, int $versionId)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        try {
+            $this->restoreConversation($conversation, $id, $versionId);
+        } catch (ConversationRestorationException $e) {
+            Log::error($e->getMessage());
+            return response()->noContent(500);
+        }
+
+        // Return
+        return response()->noContent(200);
+    }
+
+    /**
+     * @param int $id
+     * @param int $versionId
+     * @return ConversationResource
+     * @throws BindingResolutionException
+     */
+    public function reactivate(int $id, int $versionId)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        try {
+            $this->restoreConversation($conversation, $id, $versionId);
+        } catch (ConversationRestorationException $e) {
+            Log::error($e->getMessage());
+            return response()->noContent(500);
+        }
+
+        // There's no reason for the previous version to not be valid, but just in case of any future changes we check
+        if ($conversation->status == ConversationNode::ACTIVATABLE) {
+            $conversation->activateConversation($conversation->buildConversation());
+        }
+
+        return response()->noContent(200);
+    }
+
+
+    /**
+     * Returns a list of conversations that can be used in a menu system
+     *
+     * @return array
+     */
+    public function adminList() : array
+    {
+        $conversations = [];
+
+        foreach (Conversation::all() as $conversation) {
+            $conversations[] = [
+                'name' => $conversation->name,
+                'url' => '/admin/conversations/' . $conversation->id,
+            ];
+        }
+
+        return $conversations;
     }
 
     /**
@@ -198,64 +282,37 @@ class ConversationsController extends Controller
 
     /**
      * @param Conversation $conversation
-     * @return array
+     * @param int $id
+     * @param int $versionId
+     * @throws ConversationRestorationException
+     * @throws BindingResolutionException
      */
-    private function outgoingIntents(Conversation $conversation)
+    private function restoreConversation(Conversation $conversation, int $id, int $versionId)
     {
-        $outgoingIntents = [];
-        $yaml = Yaml::parse($conversation->model)['conversation'];
+        /** @var Activity $version */
+        $version = Activity::where([
+            ['subject_id', $id],
+            ['id', $versionId]
+        ])->first();
 
-        foreach ($yaml['scenes'] as $sceneId => $scene) {
-            foreach ($scene['intents'] as $intent) {
-                foreach ($intent as $tag => $value) {
-                    if ($tag == 'b') {
-                        foreach ($value as $key => $intent) {
-                            if ($key == 'i') {
-                                $outgoingIntent = OutgoingIntent::where('name', $intent)->first();
-                                if ($outgoingIntent) {
-                                    $outgoingIntents[] = [
-                                        'id' => $outgoingIntent->id,
-                                        'name' => $intent,
-                                    ];
-                                } else {
-                                    $outgoingIntents[] = [
-                                        'name' => $intent,
-                                    ];
-                                }
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
+        if (is_null($version)) {
+            throw new ConversationRestorationException("Could not find a previous version for restoration.");
+        }
+
+        // Deactivate current version if activated
+        if ($conversation->status == ConversationNode::ACTIVATED) {
+            $deactivateResult = $conversation->deactivateConversation();
+
+            if (!$deactivateResult) {
+                throw new ConversationRestorationException(
+                    "Tried to deactivate the current version during a restoration but failed."
+                );
             }
         }
 
-        return $outgoingIntents;
-    }
-
-    /**
-     * @param Conversation $conversation
-     * @return string
-     */
-    private function openingIntent(Conversation $conversation)
-    {
-        $yaml = Yaml::parse($conversation->model)['conversation'];
-
-        foreach ($yaml['scenes'] as $sceneId => $scene) {
-            foreach ($scene['intents'] as $intent) {
-                foreach ($intent as $tag => $value) {
-                    if ($tag == 'u') {
-                        foreach ($value as $key => $intent) {
-                            if ($key == 'i') {
-                                return $intent;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return '';
+        // Update, persist and re-validate conversation with previous model
+        $conversation->model = $version->properties->first()["model"];
+        $conversation->graph_uid = null;
+        $conversation->save();
     }
 }

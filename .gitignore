@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/statuses
 /vendor
 .env
 .phpunit.result.cache
@@ -26,3 +27,5 @@ xdebug.log
 .lando.yml
 .env-e
 .lando.yml-e
+tests/_dgraphdata
+build

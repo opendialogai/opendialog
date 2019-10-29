@@ -19,6 +19,7 @@
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
+            <b-btn variant="secondary" @click="viewArchive">View archive</b-btn>
           <b-btn variant="primary" @click="createConversation">Create</b-btn>
         </div>
       </div>
@@ -38,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="conversation in conversations" @click="viewConversation(conversation.id)">
+          <tr v-for="conversation in conversations">
             <td>
               {{ conversation.id }}
             </td>
@@ -46,7 +47,7 @@
               {{ conversation.name }}
             </td>
             <td>
-              {{ conversation.status }}
+              v{{ conversation.version_number }} - {{ conversation.status }}
             </td>
             <td>
               {{ conversation.yaml_validation_status }}
@@ -71,23 +72,26 @@
               <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editConversation(conversation.id)">
                 <i class="fa fa-edit"></i>
               </button>
-              <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation.id)">
+              <button v-if="conversation.status == 'archived'" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" @click.stop="showDeleteConversationModal(conversation.id)">
                 <i class="fa fa-close"></i>
               </button>
+              <button v-else v-bind:class="[conversation.status != 'deactivated' ? 'disabled' : '', 'btn', 'btn-danger']" data-toggle="tooltip" data-placement="top" title="Archive" @click.stop="showArchiveConversationModal(conversation.id)" :disabled="conversation.status != 'deactivated'" :aria-disabled="conversation.status != 'deactivated'">
+                <i class="fa fa-trash"></i>
+              </button>
 
-              <template v-if="conversation.status == 'published'">
-                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)" disabled>
+              <template v-if="conversation.status == 'activated'">
+                <button class="btn btn-primary ml-2 disabled" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)" disabled aria-disabled>
                   <i class="fa fa-upload"></i>
                 </button>
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)">
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)">
                   <i class="fa fa-download"></i>
                 </button>
               </template>
               <template v-else>
-                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Publish" @click.stop="publishConversation(conversation)">
+                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)">
                   <i class="fa fa-upload"></i>
                 </button>
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Unpublish" @click.stop="unpublishConversation(conversation)" disabled>
+                <button class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)" disabled aria-disabled>
                   <i class="fa fa-download"></i>
                 </button>
               </template>
@@ -137,13 +141,33 @@
         </div>
       </div>
     </div>
+
+    <div class="modal modal-danger fade" id="archiveConversationModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Archive Conversation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to archive this conversation?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" @click="archiveConversation">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Pager from '@/mixins/Pager';
+  import Pager from '@/mixins/Pager';
 
-export default {
+  export default {
   name: 'conversations',
   mixins: [Pager],
   data() {
@@ -182,32 +206,36 @@ export default {
     editConversation(id) {
       this.$router.push({ name: 'edit-conversation', params: { id } });
     },
-    publishConversation(conversation) {
+    viewArchive() {
+      this.$router.push({ name: 'conversations-archive' });
+    },
+    activateConversation(conversation) {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + conversation.id + '/publish').then(
+      axios.get('/admin/api/conversation/' + conversation.id + '/activate').then(
         (response) => {
           if (response.data) {
-            this.successMessage = 'Conversation published.';
-            conversation.status = 'published';
+            this.successMessage = 'Conversation activated.';
+            conversation.status = 'activated';
+            conversation.version_number++;
           } else {
-            this.errorMessage = 'Sorry, I wasn\'t able to publish this conversation to DGraph.';
+            this.errorMessage = 'Sorry, I wasn\'t able to activate this conversation to DGraph.';
           }
         },
       );
     },
-    unpublishConversation(conversation) {
+    deactivateConversation(conversation) {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + conversation.id + '/unpublish').then(
+      axios.get('/admin/api/conversation/' + conversation.id + '/deactivate').then(
         (response) => {
           if (response.data) {
-            this.successMessage = 'Conversation unpublished.';
-            conversation.status = 'validated';
+            this.successMessage = 'Conversation deactivated.';
+            conversation.status = 'deactivated';
           } else {
-            this.errorMessage = 'Sorry, I wasn\'t able to unpublish this conversation from DGraph.';
+            this.errorMessage = 'Sorry, I wasn\'t able to deactivate this conversation from DGraph.';
           }
         },
       );
@@ -216,12 +244,30 @@ export default {
       this.currentConversation = id;
       $('#deleteConversationModal').modal();
     },
+    showArchiveConversationModal(id) {
+        this.currentConversation = id;
+        $('#archiveConversationModal').modal();
+    },
     deleteConversation() {
       $('#deleteConversationModal').modal('hide');
 
       this.conversations = this.conversations.filter(obj => obj.id !== this.currentConversation);
 
       axios.delete('/admin/api/conversation/' + this.currentConversation);
+    },
+    archiveConversation() {
+        $('#archiveConversationModal').modal('hide');
+
+        axios.get('/admin/api/conversation/' + this.currentConversation + '/archive').then(
+            () => {
+                this.successMessage = 'Conversation archived.';
+                this.conversations = this.conversations.filter(obj => obj.id !== this.currentConversation);
+            }
+        ).catch(
+            (error) => {
+                this.errorMessage = 'Sorry, I wasn\'t able to archive this conversation from DGraph.';
+            }
+        );
     },
   },
 };
