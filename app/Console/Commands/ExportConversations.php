@@ -22,16 +22,15 @@ class ExportConversations extends Command
             )
         );
 
-        if (!$continue) {
-            $this->info("Bye");
-            exit;
-        }
+        if ($continue) {
+            foreach ($conversations as $conversation) {
+                $this->exportConversation($conversation);
+            }
 
-        foreach ($conversations as $conversation) {
-            $this->exportConversation($conversation);
+            $this->info('Imports finished');
+        } else {
+            $this->info('Bye');
         }
-
-        $this->info('Imports finished');
     }
 
     protected function exportConversation($conversationName): void

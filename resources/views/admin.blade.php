@@ -26,5 +26,22 @@
     <div id="app">
       <app></app>
     </div>
+
+    @if (request()->route()->getName() == 'webchat-demo')
+      <script>
+        window.openDialogSettings = {
+          url: "{{ env("APP_URL") }}",
+          validPath: 'admin/demo',
+          user: {
+            first_name: '{!! auth()->user()->name !!}',
+            last_name: '',
+            email: '{!! auth()->user()->email !!}',
+            external_id: '{!! auth()->user()->id !!}',
+          },
+        };
+      </script>
+
+      <script src="{{ env('APP_URL') }}/vendor/webchat/js/opendialog-bot.js"></script>
+    @endif
   </body>
 </html>

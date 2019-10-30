@@ -57,6 +57,7 @@ export default {
   data() {
     return {
       displayPicker: 0,
+      ready: false,
       showSpinner: false,
       subCategory: '',
       webchatSettings: [],
@@ -115,6 +116,10 @@ export default {
               }
             }
           });
+
+          setTimeout(() => {
+            this.ready = true;
+          }, 100);
         },
       );
     },
@@ -144,6 +149,8 @@ export default {
       this.saveSetting(setting);
     },
     saveSetting(setting) {
+      if (!this.ready) return;
+
       this.showSpinner = true;
       axios.patch('/admin/api/webchat-setting/' + setting.id, { value: setting.value })
         .then(() => {

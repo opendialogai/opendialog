@@ -18,34 +18,33 @@ class SetUpConversations extends Command
     {
         $conversations = config('opendialog.active_conversations');
 
-        if (
-            !$this->confirm(
-                'This will clear your local dgraph and all conversations. Are you sure you want to continue?'
-            )
-        ) {
-            $this->info("OK, not running");
-            exit;
+        $continue = $this->confirm(
+            'This will clear your local dgraph and all conversations. Are you sure you want to continue?'
+        );
+
+        if ($continue) {
+            $client = app()->make(DGraphClient::class);
+
+            $this->info('Dropping Schema');
+            $client->dropSchema();
+
+            $this->info('Init Schema');
+            $client->initSchema();
+
+            $this->info('Setting all existing conversations to activatable');
+            Conversation::all()->each(function (Conversation $conversation) {
+                $conversation->status = ConversationNode::SAVED;
+                $conversation->save();
+            });
+
+            foreach ($conversations as $conversation) {
+                $this->importConversation($conversation);
+            }
+
+            $this->info('Imports finished');
+        } else {
+            $this->info('OK, not running');
         }
-
-        $client = app()->make(DGraphClient::class);
-
-        $this->info('Dropping Schema');
-        $client->dropSchema();
-
-        $this->info('Init Schema');
-        $client->initSchema();
-
-        $this->info('Setting all existing conversations to activatable');
-        Conversation::all()->each(function (Conversation $conversation) {
-            $conversation->status = ConversationNode::SAVED;
-            $conversation->save();
-        });
-
-        foreach ($conversations as $conversation) {
-            $this->importConversation($conversation);
-        }
-
-        $this->info('Imports finished');
     }
 
     protected function importConversation($conversationName): void

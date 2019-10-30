@@ -15,12 +15,6 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-if (env("APP_DEBUG")) {
-    Route::get('/demo', function () {
-        return view('demo');
-    });
-}
-
 Auth::routes(['register' => false]);
 
 if (env("USE_2FA")) {
@@ -35,6 +29,8 @@ if (env("USE_2FA")) {
 Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::get('/', 'AdminController@handle');
+
+    Route::get('/demo', 'AdminController@handle')->name('webchat-demo');
 
     /**
      * Webchat Settings
