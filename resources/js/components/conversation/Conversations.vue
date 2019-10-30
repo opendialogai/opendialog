@@ -165,9 +165,9 @@
 </template>
 
 <script>
-  import Pager from '@/mixins/Pager';
+import Pager from '@/mixins/Pager';
 
-  export default {
+export default {
   name: 'conversations',
   mixins: [Pager],
   data() {

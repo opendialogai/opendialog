@@ -219,10 +219,10 @@
 </template>
 
 <script>
-  import Prism from 'vue-prismjs';
-  import 'prismjs/themes/prism.css';
+import Prism from 'vue-prismjs';
+import 'prismjs/themes/prism.css';
 
-  const moment = require('moment');
+const moment = require('moment');
 
 export default {
   name: 'conversation',

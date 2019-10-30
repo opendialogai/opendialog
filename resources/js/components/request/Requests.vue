@@ -59,31 +59,35 @@
             <th scope="col">Url</th>
             <th scope="col">Method</th>
             <th scope="col">Source ip</th>
+            <th scope="col">Time</th>
             <th scope="col">Http status</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="request in requests" @click="viewRequest(request.requestLog.request_id)">
+          <tr v-for="request in requests" @click="viewRequest(request.request_id)">
             <td>
-              {{ request.requestLog.request_id }}
+              {{ request.request_id }}
             </td>
             <td>
-              {{ request.requestLog.url }}
+              {{ request.url }}
             </td>
             <td>
-              {{ request.requestLog.method }}
+              {{ request.method }}
             </td>
             <td>
-              {{ request.requestLog.source_ip }}
+              {{ request.source_ip }}
             </td>
             <td>
-              <template v-if="request.responseLog">
-                {{ request.responseLog.http_status }}
+              {{ request.microtime }}
+            </td>
+            <td>
+              <template v-if="request.response_log">
+                {{ request.response_log.http_status }}
               </template>
             </td>
             <td class="actions">
-              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewRequest(request.requestLog.request_id)">
+              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewRequest(request.request_id)">
                 <i class="fa fa-eye"></i>
               </button>
             </td>
