@@ -53,7 +53,9 @@
               {{ conversation.yaml_validation_status }}
             </td>
             <td>
-              {{ conversation.opening_intent }}
+                <span v-for="(opening_intent, index) in conversation.opening_intents">
+                    {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>
+                </span>
             </td>
             <td>
               <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
