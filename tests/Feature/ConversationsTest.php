@@ -138,7 +138,7 @@ class ConversationsTest extends TestCase
     {
         /** @var Conversation $firstConversation */
         $conversation = Conversation::first();
-        $conversation->activateConversation($conversation->buildConversation());
+        $conversation->activateConversation();
         $conversation->deactivateConversation();
         $conversation->archiveConversation();
 
@@ -164,7 +164,7 @@ class ConversationsTest extends TestCase
     {
         $conversation = Conversation::first();
 
-        $conversation->activateConversation($conversation->buildConversation());
+        $conversation->activateConversation();
 
         $response = $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/conversation/' . $conversation->id . '/deactivate')
@@ -177,7 +177,7 @@ class ConversationsTest extends TestCase
     {
         $conversation = Conversation::first();
 
-        $conversation->activateConversation($conversation->buildConversation());
+        $conversation->activateConversation();
         $conversation->deactivateConversation();
 
         $this->actingAs($this->user, 'api')
