@@ -9,7 +9,8 @@ use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenti
 
 class User extends Authenticatable implements TwoFactorAuthenticatableContract
 {
-    use Notifiable, TwoFactorAuthenticatable;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.

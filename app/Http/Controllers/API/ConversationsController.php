@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
-use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -168,6 +168,7 @@ class ConversationsController extends Controller
      * @param int $id
      * @param int $versionId
      * @return ConversationResource
+     * @throws BindingResolutionException
      */
     public function restore(int $id, int $versionId)
     {
@@ -176,7 +177,7 @@ class ConversationsController extends Controller
 
         try {
             $this->restoreConversation($conversation, $id, $versionId);
-        } catch (Exception $e) {
+        } catch (ConversationRestorationException $e) {
             Log::error($e->getMessage());
             return response()->noContent(500);
         }
@@ -189,7 +190,7 @@ class ConversationsController extends Controller
      * @param int $id
      * @param int $versionId
      * @return ConversationResource
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public function reactivate(int $id, int $versionId)
     {
@@ -198,7 +199,7 @@ class ConversationsController extends Controller
 
         try {
             $this->restoreConversation($conversation, $id, $versionId);
-        } catch (Exception $e) {
+        } catch (ConversationRestorationException $e) {
             Log::error($e->getMessage());
             return response()->noContent(500);
         }
@@ -209,6 +210,26 @@ class ConversationsController extends Controller
         }
 
         return response()->noContent(200);
+    }
+
+
+    /**
+     * Returns a list of conversations that can be used in a menu system
+     *
+     * @return array
+     */
+    public function adminList() : array
+    {
+        $conversations = [];
+
+        foreach (Conversation::all() as $conversation) {
+            $conversations[] = [
+                'name' => $conversation->name,
+                'url' => '/admin/conversations/' . $conversation->id,
+            ];
+        }
+
+        return $conversations;
     }
 
     /**
@@ -263,7 +284,8 @@ class ConversationsController extends Controller
      * @param Conversation $conversation
      * @param int $id
      * @param int $versionId
-     * @throws Exception
+     * @throws ConversationRestorationException
+     * @throws BindingResolutionException
      */
     private function restoreConversation(Conversation $conversation, int $id, int $versionId)
     {
@@ -274,7 +296,7 @@ class ConversationsController extends Controller
         ])->first();
 
         if (is_null($version)) {
-            throw new Exception("Could not find a previous version for restoration.");
+            throw new ConversationRestorationException("Could not find a previous version for restoration.");
         }
 
         // Deactivate current version if activated
@@ -282,7 +304,9 @@ class ConversationsController extends Controller
             $deactivateResult = $conversation->deactivateConversation();
 
             if (!$deactivateResult) {
-                throw new Exception("Tried to deactivate the current version during a restoration but failed.");
+                throw new ConversationRestorationException(
+                    "Tried to deactivate the current version during a restoration but failed."
+                );
             }
         }
 

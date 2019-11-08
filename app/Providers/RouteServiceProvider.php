@@ -39,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapCustomRoutes();
+
         //
     }
 
@@ -68,5 +70,17 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "custom" routes for the application.
+     *
+     * @return void
+     */
+    protected function mapCustomRoutes()
+    {
+        Route::middleware('api')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/custom.php'));
     }
 }

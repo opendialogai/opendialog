@@ -2,7 +2,7 @@
 # pre-commit hook for OD projects
 # will run php code sniff before committing to make sure code conforms to standard
 
-OUTPUT=$(./vendor/bin/phpcs --standard=psr12 app/ -n)
+OUTPUT=$(./vendor/bin/phpcs --standard=od-cs-ruleset.xml app/ --ignore=*/migrations/*,*/tests/*)
 RETVAL=$?
 
 if [ $RETVAL -ne 0 ]; then
