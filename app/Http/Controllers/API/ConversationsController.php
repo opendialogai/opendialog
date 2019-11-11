@@ -145,7 +145,7 @@ class ConversationsController extends Controller
     public function activate($id)
     {
         if ($conversation = Conversation::find($id)) {
-            $ret = $conversation->activateConversation($conversation->buildConversation());
+            $ret = $conversation->activateConversation();
 
             return response()->json($ret);
         }
@@ -206,7 +206,7 @@ class ConversationsController extends Controller
 
         // There's no reason for the previous version to not be valid, but just in case of any future changes we check
         if ($conversation->status == ConversationNode::ACTIVATABLE) {
-            $conversation->activateConversation($conversation->buildConversation());
+            $conversation->activateConversation();
         }
 
         return response()->noContent(200);
