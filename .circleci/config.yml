@@ -66,6 +66,11 @@ jobs:
       - run: php artisan key:generate
 
       # run tests!
+      - run:
+          name: "Setup custom environment variables"
+          command: |
+            echo 'export OVERWRITE_DGRAPH_URL="http://localhost"' >> $BASH_ENV; echo 'export OVERWRITE_DGRAPH_PORT="8080"' >> $BASH_ENV
+
       - run: phpdbg -qrr ./vendor/bin/phpunit --coverage-html build/coverage-report --configuration phpunit-ci.xml -d memory_limit=2048M
 
       - store_artifacts:
