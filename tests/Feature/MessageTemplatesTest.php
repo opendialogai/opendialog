@@ -15,14 +15,6 @@ class MessageTemplatesTest extends TestCase
     {
         parent::setUp();
 
-        if ($overwriteDgraphUrl = getenv("OVERWRITE_DGRAPH_URL")) {
-            $this->app['config']->set('opendialog.core.DGRAPH_URL', $overwriteDgraphUrl);
-        }
-
-        if ($overwriteDgraphPort = getenv("OVERWRITE_DGRAPH_PORT")) {
-            $this->app['config']->set('opendialog.core.DGRAPH_PORT', $overwriteDgraphPort);
-        }
-
         $this->user = factory(User::class)->create();
 
         for ($i = 0; $i < 5; $i++) {
