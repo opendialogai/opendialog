@@ -23,14 +23,11 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         Artisan::call('migrate');
 
-        try {
-            $env = parse_ini_file(__DIR__ . '/../.env');
-            if (isset($env['DGRAPH_URL'])) {
-                $this->app['config']->set('opendialog.core.DGRAPH_URL', $env['DGRAPH_URL']);
-            }
-            dd($env['DGRAPH_URL']);
-        } catch (\Exception $e) {
-            //
+        if ($overwriteDgraphUrl = getenv("OVERWRITE_DGRAPH_URL")) {
+            $this->app['config']->set('opendialog.core.DGRAPH_URL', $overwriteDgraphUrl);
+        }
+        if ($overwriteDgraphPort = getenv("OVERWRITE_DGRAPH_PORT")) {
+            $this->app['config']->set('opendialog.core.DGRAPH_PORT', $overwriteDgraphPort);
         }
     }
 

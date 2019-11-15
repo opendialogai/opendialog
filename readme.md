@@ -4,7 +4,6 @@
 # OpenDialog Demo
 This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
 
-
 # Set Up Instructions
 
 ## Quickstart
@@ -49,7 +48,15 @@ The webchat configuration can be found in the `webchat_settings` table. The conf
 This will set up the `webchat_settings` table with all the requried values.
 For this to work successfully, the `APP_URL` environment variable need to be set
 
-### DGraph configuration
+#### DGraph configuration
+
+Add (and edit as necessary) the following lines to your .env file to let OD know where to find your DGraph installation:
+```
+DGRAPH_URL=http://dgraph-alpha
+DGRAPH_PORT=8080
+```
+
+(`http://dgraph-alpha` is the internally resolvable hostname for DGraph in the lando set up)
 
 #### Config
 
@@ -59,13 +66,6 @@ Publish the opendialog config by running:
 
 This will copy over all required config files to `config/opendialog` for you to add you own values
 
-Add (and edit as necessary) the following lines to your .env file to let OD know where to find your DGraph installation:
-```
-DGRAPH_URL=http://dgraph-alpha
-DGRAPH_PORT=8080
-```
-
-(`http://dgraph-alpha` is the internally resolvable hostname for DGraph in the lando set up)
 
 ## Conversations
 
@@ -123,12 +123,9 @@ file so that it can be tested and deployed with all composer changes in place
 The project is set up to run all commits through (CircleCI)[https://circleci.com], which runs tests and checks for code 
 standards.
 
-To run the tests locally, first spin up the test Docker DGraph by running the following from the `/tests` directory:
+To run the test suite locally through Lando, run 
 
-    docker-compose up
-    
-This should spin up a `DGraph Zero` container and a `DGraph Alpha` container with ports that won't clash with your local
-Lando setup.
+    lando test
 
 Information on setting up phpstorm to run tests on the (OpenDialog Wiki)[https://github.com/opendialogai/opendialog/wiki]
 
