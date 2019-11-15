@@ -44,7 +44,7 @@ class UsersController extends Controller
      * @param Request $request
      * @return UserResource
      */
-    public function store(Request $request): UserResource
+    public function store(Request $request)
     {
         /** @var User $user */
         $user = User::make($request->all());

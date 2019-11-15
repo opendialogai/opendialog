@@ -51,7 +51,7 @@ class MessageTemplatesController extends Controller
      * @param Request $request
      * @return MessageTemplateResource
      */
-    public function store($outgoingIntentId, Request $request): MessageTemplateResource
+    public function store($outgoingIntentId, Request $request)
     {
         if (!OutgoingIntent::find($outgoingIntentId)) {
             return response("The requested Outgoing Intent ID does not exist.", 404);
@@ -129,7 +129,6 @@ class MessageTemplatesController extends Controller
 
         return response()->noContent(200);
     }
-
 
     /**
      * @param MessageTemplate $messageTemplate

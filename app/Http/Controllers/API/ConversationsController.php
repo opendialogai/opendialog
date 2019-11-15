@@ -59,7 +59,7 @@ class ConversationsController extends Controller
      * @param Request $request
      * @return ConversationResource
      */
-    public function store(Request $request): ConversationResource
+    public function store(Request $request)
     {
         $conversation = Conversation::make($request->all());
 
