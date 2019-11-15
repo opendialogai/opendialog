@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OutgoingIntentCollection;
 use App\Http\Resources\OutgoingIntentResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class OutgoingIntentsController extends Controller
@@ -20,13 +21,15 @@ class OutgoingIntentsController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return OutgoingIntentCollection
      */
-    public function index()
+    public function index(): OutgoingIntentCollection
     {
+        /** @var OutgoingIntent $outgoingIntents */
         $outgoingIntents = OutgoingIntent::paginate(50);
 
         foreach ($outgoingIntents as $outgoingIntent) {
@@ -39,11 +42,12 @@ class OutgoingIntentsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return OutgoingIntentResource
      */
-    public function store(Request $request)
+    public function store(Request $request): OutgoingIntentResource
     {
+        /** @var OutgoingIntent $outgoingIntent */
         $outgoingIntent = OutgoingIntent::make($request->all());
 
         if ($error = $this->validateValue($outgoingIntent)) {
@@ -61,10 +65,11 @@ class OutgoingIntentsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return OutgoingIntentResource
      */
-    public function show($id)
+    public function show($id): OutgoingIntentResource
     {
+        /** @var OutgoingIntent $outgoingIntent */
         $outgoingIntent = OutgoingIntent::find($id);
 
         $outgoingIntent->makeVisible('id');
@@ -75,12 +80,13 @@ class OutgoingIntentsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param  int    $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
+        /** @var OutgoingIntent $outgoingIntent */
         if ($outgoingIntent = OutgoingIntent::find($id)) {
             $outgoingIntent->fill($request->all());
 
@@ -98,9 +104,9 @@ class OutgoingIntentsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         if ($outgoingIntent = OutgoingIntent::find($id)) {
             $outgoingIntent->delete();
@@ -109,11 +115,12 @@ class OutgoingIntentsController extends Controller
         return response()->noContent(200);
     }
 
+
     /**
      * @param OutgoingIntent $outgoingIntent
-     * @return string
+     * @return array|null
      */
-    private function validateValue(OutgoingIntent $outgoingIntent)
+    private function validateValue(OutgoingIntent $outgoingIntent): ?array
     {
         if (strlen($outgoingIntent->name) > 255) {
             return [

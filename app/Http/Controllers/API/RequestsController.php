@@ -5,10 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RequestCollection;
 use App\Http\Resources\RequestResource;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use OpenDialogAi\Core\RequestLog;
-use OpenDialogAi\Core\ResponseLog;
 
 class RequestsController extends Controller
 {
@@ -25,10 +24,11 @@ class RequestsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return RequestCollection
      */
     public function index(Request $request)
     {
+        /** @var QueryBuilder $query */
         $query = RequestLog::orderByDesc('microtime')->with('responseLog');
 
         if ($request->url) {
@@ -53,11 +53,12 @@ class RequestsController extends Controller
         return new RequestCollection($requestLogs);
     }
 
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return RequestResource
      */
     public function show($id)
     {

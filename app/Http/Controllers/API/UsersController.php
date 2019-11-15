@@ -7,7 +7,9 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
@@ -24,24 +26,27 @@ class UsersController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return UserCollection
      */
-    public function index()
+    public function index(): UserCollection
     {
         return new UserCollection(User::paginate(50));
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return UserResource
      */
-    public function store(Request $request)
+    public function store(Request $request): UserResource
     {
+        /** @var User $user */
         $user = User::make($request->all());
 
         if ($error = $this->validateValue($user)) {
@@ -54,26 +59,29 @@ class UsersController extends Controller
         return new UserResource($user);
     }
 
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return UserResource
      */
-    public function show($id)
+    public function show($id): UserResource
     {
         return new UserResource(User::find($id));
     }
 
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int     $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
+        /** @var User $user */
         if ($user = User::find($id)) {
             if ($user->phone_number) {
                 $user->phone_number = '+' . $user->phone_country_code . ' ' . $user->phone_number;
@@ -93,17 +101,24 @@ class UsersController extends Controller
         return response()->noContent(404);
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
+        /** @var User $user */
         if ($user = User::find($id)) {
-            $user->delete();
-            return response()->noContent(200);
+            try {
+                $user->delete();
+                return response()->noContent(200);
+            } catch (\Exception $e) {
+                Log::error(sprintf('Error deleting user - %s', $e->getMessage()));
+                return response('Error creating user', 500);
+            }
         }
 
         return response()->noContent(404);
@@ -111,9 +126,9 @@ class UsersController extends Controller
 
     /**
      * @param User $user
-     * @return string
+     * @return array
      */
-    private function validateValue(User $user)
+    private function validateValue(User $user): ?array
     {
         if (empty($user->name)) {
             return [

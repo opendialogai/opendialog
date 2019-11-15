@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MessageTemplateCollection;
 use App\Http\Resources\MessageTemplateResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use OpenDialogAi\ResponseEngine\Rules\MessageConditions;
@@ -23,13 +24,16 @@ class MessageTemplatesController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param $outgoingIntentId
+     * @return MessageTemplateCollection
      */
-    public function index($outgoingIntentId)
+    public function index($outgoingIntentId): MessageTemplateCollection
     {
+        /** @var MessageTemplate $messageTemplates */
         $messageTemplates = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->paginate(50);
 
         foreach ($messageTemplates as $messageTemplate) {
@@ -39,19 +43,21 @@ class MessageTemplatesController extends Controller
         return new MessageTemplateCollection($messageTemplates);
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param $outgoingIntentId
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param         $outgoingIntentId
+     * @param Request $request
+     * @return MessageTemplateResource
      */
-    public function store($outgoingIntentId, Request $request)
+    public function store($outgoingIntentId, Request $request): MessageTemplateResource
     {
         if (!OutgoingIntent::find($outgoingIntentId)) {
             return response("The requested Outgoing Intent ID does not exist.", 404);
         }
 
+        /** @var MessageTemplate $messageTemplate */
         $messageTemplate = MessageTemplate::make($request->all());
         $messageTemplate->outgoing_intent_id = $outgoingIntentId;
 
@@ -66,13 +72,15 @@ class MessageTemplatesController extends Controller
         return new MessageTemplateResource($messageTemplate);
     }
 
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param     $outgoingIntentId
+     * @param int $id
+     * @return MessageTemplateResource
      */
-    public function show($outgoingIntentId, $id)
+    public function show($outgoingIntentId, $id): MessageTemplateResource
     {
         $messageTemplate = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->find($id);
 
@@ -81,14 +89,16 @@ class MessageTemplatesController extends Controller
         return new MessageTemplateResource($messageTemplate);
     }
 
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param         $outgoingIntentId
+     * @param int     $id
+     * @return Response
      */
-    public function update(Request $request, $outgoingIntentId, $id)
+    public function update(Request $request, $outgoingIntentId, $id): Response
     {
         if ($messageTemplate = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->find($id)) {
             $messageTemplate->fill($request->all());
@@ -103,13 +113,15 @@ class MessageTemplatesController extends Controller
         return response()->noContent(200);
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param     $outgoingIntentId
+     * @param int $id
+     * @return Response
      */
-    public function destroy($outgoingIntentId, $id)
+    public function destroy($outgoingIntentId, $id): Response
     {
         if ($messageTemplate = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->find($id)) {
             $messageTemplate->delete();
@@ -118,11 +130,12 @@ class MessageTemplatesController extends Controller
         return response()->noContent(200);
     }
 
+
     /**
      * @param MessageTemplate $messageTemplate
-     * @return string
+     * @return array
      */
-    private function validateValue(MessageTemplate $messageTemplate)
+    private function validateValue(MessageTemplate $messageTemplate): ?array
     {
         $ruleXML = new MessageXML();
         $ruleConditions = new MessageConditions();
