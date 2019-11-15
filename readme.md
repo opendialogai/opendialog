@@ -2,21 +2,28 @@
 [![CircleCI](https://circleci.com/gh/opendialogai/opendialog/tree/master.svg?style=svg&circle-token=aefbfc509382266413d6667a1aef451c7bf82f22)](https://circleci.com/gh/opendialogai/opendialog/tree/master)
 
 # OpenDialog Demo
+
 This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
 
 # Set Up Instructions
 
 ## Quickstart
+
 This will get you up and running with minimal manual configuration.
 
-* [Install](https://docs.devwithlando.io/installation/system-requirements.html) [lando](https://github.com/lando/lando)
- -- Lando is a wrapper around Docker services and it brings together everything that is required for OpenDialog.
+* [Install lando](https://docs.devwithlando.io/installation/system-requirements.html)
+ -- [Lando](https://github.com/lando/lando) is a wrapper around Docker services and it brings together everything that is required for OpenDialog.
  
 * Run the setup script: `bash ./scripts/set_up_od.sh {appname}` where {appname} is the name of the app
-* Now you can go to: https://opendialog.lndo.site/demo
-* You should see the no-match message 
-* The DGraph browser will be available here: http://dgraph-ratel.lndo.site/?latest
-  * DGraph Alpha should be available at locahost:8081
+* Your app will be available at: https://{appname}.lndo.site/admin
+    * You may need to permanently trust the ssl cert
+    * You can find this at `~/.lando/certs/lndo.site.crt`
+* Log in using default credentials `admin@example.com` and `opendialog`
+* Go to > Test Bot
+    * Ask the Bot anything.
+    * You should see the no-match message.
+* The DGraph browser will be available here: https://dgraph-ratel.lndo.site
+* DGraph Alpha should be available at https://dgraph-alpha.lndo.site
 
 ## Manual Configuration
 
@@ -127,7 +134,7 @@ To run the test suite locally through Lando, run
 
     lando test
 
-Information on setting up phpstorm to run tests on the (OpenDialog Wiki)[https://github.com/opendialogai/opendialog/wiki]
+Information on setting up phpstorm to run tests on the (OpenDialog Wiki)[https://github.com/opendialogai/opendialog/wiki/Running-tests-through-PHPStorm]
 
 ## Running Code Sniffer
 To run code sniffer, run the following command
