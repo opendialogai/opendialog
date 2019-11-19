@@ -11,8 +11,7 @@ This is a sample application that pulls in the [Open Dialog core](https://github
 
 This will get you up and running with minimal manual configuration.
 
-* [Install Lando](https://docs.devwithlando.io/installation/system-requirements.html)
- -- [Lando](https://github.com/lando/lando) is a wrapper around Docker services and it brings together everything that is required for OpenDialog.
+* [Install Lando](https://docs.devwithlando.io/installation/system-requirements.html) -- [Lando](https://github.com/lando/lando) is a wrapper around Docker services and it brings together everything that is required for OpenDialog.
  
 * Run the setup script: `bash ./scripts/set_up_od.sh {appname}` where {appname} is the name of the app
 On initial setup you will be prompted to clear your local dgraph and conversations. Select `yes`.
