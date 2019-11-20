@@ -34,6 +34,8 @@ class SetUpConversations extends Command
             $this->info('Setting all existing conversations to activatable');
             Conversation::all()->each(function (Conversation $conversation) {
                 $conversation->status = ConversationNode::SAVED;
+                $conversation->version_number = 0;
+                $conversation->graph_uid = null;
                 $conversation->save();
             });
 
