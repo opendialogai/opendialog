@@ -19,6 +19,7 @@ class WebchatSettingsController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
      * Display a listing of the resource.
      *
@@ -29,10 +30,11 @@ class WebchatSettingsController extends Controller
         return WebchatSetting::all();
     }
 
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function show($id)
@@ -40,15 +42,17 @@ class WebchatSettingsController extends Controller
         return WebchatSetting::find($id);
     }
 
+
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int    $id
+     * @param int     $id
      * @return Response
      */
     public function update(Request $request, $id)
     {
+        /** @var WebchatSetting $setting */
         if ($setting = WebchatSetting::find($id)) {
             $value = $request->get('value');
 
@@ -70,7 +74,7 @@ class WebchatSettingsController extends Controller
      *
      * @return array
      */
-    public function getCategories() : array
+    public function getCategories(): array
     {
         $generalId = WebchatSetting::where('name', WebchatSetting::GENERAL)->first()->id;
         $coloursId = WebchatSetting::where('name', WebchatSetting::COLOURS)->first()->id;
@@ -97,12 +101,13 @@ class WebchatSettingsController extends Controller
         ];
     }
 
+
     /**
      * @param WebchatSetting $setting
-     * @param string $newValue
+     * @param string         $newValue
      * @return string
      */
-    private function validateValue(WebchatSetting $setting, $newValue)
+    private function validateValue(WebchatSetting $setting, $newValue): ?string
     {
         switch ($setting->type) {
             case 'string':

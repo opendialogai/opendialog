@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -27,33 +28,36 @@ class ConversationsController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
      * Display a listing of the resource.
      *
      * @return ConversationCollection
      */
-    public function index()
+    public function index(): ConversationCollection
     {
         $conversations = Conversation::withoutStatus(ConversationNode::ARCHIVED)->paginate(50);
         return new ConversationCollection($conversations);
     }
+
 
     /**
      * Display an archive listing.
      *
      * @return ConversationCollection
      */
-    public function viewArchive()
+    public function viewArchive(): ConversationCollection
     {
         $conversations = Conversation::withStatus(ConversationNode::ARCHIVED)->paginate(50);
         return new ConversationCollection($conversations);
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return ConversationResource
      */
     public function store(Request $request)
     {
@@ -68,26 +72,28 @@ class ConversationsController extends Controller
         return new ConversationResource($conversation);
     }
 
+
     /**
      * Display the specified resource.
      *
      * @param int $id
      * @return ConversationResource
      */
-    public function show($id)
+    public function show($id): ConversationResource
     {
         $conversation = Conversation::find($id);
         return new ConversationResource($conversation);
     }
 
+
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
+     * @param int     $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         if ($conversation = Conversation::find($id)) {
             $conversation->fill($request->all());
@@ -104,16 +110,23 @@ class ConversationsController extends Controller
         return response()->noContent(404);
     }
 
+
     /**
      * Archive the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
-    public function archive($id)
+    public function archive($id): Response
     {
+        /** @var Conversation $conversation */
         if ($conversation = Conversation::find($id)) {
-            $result = $conversation->archiveConversation();
+            try {
+                $result = $conversation->archiveConversation();
+            } catch (BindingResolutionException $e) {
+                Log::error(sprintf('Error archiving conversation - %s', $e->getMessage()));
+                return response('Error archiving Conversation', 500);
+            }
 
             if ($result) {
                 return response()->noContent(200);
@@ -125,24 +138,36 @@ class ConversationsController extends Controller
         return response()->noContent(404);
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
+        /** @var Conversation $conversation */
         if ($conversation = Conversation::find($id)) {
-            if ($conversation->delete()) {
-                return response()->noContent(200);
+            try {
+                if ($conversation->delete()) {
+                    return response()->noContent(200);
+                }
+            } catch (\Exception $e) {
+                Log::error(sprintf('Error deleting conversation - %s', $e->getMessage()));
+                return response('Error deleting conversation, check the logs', 500);
             }
         }
 
         return response()->noContent(404);
     }
 
-    public function activate($id)
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function activate($id): JsonResponse
     {
         if ($conversation = Conversation::find($id)) {
             $ret = $conversation->activateConversation();
@@ -153,7 +178,12 @@ class ConversationsController extends Controller
         return response()->json(false);
     }
 
-    public function deactivate($id)
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deactivate($id): JsonResponse
     {
         if ($conversation = Conversation::find($id)) {
             $ret = $conversation->deactivateConversation();
@@ -163,6 +193,7 @@ class ConversationsController extends Controller
 
         return response()->json(false);
     }
+
 
     /**
      * @param int $id
@@ -186,13 +217,14 @@ class ConversationsController extends Controller
         return response()->noContent(200);
     }
 
+
     /**
      * @param int $id
      * @param int $versionId
      * @return ConversationResource
      * @throws BindingResolutionException
      */
-    public function reactivate(int $id, int $versionId)
+    public function reactivate(int $id, int $versionId): ConversationResource
     {
         /** @var Conversation $conversation */
         $conversation = Conversation::find($id);
@@ -218,7 +250,7 @@ class ConversationsController extends Controller
      *
      * @return array
      */
-    public function adminList() : array
+    public function adminList(): array
     {
         $conversations = [];
 
@@ -232,11 +264,12 @@ class ConversationsController extends Controller
         return $conversations;
     }
 
+
     /**
      * @param Conversation $conversation
-     * @return string
+     * @return array
      */
-    private function validateValue(Conversation $conversation)
+    private function validateValue(Conversation $conversation): ?array
     {
         $rule = new ConversationYAML();
 
@@ -280,19 +313,20 @@ class ConversationsController extends Controller
         return null;
     }
 
+
     /**
      * @param Conversation $conversation
-     * @param int $id
-     * @param int $versionId
+     * @param int          $id
+     * @param int          $versionId
      * @throws ConversationRestorationException
      * @throws BindingResolutionException
      */
-    private function restoreConversation(Conversation $conversation, int $id, int $versionId)
+    private function restoreConversation(Conversation $conversation, int $id, int $versionId): void
     {
         /** @var Activity $version */
         $version = Activity::where([
             ['subject_id', $id],
-            ['id', $versionId]
+            ['id', $versionId],
         ])->first();
 
         if (is_null($version)) {

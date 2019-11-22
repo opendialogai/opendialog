@@ -23,12 +23,14 @@ class ChatbotUsersController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return ChatbotUserCollection
      */
-    public function index(Request $request)
+    public function index(Request $request): ChatbotUserCollection
     {
         $order = $request->get('order');
         $sort = ($request->get('sort')) ? $request->get('sort') : 'desc';
@@ -62,52 +64,61 @@ class ChatbotUsersController extends Controller
         return new ChatbotUserCollection($chatbotUsers);
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
     public function store(Request $request)
     {
-        //
+        response()->noContent(405);
     }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return ChatbotUserResource
      */
     public function show($id)
     {
         return new ChatbotUserResource(ChatbotUser::find($id));
     }
 
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int     $id
+     * @return void
      */
     public function update(Request $request, $id)
     {
-        //
+        response()->noContent(405);
     }
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return void
      */
     public function destroy($id)
     {
-        //
+        response()->noContent(405);
     }
 
-    public function messages($id)
+
+    /**
+     * @param $id
+     * @return MessageCollection
+     */
+    public function messages($id): MessageCollection
     {
         $messages = Message::where('user_id', $id)
             ->where('type', '<>', 'chat_open')
