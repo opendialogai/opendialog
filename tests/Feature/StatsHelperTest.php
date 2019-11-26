@@ -36,7 +36,7 @@ class StatsHelperTest extends TestCase
             'message_id' => Str::random(20),
             'type' => 'button',
             'microtime' => date('Y-m-d') . ' 10:35:06.340100',
-            'intent' => 'country_response',
+            'intents' => ['country_response'],
             'conversation' => 'welcome',
             'scene' => 'opening_scene',
         ]);
@@ -56,7 +56,7 @@ class StatsHelperTest extends TestCase
 
     public function testStatsHelperGetCounts()
     {
-        $query = Message::where('intent', 'country_response')
+        $query = Message::containingIntent('country_response')
             ->select('user_id')
             ->distinct();
 
@@ -79,7 +79,7 @@ class StatsHelperTest extends TestCase
         $end = clone($this->end);
         $end->modify('+1 day');
 
-        $query = Message::where('intent', 'country_response')
+        $query = Message::containingIntent('country_response')
             ->select('user_id')
             ->distinct();
 

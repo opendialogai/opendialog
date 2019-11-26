@@ -5,6 +5,7 @@ namespace App\Stats;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationLog\Message;
@@ -56,7 +57,7 @@ abstract class Helper
     public static function getIntentCounts(Request $request, $intents, $unique = false)
     {
         /** @var Builder $query */
-        $query = Message::whereIn('intent', $intents)
+        $query = Message::containingIntents($intents)
             ->where('type', 'button')
             ->where('author', 'them');
 
