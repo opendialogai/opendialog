@@ -35,7 +35,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="chatbotUser in chatbotUsers" @click="viewChatbotUser(chatbotUser.user_id)">
+          <tr v-for="chatbotUser in chatbotUsers">
             <td>
               {{ chatbotUser.user_id }}
             </td>

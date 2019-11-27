@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="outgoingIntent in outgoingIntents" @click="viewOutgoingIntent(outgoingIntent.id)">
+          <tr v-for="outgoingIntent in outgoingIntents">
             <td>
               {{ outgoingIntent.id }}
             </td>
