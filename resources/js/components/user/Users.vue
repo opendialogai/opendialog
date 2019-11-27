@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" @click="viewUser(user.id)">
+          <tr v-for="user in users">
             <td>
               {{ user.id }}
             </td>

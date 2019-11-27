@@ -43,7 +43,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="messageTemplate in messageTemplates" @click="viewMessageTemplate(messageTemplate.id)">
+            <tr v-for="messageTemplate in messageTemplates">
               <td>
                 {{ messageTemplate.id }}
               </td>

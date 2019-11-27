@@ -65,7 +65,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="request in requests" @click="viewRequest(request.request_id)">
+          <tr v-for="request in requests">
             <td>
               {{ request.request_id }}
             </td>
