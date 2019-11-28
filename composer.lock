@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf6d608a3128be37a9723f951c8c9f29",
+    "content-hash": "f9688ccc9c771a8764cb12296eb1f319",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1987,16 +1987,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "dev-develop",
+            "version": "0.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "e0cfd98bb7cd5547c6b1a793d842216c3c811855"
+                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/e0cfd98bb7cd5547c6b1a793d842216c3c811855",
-                "reference": "e0cfd98bb7cd5547c6b1a793d842216c3c811855",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/250f48dda3c7c19c6c52bbef955ce86bdafec265",
+                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265",
                 "shasum": ""
             },
             "require": {
@@ -2033,7 +2033,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2019-11-14T11:37:42+00:00"
+            "time": "2019-11-28T16:30:10+00:00"
         },
         {
             "name": "opis/closure",
@@ -7616,9 +7616,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "opendialogai/webchat": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
