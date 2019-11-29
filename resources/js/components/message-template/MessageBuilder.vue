@@ -7,6 +7,12 @@
       <template v-if="message.type == 'button-message'">
         <div class="button-message">
           <div v-html="message.data.text"></div>
+          <div v-if="message.data.trigger" class="trigger">
+            <div class="trigger-wrapper">
+              <span v-html="message.data.trigger.text" class="trigger-expand-text"></span>
+              <span>?</span>
+            </div>
+          </div>
           <div class="buttons" v-for="button in message.data.buttons">
             <button class="btn btn-default btn-primary mt-1 mr-2">{{ button.text }}</button>
           </div>
@@ -77,14 +83,22 @@ export default {
 
           case 'button-message':
             let buttons = [];
+            let trigger = null;
             msg.childrenNamed('button').forEach((button) => {
-              buttons.push({
-                text: (button.childNamed('text')) ? button.childNamed('text').val.trim() : '',
-              });
+              if (button.childNamed('trigger')) {
+                trigger = {
+                  text: (button.childNamed('text')) ? button.childNamed('text').val.trim() : '',
+                };
+              } else {
+                buttons.push({
+                  text: (button.childNamed('text')) ? button.childNamed('text').val.trim() : '',
+                });
+              }
             });
 
             message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : '';
             message.data.buttons = buttons;
+            message.data.trigger = trigger;
             break;
 
           case 'image-message':
@@ -123,6 +137,34 @@ export default {
     padding: 7px 10px;
     background: #eaeaea;
     max-width: 300px;
+  }
+  .button-message {
+    position: relative;
+    .trigger {
+      cursor: pointer;
+      position: absolute;
+      top: -10px;
+      left: 100%;
+      background: #07131f;
+      border-radius: 15px;
+      color: #f09ea0;
+      min-width: 30px;
+      height: 30px;
+      padding: 3px 10px;
+      margin-left: 5px;
+      .trigger-wrapper {
+        white-space: nowrap;
+      }
+      .trigger-expand-text {
+        color: #fff;
+        display: none;
+      }
+      &:hover {
+        .trigger-expand-text {
+          display: inline-block;
+        }
+      }
+    }
   }
 }
 </style>
