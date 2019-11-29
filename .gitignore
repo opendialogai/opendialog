@@ -29,3 +29,4 @@ xdebug.log
 .lando.yml-e
 tests/_dgraphdata
 build
+.DS_store
