@@ -30,3 +30,4 @@ xdebug.log
 tests/_dgraphdata
 build
 .DS_store
+.php_cs.cache
