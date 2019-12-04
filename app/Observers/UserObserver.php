@@ -35,10 +35,10 @@ class UserObserver
             return;
         }
 
-        $phone = PhoneNumber::make($user->phone_number);
-        $user->setAuthPhoneInformation($phone->getPhoneNumberInstance()->getCountryCode(), $phone->formatNational());
-
         if (env('USE_2FA')) {
+            $phone = PhoneNumber::make($user->phone_number);
+            $user->setAuthPhoneInformation($phone->getPhoneNumberInstance()->getCountryCode(), $phone->formatNational());
+
             try {
                // Second parameter enforces SMS.
                 Authy::getProvider()->register($user, true);
