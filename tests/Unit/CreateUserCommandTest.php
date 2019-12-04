@@ -14,7 +14,7 @@ class CreateUserCommandTest extends TestCase
             ->expectsQuestion('First Name', 'First')
             ->expectsQuestion('Last Name', 'Last')
             ->expectsQuestion('Email', 'email@example.com')
-            ->expectsQuestion('Phone number (with country code)', '07700000000')
+            ->expectsQuestion('Phone number (with country code)', '+447700000000')
             ->expectsQuestion('Password', 'test')
             ->expectsQuestion('Repeat password', 'test2')
             ->expectsOutput("Passwords do not match!")
