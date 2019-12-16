@@ -40,7 +40,7 @@ class UserObserver
 
         if (env('USE_2FA')) {
             try {
-               // Second parameter enforces SMS.
+                // Second parameter enforces SMS.
                 Authy::getProvider()->register($user, true);
             } catch (\Exception $e) {
                 app(ExceptionHandler::class)->report($e);

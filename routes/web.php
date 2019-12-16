@@ -27,7 +27,6 @@ if (env("USE_2FA")) {
  * Admin Routes
  */
 Route::prefix('admin')->middleware(['auth'])->group(function () {
-
     Route::get('/', 'AdminController@handle');
 
     Route::get('/demo', 'AdminController@handle')->name('webchat-demo');

@@ -146,7 +146,7 @@ class ConversationsTest extends TestCase
             ->json('DELETE', '/admin/api/conversation/' . $conversation->id)
             ->assertStatus(200);
 
-        $this->assertEquals(Conversation::find($conversation->id),  null);
+        $this->assertEquals(Conversation::find($conversation->id), null);
     }
 
     public function testConversationsActivateEndpoint()

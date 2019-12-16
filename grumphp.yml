@@ -28,6 +28,9 @@ parameters:
       ignore_patterns:
         - "*/migrations/*"
         - "*/tests/*"
+        - '*.blade.php'
+        - 'index.php'
+        - 'database/seeds/'
       sniffs: []
       triggered_by: [php]
       exclude: []
