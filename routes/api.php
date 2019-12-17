@@ -26,6 +26,8 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
     Route::apiResource('outgoing-intents', 'OutgoingIntentsController');
     Route::apiResource('outgoing-intents/{id}/message-templates', 'MessageTemplatesController');
 
+    Route::apiResource('global-context', 'GlobalContextsController');
+
     Route::get('conversation-archive', 'ConversationsController@viewArchive');
     Route::prefix('conversation/{id}')->group(function () {
         Route::get('/activate', 'ConversationsController@activate');

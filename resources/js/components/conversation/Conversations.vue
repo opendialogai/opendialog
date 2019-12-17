@@ -19,7 +19,7 @@
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
-            <b-btn variant="secondary" @click="viewArchive">View archive</b-btn>
+          <b-btn variant="secondary" @click="viewArchive">View archive</b-btn>
           <b-btn variant="primary" @click="createConversation">Create</b-btn>
         </div>
       </div>

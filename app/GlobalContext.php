@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property string name
  * @property string value
+ * @property string type
  */
-class GenericContent extends Model
+class GlobalContext extends Model
 {
-    protected $fillable = ['name', 'value'];
+    protected $fillable = ['name', 'value', 'type'];
 }

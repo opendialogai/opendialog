@@ -13,6 +13,7 @@ import ChatbotUsers from '@/views/ChatbotUsers';
 import ConversationLog from '@/views/ConversationLog';
 import User from '@/views/User';
 import Request from '@/views/Request';
+import GlobalContext from '@/views/GlobalContext';
 import WebchatDemo from '@/views/WebchatDemo';
 
 Vue.use(VueRouter);
@@ -160,6 +161,28 @@ const router = new VueRouter({
           path: 'requests/:id',
           name: 'view-request',
           component: Request,
+          props: true,
+        },
+        {
+          path: 'global-contexts',
+          name: 'global-contexts',
+          component: GlobalContext,
+        },
+        {
+          path: 'global-contexts/add',
+          name: 'add-global-context',
+          component: GlobalContext,
+        },
+        {
+          path: 'global-contexts/:id',
+          name: 'view-global-context',
+          component: GlobalContext,
+          props: true,
+        },
+        {
+          path: 'global-contexts/:id/edit',
+          name: 'edit-global-context',
+          component: GlobalContext,
           props: true,
         },
         {
