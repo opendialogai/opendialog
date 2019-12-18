@@ -33,7 +33,7 @@
             <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Yaml</th>
-            <th scope="col">Opening Intent</th>
+            <th scope="col">Opening Intents</th>
             <th scope="col">Outgoing Intents</th>
             <th scope="col">Actions</th>
           </tr>

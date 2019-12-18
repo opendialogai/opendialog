@@ -16,11 +16,6 @@
       </b-form-group>
 
       <b-form-group>
-        <label>Type</label>
-        <b-form-select v-model="type" :options="typeOptions" :class="(error.field == 'type') ? 'is-invalid' : ''" />
-      </b-form-group>
-
-      <b-form-group>
         <label>Value</label>
         <b-form-input type="text" v-model="value" :class="(error.field == 'value') ? 'is-invalid' : ''" />
       </b-form-group>
@@ -35,16 +30,7 @@ export default {
   name: 'add-global-context',
   data() {
     return {
-      typeOptions: [
-        { value: 'array', text: 'Array' },
-        { value: 'boolean', text: 'Boolean' },
-        { value: 'float', text: 'Float' },
-        { value: 'int', text: 'Int' },
-        { value: 'string', text: 'String' },
-        { value: 'timestamp', text: 'Timestamp' },
-      ],
       name: '',
-      type: '',
       value: '',
       error: {},
     };
@@ -53,7 +39,6 @@ export default {
     addGlobalContext() {
       const data = {
         name: this.name,
-        type: this.type,
         value: this.value,
       };
 

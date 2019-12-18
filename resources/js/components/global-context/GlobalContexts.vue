@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mb-3">Global Contexts</h2>
+    <h2 class="mb-3">Global Context</h2>
 
     <div class="row mb-4">
       <div class="col-12">
@@ -16,7 +16,6 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Type</th>
             <th scope="col">Value</th>
             <th scope="col">Actions</th>
           </tr>
@@ -28,9 +27,6 @@
             </td>
             <td>
               {{ globalContext.name }}
-            </td>
-            <td>
-              {{ globalContext.type }}
             </td>
             <td>
               {{ globalContext.value }}

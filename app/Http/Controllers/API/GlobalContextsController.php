@@ -21,7 +21,6 @@ class GlobalContextsController extends Controller
         $this->middleware('auth');
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -106,7 +105,6 @@ class GlobalContextsController extends Controller
         return response()->noContent(200);
     }
 
-
     /**
      * @param GlobalContext $globalContext
      * @return array|null
@@ -124,13 +122,6 @@ class GlobalContextsController extends Controller
             return [
                 'field' => 'name',
                 'message' => 'Global context name field is required.',
-            ];
-        }
-
-        if (!$globalContext->type) {
-            return [
-                'field' => 'name',
-                'message' => 'Global context type field is required.',
             ];
         }
 

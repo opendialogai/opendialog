@@ -16,10 +16,6 @@
         <b-col cols="10">{{ globalContext.name }}</b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Type</b-col>
-        <b-col cols="10">{{ globalContext.type }}</b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Value</b-col>
         <b-col cols="10">{{ globalContext.value }}</b-col>
       </b-row>
