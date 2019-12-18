@@ -36,6 +36,11 @@ return [
             'icon' => 'cui-inbox',
         ],
         [
+            'title' => 'Global Contexts',
+            'url' => '/admin/global-contexts',
+            'icon' => 'cui-info',
+        ],
+        [
             'title' => 'Test Bot',
             'url' => '/admin/demo',
             'icon' => 'icon-control-play',

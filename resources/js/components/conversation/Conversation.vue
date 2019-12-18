@@ -63,7 +63,7 @@
         <b-col cols="10">{{ conversation.model_validation_status }}</b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Opening Intent</b-col>
+        <b-col class="font-weight-bold" cols="2">Opening Intents</b-col>
         <b-col cols="10">
             <span v-for="(opening_intent, index) in conversation.opening_intents">
                 {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>

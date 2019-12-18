@@ -19,7 +19,7 @@
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
-            <b-btn variant="secondary" @click="viewArchive">View archive</b-btn>
+          <b-btn variant="secondary" @click="viewArchive">View archive</b-btn>
           <b-btn variant="primary" @click="createConversation">Create</b-btn>
         </div>
       </div>
@@ -33,7 +33,7 @@
             <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Yaml</th>
-            <th scope="col">Opening Intent</th>
+            <th scope="col">Opening Intents</th>
             <th scope="col">Outgoing Intents</th>
             <th scope="col">Actions</th>
           </tr>
