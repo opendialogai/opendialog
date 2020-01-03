@@ -46,6 +46,7 @@
         "vue-prismjs": "^1.2.0",
         "vue-router": "^3.0.6",
         "vue2-daterange-picker": "^0.3.0",
-        "xmldoc": "^1.1.2"
+        "xmldoc": "^1.1.2",
+        "serialize-javascript": "2.1.1"
     }
 }
