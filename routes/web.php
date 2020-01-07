@@ -105,6 +105,14 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/{id}', 'AdminController@handle');
         Route::get('/{id}/edit', 'AdminController@handle');
     });
+
+    /**
+     * Logs
+     */
+    Route::prefix('logs')->group(function () {
+        Route::get('/', 'AdminController@handle');
+        Route::get('/{id}', 'AdminController@handle');
+    });
 });
 
 /**

@@ -36,7 +36,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => ['daily', 'warning_log'],
             'ignore_exceptions' => false,
         ],
 
@@ -70,6 +70,11 @@ return [
         'dedupe' => [
             'driver' => 'custom',
             'via' => App\Logging\CreateDedupeLogger::class,
+        ],
+
+        'warning_log' => [
+            'driver' => 'custom',
+            'via' => \App\Logging\WarningLog::class,
         ],
 
         'papertrail' => [

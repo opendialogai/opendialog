@@ -14,6 +14,7 @@ import ConversationLog from '@/views/ConversationLog';
 import User from '@/views/User';
 import Request from '@/views/Request';
 import GlobalContext from '@/views/GlobalContext';
+import Log from '@/views/Log';
 import WebchatDemo from '@/views/WebchatDemo';
 
 Vue.use(VueRouter);
@@ -183,6 +184,17 @@ const router = new VueRouter({
           path: 'global-contexts/:id/edit',
           name: 'edit-global-context',
           component: GlobalContext,
+          props: true,
+        },
+        {
+          path: 'logs',
+          name: 'logs',
+          component: Log,
+        },
+        {
+          path: 'logs/:id',
+          name: 'view-log',
+          component: Log,
           props: true,
         },
         {
