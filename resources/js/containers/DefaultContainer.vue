@@ -35,7 +35,7 @@
       <!--footer-->
       <div>
         <a href="https://opendialog.ai">OpenDialog</a>
-        <span class="ml-1">&copy; 2019 Greenshoot Labs.</span>
+        <span class="ml-1">&copy; {{ new Date().getFullYear() }} Greenshoot Labs.</span>
       </div>
     </TheFooter>
   </div>
