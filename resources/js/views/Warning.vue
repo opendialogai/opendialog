@@ -1,24 +1,24 @@
 <template>
   <div>
-    <template v-if="currentRouteName == 'view-log'">
-      <Log :id="id" />
+    <template v-if="currentRouteName == 'view-warning'">
+      <Warning :id="id" />
     </template>
     <template v-else>
-      <Logs />
+      <Warnings />
     </template>
   </div>
 </template>
 
 <script>
-import Log from '@/components/log/Log';
-import Logs from '@/components/log/Logs';
+import Warning from '@/components/warning/Warning';
+import Warnings from '@/components/warning/Warnings';
 
 export default {
   name: 'chatbot-users',
   props: ['id'],
   components: {
-    Log,
-    Logs,
+    Warning,
+    Warnings,
   },
   computed: {
     currentRouteName() {

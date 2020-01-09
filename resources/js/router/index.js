@@ -14,7 +14,7 @@ import ConversationLog from '@/views/ConversationLog';
 import User from '@/views/User';
 import Request from '@/views/Request';
 import GlobalContext from '@/views/GlobalContext';
-import Log from '@/views/Log';
+import Warning from '@/views/Warning';
 import WebchatDemo from '@/views/WebchatDemo';
 
 Vue.use(VueRouter);
@@ -187,14 +187,14 @@ const router = new VueRouter({
           props: true,
         },
         {
-          path: 'logs',
-          name: 'logs',
-          component: Log,
+          path: 'warnings',
+          name: 'warnings',
+          component: Warning,
         },
         {
-          path: 'logs/:id',
-          name: 'view-log',
-          component: Log,
+          path: 'warnings/:id',
+          name: 'view-warning',
+          component: Warning,
           props: true,
         },
         {

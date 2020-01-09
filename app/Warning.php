@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string message
  * @property string context
  */
-class Log extends Model
+class Warning extends Model
 {
     protected $fillable = ['request_id', 'user_id', 'message', 'context'];
 

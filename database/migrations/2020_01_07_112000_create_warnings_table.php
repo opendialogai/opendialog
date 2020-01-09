@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLogsTable extends Migration
+class CreateWarningsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('warnings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('request_id');
             $table->string('user_id');
@@ -30,6 +30,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('warnings');
     }
 }

@@ -36,8 +36,8 @@ return [
             'icon' => 'cui-inbox',
         ],
         [
-            'title' => 'Logs',
-            'url' => '/admin/logs',
+            'title' => 'Warnings',
+            'url' => '/admin/warnings',
             'icon' => 'cui-list',
         ],
         [

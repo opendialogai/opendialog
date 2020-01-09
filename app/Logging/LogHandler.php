@@ -2,7 +2,7 @@
 
 namespace App\Logging;
 
-use App\Log;
+use App\Warning;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -17,7 +17,7 @@ class LogHandler extends AbstractProcessingHandler
     protected function write(array $record): void
     {
         if (!empty($record['formatted'])) {
-            $log = new Log();
+            $log = new Warning();
             $log->fill($record['formatted']);
             $log->save();
         }

@@ -107,9 +107,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     /**
-     * Logs
+     * Warnings
      */
-    Route::prefix('logs')->group(function () {
+    Route::prefix('warnings')->group(function () {
         Route::get('/', 'AdminController@handle');
         Route::get('/{id}', 'AdminController@handle');
     });
