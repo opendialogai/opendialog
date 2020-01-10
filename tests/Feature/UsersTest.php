@@ -101,6 +101,22 @@ class UsersTest extends TestCase
             );
     }
 
+    public function testUsersStoreWithoutPhoneNumberEndpoint()
+    {
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/user', [
+                'name' => 'test',
+                'email' => 'test@test.com',
+            ])
+            ->assertStatus(201)
+            ->assertJsonFragment(
+                [
+                    'name' => 'test',
+                    'email' => 'test@test.com',
+                ]
+            );
+    }
+
     public function testUsersDestroyEndpoint()
     {
         $user = User::first();
