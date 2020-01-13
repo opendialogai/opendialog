@@ -1,7 +1,5 @@
 <template>
   <div v-if="conversation">
-    <h2 class="mb-3">Conversation</h2>
-
     <div class="alert alert-danger" role="alert" v-if="errorMessage">
       <span>{{ errorMessage }}</span>
       <button type="button" class="close" @click="errorMessage = ''">
@@ -17,88 +15,104 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12">
+      <div class="col-6">
+        <h2>{{ conversation.name | capitalize }} Conversation</h2>
+        <div class="conversation-status" :class="getStatusClass(conversation.status)">{{ conversation.status | capitalize }}</div>
+        <div>(last modified - {{ conversation.updated_at }})</div>
+      </div>
+      <div class="col-6">
         <div class="float-right">
           <b-btn v-if="conversation.status != 'archived'" variant="primary mr-4" @click="editConversation">Edit</b-btn>
           <template v-else>
-              <b-btn variant="danger mr-4" @click="showDeleteConversationModal">Delete</b-btn>
-              <b-btn variant="primary" @click="unarchiveConversation">Unarchive</b-btn>
+            <b-btn variant="danger mr-4" @click="showDeleteConversationModal">Delete</b-btn>
+            <b-btn variant="primary" @click="unarchiveConversation">Unarchive</b-btn>
           </template>
 
           <template v-if="conversation.status == 'activated'">
-              <b-btn variant="primary" @click="activateConversation" disabled>Activate</b-btn>
-              <b-btn variant="primary" @click="deactivateConversation">Deactivate</b-btn>
+            <b-btn variant="primary" @click="deactivateConversation">Deactivate</b-btn>
           </template>
           <template v-else-if="['activatable', 'deactivated'].includes(conversation.status)">
-              <b-btn v-if="conversation.status == 'deactivated'" variant="danger mr-4" @click="showArchiveConversationModal">Archive</b-btn>
-              <b-btn variant="primary" @click="activateConversation">Activate</b-btn>
-              <b-btn variant="primary" @click="deactivateConversation" disabled>Deactivate</b-btn>
+            <b-btn v-if="conversation.status == 'deactivated'" variant="danger mr-4" @click="showArchiveConversationModal">Archive</b-btn>
+            <b-btn variant="success" @click="activateConversation">Activate</b-btn>
           </template>
         </div>
       </div>
     </div>
-    <b-card header="General">
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Name</b-col>
-        <b-col cols="10">{{ conversation.name }}</b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Status</b-col>
-        <b-col cols="10">{{ conversation.status }}</b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Yaml</b-col>
-        <b-col cols="10">{{ conversation.yaml_validation_status }}</b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Schema</b-col>
-        <b-col cols="10">{{ conversation.yaml_schema_validation_status }}</b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Scenes</b-col>
-        <b-col cols="10">{{ conversation.scenes_validation_status }}</b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Model</b-col>
-        <b-col cols="10">{{ conversation.model_validation_status }}</b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Opening Intents</b-col>
-        <b-col cols="10">
-            <span v-for="(opening_intent, index) in conversation.opening_intents">
-                {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>
-            </span>
-        </b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Outgoing Intents</b-col>
-        <b-col cols="10">
-          <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
-            <template v-if="outgoing_intent.id">
-              <router-link :to="{ name: 'view-outgoing-intent', params: { id: outgoing_intent.id } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
-            </template>
-            <template v-else>
-              <router-link :to="{ name: 'add-outgoing-intent', query: { name: outgoing_intent.name } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
-            </template>
-          </span>
-        </b-col>
-      </b-row>
-      <b-row class="border-bottom mb-2 pb-2">
-        <b-col class="font-weight-bold" cols="2">Created at</b-col>
-        <b-col cols="10">{{ conversation.created_at }}</b-col>
-      </b-row>
-      <b-row>
-        <b-col class="font-weight-bold" cols="2">Updated at</b-col>
-        <b-col cols="10">{{ conversation.updated_at }}</b-col>
-      </b-row>
-    </b-card>
-    <b-card header="Model">
-      <prism language="yaml">{{ conversation.model }}</prism>
-    </b-card>
-    <b-card header="Notes">
+
+    <div class="mb-4">
+      <h4 class="mb-3">Conversation Notes</h4>
       <b-form-textarea :value="conversation.notes" disabled />
-    </b-card>
-    <b-card header="History">
+    </div>
+
+    <div class="mb-4">
+      <h4 class="mb-3">Model Version {{ conversation.version_number }}</h4>
+      <b-card header="Model">
+        <prism language="yaml">{{ conversation.model }}</prism>
+      </b-card>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <b-card header="Status">
+          <b-row class="mb-2 pb-2">
+            <b-col class="font-weight-bold" cols="2">Yaml</b-col>
+            <b-col cols="4">
+              <div class="conversation-status" :class="getStatusClass(conversation.yaml_validation_status)">
+                {{ conversation.yaml_validation_status | capitalize }}
+              </div>
+            </b-col>
+            <b-col class="font-weight-bold" cols="2">Schema</b-col>
+            <b-col cols="4">
+              <div class="conversation-status" :class="getStatusClass(conversation.yaml_schema_validation_status)">
+                {{ conversation.yaml_schema_validation_status | capitalize }}
+              </div>
+            </b-col>
+          </b-row>
+          <b-row class="mb-2 pb-2">
+            <b-col class="font-weight-bold" cols="2">Scenes</b-col>
+            <b-col cols="4">
+              <div class="conversation-status" :class="getStatusClass(conversation.scenes_validation_status)">
+                {{ conversation.scenes_validation_status | capitalize }}
+              </div>
+            </b-col>
+            <b-col class="font-weight-bold" cols="2">Model</b-col>
+            <b-col cols="4">
+              <div class="conversation-status" :class="getStatusClass(conversation.model_validation_status)">
+                {{ conversation.model_validation_status | capitalize }}
+              </div>
+            </b-col>
+          </b-row>
+        </b-card>
+      </div>
+      <div class="col-6">
+        <b-card header="Intents">
+          <b-row class="mb-2 pb-2">
+            <b-col class="font-weight-bold" cols="3">Opening Intents:</b-col>
+            <b-col cols="9">
+                <span v-for="(opening_intent, index) in conversation.opening_intents">
+                    {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>
+                </span>
+            </b-col>
+          </b-row>
+          <b-row class="mb-2 pb-2">
+            <b-col class="font-weight-bold" cols="3">Outgoing Intents:</b-col>
+            <b-col cols="9">
+              <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
+                <template v-if="outgoing_intent.id">
+                  <router-link :to="{ name: 'view-outgoing-intent', params: { id: outgoing_intent.id } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+                </template>
+                <template v-else>
+                  <router-link :to="{ name: 'add-outgoing-intent', query: { name: outgoing_intent.name } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
+                </template>
+              </span>
+            </b-col>
+          </b-row>
+        </b-card>
+      </div>
+    </div>
+
+    <h4 class="mb-3">History</h4>
+    <b-card>
       <b-row class="border-bottom mb-2 pb-2">
           <b-col class="font-weight-bold" cols="1">Version</b-col>
           <b-col class="font-weight-bold" cols="2">Date</b-col>
@@ -257,6 +271,11 @@ export default {
         return moment(value).format('MMMM D, YYYY HH:mm');
       }
     },
+    capitalize: function (value) {
+      if (!value) return '';
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    },
   },
   methods: {
     fetchConversation() {
@@ -379,7 +398,43 @@ export default {
           }
         },
       );
-    }
+    },
+    getStatusClass(status) {
+      if (status == 'saved') return 'yellow-status';
+      if (status == 'activatable') return 'blue-status';
+      if (status == 'activated') return 'green-status';
+      if (status == 'deactivated') return 'red-status';
+      if (status == 'archived') return 'gray-status';
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+h2 {
+  display: inline-block;
+  margin-right: 0.5rem
+}
+.conversation-status {
+  vertical-align: text-bottom;
+  border-radius: 10px;
+  color: #fff;
+  padding: 0 12px;
+  display: inline-block;
+  &.yellow-status {
+    background: var(--yellow);
+  }
+  &.green-status {
+    background: var(--green);
+  }
+  &.red-status {
+    background: var(--red);
+  }
+  &.blue-status {
+    background: var(--blue);
+  }
+  &.gray-status {
+    background: var(--gray);
+  }
+}
+</style>
