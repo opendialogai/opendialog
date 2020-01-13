@@ -189,7 +189,6 @@ class ConversationsTest extends TestCase
     {
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation', [
-                'name' => 'test_conversation',
                 'model' => 'conversation:
   id: test_conversation',
             ])
@@ -199,9 +198,8 @@ class ConversationsTest extends TestCase
 
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation', [
-                'name' => 'test',
                 'model' => 'conversation:
-  id: test_conversation
+  id: ' . Str::random(1000) . '
   scenes:
     opening_scene:
       intents:
@@ -213,37 +211,6 @@ class ConversationsTest extends TestCase
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), '{"field":"name","message":"Conversation name must be the same of model conversation id."}');
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/conversation', [
-                'name' => Str::random(1000),
-                'model' => 'conversation:
-  id: test_conversation
-  scenes:
-    opening_scene:
-      intents:
-        - u: 
-            i: intent.core.hello_bot
-        - b: 
-            i: intent.core.hello_human
-            completes: true',
-            ])
-            ->assertStatus(400);
-
-        $this->assertEquals($response->content(), '{"field":"name","message":"The maximum length for conversation name is 512."}');
-    }
-
-    public function testConversationsInvalidUpdateEndpoint()
-    {
-        $conversation = Conversation::first();
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('PATCH', '/admin/api/conversation/' . $conversation->id, [
-                'name' => 'updated_name',
-            ])
-            ->assertStatus(400);
-
-        $this->assertEquals($response->content(), '{"field":"name","message":"Conversation name must be the same of model conversation id."}');
+        $this->assertEquals($response->content(), '{"field":"name","message":"The maximum length for conversation id is 512."}');
     }
 }
