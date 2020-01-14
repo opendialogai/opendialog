@@ -123,15 +123,15 @@
           <b-col cols="2">{{ history_item.timestamp | date }}</b-col>
           <b-col>
               <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="showViewConversationModel(history_item.attributes.model)">
-                  <i class="fa fa-eye"></i>
+                  View
               </button>
 
               <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="showEditConversationModel(history_item.id)">
-                  <i class="fa fa-edit"></i>
+                  Edit
               </button>
 
               <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="showActivateConversationModel(history_item.id)">
-                  <i class="fa fa-upload"></i>
+                  Reactivate
               </button>
           </b-col>
       </b-row>
@@ -401,9 +401,9 @@ export default {
     },
     getStatusClass(status) {
       if (status == 'saved') return 'yellow-status';
-      if (status == 'activatable') return 'blue-status';
-      if (status == 'activated') return 'green-status';
-      if (status == 'deactivated') return 'red-status';
+      if (status == 'activatable' || status == 'waiting') return 'blue-status';
+      if (status == 'activated' || status == 'validated') return 'green-status';
+      if (status == 'deactivated' || status == 'invalid') return 'red-status';
       if (status == 'archived') return 'gray-status';
     },
   },

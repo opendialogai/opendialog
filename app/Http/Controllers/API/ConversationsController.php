@@ -227,10 +227,10 @@ class ConversationsController extends Controller
     /**
      * @param int $id
      * @param int $versionId
-     * @return ConversationResource
+     * @return Response
      * @throws BindingResolutionException
      */
-    public function reactivate(int $id, int $versionId): ConversationResource
+    public function reactivate(int $id, int $versionId): Response
     {
         /** @var Conversation $conversation */
         $conversation = Conversation::find($id);
