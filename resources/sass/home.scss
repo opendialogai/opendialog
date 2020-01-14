@@ -37,6 +37,24 @@ body {
 .footer div {
   width: 50%;
   display: inline-block;
+
+  @media screen and (max-width: 900px) {
+    &:first-child {
+      margin-left: 50px;
+      width: calc(50% - 50px);
+    }
+    &:last-child {
+      margin-right: 50px;
+      width: calc(50% - 50px);
+    }
+  }
+  @media
+    screen and (max-width: 375px),
+    only screen and (device-width: 414px) and (device-height: 896px)
+  {
+    margin: 0 20px 20px 20px !important;
+    width: 100% !important;
+  }
 }
 
 .logo {
@@ -49,12 +67,40 @@ h2 {
   color: #fff;
   font-size: 48px;
   line-height: 54px;
+
+  @media screen and (max-width: 900px) {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  @media
+    screen and (max-width: 375px),
+    only screen and (device-width: 414px) and (device-height: 896px)
+  {
+    font-size: 28px;
+    line-height: 34px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
 
 h3 {
   color: #a4a1c1;
   font-size: 31px;
   line-height: 37px;
+
+  @media screen and (max-width: 900px) {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  @media
+    screen and (max-width: 375px),
+    only screen and (device-width: 414px) and (device-height: 896px)
+  {
+    font-size: 22px;
+    line-height: 28px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
 
 .button {

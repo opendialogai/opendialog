@@ -26,7 +26,7 @@
           <a class="button" href="/login">Login</a>
         </div>
         <div>
-          <a class="button" target="_blank" href="https://www.opendialog.ai">Find out mode</a>
+          <a class="button" target="_blank" href="https://www.opendialog.ai">Find out more</a>
         </div>
       </div>
     </div>
