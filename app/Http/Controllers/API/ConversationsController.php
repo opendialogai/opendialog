@@ -246,26 +246,6 @@ class ConversationsController extends Controller
 
 
     /**
-     * Returns a list of conversations that can be used in a menu system
-     *
-     * @return array
-     */
-    public function adminList(): array
-    {
-        $conversations = [];
-
-        foreach (Conversation::all() as $conversation) {
-            $conversations[] = [
-                'name' => $conversation->name,
-                'url' => '/admin/conversations/' . $conversation->id,
-            ];
-        }
-
-        return $conversations;
-    }
-
-
-    /**
      * @param Conversation $conversation
      * @return array
      */

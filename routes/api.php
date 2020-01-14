@@ -45,7 +45,4 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
 
     Route::get('warnings', 'WarningsController@index');
     Route::get('warnings/{id}', 'WarningsController@show');
-
-    Route::get('conversations-list', 'ConversationsController@adminList');
-    Route::get('webchat-settings-categories', 'WebchatSettingsController@getCategories');
 });
