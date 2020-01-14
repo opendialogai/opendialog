@@ -1,0 +1,69 @@
+@font-face {
+  font-family: 'Sofia Pro';
+  src: url('/fonts/sofiapro/sofiapro-light.otf') format('opentype');
+}
+
+body {
+  font-family: 'Sofia Pro';
+  background: #1b212a;
+}
+
+.page {
+  display: table;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  max-width: 830px;
+  margin: 0 auto;
+}
+
+.header {
+  display: table-row;
+}
+
+.body {
+  display: table-row;
+}
+
+.footer {
+  display: table-row;
+}
+
+.footer div {
+  width: 50%;
+  display: inline-block;
+}
+
+.logo {
+  max-width: 250px;
+  margin: 30px auto;
+  display: block;
+}
+
+h2 {
+  color: #fff;
+  font-size: 48px;
+  line-height: 54px;
+}
+
+h3 {
+  color: #a4a1c1;
+  font-size: 31px;
+  line-height: 37px;
+}
+
+.button {
+  display: inline-block;
+  background: #0000ff;
+  font-size: 16px;
+  line-height: 26px;
+  padding: 20px 30px;
+  border-radius: 30px;
+  color: #fff;
+  text-decoration: none !important;
+}

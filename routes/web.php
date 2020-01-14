@@ -23,6 +23,10 @@ if (env("USE_2FA")) {
     Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
 }
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
 /**
  * Admin Routes
  */
