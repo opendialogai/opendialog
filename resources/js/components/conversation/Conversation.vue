@@ -15,12 +15,12 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-6">
+      <div class="col-md-6">
         <h2>{{ conversation.name | capitalize }} Conversation</h2>
         <div class="conversation-status" :class="getStatusClass(conversation.status)">{{ conversation.status | capitalize }}</div>
         <div>(last modified - {{ conversation.updated_at }})</div>
       </div>
-      <div class="col-6">
+      <div class="col-md-6">
         <div class="float-right">
           <b-btn v-if="conversation.status != 'archived'" variant="primary mr-4" @click="editConversation">Edit</b-btn>
           <template v-else>
@@ -52,31 +52,31 @@
     </div>
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-6">
         <b-card header="Status">
-          <b-row class="mb-2 pb-2">
-            <b-col class="font-weight-bold" cols="2">Yaml</b-col>
-            <b-col cols="4">
+          <b-row>
+            <b-col class="font-weight-bold mt-1 mb-1" cols="6" md="2">Yaml</b-col>
+            <b-col class="mt-1 mb-1" cols="6" md="4">
               <div class="conversation-status" :class="getStatusClass(conversation.yaml_validation_status)">
                 {{ conversation.yaml_validation_status | capitalize }}
               </div>
             </b-col>
-            <b-col class="font-weight-bold" cols="2">Schema</b-col>
-            <b-col cols="4">
+            <b-col class="font-weight-bold mt-1 mb-1" cols="6" md="2">Schema</b-col>
+            <b-col class="mt-1 mb-1" cols="6" md="4">
               <div class="conversation-status" :class="getStatusClass(conversation.yaml_schema_validation_status)">
                 {{ conversation.yaml_schema_validation_status | capitalize }}
               </div>
             </b-col>
           </b-row>
-          <b-row class="mb-2 pb-2">
-            <b-col class="font-weight-bold" cols="2">Scenes</b-col>
-            <b-col cols="4">
+          <b-row>
+            <b-col class="font-weight-bold mt-1 mb-1" cols="6" md="2">Scenes</b-col>
+            <b-col class="mt-1 mb-1" cols="6" md="4">
               <div class="conversation-status" :class="getStatusClass(conversation.scenes_validation_status)">
                 {{ conversation.scenes_validation_status | capitalize }}
               </div>
             </b-col>
-            <b-col class="font-weight-bold" cols="2">Model</b-col>
-            <b-col cols="4">
+            <b-col class="font-weight-bold mt-1 mb-1" cols="6" md="2">Model</b-col>
+            <b-col class="mt-1 mb-1" cols="6" md="4">
               <div class="conversation-status" :class="getStatusClass(conversation.model_validation_status)">
                 {{ conversation.model_validation_status | capitalize }}
               </div>
@@ -84,19 +84,19 @@
           </b-row>
         </b-card>
       </div>
-      <div class="col-6">
-        <b-card header="Intents">
-          <b-row class="mb-2 pb-2">
-            <b-col class="font-weight-bold" cols="3">Opening Intents:</b-col>
-            <b-col cols="9">
+      <div class="col-md-6">
+        <b-card class="intents overflow-auto" header="Intents">
+          <b-row>
+            <b-col class="font-weight-bold mt-1 mb-1" cols="5" md="3">Opening Intents:</b-col>
+            <b-col class="mt-1 mb-1" cols="7" md="9">
                 <span v-for="(opening_intent, index) in conversation.opening_intents">
                     {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>
                 </span>
             </b-col>
           </b-row>
-          <b-row class="mb-2 pb-2">
-            <b-col class="font-weight-bold" cols="3">Outgoing Intents:</b-col>
-            <b-col cols="9">
+          <b-row>
+            <b-col class="font-weight-bold mt-1 mb-1" cols="5" md="3">Outgoing Intents:</b-col>
+            <b-col class="mt-1 mb-1" cols="7" md="9">
               <span v-for="(outgoing_intent, index) in conversation.outgoing_intents">
                 <template v-if="outgoing_intent.id">
                   <router-link :to="{ name: 'view-outgoing-intent', params: { id: outgoing_intent.id } }">{{ outgoing_intent.name }}</router-link><span v-if="index < (conversation.outgoing_intents.length - 1)">, </span>
@@ -112,16 +112,16 @@
     </div>
 
     <h4 class="mb-3">History</h4>
-    <b-card>
+    <b-card class="history overflow-auto">
       <b-row class="border-bottom mb-2 pb-2">
-          <b-col class="font-weight-bold" cols="1">Version</b-col>
-          <b-col class="font-weight-bold" cols="2">Date</b-col>
-          <b-col class="font-weight-bold" cols="1">Actions</b-col>
+          <b-col class="font-weight-bold" cols="2">Version</b-col>
+          <b-col class="font-weight-bold" cols="4">Date</b-col>
+          <b-col class="font-weight-bold" cols="6">Actions</b-col>
       </b-row>
       <b-row v-for="history_item in conversation.history" v-bind:key="history_item.id" class="border-bottom mb-2 pb-2">
-          <b-col cols="1">{{ history_item.attributes.version_number }}</b-col>
-          <b-col cols="2">{{ history_item.timestamp | date }}</b-col>
-          <b-col>
+          <b-col cols="2">{{ history_item.attributes.version_number }}</b-col>
+          <b-col cols="4">{{ history_item.timestamp | date }}</b-col>
+          <b-col cols="6">
               <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="showViewConversationModel(history_item.attributes.model)">
                   View
               </button>
@@ -435,6 +435,13 @@ h2 {
   }
   &.gray-status {
     background: var(--gray);
+  }
+}
+.intents,
+.history {
+  .card-header,
+  .card-body {
+    min-width: 520px;
   }
 }
 </style>
