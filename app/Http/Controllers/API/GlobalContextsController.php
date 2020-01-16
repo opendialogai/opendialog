@@ -37,7 +37,7 @@ class GlobalContextsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return GlobalContextResource
+     * @return GlobalContextResource|Response
      */
     public function store(Request $request)
     {
