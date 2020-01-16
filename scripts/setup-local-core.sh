@@ -10,7 +10,6 @@ fi
 for repo in opendialog-core opendialog-webchat
 do
   LOCAL_DIR="vendor-local/$repo"
-
   if [ ! -d "./$LOCAL_DIR" ]; then
     subrepo="$( cut -d '-' -f 2- <<< "$repo" )";
     echo "$repo::: Cloning $repo to vendor-local"
