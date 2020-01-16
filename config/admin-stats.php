@@ -22,7 +22,7 @@ return [
         [
             [
                 'type' => StatsContants::NUMBER,
-                'name' => 'Conversations',
+                'name' => 'Active Conversations',
                 'endpoint' => '/stats/conversations',
                 'width' => StatsContants::THIRD,
             ],

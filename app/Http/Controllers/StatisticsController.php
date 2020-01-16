@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Stats\Helper;
 use Illuminate\Http\Request;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationLog\ChatbotUser;
+use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use OpenDialogAi\Core\RequestLog;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Symfony\Component\Yaml\Yaml;
@@ -16,11 +18,9 @@ class StatisticsController extends Controller
         $labels = [];
         $values = [];
 
-        $startDate = new \DateTime($request->query->get('startdate'));
-        $endDate = new \DateTime($request->query->get('enddate'));
-        $interval = new \DateInterval('P1D');
-        $endDate->add($interval);
+        list($startDate, $endDate) = Helper::getDates($request);
 
+        $interval = new \DateInterval('P1D');
         $period = new \DatePeriod($startDate, $interval, $endDate);
 
         foreach ($period as $date) {
@@ -49,11 +49,9 @@ class StatisticsController extends Controller
         $labels = [];
         $values = [];
 
-        $startDate = new \DateTime($request->query->get('startdate'));
-        $endDate = new \DateTime($request->query->get('enddate'));
-        $interval = new \DateInterval('P1D');
-        $endDate->add($interval);
+        list($startDate, $endDate) = Helper::getDates($request);
 
+        $interval = new \DateInterval('P1D');
         $period = new \DatePeriod($startDate, $interval, $endDate);
 
         foreach ($period as $date) {
@@ -79,8 +77,10 @@ class StatisticsController extends Controller
 
     public function conversations()
     {
+        $conversations = Conversation::where('status', ConversationNode::ACTIVATED)->get();
+
         return [
-            'value' => Conversation::count(),
+            'value' => $conversations->count(),
         ];
     }
 
@@ -88,7 +88,7 @@ class StatisticsController extends Controller
     {
         $incomingIntents = [];
 
-        $conversations = Conversation::where('status', 'activated')->get();
+        $conversations = Conversation::where('status', ConversationNode::ACTIVATED)->get();
 
         foreach ($conversations as $conversation) {
             $yaml = Yaml::parse($conversation->model);
