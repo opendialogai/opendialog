@@ -111,11 +111,9 @@ YAML and all related outgoing intents and message templates
 
 ## Local dev
 
-A `composer-dev.json` file has been created to help with local development. It makes the assumption that you have the 
-Open Dialog and Open Dialog Webchat packages checked out locally to `../opendialog-core` and `../opendialog-webchat`
-respectively.
+A `setup-local-repos.sh` bash script is included which, in combination with `composer-dev.json`, will checkout and symlink `opendialog-core` and `opendialog-webchat` to a `vendor-local` directory.
 
-To install dependencies using it, you can run `./composer-dev install` or `./composer-dev update`
+To install dependencies using it, you can run `./scripts/setup-local-repos.sh`. You can now use, edit and version control these repositories directly from your `vendor-local` directory.
 
 After doing so, you may need to run `php artisan package:discover` to pick up any new modules.
 
