@@ -1,7 +1,4 @@
 #!/bin/bash
-echo "Clearing vendor directory"
-rm -rf ./vendor
-rm -rf ./vendor-local
 
 LOCAL_VENDOR_DIR="vendor-local"
 LOCAL_CORE_DIR="vendor-local/opendialog-core"
