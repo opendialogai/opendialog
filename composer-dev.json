@@ -10,6 +10,14 @@
             "options": {
                 "symlink": true
             }
+
+        },
+        {
+            "type": "path",
+            "url": "./vendor-local/opendialog-webchat",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {
