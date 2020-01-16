@@ -14,7 +14,6 @@ if [ ! -d "./$LOCAL_CORE_DIR" ]; then
   composer install
   cd ../..
 fi
-pwd
 echo "OPENDIALOG::: Installing composer with symlink"
 export COMPOSER=composer-dev.json
 composer update
