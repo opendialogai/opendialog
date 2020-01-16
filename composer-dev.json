@@ -6,11 +6,10 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../opendialog-core"
-        },
-        {
-            "type": "path",
-            "url": "../opendialog-webchat"
+            "url": "./vendor-local/opendialog-core",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {
