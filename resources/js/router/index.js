@@ -106,6 +106,12 @@ const router = new VueRouter({
           name: 'edit-outgoing-intent',
           component: OutgoingIntent,
           props: true,
+            meta: {
+              breadcrumbs : [{
+                  name: "Back to view outgoing intent",
+                  routename: "view-outgoing-intent"
+              }]
+            }
         },
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates',
