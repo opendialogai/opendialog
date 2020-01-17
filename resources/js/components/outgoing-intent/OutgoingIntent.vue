@@ -6,7 +6,7 @@
       <div class="col-12">
         <div class="float-right">
           <b-btn variant="primary mr-4" @click="createMessageTemplate">Create Message Template</b-btn>
-          <b-btn variant="primary" @click="editOutgoingIntent">Edit</b-btn>
+          <b-btn variant="primary" @click="editOutgoingIntent">Edit Outgoing Intent Name</b-btn>
           <b-btn variant="danger" @click="showDeleteOutgoingIntentModal">Delete</b-btn>
         </div>
       </div>

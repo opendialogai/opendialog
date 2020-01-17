@@ -1,6 +1,14 @@
 <template>
   <div v-if="outgoingIntent">
-    <h2 class="mb-3">Outgoing Intent</h2>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a :href="'/admin/outgoing-intents/'+ outgoingIntent.id">Back to {{outgoingIntent.name}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
+      </ol>
+    </nav>
+
+    <h2 class="mb-3">Edit Outgoing Intent Name</h2>
 
     <div class="alert alert-danger" role="alert" v-if="error.message">
       <span>{{ error.message }}</span>
