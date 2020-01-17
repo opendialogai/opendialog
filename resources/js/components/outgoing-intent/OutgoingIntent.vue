@@ -200,7 +200,7 @@ export default {
 
       this.messageTemplates = this.messageTemplates.filter(obj => obj.id !== this.currentMessageTemplate);
 
-      axios.delete('/admin/api/outgoing-intents/' + this.id + '/message-templates/' + this.currentMessageTemplate);
+      axios.delete('/admin/api/outgoing-intents/' + this.id);
     },
   },
 };
