@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
 // Containers
 import DefaultContainer from '@/containers/DefaultContainer';
 
@@ -102,18 +101,18 @@ const router = new VueRouter({
           props: true,
         },
         {
-          path: 'outgoing-intents/:id/edit',
-          name: 'edit-outgoing-intent',
-          component: OutgoingIntent,
-          props: true,
+            path: 'outgoing-intents/:id/edit',
+            name: 'edit-outgoing-intent',
+            component: OutgoingIntent,
+            props: true,
             meta: {
-              breadcrumbs : [{
-                  name: "Back to view outgoing intent",
-                  routename: "view-outgoing-intent"
-              }]
+                breadcrumbs: [{
+                    name: "Back to view outgoing intent",
+                    routename: "view-outgoing-intent"
+                }]
             }
         },
-        {
+          {
           path: 'outgoing-intents/:outgoingIntent/message-templates',
           name: 'message-templates',
           component: MessageTemplate,
@@ -130,12 +129,24 @@ const router = new VueRouter({
           name: 'view-message-template',
           component: MessageTemplate,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to view outgoing intent",
+                    routename: "view-outgoing-intent"
+                }]
+            }
         },
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates/:id/edit',
           name: 'edit-message-template',
           component: MessageTemplate,
-          props: true,
+            props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to view outgoing intent",
+                    routename: "view-outgoing-intent"
+                }]
+            }
         },
         {
           path: 'users',
