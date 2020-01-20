@@ -81,7 +81,8 @@ class ConversationsController extends Controller
      */
     public function show($id): ConversationResource
     {
-        $conversation = Conversation::find($id);
+        $conversation = Conversation::with('conversationStateLogs')->find($id);
+        $conversation->makeVisible('conversationStateLogs');
         return new ConversationResource($conversation);
     }
 
@@ -288,6 +289,15 @@ class ConversationsController extends Controller
                 'field' => 'name',
                 'message' => 'Conversation name must be the same of model conversation id.',
             ];
+        }
+
+        if ($existingConversation = Conversation::where('name', $conversation->name)->first()) {
+            if ($existingConversation->id != $conversation->id) {
+                return [
+                    'field' => 'name',
+                    'message' => 'A conversation with the same name already exist.',
+                ];
+            }
         }
 
         return null;
