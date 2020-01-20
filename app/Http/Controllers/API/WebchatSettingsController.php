@@ -70,39 +70,6 @@ class WebchatSettingsController extends Controller
 
 
     /**
-     * Returns a list of webchat settings with links that can be used in menus
-     *
-     * @return array
-     */
-    public function getCategories(): array
-    {
-        $generalId = WebchatSetting::where('name', WebchatSetting::GENERAL)->first()->id;
-        $coloursId = WebchatSetting::where('name', WebchatSetting::COLOURS)->first()->id;
-        $commentsId = WebchatSetting::where('name', WebchatSetting::COMMENTS)->first()->id;
-        $historyId = WebchatSetting::where('name', WebchatSetting::WEBCHAT_HISTORY)->first()->id;
-
-        return [
-            [
-                'name' => 'General',
-                'url' => '/admin/webchat-setting/' . $generalId,
-            ],
-            [
-                'name' => 'Colours',
-                'url' => '/admin/webchat-setting/' . $coloursId,
-            ],
-            [
-                'name' => 'Comments',
-                'url' => '/admin/webchat-setting/' . $commentsId,
-            ],
-            [
-                'name' => 'History',
-                'url' => '/admin/webchat-setting/' . $historyId,
-            ],
-        ];
-    }
-
-
-    /**
      * @param WebchatSetting $setting
      * @param string         $newValue
      * @return string
