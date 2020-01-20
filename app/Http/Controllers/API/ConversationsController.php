@@ -311,6 +311,15 @@ class ConversationsController extends Controller
             ];
         }
 
+        if ($existingConversation = Conversation::where('name', $conversation->name)->first()) {
+            if ($existingConversation->id != $conversation->id) {
+                return [
+                    'field' => 'name',
+                    'message' => 'A conversation with the same name already exist.',
+                ];
+            }
+        }
+
         return null;
     }
 
