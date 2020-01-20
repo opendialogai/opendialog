@@ -144,13 +144,6 @@ class UsersController extends Controller
             ];
         }
 
-        if (empty($user->phone_number)) {
-            return [
-                'field' => 'phone_number',
-                'message' => 'User phone number field is required.',
-            ];
-        }
-
         if (!filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
             return [
                 'field' => 'email',
@@ -158,14 +151,16 @@ class UsersController extends Controller
             ];
         }
 
-        $phoneUtil = PhoneNumberUtil::getInstance();
-        try {
-            $phoneUtil->parse($user->phone_number);
-        } catch (NumberParseException $e) {
-            return [
-                'field' => 'phone_number',
-                'message' => 'Enter a valid phone number with prefix.',
-            ];
+        if ($user->phone_number) {
+            $phoneUtil = PhoneNumberUtil::getInstance();
+            try {
+                $phoneUtil->parse($user->phone_number);
+            } catch (NumberParseException $e) {
+                return [
+                    'field' => 'phone_number',
+                    'message' => 'Enter a valid phone number with prefix.',
+                ];
+            }
         }
 
         return null;
