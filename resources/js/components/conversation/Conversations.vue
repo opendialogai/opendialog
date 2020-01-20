@@ -90,7 +90,7 @@
                 </button>
               </template>
               <template v-else>
-                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)">
+                <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="activateConversation(conversation)" :disabled="conversation.status != 'activatable'" :aria-disabled="conversation.status != 'activatable'">
                   <i class="fa fa-upload"></i>
                 </button>
                 <button class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top" title="Deactivate" @click.stop="deactivateConversation(conversation)" disabled aria-disabled>
