@@ -11,17 +11,17 @@
 
     <b-card header="Add User">
       <b-form-group>
-        <label>Name</label>
+        <label>Name*</label>
         <b-form-input type="text" v-model="name" :class="(error.field == 'name') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
-        <label>Email</label>
+        <label>Email*</label>
         <b-form-input type="email" v-model="email" :class="(error.field == 'email') ? 'is-invalid' : ''" />
       </b-form-group>
 
       <b-form-group>
-        <label>Phone Number</label>
+        <label>Phone Number (optional)</label>
         <b-form-input type="text" v-model="phone_number" :class="(error.field == 'phone_number') ? 'is-invalid' : ''" />
       </b-form-group>
 
