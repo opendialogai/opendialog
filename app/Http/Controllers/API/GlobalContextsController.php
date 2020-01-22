@@ -37,13 +37,12 @@ class GlobalContextsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return GlobalContextResource
+     * @return GlobalContextResource|Response
      */
-    public function store(Request $request): GlobalContextResource
+    public function store(Request $request)
     {
         /** @var GlobalContext $globalContext */
         $globalContext = GlobalContext::make($request->all());
-
         if ($error = $this->validateValue($globalContext)) {
             return response($error, 400);
         }
@@ -125,7 +124,7 @@ class GlobalContextsController extends Controller
             ];
         }
 
-        if (!$globalContext->value) {
+        if (! isset($globalContext->value)) {
             return [
                 'field' => 'name',
                 'message' => 'Global context value field is required.',
