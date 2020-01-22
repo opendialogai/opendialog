@@ -7,6 +7,11 @@
       <div>Error: {{ validationErrorMessage.message }}</div>
     </div>
 
+    <div class="alert alert-danger" role="alert" v-if="conversation.yaml_schema_validation_status == 'invalid'">
+      <div>Yaml validation failed because there are some missing elements.</div>
+      <div>{{ validationSchemaErrorMessage.message }}</div>
+    </div>
+
     <div class="alert alert-danger" role="alert" v-if="errorMessage">
       <span>{{ errorMessage }}</span>
       <button type="button" class="close" @click="errorMessage = ''">
@@ -252,6 +257,11 @@ export default {
     validationErrorMessage() {
       return this.conversation.conversation_state_logs.reverse().find(
         c => c.type == 'validate_conversation_yaml'
+      );
+    },
+    validationSchemaErrorMessage() {
+      return this.conversation.conversation_state_logs.reverse().find(
+        c => c.type == 'validate_conversation_yaml_schema'
       );
     },
   },
