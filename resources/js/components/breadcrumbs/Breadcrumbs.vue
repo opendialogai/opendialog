@@ -28,7 +28,7 @@
       this.updateBreadCrumbs()
     },
     watch: {
-      '$route':()=> {
+      '$route'(id) {
         this.updateBreadCrumbs()
       }
     }

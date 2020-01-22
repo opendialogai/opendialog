@@ -61,6 +61,12 @@ const router = new VueRouter({
           path: 'conversations',
           name: 'conversations',
           component: Conversation,
+            meta: {
+                breadcrumbs: [{
+                    name: "Conversations",
+                    routename: "conversations"
+                }]
+            }
         },
         {
             path: 'conversations/archive',
@@ -71,18 +77,39 @@ const router = new VueRouter({
           path: 'conversations/add',
           name: 'add-conversation',
           component: Conversation,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to conversations",
+                    routename: "conversations"
+                }]
+            }
         },
         {
           path: 'conversations/:id',
           name: 'view-conversation',
           component: Conversation,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to conversations",
+                    routename: "conversations"
+                }]
+            }
         },
         {
           path: 'conversations/:id/edit',
           name: 'edit-conversation',
           component: Conversation,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to conversation list",
+                    routename: "conversations"
+                },{
+                    name: "Back to conversation",
+                    routename: "view-conversation"
+                }]
+            }
         },
         {
           path: 'outgoing-intents/',
