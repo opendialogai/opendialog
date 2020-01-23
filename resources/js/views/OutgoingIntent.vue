@@ -5,7 +5,6 @@
       <OutgoingIntent :id="id" />
     </template>
     <template v-else-if="currentRouteName == 'edit-outgoing-intent'">
-      <Breadcrumbs />
       <EditOutgoingIntent :id="id" />
     </template>
     <template v-else-if="currentRouteName == 'add-outgoing-intent'">
