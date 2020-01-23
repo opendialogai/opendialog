@@ -1,6 +1,7 @@
 <template>
   <div>
-    <template v-if="currentRouteName == 'view-outgoing-intent'">
+      <Breadcrumbs />
+      <template v-if="currentRouteName == 'view-outgoing-intent'">
       <OutgoingIntent :id="id" />
     </template>
     <template v-else-if="currentRouteName == 'edit-outgoing-intent'">

@@ -21,6 +21,23 @@
         e.preventDefault()
       },
       updateBreadCrumbs() {
+        const home = {
+          name: "Home",
+          routename: "home"
+        };
+
+        // if no crumbs supplied still create the home crumb
+        if(this.$route.meta.breadcrumbs == undefined)
+        {
+          this.$route.meta.breadcrumbs = [home];
+        }
+        // if crumbs are supplied prepend the home crumb
+        else if (
+          this.$route.meta.breadcrumbs[0] == undefined ||
+          this.$route.meta.breadcrumbs[0].routename != 'home'
+        ) {
+          this.$route.meta.breadcrumbs.unshift(home);
+        }
         this.breadcrumbs = this.$route.meta.breadcrumbs;
       }
     },
