@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9688ccc9c771a8764cb12296eb1f319",
+    "content-hash": "3dc8b68c23523a9c8c805a52c48c9b3a",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1866,16 +1866,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "0.5.6",
+            "version": "dev-feature/conversation-listing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "43ed7f29ae8e7036241923a829e2ba46241e192d"
+                "reference": "018af04d91cafc62e0f7760026816ce8a0d33d39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/43ed7f29ae8e7036241923a829e2ba46241e192d",
-                "reference": "43ed7f29ae8e7036241923a829e2ba46241e192d",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/018af04d91cafc62e0f7760026816ce8a0d33d39",
+                "reference": "018af04d91cafc62e0f7760026816ce8a0d33d39",
                 "shasum": ""
             },
             "require": {
@@ -1926,12 +1926,14 @@
                     "OpenDialogAi\\ActionEngine\\": "src/ActionEngine",
                     "OpenDialogAi\\ContextEngine\\": "src/ContextEngine",
                     "OpenDialogAi\\ConversationBuilder\\": "src/ConversationBuilder",
+                    "OpenDialogAi\\MessageBuilder\\": "src/MessageBuilder",
                     "OpenDialogAi\\ConversationEngine\\": "src/ConversationEngine",
                     "OpenDialogAi\\ConversationLog\\": "src/ConversationLog",
                     "OpenDialogAi\\ResponseEngine\\": "src/ResponseEngine",
                     "OpenDialogAi\\InterpreterEngine\\": "src/InterpreterEngine",
                     "OpenDialogAi\\OperationEngine\\": "src/OperationEngine",
                     "OpenDialogAi\\SensorEngine\\": "src/SensorEngine",
+                    "OpenDialogAi\\NlpEngine\\": "src/NlpEngine",
                     "OpenDialogAi\\Core\\Database\\": "database/",
                     "OpenDialogAi\\Core\\Tests\\": "tests/"
                 }
@@ -1951,7 +1953,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2019-11-27T12:24:31+00:00"
+            "time": "2020-01-24T14:45:29+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4861,9 +4863,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
-                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de"
+                    "homepage": "https://beyondco.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -7614,9 +7616,18 @@
             "time": "2019-11-24T13:36:37+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.5.10",
+            "alias_normalized": "0.5.10.0",
+            "version": "dev-feature/conversation-listing",
+            "package": "opendialogai/core"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "opendialogai/core": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
