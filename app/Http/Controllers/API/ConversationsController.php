@@ -87,8 +87,7 @@ class ConversationsController extends Controller
      */
     public function show($id): ConversationResource
     {
-        $conversation = Conversation::with('conversationStateLogs')->find($id);
-        $conversation->makeVisible('conversationStateLogs');
+        $conversation = Conversation::find($id);
         return new ConversationResource($conversation);
     }
 
@@ -281,15 +280,6 @@ class ConversationsController extends Controller
                 'field' => 'name',
                 'message' => 'The maximum length for conversation id is 512.',
             ];
-        }
-
-        if ($existingConversation = Conversation::where('name', $conversation->name)->first()) {
-            if ($existingConversation->id != $conversation->id) {
-                return [
-                    'field' => 'name',
-                    'message' => 'A conversation with the same name already exist.',
-                ];
-            }
         }
 
         return null;
