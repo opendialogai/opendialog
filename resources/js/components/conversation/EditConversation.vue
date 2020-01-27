@@ -6,23 +6,40 @@
       </div>
       <div class="col-md-6">
         <div class="float-right">
-          <template v-if="['activatable', 'deactivated'].includes(conversation.status)">
-            <b-btn variant="success mr-4" @click="activateConversation">Activate</b-btn>
+          <template v-if="conversation.status == 'activated'">
+            <b-btn variant="primary mb-3 mr-4" @click="deactivateConversation">Deactivate</b-btn>
+          </template>
+          <template v-else-if="['activatable', 'deactivated'].includes(conversation.status)">
+            <b-btn variant="success mb-3 mr-4" @click="activateConversation">Activate</b-btn>
           </template>
           <b-btn variant="primary mb-3" @click="saveConversation">Save & exit</b-btn>
         </div>
       </div>
     </div>
 
-    <div class="alert alert-danger" role="alert" v-if="error.message">
+    <div v-if="conversation.status != 'activated'" class="alert alert-warning mb-4">
+      After you have finished editing the model, click 'Activate' to set this version to live.
+    </div>
+
+    <div class="alert alert-danger mb-4" role="alert" v-if="error.message">
       <span>{{ error.message }}</span>
       <button type="button" class="close" @click="error.message = ''">
         <span>&times;</span>
       </button>
     </div>
 
-    <div class="alert alert-warning mb-4">
-      After you have finished to editing the model, click 'Activate' to set this version to live.
+    <div class="alert alert-danger mb-4" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success mb-4" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
     </div>
 
     <div class="mb-2">
@@ -126,6 +143,8 @@ export default {
         line: true,
       },
       conversation: null,
+      errorMessage: '',
+      successMessage: '',
       error: {},
     };
   },
@@ -144,6 +163,15 @@ export default {
     },
   },
   methods: {
+    fetchConversation() {
+      this.conversation = null;
+
+      axios.get('/admin/api/conversation/' + this.id).then(
+        (response) => {
+          this.conversation = response.data.data;
+        },
+      );
+    },
     saveConversation() {
       this.error = {};
 
@@ -165,19 +193,51 @@ export default {
         },
       );
     },
-    activateConversation() {
+    deactivateConversation() {
       this.errorMessage = '';
       this.successMessage = '';
 
-      axios.get('/admin/api/conversation/' + this.conversation.id + '/activate').then(
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/deactivate').then(
         (response) => {
           if (response.data) {
-            this.successMessage = 'Conversation activated.';
-            this.conversation.status = 'activated';
-            this.conversation.version_number++;
-            this.fetchConversation();
+            this.successMessage = 'Conversation deactivated.';
+            this.conversation.status = 'deactivated';
           } else {
-            this.errorMessage = 'Sorry, I wasn\'t able to activate this conversation to DGraph.';
+            this.errorMessage = 'Sorry, I wasn\'t able to deactivate this conversation from DGraph.';
+          }
+        },
+      );
+    },
+    activateConversation() {
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.error = {};
+
+      const data = {
+        name: this.conversation.name,
+        model: this.conversation.model,
+        notes: this.conversation.notes,
+      };
+
+      axios.patch('/admin/api/conversation/' + this.id, data).then(
+        (response) => {
+          axios.get('/admin/api/conversation/' + this.conversation.id + '/activate').then(
+            (response) => {
+              if (response.data) {
+                this.successMessage = 'Conversation saved and activated.';
+                this.conversation.status = 'activated';
+                this.conversation.version_number++;
+                this.fetchConversation();
+              } else {
+                this.errorMessage = 'Sorry, I wasn\'t able to activate this conversation to DGraph.';
+              }
+            },
+          );
+        },
+      ).catch(
+        (error) => {
+          if (error.response.status === 400) {
+            this.error = error.response.data;
           }
         },
       );
