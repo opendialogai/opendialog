@@ -11,8 +11,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea
-/public/js/app.js
-/public/css/app.css
+/public/js/*.js
 /public/css/*.css
 /public/admin
 /public/fonts/vendor

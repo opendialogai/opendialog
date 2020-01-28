@@ -1,0 +1,751 @@
+@font-face {
+  font-family: 'Sofia Pro';
+  src: url('/fonts/sofiapro/sofiapro-light.otf') format('opentype');
+}
+
+@keyframes bob {
+  10% {
+    height: 10px;
+  }
+  20% {
+    height: 20px;
+  }
+  30% {
+    height: 30px;
+  }
+  40% {
+    height: 20px;
+  }
+  50% {
+    height: 10px;
+  }
+  60% {
+    height: 6px;
+  }
+}
+
+@keyframes spread {
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.sc-chat-window {
+  font-family: 'Sofia Pro' !important;
+
+  .sc-message--time-read,
+  .sc-user-input {
+    display: none;
+  }
+
+  .sc-message-list {
+    box-shadow: none;
+    .sc-message {
+      max-width: 828px;
+      padding-bottom: 0;
+
+      @media screen and (max-width: 1440px) {
+        width: calc(100% - 200px);
+      }
+      @media screen and (max-width: 810px) {
+        width: calc(100% - 100px);
+      }
+      @media
+        screen and (max-width: 375px),
+        only screen and (device-width: 414px) and (device-height: 896px)
+      {
+        width: calc(100% - 50px);
+      }
+
+      .sc-message--content {
+        padding-bottom: 30px;
+
+        @media screen and (max-width: 768px) {
+          padding-bottom: 20px;
+        }
+
+        &.author {
+          padding-bottom: 0;
+        }
+      }
+
+      &.fadeUp-enter-active {
+        animation-duration: 0.5s;
+      }
+
+      &.sc-message-author {
+        position: relative;
+        z-index: 1;
+      }
+    }
+
+    .sc-message--content {
+      &.sent {
+        .sc-message--form-response,
+        .sc-message--text,
+        .sc-message--list,
+        .sc-message--button,
+        .sc-message--button-response,
+        .sc-message--image,
+        .sc-typing-indicator {
+          box-shadow: none !important;
+          background-color: #0000ff !important;
+          border-radius: 30px !important;
+          border-bottom-right-radius: 0 !important;
+
+          @media
+            screen and (max-width: 375px),
+            only screen and (device-width: 414px) and (device-height: 896px)
+          {
+            border-bottom-right-radius: 0 !important;
+          }
+        }
+      }
+
+      &.received {
+        .sc-message--form,
+        .sc-message--carousel-list,
+        .sc-message--long-text,
+        .sc-message--text,
+        .sc-message--list,
+        .sc-message--button,
+        .sc-message--image,
+        .sc-typing-indicator {
+          box-shadow: none !important;
+          background-color: #fff !important;
+          border-radius: 30px !important;
+          border-bottom-left-radius: 0 !important;
+          margin-left: 86px !important;
+          max-width: 658px !important;
+
+          @media screen and (max-width: 768px) {
+            margin-left: 0 !important;
+          }
+        }
+
+        &.internal {
+          margin-bottom: -20px;
+          @media screen and (max-width: 768px) {
+            margin-bottom: -10px;
+          }
+          @media
+            screen and (max-width: 375px),
+            only screen and (device-width: 414px) and (device-height: 896px)
+          {
+            margin-bottom: -15px;
+          }
+
+          .sc-message--text,
+          .sc-message--button {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+          }
+        }
+        &.first-internal-message {
+          .sc-message--text,
+          .sc-message--button {
+            border-top-left-radius: 30px !important;
+          }
+        }
+        &.last-internal-message {
+          .sc-message--text,
+          .sc-message--button {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 30px !important;
+          }
+
+          .sc-message--button {
+            transition: width 0.3s linear 0.5s, height 0.3s linear 0.8s;
+            .sc-message--button--text {
+              animation-delay: 1.3s;
+            }
+          }
+        }
+
+        .sc-message--carousel-list {
+          background: none !important;
+          box-shadow: none !important;
+          overflow: hidden;
+          border-radius: 0 !important;
+          width: auto !important;
+          max-width: none;
+          margin: -19px 0 !important;
+          padding-left: 86px;
+
+          @media screen and (max-width: 768px) {
+            padding-left: 50px;
+            margin: -19px -50px !important;
+          }
+          @media
+            screen and (max-width: 375px),
+            only screen and (device-width: 414px) and (device-height: 896px)
+          {
+            padding-left: 25px;
+            margin: -19px -25px !important;
+          }
+
+          .slider {
+            overflow: visible;
+            padding: 19px 0;
+
+            .slider-wrap > div {
+              width: 316px;
+              margin-right: 25px;
+              overflow: visible;
+
+              @media screen and (max-width: 768px) {
+                width: 326px;
+                margin-right: 14px;
+              }
+
+              .sc-message--rich {
+                margin: 0 !important;
+              }
+            }
+
+            .slider-pagination {
+              display: none;
+            }
+          }
+
+          .sc-message--carousel-list--arrows {
+            top: calc(50% - 30px);
+            left: 0;
+            width: 100%;
+
+            div {
+              width: 60px;
+              height: 60px;
+
+              &.sc-message--carousel-list--arrow-left {
+                border-radius: 100%;
+                background: #0000ff url('/images/left.svg') 22px center no-repeat;
+                background-size: 14px 23px;
+                img {
+                  display: none;
+                }
+              }
+              &.sc-message--carousel-list--arrow-right {
+                border-radius: 100%;
+                background: #0000ff url('/images/right.svg') 25px center no-repeat;
+                background-size: 14px 23px;
+                img {
+                  display: none;
+                }
+              }
+
+              @media
+                screen and (max-width: 375px),
+                only screen and (device-width: 414px) and (device-height: 896px)
+              {
+                display: none;
+              }
+            }
+          }
+        }
+
+        .sc-message--rich {
+          border-radius: 10px !important;
+          box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.18) !important;
+          padding: 0 30px 20px 30px;
+          width: 316px;
+          background: #29313e !important;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          margin-left: 86px !important;
+
+          @media screen and (max-width: 768px) {
+            width: 326px;
+            margin-left: 0 !important;
+          }
+
+          .sc-message--rich--title {
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 24px;
+            color: #fff;
+            margin-top: 30px;
+
+            @media screen and (max-width: 768px) {
+              font-size: 19px;
+              line-height: 23px;
+            }
+            @media
+              screen and (max-width: 375px),
+              only screen and (device-width: 414px) and (device-height: 896px)
+            {
+              font-size: 18px;
+              line-height: 24px;
+            }
+          }
+          .sc-message--rich--text {
+            font-size: 16px;
+            line-height: 26px;
+            color: #a4a1c1;
+            margin-top: 10px;
+          }
+
+          .sc-message--rich--image {
+            order: -1;
+            height: 178px;
+            margin: 0 -30px;
+
+            @media screen and (max-width: 768px) {
+              height: 184px;
+            }
+
+            img {
+              object-fit: cover;
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          .sc-message--rich--buttons {
+            text-align: center;
+            margin-top: 12px;
+
+            @media
+              screen and (max-width: 375px),
+              only screen and (device-width: 414px) and (device-height: 896px)
+            {
+              margin-top: 0;
+            }
+
+            button {
+              border-radius: 84px;
+              border: solid 1px #fff;
+              background: none !important;
+              color: #fff !important;
+              font-size: 20px;
+              padding: 10px 20px;
+              min-width: 80%;
+
+              &:hover {
+                text-decoration: underline;
+                font-weight: bold;
+                border: solid 2px #fff;
+                padding: 9px 19px;
+              }
+            }
+          }
+        }
+      }
+
+      .sc-message--author {
+        margin-bottom: -75px;
+        padding-top: 0;
+        animation-name: fadeInUp;
+        animation-duration: 0.5s;
+
+        @media screen and (max-width: 768px) {
+          z-index: 1;
+          margin-bottom: -20px;
+          margin-left: 20px;
+        }
+
+        img.avatar {
+          border-radius: 0;
+          width: 80px;
+          height: 80px;
+          margin: -10px;
+
+          @media screen and (max-width: 768px) {
+            height: 53px;
+            width: 53px;
+            margin: 0;
+          }
+        }
+      }
+
+      .sc-message--button-response {
+        padding: 20px 30px;
+        .button {
+          font-size: 16px !important;
+          line-height: 26px;
+        }
+      }
+
+      .sc-message--button {
+        transition: width 0.3s linear, height 0.3s linear 0.3s;
+        box-sizing: border-box;
+        opacity: 0;
+        padding: 20px 30px;
+        overflow: hidden;
+        .sc-message--button--text {
+          animation-duration: 0.3s;
+          animation-delay: 0.6s;
+          font-size: 16px !important;
+          line-height: 26px;
+        }
+        .sc-message--button--buttons {
+          padding: 0;
+        }
+      }
+
+      .sc-typing-indicator {
+        animation-duration: 0.3s;
+        padding: 16px 30px 20px 30px;
+        font-size: 16px !important;
+        line-height: 30px;
+        span {
+          width: 6px;
+          height: 6px;
+          margin-right: 4;
+          border-radius: 3px;
+          vertical-align: bottom;
+          animation-delay: 0.1s !important;
+          animation: bob 1s infinite;
+          &:first-child {
+            animation-delay: 0s !important;
+          }
+          &:last-child {
+            animation-delay: 0.2s !important;
+            margin-right: 0;
+          }
+        }
+        &.v-leave-to {
+          position: absolute;
+          background: none !important;
+        }
+      }
+
+      .sc-message--form-response,
+      .sc-message--text {
+        padding: 20px 30px !important;
+        font-size: 16px !important;
+        line-height: 26px;
+      }
+
+      .sc-message--text {
+        transition: width 0.3s linear, height 0.3s linear 0.3s;
+        box-sizing: border-box;
+        opacity: 0;
+        overflow: hidden;
+        .sc-message--text--content {
+          animation-duration: 0.3s;
+          animation-delay: 0.6s;
+        }
+      }
+    }
+  }
+
+  .sc-header {
+    height: 120px;
+    min-height: 120px;
+
+    @media screen and (max-width: 1440px) {
+      padding-left: 100px;
+      padding-right: 100px;
+    }
+    @media screen and (max-width: 768px) {
+      padding-left: 50px;
+      padding-right: 50px;
+      height: 100px;
+      min-height: 100px;
+    }
+    @media
+      screen and (max-width: 375px),
+      only screen and (device-width: 414px) and (device-height: 896px)
+    {
+      padding-left: 25px;
+      padding-right: 25px;
+      height: 78px;
+      min-height: 78px;
+    }
+    @media only screen and (device-width: 414px) and (device-height: 896px) {
+      padding-left: 25px;
+      padding-right: 25px;
+      height: 78px;
+      min-height: 78px;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      background: linear-gradient(#1b212a, rgba(27, 33, 42, 0));
+      height: 25px;
+      left: 0;
+      right: 0;
+      bottom: -25px;
+      z-index: 10;
+      opacity: 0.66;
+    }
+
+    .sc-header-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .sc-header--team-name {
+      img {
+        max-width: 248px;
+        @media screen and (max-width: 768px) {
+          max-width: 167px;
+        }
+        @media
+          screen and (max-width: 375px),
+          only screen and (device-width: 414px) and (device-height: 896px)
+        {
+          max-width: 148px;
+        }
+      }
+    }
+
+    .sc-header--expand-button {
+      @media
+        screen and (max-width: 375px),
+        only screen and (device-width: 414px) and (device-height: 896px)
+      {
+        display: none;
+      }
+    }
+
+    .sc-header--restart-button {
+      margin-right: 30px;
+      @media screen and (max-width: 768px) {
+        margin-right: 20px;
+      }
+      @media
+        screen and (max-width: 375px),
+        only screen and (device-width: 414px) and (device-height: 896px)
+      {
+        margin-right: 0;
+      }
+
+      img {
+        height: 23px;
+        margin: 0;
+      }
+      span {
+        margin: 14px 0 10px 6px;
+        font-size: 16px;
+        display: inline-block !important;
+      }
+    }
+
+    .sc-header--minimize-button {
+      display: none;
+    }
+  }
+
+  .sc-user-input-wrapper {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      background: linear-gradient(to top, #1b212a, rgba(27, 33, 42, 0));
+      height: 25px;
+      left: 0;
+      right: 0;
+      top: -25px;
+      z-index: 10;
+      opacity: 0.66;
+    }
+  }
+
+  .sc-external-buttons-row {
+    &.hide-overflow {
+      height: auto !important;
+      overflow: hidden;
+      white-space: normal;
+    }
+    .sc-external-buttons-element {
+      border: none;
+      font-size: 16px !important;
+      line-height: 26px;
+      padding: 20px 30px !important;
+      border-radius: 33px !important;
+      margin: 5px 10px !important;
+      min-width: 60px;
+      position: relative;
+      outline: none;
+      background: none !important;
+
+      @media
+        screen and (max-width: 375px),
+        only screen and (device-width: 414px) and (device-height: 896px)
+      {
+        padding: 20px !important;
+      }
+
+      u {
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+        position: relative;
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 1px;
+          transition: all 0.2s ease-in-out;
+          transition-duration: 0.25s;
+          opacity: 0;
+          background-color: #f09ea0;
+        }
+      }
+      &:hover {
+        font-weight: normal !important;
+        u {
+          &::before,
+          &::after {
+            width: 100%;
+            opacity: 1;
+          }
+        }
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        width: calc(100% - 62px);
+        background: #1b212a;
+        top: -10px;
+        left: 31px;
+        height: 20px;
+        z-index: 1;
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        width: calc(100% - 62px);
+        background: #1b212a;
+        bottom: -10px;
+        left: 31px;
+        height: 20px;
+        z-index: 1;
+      }
+
+      .sc-external-buttons-element--top {
+        display: block;
+        position: absolute;
+        top: -2px;
+        left: 33px;
+        width: 0;
+        border-top: 1px dashed #fff;
+        z-index: 2;
+      }
+      .sc-external-buttons-element--bottom {
+        display: block;
+        position: absolute;
+        bottom: -2px;
+        right: 33px;
+        width: 0;
+        border-top: 1px dashed #fff;
+        z-index: 2;
+      }
+      .sc-external-buttons-element--left {
+        display: block;
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        height: 70px;
+        width: 35px;
+        border: 1px dashed #fff;
+        border-bottom-left-radius: 35px;
+        border-top-left-radius: 35px;
+        &:after {
+          content: "";
+          width: calc(100% + 2px);
+          height: calc(100% + 2px);
+          display: inline-block;
+          background: #1b212a;
+          position: absolute;
+          right: -1px;
+          top: -1px;
+          z-index: 1;
+        }
+      }
+      .sc-external-buttons-element--right {
+        display: block;
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        height: 70px;
+        width: 35px;
+        border: 1px dashed #fff;
+        border-bottom-right-radius: 35px;
+        border-top-right-radius: 35px;
+        &:after {
+          content: "";
+          width: calc(100% + 2px);
+          height: calc(100% + 2px);
+          display: inline-block;
+          background: #1b212a;
+          position: absolute;
+          left: -1px;
+          bottom: -1px;
+          z-index: 1;
+        }
+      }
+      .sc-external-buttons-element--background {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 33px;
+        background: #0000ff;
+        z-index: 9;
+      }
+
+      span {
+        z-index: 9;
+        position: relative;
+      }
+
+      &.sc-external-buttons-element--clicked {
+        .sc-external-buttons-element--background {
+          animation: spread 0.3s ease-in-out;
+        }
+      }
+
+      &:hover {
+        .sc-external-buttons-element--top {
+          transition: width 0.1s linear, top 0.05s linear 0.5s;
+          width: calc(100% - 66px);
+          top: -8px;
+        }
+        .sc-external-buttons-element--right {
+          transition: all 0.05s linear 0.5s;
+          right: -8px;
+          top: -8px;
+          height: 82px;
+          width: 41px;
+          border-bottom-right-radius: 41px;
+          border-top-right-radius: 41px;
+          &:after {
+            height: 0;
+            transition: height 0.15s ease-in-out 0.1s;
+          }
+        }
+        .sc-external-buttons-element--bottom {
+          transition: width 0.1s linear 0.25s, bottom 0.05s linear 0.5s;
+          width: calc(100% - 66px);
+          bottom: -8px;
+        }
+        .sc-external-buttons-element--left {
+          transition: all 0.05s linear 0.5s;
+          left: -8px;
+          top: -8px;
+          height: 82px;
+          width: 41px;
+          border-bottom-left-radius: 41px;
+          border-top-left-radius: 41px;
+          &:after {
+            height: 0;
+            transition: height 0.15s ease-in-out 0.35s;
+          }
+        }
+      }
+    }
+  }
+}

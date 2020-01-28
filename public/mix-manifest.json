@@ -1,5 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/css/home.css": "/css/home.css"
+    "/css/home.css": "/css/home.css",
+    "/css/chat.css": "/css/chat.css",
+    "/css/onboarding-app.css": "/css/onboarding-app.css",
+    "/js/onboarding-app.js": "/js/onboarding-app.js"
 }

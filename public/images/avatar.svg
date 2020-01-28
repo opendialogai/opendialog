@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>Group 3 Copy 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="30" cy="30" r="30"></circle>
+        <filter x="-25.8%" y="-24.2%" width="151.7%" height="151.7%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.18 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Style-tile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="OpenDialog-Style-tile" transform="translate(-922.000000, -1880.000000)">
+            <g id="Group-3-Copy-3" transform="translate(932.000000, 1889.000000)">
+                <g id="Group">
+                    <g id="Oval">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="Logo-/-_Motif-/-On-Light" transform="translate(11.000000, 12.000000)">
+                        <g id="Group">
+                            <path d="M23.2000496,30.9906241 C20.9281283,34.0857566 16.867963,35.7035879 12.2560496,35.9237807 C7.63740393,36.1438289 2.46701023,34.9728892 0.714073217,31.9926964 C-1.0319819,29.0191542 0.64645117,24.2366482 3.34639605,20.1004072 C6.04649054,15.9641663 9.76121495,12.4675398 13.7862228,12.3459494 C17.8040496,12.2308651 22.1251283,15.4843108 24.0438291,19.4005036 C25.9625299,23.3166964 25.4718212,27.8956361 23.2000496,30.9906241 Z" id="purple_blob" fill-opacity="0.3" fill="#1B1464"></path>
+                            <path d="M15.222563,21.8416795 C15.1516496,18.0256795 17.4202795,14.4255349 20.9870433,11.6666916 C24.5593425,8.90408915 29.4258858,6.97729397 32.6566338,8.4491012 C35.8779567,9.91917349 37.4577992,14.7916072 37.8220905,19.7033663 C38.1865315,24.6151253 37.3449961,29.5678 34.1889016,31.9174867 C31.0346024,34.2579205 25.5753189,33.996812 21.6385787,31.8478 C17.7018386,29.6986434 15.2933268,25.6576795 15.222563,21.8416795 Z" id="green_blob" fill-opacity="0.3" fill="#00A99D"></path>
+                            <path d="M6.83006849,21.8193566 C3.89658818,19.2637904 2.7238244,15.2038867 3.07330471,10.8019108 C3.42383227,6.39328433 5.28987164,1.64171807 8.60858818,0.36538072 C11.9193756,-0.905173497 16.6817929,1.30600723 20.6439661,4.40244096 C24.606289,7.4988747 27.7761472,11.4746337 27.3976433,15.3074048 C27.0134543,19.1325133 23.0885331,22.8089952 18.7756827,24.1211879 C14.4629819,25.4332361 9.7633992,24.3747783 6.83006849,21.8193566 Z" id="blue_blob" fill-opacity="0.3" fill="#3FA9F5"></path>
+                            <path d="M13.0185031,27.8900988 C12.2789992,27.8900988 11.5581961,28.1137614 10.9569283,28.5297133 L5.00798345,32.6449904 L5.00798345,17.6237373 C5.00798345,11.9538096 9.76411731,7.3573759 15.6312275,7.3573759 L21.893448,7.3573759 C27.7605583,7.3573759 32.5166921,11.9538096 32.5166921,17.6237373 C32.5166921,23.2936651 27.7605583,27.8900988 21.893448,27.8900988 L13.0185031,27.8900988 Z" id="chat_icon" fill-opacity="0.7" fill="#0000FF"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
