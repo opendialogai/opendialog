@@ -3,6 +3,7 @@
 namespace App\Logging;
 
 use App\Warning;
+use Illuminate\Database\QueryException;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -19,7 +20,11 @@ class LogHandler extends AbstractProcessingHandler
         if (!empty($record['formatted'])) {
             $log = new Warning();
             $log->fill($record['formatted']);
-            $log->save();
+            try {
+                $log->save();
+            } catch (QueryException $e) {
+                //
+            }
         }
     }
 
