@@ -81,7 +81,7 @@ class ConversationsController extends Controller
      */
     public function show($id): ConversationResource
     {
-        $conversation = Conversation::find($id);
+        $conversation = Conversation::conversationWithHistory($id);
         return new ConversationResource($conversation);
     }
 

@@ -9,7 +9,7 @@
         "fideloper/proxy": "^4.2",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
-        "opendialogai/core": "0.5.6",
+        "opendialogai/core": "dev-develop",
         "opendialogai/webchat": "0.5.5",
         "phalcongelist/php-diff": "^2.0",
         "propaganistas/laravel-phone": "^4.2",
