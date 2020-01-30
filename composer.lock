@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b5ccf8d4f6e38f408877a1fb5887346",
+    "content-hash": "d034b28bc34fde36c802a0065f7b8462",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1884,16 +1884,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-bug/106-conversation-history",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "2c935356947bbe9e732eb8177f409ba04a57d482"
+                "reference": "82e2a15fb43a5d4710e7d104184ae5e89e8a95df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/2c935356947bbe9e732eb8177f409ba04a57d482",
-                "reference": "2c935356947bbe9e732eb8177f409ba04a57d482",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/82e2a15fb43a5d4710e7d104184ae5e89e8a95df",
+                "reference": "82e2a15fb43a5d4710e7d104184ae5e89e8a95df",
                 "shasum": ""
             },
             "require": {
@@ -1931,7 +1931,8 @@
                         "OpenDialogAi\\OperationEngine\\OperationEngineServiceProvider",
                         "OpenDialogAi\\ContextEngine\\ContextEngineServiceProvider",
                         "OpenDialogAi\\ActionEngine\\ActionEngineServiceProvider",
-                        "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider"
+                        "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider",
+                        "OpenDialogAi\\NlpEngine\\NlpEngineServiceProvider"
                     ],
                     "aliases": {
                         "AttributeResolver": "OpenDialogAi\\ContextEngine\\Facades\\AttributeResolver"
@@ -1971,7 +1972,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2020-01-10T09:37:35+00:00"
+            "time": "2020-01-22T15:30:43+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4895,9 +4896,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
+                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de",
-                    "role": "Developer"
+                    "homepage": "https://beyondco.de"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
