@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
 // Containers
 import DefaultContainer from '@/containers/DefaultContainer';
 
@@ -45,18 +44,36 @@ const router = new VueRouter({
           path: 'chatbot-users',
           name: 'chatbot-users',
           component: ChatbotUsers,
+            meta: {
+                breadcrumbs: []
+            }
         },
         {
           path: 'chatbot-users/:id',
           name: 'view-chatbot-user',
           component: ChatbotUsers,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to users",
+                    routename: "chatbot-users"
+                }]
+            }
         },
         {
           path: 'chatbot-users/:id/conversation-log',
           name: 'conversation-log',
           component: ConversationLog,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to users",
+                    routename: "chatbot-users"
+                },{
+                    name: "Back to user",
+                    routename: "view-chatbot-user"
+                }]
+            }
         },
         {
           path: 'conversations',
@@ -72,18 +89,39 @@ const router = new VueRouter({
           path: 'conversations/add',
           name: 'add-conversation',
           component: Conversation,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to conversations",
+                    routename: "conversations"
+                }]
+            }
         },
         {
           path: 'conversations/:id',
           name: 'view-conversation',
           component: Conversation,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to conversations",
+                    routename: "conversations"
+                }]
+            }
         },
         {
           path: 'conversations/:id/edit',
           name: 'edit-conversation',
           component: Conversation,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to conversations",
+                    routename: "conversations"
+                },{
+                    name: "Back to conversation",
+                    routename: "view-conversation"
+                }]
+            }
         },
         {
           path: 'outgoing-intents/',
@@ -94,20 +132,41 @@ const router = new VueRouter({
           path: 'outgoing-intents/add',
           name: 'add-outgoing-intent',
           component: OutgoingIntent,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to outgoing intents",
+                    routename: "outgoing-intents"
+                }]
+            }
         },
         {
           path: 'outgoing-intents/:id',
           name: 'view-outgoing-intent',
           component: OutgoingIntent,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to outgoing intents",
+                    routename: "outgoing-intents"
+                }]
+            }
         },
         {
-          path: 'outgoing-intents/:id/edit',
-          name: 'edit-outgoing-intent',
-          component: OutgoingIntent,
-          props: true,
+            path: 'outgoing-intents/:id/edit',
+            name: 'edit-outgoing-intent',
+            component: OutgoingIntent,
+            props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to outgoing intents",
+                    routename: "outgoing-intents"
+                },{
+                    name: "Back to outgoing intent",
+                    routename: "view-outgoing-intent"
+                }]
+            }
         },
-        {
+          {
           path: 'outgoing-intents/:outgoingIntent/message-templates',
           name: 'message-templates',
           component: MessageTemplate,
@@ -118,18 +177,36 @@ const router = new VueRouter({
           name: 'add-message-template',
           component: MessageTemplate,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to outgoing intents",
+                    routename: "outgoing-intents"
+                }]
+            }
         },
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates/:id',
           name: 'view-message-template',
           component: MessageTemplate,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to view outgoing intent",
+                    routename: "view-outgoing-intent"
+                }]
+            }
         },
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates/:id/edit',
           name: 'edit-message-template',
           component: MessageTemplate,
-          props: true,
+            props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to view outgoing intent",
+                    routename: "view-outgoing-intent"
+                }]
+            }
         },
         {
           path: 'users',
@@ -140,18 +217,39 @@ const router = new VueRouter({
           path: 'users/add',
           name: 'add-user',
           component: User,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to users",
+                    routename: "users"
+                }]
+            }
         },
         {
           path: 'users/:id',
           name: 'view-user',
           component: User,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to users",
+                    routename: "users"
+                }]
+            }
         },
         {
           path: 'users/:id/edit',
           name: 'edit-user',
           component: User,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to users",
+                    routename: "users"
+                },{
+                    name: "Back to user",
+                    routename: "view-user"
+                }]
+            }
         },
         {
           path: 'requests',
@@ -163,6 +261,12 @@ const router = new VueRouter({
           name: 'view-request',
           component: Request,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to requests",
+                    routename: "requests"
+                }]
+            }
         },
         {
           path: 'global-contexts',
@@ -173,18 +277,39 @@ const router = new VueRouter({
           path: 'global-contexts/add',
           name: 'add-global-context',
           component: GlobalContext,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to global contexts",
+                    routename: "global-contexts"
+                }]
+            }
         },
         {
           path: 'global-contexts/:id',
           name: 'view-global-context',
           component: GlobalContext,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to global contexts",
+                    routename: "global-contexts"
+                }]
+            }
         },
         {
           path: 'global-contexts/:id/edit',
           name: 'edit-global-context',
           component: GlobalContext,
           props: true,
+            meta: {
+                breadcrumbs: [{
+                    name: "Back to global contexts",
+                    routename: "add-global-context"
+                },{
+                    name: "Back to global context",
+                    routename: "edit-global-context"
+                }]
+            }
         },
         {
           path: 'warnings',
