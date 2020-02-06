@@ -29,7 +29,9 @@ class ConversationBuilderResource extends JsonResource
             'version_number' => $this->version_number,
             'opening_intents' => $this->opening_intents,
             'outgoing_intents' => $this->outgoing_intents,
-            'has_been_used' => $this->has_been_used
+            'has_been_used' => $this->has_been_used,
+            'is_draft' => $this->is_draft,
+            'persisted_status' => $this->persisted_status,
         ];
     }
 }
