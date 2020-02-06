@@ -1888,12 +1888,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "018af04d91cafc62e0f7760026816ce8a0d33d39"
+                "reference": "ad6de85c798451422742b7767ace33baa0913cdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/018af04d91cafc62e0f7760026816ce8a0d33d39",
-                "reference": "018af04d91cafc62e0f7760026816ce8a0d33d39",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/ad6de85c798451422742b7767ace33baa0913cdb",
+                "reference": "ad6de85c798451422742b7767ace33baa0913cdb",
                 "shasum": ""
             },
             "require": {
@@ -1931,7 +1931,8 @@
                         "OpenDialogAi\\OperationEngine\\OperationEngineServiceProvider",
                         "OpenDialogAi\\ContextEngine\\ContextEngineServiceProvider",
                         "OpenDialogAi\\ActionEngine\\ActionEngineServiceProvider",
-                        "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider"
+                        "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider",
+                        "OpenDialogAi\\NlpEngine\\NlpEngineServiceProvider"
                     ],
                     "aliases": {
                         "AttributeResolver": "OpenDialogAi\\ContextEngine\\Facades\\AttributeResolver"
@@ -1971,7 +1972,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2020-01-24T14:45:29+00:00"
+            "time": "2020-02-06T14:25:40+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
