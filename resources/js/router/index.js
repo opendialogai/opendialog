@@ -115,7 +115,7 @@ const router = new VueRouter({
           props: true,
             meta: {
                 breadcrumbs: [{
-                    name: "Back to conversation list",
+                    name: "Back to conversations",
                     routename: "conversations"
                 },{
                     name: "Back to conversation",
@@ -134,7 +134,7 @@ const router = new VueRouter({
           component: OutgoingIntent,
             meta: {
                 breadcrumbs: [{
-                    name: "Back to view outgoing intents",
+                    name: "Back to outgoing intents",
                     routename: "outgoing-intents"
                 }]
             }
@@ -146,7 +146,7 @@ const router = new VueRouter({
           props: true,
             meta: {
                 breadcrumbs: [{
-                    name: "Back to view outgoing intents",
+                    name: "Back to outgoing intents",
                     routename: "outgoing-intents"
                 }]
             }
@@ -158,7 +158,10 @@ const router = new VueRouter({
             props: true,
             meta: {
                 breadcrumbs: [{
-                    name: "Back to view outgoing intent",
+                    name: "Back to outgoing intents",
+                    routename: "outgoing-intents"
+                },{
+                    name: "Back to outgoing intent",
                     routename: "view-outgoing-intent"
                 }]
             }
