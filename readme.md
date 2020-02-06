@@ -121,6 +121,10 @@ After doing so, you may need to run `php artisan package:discover` to pick up an
 Note:
 Before a final commit for a feature / fix, please be sure to run `composer update` to update the `composer-lock.json` file so that it can be tested and deployed with all composer changes in place
 
+### Reverting
+
+To revert back to the dependencies defined in `composer.json`, run the `artisan packages:install` command again and answer no to installing core and webchat locally.
+
 ## Testing
 
 The project is set up to run all commits through (CircleCI)[https://circleci.com], which runs tests and checks for code 
