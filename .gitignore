@@ -32,3 +32,5 @@ tests/_dgraphdata
 build
 .DS_store
 .php_cs.cache
+composer-dev.json
+composer-dev.lock

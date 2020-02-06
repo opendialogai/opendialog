@@ -36,14 +36,25 @@ delete_vendor() {
     fi
 }
 
+delete_local_vendor() {
+    if [[ -d "./vendor-local/opendialog-$1" ]]; then
+        echo "Deleting local $1 vendor"
+        rm -rf ./vendor-local/opendialog-$1
+    fi
+}
+
 if $INSTALL_CORE == 'true' ; then
     create_vendor_dir;
     install_repo 'core'
     delete_vendor 'core'
+else
+    delete_local_vendor 'core'
 fi
 
 if $INSTALL_WEBCHAT == 'true' ; then
     create_vendor_dir;
     install_repo 'webchat'
     delete_vendor 'webchat'
+else
+    delete_local_vendor 'webchat'
 fi
