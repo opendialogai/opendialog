@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d034b28bc34fde36c802a0065f7b8462",
+    "content-hash": "3dc8b68c23523a9c8c805a52c48c9b3a",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1884,16 +1884,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-develop",
+            "version": "dev-feature/conversation-listing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "316aa4400139bec6e87254416e0ef4a8f07f0fa4"
+                "reference": "ace188231aef0469701854ac6b85b30eb030fa9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/316aa4400139bec6e87254416e0ef4a8f07f0fa4",
-                "reference": "316aa4400139bec6e87254416e0ef4a8f07f0fa4",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/ace188231aef0469701854ac6b85b30eb030fa9d",
+                "reference": "ace188231aef0469701854ac6b85b30eb030fa9d",
                 "shasum": ""
             },
             "require": {
@@ -1972,7 +1972,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2020-02-06T14:08:37+00:00"
+            "time": "2020-02-06T16:27:59+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4896,9 +4896,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
+                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de",
-                    "role": "Developer"
+                    "homepage": "https://beyondco.de"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -7656,7 +7656,14 @@
             "time": "2019-11-24T13:36:37+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.5.10",
+            "alias_normalized": "0.5.10.0",
+            "version": "dev-feature/conversation-listing",
+            "package": "opendialogai/core"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "opendialogai/core": 20
