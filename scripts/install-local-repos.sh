@@ -12,16 +12,17 @@ create_vendor_dir () {
 
 # Tries to install the given repo via ssh first, then ssl if that fails
 install_repo () {
-    CLONED=false
-
     if [[ ! -d "./$LOCAL_VENDOR_DIR/opendialog-$1" ]]; then
         echo "Cloning $1 using ssh"
         if git clone git@github.com:opendialogai/$1.git ${LOCAL_VENDOR_DIR}/opendialog-${1} ; then
-           CLONED=true
+           echo "Cloned"
         else
             echo "Failed. Cloning $1 using ssl"
             if git clone https://github.com/opendialogai/$1.git ${LOCAL_VENDOR_DIR}/opendialog-${1} ; then
-                CLONED=true
+                echo "Cloned"
+            else
+                echo "Cannot clone $1 repo - exiting script"
+                return 1
             fi
         fi
     else
@@ -43,18 +44,22 @@ delete_local_vendor() {
     fi
 }
 
-if $INSTALL_CORE == 'true' ; then
+set -e
+
+if ${INSTALL_CORE} == 'true' ; then
     create_vendor_dir;
     install_repo 'core'
     delete_vendor 'core'
 else
+    delete_vendor 'core'
     delete_local_vendor 'core'
 fi
 
-if $INSTALL_WEBCHAT == 'true' ; then
+if ${INSTALL_WEBCHAT} == 'true' ; then
     create_vendor_dir;
     install_repo 'webchat'
     delete_vendor 'webchat'
 else
+    delete_vendor 'webchat'
     delete_local_vendor 'webchat'
 fi
