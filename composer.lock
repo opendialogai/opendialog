@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3dc8b68c23523a9c8c805a52c48c9b3a",
+    "content-hash": "d034b28bc34fde36c802a0065f7b8462",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1407,16 +1407,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "74e08793c41c72c8ed7a22df803f2ffcaf77efb7"
+                "reference": "34cf4ddb3892c715ae785c880e6691d839cff88d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/74e08793c41c72c8ed7a22df803f2ffcaf77efb7",
-                "reference": "74e08793c41c72c8ed7a22df803f2ffcaf77efb7",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/34cf4ddb3892c715ae785c880e6691d839cff88d",
+                "reference": "34cf4ddb3892c715ae785c880e6691d839cff88d",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1474,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2020-01-15T03:32:39+00:00"
+            "time": "2020-01-16T01:18:13+00:00"
         },
         {
             "name": "league/commonmark-ext-table",
@@ -1884,16 +1884,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/conversation-listing",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "ad6de85c798451422742b7767ace33baa0913cdb"
+                "reference": "316aa4400139bec6e87254416e0ef4a8f07f0fa4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/ad6de85c798451422742b7767ace33baa0913cdb",
-                "reference": "ad6de85c798451422742b7767ace33baa0913cdb",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/316aa4400139bec6e87254416e0ef4a8f07f0fa4",
+                "reference": "316aa4400139bec6e87254416e0ef4a8f07f0fa4",
                 "shasum": ""
             },
             "require": {
@@ -1972,7 +1972,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2020-02-06T14:25:40+00:00"
+            "time": "2020-02-06T14:08:37+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -7656,14 +7656,7 @@
             "time": "2019-11-24T13:36:37+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.5.10",
-            "alias_normalized": "0.5.10.0",
-            "version": "dev-feature/conversation-listing",
-            "package": "opendialogai/core"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "opendialogai/core": 20

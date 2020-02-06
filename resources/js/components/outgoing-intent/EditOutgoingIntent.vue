@@ -1,6 +1,7 @@
 <template>
   <div v-if="outgoingIntent">
-    <h2 class="mb-3">Outgoing Intent</h2>
+
+    <h2 class="mb-3">Edit Outgoing Intent Name</h2>
 
     <div class="alert alert-danger" role="alert" v-if="error.message">
       <span>{{ error.message }}</span>
