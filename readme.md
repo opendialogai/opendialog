@@ -111,19 +111,19 @@ YAML and all related outgoing intents and message templates
 
 ## Local dev
 
-A `composer-dev.json` file has been created to help with local development. It makes the assumption that you have the 
-Open Dialog and Open Dialog Webchat packages checked out locally to `../opendialog-core` and `../opendialog-webchat`
-respectively.
+The `packages:install` artisan command will checkout and symlink `opendialog-core` and / or `opendialog-webchat` to a `vendor-local` directory.
 
-To install dependencies using it, you can run `./composer-dev install` or `./composer-dev update`
+To install dependencies using it, you can run `artisan packages:install`. You will be asked if you want to use local versions of core and webchat.
+If so, you can now use, edit and version control these repositories directly from your `vendor-local` directory.
 
 After doing so, you may need to run `php artisan package:discover` to pick up any new modules.
 
 Note:
+Before a final commit for a feature / fix, please be sure to run `composer update` to update the `composer-lock.json` file so that it can be tested and deployed with all composer changes in place
 
-+ Any changes made in `composer-dev.json` must be reflected in `composer.json` and vice versa
-+ Before a final commit for a feature / fix, please be sure to run `composer update` to update the `composer-lock.json`
-file so that it can be tested and deployed with all composer changes in place
+### Reverting
+
+To revert back to the dependencies defined in `composer.json`, run the `artisan packages:install` command again and answer no to installing core and webchat locally.
 
 ## Testing
 
