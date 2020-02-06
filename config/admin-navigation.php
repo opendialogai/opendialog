@@ -22,13 +22,11 @@ return [
             'title' => 'Webchat settings',
             'url' => '/admin/webchat-setting',
             'icon' => 'icon-settings',
-            'children' => '/admin/api/webchat-settings-categories',
         ],
         [
             'title' => 'Conversations',
             'url' => '/admin/conversations',
             'icon' => 'icon-speech',
-            'children' => '/admin/api/conversations-list',
         ],
         [
             'title' => 'Requests',

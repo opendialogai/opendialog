@@ -101,6 +101,22 @@ class UsersTest extends TestCase
             );
     }
 
+    public function testUsersStoreWithoutPhoneNumberEndpoint()
+    {
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/user', [
+                'name' => 'test',
+                'email' => 'test@test.com',
+            ])
+            ->assertStatus(201)
+            ->assertJsonFragment(
+                [
+                    'name' => 'test',
+                    'email' => 'test@test.com',
+                ]
+            );
+    }
+
     public function testUsersDestroyEndpoint()
     {
         $user = User::first();
@@ -136,10 +152,11 @@ class UsersTest extends TestCase
             ->json('POST', '/admin/api/user', [
                 'name' => 'test',
                 'email' => 'test@test.com',
+                'phone_number' => '1',
             ])
             ->assertStatus(400);
 
-        $this->assertEquals($response->content(), '{"field":"phone_number","message":"User phone number field is required."}');
+        $this->assertEquals($response->content(), '{"field":"phone_number","message":"Enter a valid phone number with prefix."}');
     }
 
     public function testUsersInvalidUpdateEndpoint()

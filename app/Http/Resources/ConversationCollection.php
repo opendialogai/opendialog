@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use OpenDialogAi\ConversationBuilder\Conversation;
 
 class ConversationCollection extends ResourceCollection
 {
@@ -14,6 +15,9 @@ class ConversationCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        $this->collection->transform(function (Conversation $c) {
+            return new ConversationBuilderResource($c);
+        });
         return parent::toArray($request);
     }
 }

@@ -23,6 +23,10 @@ if (env("USE_2FA")) {
     Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
 }
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
 /**
  * Admin Routes
  */
@@ -119,6 +123,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
  * Statistics Routes
  */
 Route::prefix('stats')->middleware(['auth'])->group(function () {
-    Route::get('users', 'ExmpleStatisticsController@users');
-    Route::get('cost', 'ExmpleStatisticsController@cost');
+    Route::get('chatbot-users', 'StatisticsController@chatbotUsers');
+    Route::get('requests', 'StatisticsController@requests');
+    Route::get('conversations', 'StatisticsController@conversations');
+    Route::get('incoming-intents', 'StatisticsController@incomingIntents');
+    Route::get('message-templates', 'StatisticsController@messageTemplates');
 });

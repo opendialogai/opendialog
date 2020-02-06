@@ -81,7 +81,7 @@ class ConversationsController extends Controller
      */
     public function show($id): ConversationResource
     {
-        $conversation = Conversation::find($id);
+        $conversation = Conversation::conversationWithHistory($id);
         return new ConversationResource($conversation);
     }
 
@@ -242,26 +242,6 @@ class ConversationsController extends Controller
         }
 
         return response()->noContent(200);
-    }
-
-
-    /**
-     * Returns a list of conversations that can be used in a menu system
-     *
-     * @return array
-     */
-    public function adminList(): array
-    {
-        $conversations = [];
-
-        foreach (Conversation::all() as $conversation) {
-            $conversations[] = [
-                'name' => $conversation->name,
-                'url' => '/admin/conversations/' . $conversation->id,
-            ];
-        }
-
-        return $conversations;
     }
 
 
