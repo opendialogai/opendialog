@@ -4896,9 +4896,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
-                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de"
+                    "homepage": "https://beyondco.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
