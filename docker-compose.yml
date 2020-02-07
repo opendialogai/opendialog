@@ -27,10 +27,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: opendialog
+      MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: opendialog
-      MYSQL_PASSWORD: secret
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
@@ -78,31 +78,6 @@ services:
     networks:
       - app-network
     command: dgraph-ratel
-  rasa:
-    image: rasa:latest
-    volumes:
-      - ${PWD}/data:/home/data
-      - ${PWD}/models:/home/models
-      - ${PWD}/config.yml:/home/config.yml
-    working_dir: /home
-    ports:
-      - 5005:5005
-    networks:
-      - app-network
-    command: tail -f /dev/null
-  rasa-duckling:
-    image: rasa/duckling:latest
-    networks: ['app-network']
-    ports:
-      - 8000:8000
-  pp-nlp:
-    image: pp-nlp:latest
-    working_dir: /home
-    ports:
-      - 8080:8080
-    networks:
-      - app-network
-    command: python matcher/app.py
 
 networks:
   app-network:
