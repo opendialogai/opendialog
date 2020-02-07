@@ -134,4 +134,9 @@ workflows:
 
   build_workflow:
     jobs:
-      - docker_build
+      - tests
+      - node_build
+      - docker_build:
+          requires:
+            - tests
+            - node_build
