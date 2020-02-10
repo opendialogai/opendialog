@@ -26,6 +26,7 @@
       </b-form-group>
 
       <b-btn variant="primary" @click="saveMessageTemplate">Save</b-btn>
+      <b-btn v-if="this.$route.query.conversationId" variant="danger" @click="cancel">Cancel</b-btn>
     </b-card>
   </div>
 </template>
@@ -61,12 +62,29 @@ export default {
       },
       messageTemplate: null,
       error: {},
+      nextState: {}
     };
   },
   mounted() {
     axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id).then(
       (response) => {
         this.messageTemplate = response.data.data;
+
+        if (!this.$route.query.conversationId) {
+          this.nextState = {
+            name: 'view-message-template',
+            params: {
+              outgoingIntent: this.outgoingIntent, id: this.messageTemplate.id
+            }
+          };
+        } else {
+          this.nextState = {
+            name: 'conversation-message-templates',
+            params: {
+              id: this.$route.query.conversationId
+            }
+          };
+        }
       },
     );
   },
@@ -82,7 +100,7 @@ export default {
 
       axios.patch('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id, data).then(
         (response) => {
-          this.$router.push({ name: 'view-message-template', params: { outgoingIntent: this.outgoingIntent, id: this.messageTemplate.id } });
+          this.$router.push(this.nextState);
         },
       ).catch(
         (error) => {
@@ -92,6 +110,9 @@ export default {
         },
       );
     },
+    cancel() {
+      this.$router.push(this.nextState);
+    }
   },
 };
 </script>
