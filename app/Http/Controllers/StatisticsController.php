@@ -20,6 +20,10 @@ class StatisticsController extends Controller
 
         list($startDate, $endDate) = Helper::getDates($request);
 
+        if ($value = Helper::getCache('chatbotUsers', $startDate, $endDate)) {
+            return $value;
+        }
+
         $interval = new \DateInterval('P1D');
         $period = new \DatePeriod($startDate, $interval, $endDate);
 
@@ -41,6 +45,8 @@ class StatisticsController extends Controller
             'values' => $values,
         ];
 
+        Helper::setCache('chatbotUsers', $data, $startDate, $endDate);
+
         return $data;
     }
 
@@ -50,6 +56,10 @@ class StatisticsController extends Controller
         $values = [];
 
         list($startDate, $endDate) = Helper::getDates($request);
+
+        if ($value = Helper::getCache('requests', $startDate, $endDate)) {
+            return $value;
+        }
 
         $interval = new \DateInterval('P1D');
         $period = new \DatePeriod($startDate, $interval, $endDate);
@@ -72,20 +82,36 @@ class StatisticsController extends Controller
             'values' => $values,
         ];
 
+        Helper::setCache('requests', $data, $startDate, $endDate);
+
         return $data;
     }
 
     public function conversations()
     {
-        $conversations = Conversation::where('status', ConversationNode::ACTIVATED)->get();
+        if ($value = Helper::getCache('conversations')) {
+            return [
+                'value' => $value,
+            ];
+        }
+
+        $totalActivatedConversations = Conversation::where('status', ConversationNode::ACTIVATED)
+            ->get()->count();
+        Helper::setCache('conversations', $totalActivatedConversations);
 
         return [
-            'value' => $conversations->count(),
+            'value' => $totalActivatedConversations,
         ];
     }
 
     public function incomingIntents()
     {
+        if ($value = Helper::getCache('incomingIntents')) {
+            return [
+                'value' => $value,
+            ];
+        }
+
         $incomingIntents = [];
 
         $conversations = Conversation::where('status', ConversationNode::ACTIVATED)->get();
@@ -106,15 +132,27 @@ class StatisticsController extends Controller
             }
         }
 
+        $totalIncomingIntents = count($incomingIntents);
+        Helper::setCache('incomingIntents', $totalIncomingIntents);
+
         return [
-            'value' => count($incomingIntents),
+            'value' => $totalIncomingIntents,
         ];
     }
 
     public function messageTemplates()
     {
+        if ($value = Helper::getCache('messageTemplates')) {
+            return [
+                'value' => $value,
+            ];
+        }
+
+        $totalMessageTemplates = MessageTemplate::count();
+        Helper::setCache('messageTemplates', $totalMessageTemplates);
+
         return [
-            'value' => MessageTemplate::count(),
+            'value' => $totalMessageTemplates,
         ];
     }
 }
