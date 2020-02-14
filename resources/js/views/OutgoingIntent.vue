@@ -1,6 +1,7 @@
 <template>
   <div>
-    <template v-if="currentRouteName == 'view-outgoing-intent'">
+      <Breadcrumbs />
+      <template v-if="currentRouteName == 'view-outgoing-intent'">
       <OutgoingIntent :id="id" />
     </template>
     <template v-else-if="currentRouteName == 'edit-outgoing-intent'">
@@ -20,6 +21,7 @@ import AddOutgoingIntent from '@/components/outgoing-intent/AddOutgoingIntent';
 import OutgoingIntent from '@/components/outgoing-intent/OutgoingIntent';
 import OutgoingIntents from '@/components/outgoing-intent/OutgoingIntents';
 import EditOutgoingIntent from '@/components/outgoing-intent/EditOutgoingIntent';
+import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 
 export default {
   name: 'outgoing-intent',
@@ -29,6 +31,7 @@ export default {
     OutgoingIntent,
     OutgoingIntents,
     EditOutgoingIntent,
+    Breadcrumbs
   },
   computed: {
     currentRouteName() {

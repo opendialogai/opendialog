@@ -61,7 +61,13 @@ class ConversationsController extends Controller
      */
     public function store(Request $request)
     {
-        $conversation = Conversation::make($request->all());
+        $yaml = Yaml::parse($request->model)['conversation'];
+
+        $conversation = Conversation::make([
+            'name' => $yaml['id'],
+            'model' => $request->model,
+            'notes' => $request->notes,
+        ]);
 
         if ($error = $this->validateValue($conversation)) {
             return response($error, 400);
@@ -81,7 +87,7 @@ class ConversationsController extends Controller
      */
     public function show($id): ConversationResource
     {
-        $conversation = Conversation::find($id);
+        $conversation = Conversation::conversationWithHistory($id);
         return new ConversationResource($conversation);
     }
 
@@ -221,10 +227,10 @@ class ConversationsController extends Controller
     /**
      * @param int $id
      * @param int $versionId
-     * @return ConversationResource
+     * @return Response
      * @throws BindingResolutionException
      */
-    public function reactivate(int $id, int $versionId): ConversationResource
+    public function reactivate(int $id, int $versionId): Response
     {
         /** @var Conversation $conversation */
         $conversation = Conversation::find($id);
@@ -253,20 +259,6 @@ class ConversationsController extends Controller
     {
         $rule = new ConversationYAML();
 
-        if (strlen($conversation->name) > 512) {
-            return [
-                'field' => 'name',
-                'message' => 'The maximum length for conversation name is 512.',
-            ];
-        }
-
-        if (!$conversation->name) {
-            return [
-                'field' => 'name',
-                'message' => 'Conversation name field is required.',
-            ];
-        }
-
         if (!$conversation->model) {
             return [
                 'field' => 'model',
@@ -283,10 +275,10 @@ class ConversationsController extends Controller
 
         $yaml = Yaml::parse($conversation->model)['conversation'];
 
-        if ($yaml['id'] != $conversation->name) {
+        if (strlen($yaml['id']) > 512) {
             return [
                 'field' => 'name',
-                'message' => 'Conversation name must be the same of model conversation id.',
+                'message' => 'The maximum length for conversation id is 512.',
             ];
         }
 

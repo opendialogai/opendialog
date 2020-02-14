@@ -1,0 +1,90 @@
+version: "3.2"
+services:
+  app:
+    env_file:
+      - .env.docker
+    image: opendialogai/opendialog:${TAG}
+    restart: on-failure
+    tty: true
+    ports:
+      - "80:80"
+      - "4443:443"
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - dgraph-alpha
+      - dgraph-ratel
+      - dgraph-zero
+  db:
+    image: mysql:5.7.27
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+  dgraph-zero:
+    image: dgraph/dgraph:v1.1.0
+    volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+    ports:
+      - 5080:5080
+      - 6080:6080
+    restart: on-failure
+    command: dgraph zero --my=dgraph-zero:5080
+    networks:
+      - app-network
+  dgraph-alpha:
+    image: dgraph/dgraph:v1.1.0
+    volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+    ports:
+      - 8081:8080
+      - 9080:9080
+    restart: on-failure
+    command: dgraph alpha --my=dgraph-alpha:7080 --lru_mb=2048 --zero=dgraph-zero:5080
+    networks:
+      - app-network
+  dgraph-ratel:
+    image: dgraph/dgraph:v1.1.0
+    volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+    networks:
+      - app-network
+    command: dgraph-ratel
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  appdata:
+  dbdata:
+    driver: local
+  dgraph:

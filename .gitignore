@@ -4,6 +4,7 @@
 /storage/*.key
 /storage/statuses
 /vendor
+/vendor-local
 .env
 .phpunit.result.cache
 Homestead.json
@@ -30,3 +31,5 @@ tests/_dgraphdata
 build
 .DS_store
 .php_cs.cache
+composer-dev.json
+composer-dev.lock

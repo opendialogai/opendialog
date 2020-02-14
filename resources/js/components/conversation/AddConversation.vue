@@ -11,11 +11,6 @@
 
     <b-card header="Add Conversation">
       <b-form-group>
-        <label>Name</label>
-        <b-form-input type="text" v-model="name" :class="(error.field == 'name') ? 'is-invalid' : ''" />
-      </b-form-group>
-
-      <b-form-group>
         <label>Model</label>
         <codemirror v-model="model" :options="cmOptions" :class="(error.field == 'model') ? 'is-invalid' : ''" />
       </b-form-group>

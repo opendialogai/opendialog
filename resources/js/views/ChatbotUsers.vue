@@ -1,6 +1,7 @@
 <template>
   <div>
-    <template v-if="currentRouteName == 'view-chatbot-user'">
+      <Breadcrumbs />
+      <template v-if="currentRouteName == 'view-chatbot-user'">
       <ChatbotUser :id="id" />
     </template>
     <template v-else>
@@ -12,6 +13,8 @@
 <script>
 import ChatbotUser from '@/components/chatbot-user/ChatbotUser';
 import ChatbotUsers from '@/components/chatbot-user/ChatbotUsers';
+import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+
 
 export default {
   name: 'chatbot-users',
@@ -19,6 +22,7 @@ export default {
   components: {
     ChatbotUser,
     ChatbotUsers,
+    Breadcrumbs
   },
   computed: {
     currentRouteName() {
