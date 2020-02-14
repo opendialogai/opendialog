@@ -41,4 +41,6 @@ return [
         ],
     ],
 
+    'cache_length' => env('STATS_CACHE_LENGTH', 21600),
+
 ];
