@@ -117,7 +117,7 @@ abstract class Helper
     {
         $key = self::getCacheKey($statName, $startDate, $endDate);
 
-        Cache::put($key, json_encode($value), env('STATS_CACHE_LENGTH', 3600));
+        Cache::put($key, json_encode($value), config('admin-stats.cache_length'));
     }
 
     /**
