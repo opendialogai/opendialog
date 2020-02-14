@@ -10,7 +10,7 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "opendialogai/core": "dev-develop",
-        "opendialogai/webchat": "dev-feature/full-page-chat",
+        "opendialogai/webchat": "dev-feature/OPNDLG-141-zepline-style",
         "phalcongelist/php-diff": "^2.0",
         "propaganistas/laravel-phone": "^4.2",
         "spatie/commonmark-highlighter": "^2.0",

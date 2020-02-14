@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d034b28bc34fde36c802a0065f7b8462",
+    "content-hash": "3688b1f50282b1d60d4cc8725ce3f9ba",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -54,6 +54,7 @@
                 "laravel",
                 "toolkit"
             ],
+            "abandoned": true,
             "time": "2015-05-16T19:24:58+00:00"
         },
         {
@@ -2009,16 +2010,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "0.5.5",
+            "version": "dev-feature/OPNDLG-141-zepline-style",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265"
+                "reference": "f9bf376ef70164d0035cfcbd943368781914e720"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/250f48dda3c7c19c6c52bbef955ce86bdafec265",
-                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/f9bf376ef70164d0035cfcbd943368781914e720",
+                "reference": "f9bf376ef70164d0035cfcbd943368781914e720",
                 "shasum": ""
             },
             "require": {
@@ -2055,7 +2056,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2019-11-28T16:30:10+00:00"
+            "time": "2020-02-14T11:31:19+00:00"
         },
         {
             "name": "opis/closure",
@@ -4896,9 +4897,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
+                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de",
-                    "role": "Developer"
+                    "homepage": "https://beyondco.de"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -7659,7 +7660,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "opendialogai/core": 20
+        "opendialogai/core": 20,
+        "opendialogai/webchat": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

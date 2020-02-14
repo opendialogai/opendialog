@@ -42,6 +42,11 @@ class SetWebchatSettings extends Command
      */
     public function handle()
     {
+        if (env('APP_ENV') !== 'testing' && !$this->confirm('Do you want to reload webchat settings?')) {
+            $this->info('Ok, not running');
+            exit;
+        }
+
         // First, run the OpenDialogAI-Webchat settings command to get our database in order
         $this->info('Setting up webchat settings table...');
         Artisan::call('webchat:settings');
@@ -55,8 +60,9 @@ class SetWebchatSettings extends Command
             WebchatSetting::URL => "$odUrl/web-chat",
             WebchatSetting::HIDE_OPEN_CLOSE_ICONS => true,
             WebchatSetting::OPEN => true,
-            WebchatSetting::TEAM_NAME => 'OpenDialog Webchat',
-            WebchatSetting::MESSAGE_DELAY => '1000',
+            WebchatSetting::TEAM_NAME => "OpenDialog Webchat",
+            WebchatSetting::LOGO => "$odUrl/images/onboarding-logo.svg",
+            WebchatSetting::MESSAGE_DELAY => '3000',
             WebchatSetting::COLOURS => 'colours',
             WebchatSetting::HEADER_BACKGROUND => '#1B212A',
             WebchatSetting::MESSAGE_LIST_BACKGROUND => '#1B212A',
@@ -68,8 +74,10 @@ class SetWebchatSettings extends Command
             WebchatSetting::CHATBOT_AVATAR_PATH => "$odUrl/images/avatar.svg",
             WebchatSetting::CHATBOT_NAME => 'OpenDialog',
             WebchatSetting::USE_HUMAN_AVATAR => true,
+            WebchatSetting::USE_HUMAN_NAME => false,
             WebchatSetting::USE_BOT_AVATAR => true,
-            WebchatSetting::CHATBOT_FULLPAGE_CSS_PATH => "$odUrl/css/chat.css",
+            WebchatSetting::USE_BOT_NAME => false,
+            WebchatSetting::CHATBOT_FULLPAGE_CSS_PATH => "",
             WebchatSetting::COMMENTS => 'comments',
             WebchatSetting::COMMENTS_ENABLED => false,
             WebchatSetting::COMMENTS_NAME => 'Comments',
@@ -99,7 +107,7 @@ class SetWebchatSettings extends Command
             WebchatSetting::HIDE_DATETIME_MESSAGE => true,
             WebchatSetting::RESTART_BUTTON_CALLBACK => 'WELCOME',
             WebchatSetting::MESSAGE_ANIMATION => true,
-            WebchatSetting::HIDE_TYPING_INDICATOR_ON_INTERNAL_MESSAGES => true,
+            WebchatSetting::HIDE_TYPING_INDICATOR_ON_INTERNAL_MESSAGES => false,
         ];
 
         foreach ($settings as $name => $value) {
