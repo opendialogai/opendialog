@@ -8,9 +8,9 @@
           v-model="dateRange"
           @update="updateDateRange"
         >
-          <div slot="input" slot-scope="picker" style="min-width: 250px;">
+          <template v-slot:input="picker" style="min-width: 250px;">
             {{ picker.startDate | date }} - {{ picker.endDate | date }}
-          </div>
+          </template>
         </date-range-picker>
       </b-col>
     </b-row>
@@ -32,6 +32,7 @@
 
 <script>
 import DateRangePicker from 'vue2-daterange-picker';
+import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 
 import LineChartCard from '@/components/dashboard/LineChartCard';
 import SingleNumberCard from '@/components/dashboard/SingleNumberCard';
@@ -75,10 +76,23 @@ export default {
       return window.DashboardCards;
     },
   },
+  created() {
+    const dateRange = this.$cookies.get('filterDateRange');
+
+    if (dateRange) {
+      this.dateRange.startDate = dateRange.startDate;
+      this.dateRange.endDate = dateRange.endDate;
+
+      this.startDate = moment(dateRange.startDate).format('YYYY-MM-DD');
+      this.endDate = moment(dateRange.endDate).format('YYYY-MM-DD');
+    }
+  },
   methods: {
     updateDateRange() {
       this.startDate = moment(this.dateRange.startDate).format('YYYY-MM-DD');
       this.endDate = moment(this.dateRange.endDate).format('YYYY-MM-DD');
+
+      this.$cookies.set('filterDateRange', this.dateRange, 0);
     },
   }
 };

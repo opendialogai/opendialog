@@ -37,16 +37,17 @@
         "flag-icon-css": "^3.3.0",
         "font-awesome": "^4.7.0",
         "moment": "^2.24.0",
+        "serialize-javascript": "2.1.1",
         "shortid": "^2.2.14",
         "simple-line-icons": "^2.4.1",
         "vue-chartjs": "^3.4.2",
         "vue-codemirror": "^4.0.6",
         "vue-color": "^2.7.0",
+        "vue-cookies": "^1.6.1",
         "vue-plain-slider": "^1.1.1",
         "vue-prismjs": "^1.2.0",
         "vue-router": "^3.0.6",
-        "vue2-daterange-picker": "^0.3.0",
-        "xmldoc": "^1.1.2",
-        "serialize-javascript": "2.1.1"
+        "vue2-daterange-picker": "^0.4.4",
+        "xmldoc": "^1.1.2"
     }
 }
