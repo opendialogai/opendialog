@@ -25,12 +25,24 @@ class OutgoingIntentsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return OutgoingIntentCollection
      */
-    public function index(): OutgoingIntentCollection
+    public function index(Request $request): OutgoingIntentCollection
     {
-        /** @var OutgoingIntent $outgoingIntents */
-        $outgoingIntents = OutgoingIntent::paginate(50);
+        $filter = $request->get('filter');
+
+        if ($filter) {
+            $query = OutgoingIntent::whereHas('messageTemplates', function ($subQuery) use ($filter) {
+                $subQuery->where('message_markup', 'like', '%' . $filter . '%');
+            });
+
+            /** @var OutgoingIntent $outgoingIntents */
+            $outgoingIntents = $query->paginate(50);
+        } else {
+            /** @var OutgoingIntent $outgoingIntents */
+            $outgoingIntents = OutgoingIntent::paginate(50);
+        }
 
         foreach ($outgoingIntents as $outgoingIntent) {
             $outgoingIntent->makeVisible('id');

@@ -10,6 +10,15 @@
       </div>
     </div>
 
+    <div class="inline mb-4">
+      <label class="mr-2 mt-1 mb-0">Search on message text:</label>
+      <input id="search-string" class="form-control mt-1 mr-1" v-model="searchString" />
+      <div class="mt-1">
+        <button class="btn btn-primary mr-1" @click="search">Search</button>
+        <button class="btn btn-danger" @click="resetSearch">Reset</button>
+      </div>
+    </div>
+
     <div class="overflow-auto">
       <table class="table table-hover">
         <thead class="thead-light">
@@ -93,6 +102,7 @@ export default {
     return {
       outgoingIntents: [],
       currentOutgoingIntent: null,
+      searchString: '',
     };
   },
   watch: {
@@ -105,9 +115,10 @@ export default {
   },
   methods: {
     fetchOutgoingIntents() {
+      this.searchString = this.$route.query.filter || '';
       this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage).then(
+      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage + '&filter=' + this.searchString).then(
         (response) => {
           this.totalPages = parseInt(response.data.meta.last_page);
           this.outgoingIntents = response.data.data;
@@ -134,6 +145,12 @@ export default {
 
       axios.delete('/admin/api/outgoing-intents/' + this.currentOutgoingIntent);
     },
+    search() {
+      this.$router.push({ name: 'outgoing-intents', query: { filter: this.searchString } });
+    },
+    resetSearch() {
+      this.$router.push({ name: 'outgoing-intents' });
+    },
   },
 };
 </script>
@@ -141,5 +158,15 @@ export default {
 <style lang="scss" scoped>
 table td.actions {
   min-width: 160px;
+}
+
+.inline {
+  * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .form-control {
+    width: 300px;
+  }
 }
 </style>
