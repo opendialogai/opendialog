@@ -30,19 +30,25 @@ class OutgoingIntentsController extends Controller
      */
     public function index(Request $request): OutgoingIntentCollection
     {
-        $filter = $request->get('filter');
+        $filterMessageContent = $request->get('filterMessageContent');
+        $filterIntents = $request->get('filterIntents');
 
-        if ($filter) {
-            $query = OutgoingIntent::whereHas('messageTemplates', function ($subQuery) use ($filter) {
-                $subQuery->where('message_markup', 'like', '%' . $filter . '%');
+        $query = OutgoingIntent::query();
+
+        if ($filterIntents) {
+            $query->where('name', 'like', '%' . $filterIntents . '%');
+        }
+
+        if ($filterMessageContent) {
+            $query->whereHas('messageTemplates', function ($subQuery) use ($filterMessageContent) {
+                $subQuery->where('message_markup', 'like', '%' . $filterMessageContent . '%');
             });
 
-            /** @var OutgoingIntent $outgoingIntents */
-            $outgoingIntents = $query->paginate(50);
-        } else {
-            /** @var OutgoingIntent $outgoingIntents */
-            $outgoingIntents = OutgoingIntent::paginate(50);
+            $query->with('messageTemplates');
         }
+
+        /** @var OutgoingIntent $outgoingIntents */
+        $outgoingIntents = $query->paginate(50);
 
         foreach ($outgoingIntents as $outgoingIntent) {
             $outgoingIntent->makeVisible('id');

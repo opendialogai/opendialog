@@ -10,13 +10,16 @@
       </div>
     </div>
 
+    <div class="inline mb-2">
+      <label class="mr-2 mt-1 mb-0">Filter intents:</label>
+      <input class="form-control mt-1 mr-1" v-model="searchStringIntents" @keyup="searchIntents" />
+      <button class="btn btn-danger mt-1" @click="clearSearchIntents">Clear</button>
+    </div>
+
     <div class="inline mb-4">
-      <label class="mr-2 mt-1 mb-0">Search on message text:</label>
-      <input id="search-string" class="form-control mt-1 mr-1" v-model="searchString" />
-      <div class="mt-1">
-        <button class="btn btn-primary mr-1" @click="search">Search</button>
-        <button class="btn btn-danger" @click="resetSearch">Reset</button>
-      </div>
+      <label class="mr-2 mt-1 mb-0">Search message content:</label>
+      <input class="form-control mt-1 mr-1" v-model="searchStringMessageContent" @keyup="searchMessageContent" />
+      <button class="btn btn-danger mt-1" @click="clearSearchMessageContent">Clear</button>
     </div>
 
     <div class="overflow-auto">
@@ -34,9 +37,21 @@
               {{ outgoingIntent.id }}
             </td>
             <td>
-              {{ outgoingIntent.name }}
+              <div>{{ outgoingIntent.name }}</div>
+
+              <div class="mt-3 messages" v-if="outgoingIntent.message_templates && expandedRow == outgoingIntent.id">
+                <div class="message mt-1" v-for="message in outgoingIntent.message_templates">
+                  {{ message.message_markup }}
+                </div>
+              </div>
             </td>
             <td class="actions">
+              <template v-if="searchStringMessageContent.length">
+                <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Expand" @click.stop="toggleRow(outgoingIntent.id)">
+                  <i class="fa fa-expand"></i>
+                </button>
+              </template>
+
               <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewOutgoingIntent(outgoingIntent.id)">
                 <i class="fa fa-eye"></i>
               </button>
@@ -102,7 +117,9 @@ export default {
     return {
       outgoingIntents: [],
       currentOutgoingIntent: null,
-      searchString: '',
+      searchStringMessageContent: '',
+      searchStringIntents: '',
+      expandedRow: 0,
     };
   },
   watch: {
@@ -115,10 +132,11 @@ export default {
   },
   methods: {
     fetchOutgoingIntents() {
-      this.searchString = this.$route.query.filter || '';
+      this.searchStringMessageContent = this.$route.query.filterMessageContent || '';
+      this.searchStringIntents = this.$route.query.filterIntents || '';
       this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage + '&filter=' + this.searchString).then(
+      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage + '&filterMessageContent=' + this.searchStringMessageContent + '&filterIntents=' + this.searchStringIntents).then(
         (response) => {
           this.totalPages = parseInt(response.data.meta.last_page);
           this.outgoingIntents = response.data.data;
@@ -145,11 +163,40 @@ export default {
 
       axios.delete('/admin/api/outgoing-intents/' + this.currentOutgoingIntent);
     },
-    search() {
-      this.$router.push({ name: 'outgoing-intents', query: { filter: this.searchString } });
+    searchMessageContent(event) {
+      if (this.searchStringMessageContent.length >= 4 || event.keyCode == 13 || event.keyCode == 8) {
+        this.$router.push({ name: 'outgoing-intents', query: {
+          filterMessageContent: this.searchStringMessageContent,
+          filterIntents: this.searchStringIntents,
+        } });
+      }
     },
-    resetSearch() {
-      this.$router.push({ name: 'outgoing-intents' });
+    searchIntents(event) {
+      if (this.searchStringIntents.length >= 4 || event.keyCode == 13 || event.keyCode == 8) {
+        this.$router.push({ name: 'outgoing-intents', query: {
+          filterMessageContent: this.searchStringMessageContent,
+          filterIntents: this.searchStringIntents,
+        } });
+      }
+    },
+    clearSearchIntents() {
+      this.$router.push({ name: 'outgoing-intents', query: {
+        filterMessageContent: this.searchStringMessageContent,
+        filterIntents: '',
+      } });
+    },
+    clearSearchMessageContent() {
+      this.$router.push({ name: 'outgoing-intents', query: {
+        filterMessageContent: '',
+        filterIntents: this.searchStringIntents,
+      } });
+    },
+    toggleRow(outgoingIntentId) {
+      if (this.expandedRow == outgoingIntentId) {
+        this.expandedRow = 0;
+      } else {
+        this.expandedRow = outgoingIntentId;
+      }
     },
   },
 };
@@ -167,6 +214,22 @@ table td.actions {
   }
   .form-control {
     width: 300px;
+  }
+}
+
+tr {
+  .messages {
+    max-width: 700px;
+  }
+  .message {
+    border-radius: 6px;
+    padding: 7px 10px;
+    background: #eaeaea;
+  }
+  &:hover {
+    .message {
+      background: #fff;
+    }
   }
 }
 </style>
