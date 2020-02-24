@@ -12,11 +12,13 @@ import router from '@/router/index';
 
 import App from '@/views/App';
 import BootstrapVue from 'bootstrap-vue';
+import VueCookies from 'vue-cookies';
 
 require('@/bootstrap');
 window.Vue = require('vue');
 
 window.Vue.use(BootstrapVue);
+window.Vue.use(VueCookies);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -6978,6 +6978,11 @@ vue-color@^2.7.0:
     material-colors "^1.0.0"
     tinycolor2 "^1.1.2"
 
+vue-cookies@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/vue-cookies/-/vue-cookies-1.6.1.tgz#ab036382d37a3f4c83140e0175d9dc60ce67fe01"
+  integrity sha512-qyzhuq0x9xLEwniSXFoEsFErHgQ24jviB527IDul+8KrlxU9jdqrvVunRRBk4lPpxPgL0ywv8NxcD6MDWcTMug==
+
 vue-functional-data-merge@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz#08a7797583b7f35680587f8a1d51d729aa1dc657"
@@ -7045,14 +7050,12 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue2-daterange-picker@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/vue2-daterange-picker/-/vue2-daterange-picker-0.3.0.tgz#4df568618eeb4943994fb5c09ed5496907822729"
-  integrity sha512-/zbkxOMKc4xK/dZFKnX6Hcr4c1CtAz0RuVc4JFn622WZRgtJyvYWpm9NuYv1Pk2/GPM58QJlbJV55WuocAl7Hg==
+vue2-daterange-picker@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/vue2-daterange-picker/-/vue2-daterange-picker-0.4.4.tgz#19bc4657787587bd83f10edc3469b16919dbc835"
+  integrity sha512-Uz2wbkrYf49RivCytUZHfzx2jw7Bf/QA7VpheuCoMISpIhMS+BChRxEBOC9I4Xz9H1ux1z3AyR0+iUk0XlXuZw==
   dependencies:
-    moment "^2.24.0"
     vue "^2.6.10"
-    vue-clickaway "^2.2.2"
 
 vue@^2.5.20, vue@^2.6.10:
   version "2.6.10"
