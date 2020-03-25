@@ -24,7 +24,7 @@
           </template>
         </div>
       </template>
-      <template v-if="message.type == 'rich-message'">
+      <template v-if="message.type == 'rich-message' || message.type == 'fp-rich-message'">
         <div class="rich-message">
           <div class="rich-message--title mb-1" v-if="message.data.title">{{ message.data.title }}</div>
           <div class="rich-message--subtitle mb-2" v-if="message.data.subtitle">{{ message.data.subtitle }}</div>
@@ -92,6 +92,7 @@ export default {
             message.data.link = (msg.childNamed('link')) ? msg.childNamed('link').val.trim() : '';
             break;
 
+          case 'fp-rich-message':
           case 'rich-message':
             message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
             message.data.subtitle = (msg.childNamed('subtitle')) ? msg.childNamed('subtitle').val.trim() : ''(string);
