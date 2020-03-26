@@ -47,6 +47,7 @@
         "vue-plain-slider": "^1.1.1",
         "vue-prismjs": "^1.2.0",
         "vue-router": "^3.0.6",
+        "vue-select": "^3.9.4",
         "vue2-daterange-picker": "^0.4.4",
         "xmldoc": "^1.1.2"
     }
