@@ -140,8 +140,8 @@ export default {
         case 'fp-rich-message':
         case 'rich-message':
           message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
-          message.data.subtitle = (msg.childNamed('subtitle')) ? msg.childNamed('subtitle').val.trim() : ''(string);
-          message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : ''(string);
+          message.data.subtitle = (msg.childNamed('subtitle')) ? msg.childNamed('subtitle').val.trim() : '';
+          message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : '';
           message.data.button = {
             text: (msg.childNamed('button')) ? msg.childNamed('button').childNamed('text').val.trim() : '',
           };
