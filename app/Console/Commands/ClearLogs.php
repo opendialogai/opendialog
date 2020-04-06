@@ -31,6 +31,17 @@ class ClearLogs extends Command
     public function handle()
     {
         $days = $this->option("days");
+
+        if (!is_numeric($days) || $days < 0) {
+            $this->error(sprintf("%s is not a valid integer.", $days));
+            return;
+        }
+
+        $confirmPreparationText = sprintf("Are you sure you want to prepare logs older than %d days for deletion?", $days);
+        if (!$this->option("yes") && !$this->confirm($confirmPreparationText)) {
+            return;
+        }
+
         $thresholdDate = Carbon::now()->subDays($days)->setTime(0, 0, 0, 0);
         $this->info(sprintf("Looking up logs that are older than %s.", $thresholdDate->format("Y-m-d")));
 
