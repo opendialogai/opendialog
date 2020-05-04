@@ -6,8 +6,14 @@ php artisan migrate
 echo "Populating default webchat settings..."
 php artisan webchat:setup
 
+echo "Initializing dgraph schema..."
+lando artisan schema:init
+
 echo "Creating example conversations..."
 php artisan conversations:setup
+
+echo "Creating outgoing intents and message templates..."
+lando artisan messages:setup
 
 echo "Creating admin user"
 php artisan admin_user:create
