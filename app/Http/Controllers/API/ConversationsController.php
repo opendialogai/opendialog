@@ -9,12 +9,15 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\Yaml\Yaml;
+use ZipStream\ZipStream;
 
 class ConversationsController extends Controller
 {
@@ -250,6 +253,101 @@ class ConversationsController extends Controller
         return response()->noContent(200);
     }
 
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function export(int $id)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, $conversation->model);
+        rewind($stream);
+
+        return stream_get_contents($stream);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function import(Request $request, int $id)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        $file = $request->file('file');
+
+        $filename = base_path("resources/conversations/$conversation->name");
+        File::delete($filename);
+        File::put($filename, $file->get());
+
+        Artisan::call(
+            'conversations:update',
+            [
+                'conversation' => $conversation->name,
+                '--yes' => true
+            ]
+        );
+
+        return response()->noContent(200);
+    }
+
+    /**
+     * @return Response
+     */
+    public function exportAll()
+    {
+        $fileName = 'conversations.zip';
+
+        $zip = new ZipStream($fileName);
+
+        $conversations = Conversation::all();
+
+        foreach ($conversations as $conversation) {
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $conversation->model);
+            rewind($stream);
+            $zip->addFileFromStream($conversation->name, $stream);
+            fclose($stream);
+        }
+
+        $zip->finish();
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function importAll(Request $request)
+    {
+        $i = 1;
+        while (true) {
+            if ($file = $request->file('file' . $i)) {
+                $conversationName = $file->getClientOriginalName();
+                $filename = base_path("resources/conversations/$conversationName");
+                File::delete($filename);
+                File::put($filename, $file->get());
+
+                Artisan::call(
+                    'conversations:update',
+                    [
+                        'conversation' => $conversationName,
+                        '--yes' => true
+                    ]
+                );
+
+                $i++;
+            } else {
+                break;
+            }
+        }
+
+        return response()->noContent(200);
+    }
 
     /**
      * @param Conversation $conversation

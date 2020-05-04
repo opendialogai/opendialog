@@ -7,15 +7,19 @@ use OpenDialogAi\ConversationBuilder\Conversation;
 
 class SetUpConversations extends Command
 {
-    protected $signature = 'conversations:setup';
+    protected $signature = 'conversations:setup {--y|yes}';
 
     protected $description = 'Sets up all active conversations';
 
     public function handle()
     {
-        $continue = $this->confirm(
-            'This will import or update all active conversations. Are you sure you want to continue?'
-        );
+        if ($this->option("yes")) {
+            $continue = true;
+        } else {
+            $continue = $this->confirm(
+                'This will import or update all active conversations. Are you sure you want to continue?'
+            );
+        }
 
         if ($continue) {
             $files = preg_grep('/^([^.])/', scandir('resources/conversations'));
@@ -34,7 +38,8 @@ class SetUpConversations extends Command
     {
         $this->info(sprintf('Importing conversation %s', $conversationName));
 
-        $model = file_get_contents("resources/conversations/$conversationName");
+        $filename = base_path("resources/conversations/$conversationName");
+        $model = file_get_contents($filename);
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
         $newConversation->fill(['model' => $model]);

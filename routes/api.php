@@ -34,6 +34,9 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
         Route::get('/deactivate', 'ConversationsController@deactivate');
         Route::get('/archive', 'ConversationsController@archive');
 
+        Route::get('/export', 'ConversationsController@export');
+        Route::post('/import', 'ConversationsController@import');
+
         Route::get('/restore/{versionId}', 'ConversationsController@restore');
         Route::get('/reactivate/{versionId}', 'ConversationsController@reactivate');
     });
@@ -45,4 +48,7 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
 
     Route::get('warnings', 'WarningsController@index');
     Route::get('warnings/{id}', 'WarningsController@show');
+
+    Route::get('conversations/export', 'ConversationsController@exportAll');
+    Route::post('conversations/import', 'ConversationsController@importAll');
 });

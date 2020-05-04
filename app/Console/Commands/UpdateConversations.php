@@ -7,7 +7,7 @@ use OpenDialogAi\ConversationBuilder\Conversation;
 
 class UpdateConversations extends Command
 {
-    protected $signature = 'conversations:update {conversation}';
+    protected $signature = 'conversations:update {conversation} {--y|yes}';
 
     protected $description = 'Update a specific conversation';
 
@@ -15,12 +15,16 @@ class UpdateConversations extends Command
     {
         $conversationName = $this->argument('conversation');
 
-        $continue = $this->confirm(
-            sprintf(
-                'This will update %s conversation. Are you sure you want to continue?',
-                $conversationName
-            )
-        );
+        if ($this->option("yes")) {
+            $continue = true;
+        } else {
+            $continue = $this->confirm(
+                sprintf(
+                    'This will update %s conversation. Are you sure you want to continue?',
+                    $conversationName
+                )
+            );
+        }
 
         if ($continue) {
             $this->importConversation($conversationName);
@@ -35,7 +39,8 @@ class UpdateConversations extends Command
     {
         $this->info(sprintf('Importing conversation %s', $conversationName));
 
-        $model = file_get_contents("resources/conversations/$conversationName");
+        $filename = base_path("resources/conversations/$conversationName");
+        $model = file_get_contents($filename);
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
         $newConversation->fill(['model' => $model]);
