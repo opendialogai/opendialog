@@ -89,9 +89,9 @@
           <b-row>
             <b-col class="font-weight-bold mt-1 mb-1" cols="5" md="3">Opening Intents:</b-col>
             <b-col class="mt-1 mb-1" cols="7" md="9">
-                <span v-for="(opening_intent, index) in conversation.opening_intents">
-                    {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>
-                </span>
+              <span v-for="(opening_intent, index) in conversation.opening_intents">
+                {{ opening_intent }}<span v-if="index < (conversation.opening_intents.length - 1)">, </span>
+              </span>
             </b-col>
           </b-row>
           <b-row>
@@ -114,26 +114,26 @@
     <h4 class="mb-3">History</h4>
     <b-card class="history overflow-auto">
       <b-row class="border-bottom mb-2 pb-2">
-          <b-col class="font-weight-bold" cols="2">Version</b-col>
-          <b-col class="font-weight-bold" cols="4">Date</b-col>
-          <b-col class="font-weight-bold" cols="6">Actions</b-col>
+        <b-col class="font-weight-bold" cols="2">Version</b-col>
+        <b-col class="font-weight-bold" cols="4">Date</b-col>
+        <b-col class="font-weight-bold" cols="6">Actions</b-col>
       </b-row>
       <b-row v-for="history_item in conversation.history" v-bind:key="history_item.id" class="border-bottom mb-2 pb-2">
-          <b-col cols="2">{{ history_item.attributes.version_number }}</b-col>
-          <b-col cols="4">{{ history_item.timestamp | date }}</b-col>
-          <b-col cols="6">
-              <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="showViewConversationModel(history_item.attributes.model)">
-                  View
-              </button>
+        <b-col cols="2">{{ history_item.attributes.version_number }}</b-col>
+        <b-col cols="4">{{ history_item.timestamp | date }}</b-col>
+        <b-col cols="6">
+          <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="showViewConversationModel(history_item.attributes.model)">
+            View
+          </button>
 
-              <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="showEditConversationModel(history_item.id)">
-                  Edit
-              </button>
+          <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="showEditConversationModel(history_item.id)">
+            Edit
+          </button>
 
-              <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="showActivateConversationModel(history_item.id)">
-                  Reactivate
-              </button>
-          </b-col>
+          <button class="btn btn-primary ml-2" data-toggle="tooltip" data-placement="top" title="Activate" @click.stop="showActivateConversationModel(history_item.id)">
+            Reactivate
+          </button>
+        </b-col>
       </b-row>
     </b-card>
 
@@ -254,7 +254,7 @@ export default {
       errorMessage: '',
       successMessage: '',
       currentHistoryModel: null,
-      currentHistoryId: null
+      currentHistoryId: null,
     };
   },
   watch: {

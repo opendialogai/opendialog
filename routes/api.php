@@ -25,6 +25,7 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
 
     Route::apiResource('outgoing-intents', 'OutgoingIntentsController');
     Route::apiResource('outgoing-intents/{id}/message-templates', 'MessageTemplatesController');
+    Route::get('message-templates/{id}/restore/{versionId}', 'MessageTemplatesController@restore');
 
     Route::apiResource('global-context', 'GlobalContextsController');
 

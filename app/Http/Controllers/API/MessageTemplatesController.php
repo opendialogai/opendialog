@@ -11,6 +11,7 @@ use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use OpenDialogAi\ResponseEngine\Rules\MessageConditions;
 use OpenDialogAi\ResponseEngine\Rules\MessageXML;
+use Spatie\Activitylog\Models\Activity;
 
 class MessageTemplatesController extends Controller
 {
@@ -82,7 +83,7 @@ class MessageTemplatesController extends Controller
      */
     public function show($outgoingIntentId, $id): MessageTemplateResource
     {
-        $messageTemplate = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->find($id);
+        $messageTemplate = MessageTemplate::messageTemplateWithHistory($id);
 
         $messageTemplate->makeVisible('id');
 
@@ -131,6 +132,28 @@ class MessageTemplatesController extends Controller
     }
 
     /**
+     * @param int $id
+     * @param int $versionId
+     * @return MessageTemplateResource
+     * @throws BindingResolutionException
+     */
+    public function restore(int $id, int $versionId)
+    {
+        /** @var MessageTemplate $messageTemplate */
+        $messageTemplate = MessageTemplate::find($id);
+
+        try {
+            $this->restoreMessageTemplate($messageTemplate, $id, $versionId);
+        } catch (MessageTemplateRestorationException $e) {
+            Log::error($e->getMessage());
+            return response()->noContent(500);
+        }
+
+        // Return
+        return response()->noContent(200);
+    }
+
+    /**
      * @param MessageTemplate $messageTemplate
      * @return array
      */
@@ -175,5 +198,29 @@ class MessageTemplatesController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * @param MessageTemplate $messageTemplate
+     * @param int             $id
+     * @param int             $versionId
+     * @throws MessageTemplateRestorationException
+     * @throws BindingResolutionException
+     */
+    private function restoreMessageTemplate(MessageTemplate $messageTemplate, int $id, int $versionId): void
+    {
+        /** @var Activity $version */
+        $version = Activity::where([
+            ['subject_id', $id],
+            ['id', $versionId],
+        ])->first();
+
+        if (is_null($version)) {
+            throw new MessageTemplateRestorationException("Could not find a previous version for restoration.");
+        }
+
+        $messageTemplate->conditions = $version->properties->first()["conditions"];
+        $messageTemplate->message_markup = $version->properties->first()["message_markup"];
+        $messageTemplate->save();
     }
 }
