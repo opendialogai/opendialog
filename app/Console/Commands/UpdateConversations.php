@@ -5,24 +5,25 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 
-class SetUpConversations extends Command
+class UpdateConversations extends Command
 {
-    protected $signature = 'conversations:setup';
+    protected $signature = 'conversations:update {conversation}';
 
-    protected $description = 'Sets up all active conversations';
+    protected $description = 'Update a specific conversation';
 
     public function handle()
     {
+        $conversationName = $this->argument('conversation');
+
         $continue = $this->confirm(
-            'This will import or update all active conversations. Are you sure you want to continue?'
+            sprintf(
+                'This will update %s conversation. Are you sure you want to continue?',
+                $conversationName
+            )
         );
 
         if ($continue) {
-            $files = preg_grep('/^([^.])/', scandir('resources/conversations'));
-
-            foreach ($files as $conversationName) {
-                $this->importConversation($conversationName);
-            }
+            $this->importConversation($conversationName);
 
             $this->info('Imports finished');
         } else {

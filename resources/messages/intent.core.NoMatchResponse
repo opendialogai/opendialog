@@ -1,0 +1,1 @@
+{"outgoingIntent":"intent.core.NoMatchResponse","messageTemplates":{"Did not understand":{"conditions":null,"message_markup":"<message><text-message>This is the default No Match response. It means I didn't find any other conversation that could answer what you just said.<\/text-message><\/message>"}}}

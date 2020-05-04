@@ -1,1 +1,10 @@
-{"conversation":{"created_at":"2019-09-06 10:22:42","updated_at":"2019-09-11 08:41:38","name":"welcome","status":"validated","yaml_validation_status":"validated","yaml_schema_validation_status":"validated","scenes_validation_status":"validated","model_validation_status":"validated","notes":"auto generated","model":"conversation:\n  id: welcome\n  scenes:\n    opening_scene:\n      intents:\n        - u:\n            i: intent.core.welcome\n        - b:\n            i: intent.opendialog.WelcomeResponse\n            completes: true"},"outgoingIntents":{"1":{"created_at":"2019-09-06 10:22:42","updated_at":"2019-09-06 10:22:42","name":"intent.opendialog.WelcomeResponse","message_templates":[{"created_at":"2019-09-06 10:22:42","updated_at":"2019-09-06 10:22:42","outgoing_intent_id":1,"name":"Welcome","conditions":"","message_markup":"<message><text-message>Hi! This is my default welcome message. It pops up whenever webchat opens up. You can edit it via the bot's admin page.<\/text-message><\/message>"}]}}}
+conversation:
+  id: welcome
+  scenes:
+    opening_scene:
+      intents:
+        - u:
+            i: intent.core.welcome
+        - b:
+            i: intent.opendialog.WelcomeResponse
+            completes: true
