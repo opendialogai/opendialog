@@ -25,11 +25,11 @@ class OutgoingIntentsTest extends TestCase
     {
         $outgoingIntent = OutgoingIntent::first();
 
-        $this->get('/admin/api/outgoing-intents/' . $outgoingIntent->id)
+        $this->get('/admin/api/outgoing-intent/' . $outgoingIntent->id)
             ->assertStatus(302);
 
         $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/outgoing-intents/' . $outgoingIntent->id)
+            ->json('GET', '/admin/api/outgoing-intent/' . $outgoingIntent->id)
             ->assertStatus(200)
             ->assertJsonFragment(
                 [
@@ -72,7 +72,7 @@ class OutgoingIntentsTest extends TestCase
         $outgoingIntent = OutgoingIntent::latest()->first();
 
         $this->actingAs($this->user, 'api')
-            ->json('PATCH', '/admin/api/outgoing-intents/' . $outgoingIntent->id, [
+            ->json('PATCH', '/admin/api/outgoing-intent/' . $outgoingIntent->id, [
                 'name' => 'updated name',
             ])
             ->assertStatus(200);
@@ -101,7 +101,7 @@ class OutgoingIntentsTest extends TestCase
         $outgoingIntent = OutgoingIntent::first();
 
         $this->actingAs($this->user, 'api')
-            ->json('DELETE', '/admin/api/outgoing-intents/' . $outgoingIntent->id)
+            ->json('DELETE', '/admin/api/outgoing-intent/' . $outgoingIntent->id)
             ->assertStatus(200);
 
         $this->assertEquals(OutgoingIntent::find($outgoingIntent->id), null);
