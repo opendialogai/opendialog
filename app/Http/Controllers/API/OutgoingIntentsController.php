@@ -7,7 +7,10 @@ use App\Http\Resources\OutgoingIntentCollection;
 use App\Http\Resources\OutgoingIntentResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use ZipStream\ZipStream;
 
 class OutgoingIntentsController extends Controller
 {
@@ -115,6 +118,127 @@ class OutgoingIntentsController extends Controller
         return response()->noContent(200);
     }
 
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function export(int $id)
+    {
+        /** @var OutgoingIntent $outgoingIntent */
+        $outgoingIntent = OutgoingIntent::find($id);
+
+        $messageTemplates = [];
+        foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
+            $messageTemplates[$messageTemplate->name] = [
+                'conditions' => $messageTemplate->conditions,
+                'message_markup' => $messageTemplate->message_markup,
+            ];
+        }
+
+        $output = json_encode([
+            'outgoingIntent' => $outgoingIntent->name,
+            'messageTemplates' => $messageTemplates,
+        ]);
+
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, $output);
+        rewind($stream);
+
+        return stream_get_contents($stream);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function import(Request $request, int $id)
+    {
+        /** @var OutgoingIntent $outgoingIntent */
+        $outgoingIntent = OutgoingIntent::find($id);
+
+        $file = $request->file('file');
+
+        $filename = base_path("resources/messages/$outgoingIntent->name");
+        File::delete($filename);
+        File::put($filename, $file->get());
+
+        Artisan::call(
+            'messages:update',
+            [
+                'outgoingIntent' => $outgoingIntent->name,
+                '--yes' => true
+            ]
+        );
+
+        return response()->noContent(200);
+    }
+
+    /**
+     * @return Response
+     */
+    public function exportAll()
+    {
+        $fileName = 'outgoing-intents.zip';
+
+        $zip = new ZipStream($fileName);
+
+        $outgoingIntents = OutgoingIntent::all();
+
+        foreach ($outgoingIntents as $outgoingIntent) {
+            $messageTemplates = [];
+            foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
+                $messageTemplates[$messageTemplate->name] = [
+                    'conditions' => $messageTemplate->conditions,
+                    'message_markup' => $messageTemplate->message_markup,
+                ];
+            }
+
+            $output = json_encode([
+                'outgoingIntent' => $outgoingIntent->name,
+                'messageTemplates' => $messageTemplates,
+            ]);
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $output);
+            rewind($stream);
+            $zip->addFileFromStream($outgoingIntent->name, $stream);
+            fclose($stream);
+        }
+
+        $zip->finish();
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function importAll(Request $request)
+    {
+        $i = 1;
+        while (true) {
+            if ($file = $request->file('file' . $i)) {
+                $outgoingIntentName = $file->getClientOriginalName();
+                $filename = base_path("resources/messages/$outgoingIntentName");
+                File::delete($filename);
+                File::put($filename, $file->get());
+
+                Artisan::call(
+                    'messages:update',
+                    [
+                        'conversation' => $outgoingIntentName,
+                        '--yes' => true
+                    ]
+                );
+
+                $i++;
+            } else {
+                break;
+            }
+        }
+
+        return response()->noContent(200);
+    }
 
     /**
      * @param OutgoingIntent $outgoingIntent

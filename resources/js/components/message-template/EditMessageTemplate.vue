@@ -64,7 +64,7 @@ export default {
     };
   },
   mounted() {
-    axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id).then(
+    axios.get('/admin/api/outgoing-intent/' + this.outgoingIntent + '/message-templates/' + this.id).then(
       (response) => {
         this.messageTemplate = response.data.data;
       },
@@ -80,7 +80,7 @@ export default {
         message_markup: this.messageTemplate.message_markup,
       };
 
-      axios.patch('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id, data).then(
+      axios.patch('/admin/api/outgoing-intent/' + this.outgoingIntent + '/message-templates/' + this.id, data).then(
         (response) => {
           this.$router.push({ name: 'view-message-template', params: { outgoingIntent: this.outgoingIntent, id: this.messageTemplate.id } });
         },

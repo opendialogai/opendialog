@@ -32,7 +32,7 @@ export default {
     };
   },
   mounted() {
-    axios.get('/admin/api/outgoing-intents/' + this.id).then(
+    axios.get('/admin/api/outgoing-intent/' + this.id).then(
       (response) => {
         this.outgoingIntent = response.data.data;
       },
@@ -46,7 +46,7 @@ export default {
         name: this.outgoingIntent.name,
       };
 
-      axios.patch('/admin/api/outgoing-intents/' + this.id, data).then(
+      axios.patch('/admin/api/outgoing-intent/' + this.id, data).then(
         (response) => {
           this.$router.push({ name: 'view-outgoing-intent', params: { id: this.outgoingIntent.id } });
         },
