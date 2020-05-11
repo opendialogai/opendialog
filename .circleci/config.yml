@@ -7,7 +7,7 @@ jobs:
   tests:
     docker:
       # specify the version you desire here
-      - image: circleci/php:7.3.5-fpm
+      - image: circleci/php:7.4.5-fpm
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -78,7 +78,7 @@ jobs:
 
   node_build:
     docker:
-      - image: circleci/php:7.3.8-node-browsers
+      - image: circleci/php:7.4.5-node-browsers
 
     working_directory: ~/rep
 
@@ -117,7 +117,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: circleci/php:7.3.8-node-browsers
+      - image: circleci/php:7.4.5-node-browsers
     working_directory: ~/repo
     steps:
       - checkout
