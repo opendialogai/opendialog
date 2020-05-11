@@ -1,9 +1,13 @@
 
 [![CircleCI](https://circleci.com/gh/opendialogai/opendialog/tree/master.svg?style=svg&circle-token=aefbfc509382266413d6667a1aef451c7bf82f22)](https://circleci.com/gh/opendialogai/opendialog/tree/master)
 
-# OpenDialog Demo
+# OpenDialog - open-source conversational applications management system 
 
-This is a sample application that pulls in the [Open Dialog core](https://github.com/opendialogai/core) and [Open Dialog Webchat](https://github.com/opendialogai/webchat/) packages and provides a demonstration of the OpenDialog platform with webchat. 
+OpenDialog is a Laravel-based application that enables you to quickly build conversational applications.
+
+It provides a web frontend that can be styled to your specific needs and can be embedded on any website.
+
+Conversations are described using OpenDialog's flexible conversational markup language, while messages are defined using Opendialog's message markup.   
 
 # Set Up Instructions
 
@@ -109,38 +113,7 @@ Run:
 To export all conversations in the `opendialog/active_conversations.php` config file. This will dump the current conversation
 YAML and all related outgoing intents and message templates
 
-## Docker
 
-### Builds
-
-This project has been set up to automatically build a new docker image and push to the docker hub as part of the build process with CircleCI.
-For this to work, the project must be set up in CircleCI and the following environment variables need to be set:
-
-`DOCKER_BUILD` (must be set to true)
-`DOCKER_USER`
-`DOCKER_PASS`
-`DOCKER_PROJECT_NAME`
-
-A new docker build is not triggered unless all phpunit tests pass and the node build runs successfully.
-
-The `tag` used for the new docker image is the current git branch name (with and `/` characters replaced with `_`)
-
-### Running Docker locally
-
-To run OpenDialog from a docker image, you should use the `docker-compose.yml` file included with this project along side the 
-`env.docker` file. Any environment variables placed in this file will be used by the application. The `TAG` variable sets which image tag to use.
-
-Changes to this file will not be picked up when the docker container is currently running - to see the changes made reflected in the application, run 
-
-    docker-compose up -d app
-    
-#### Initial set up / updates
-
-After first run, or to update a running application, the `docker-update.sh` script needs to be run. To run this within in the app container, run the following:
-
-    docker-compose exec app bash scripts/update-docker.sh
-    
-This will run all database migration files, set up the webchat settings, optionally load all conversations and create the default admin user (if not already created)
 
 ## Local Package Development
 

@@ -1,8 +1,6 @@
 version: "3.2"
 services:
   app:
-    env_file:
-      - .env.docker
     image: opendialogai/opendialog:${TAG}
     restart: on-failure
     tty: true
