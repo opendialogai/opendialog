@@ -31,7 +31,7 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="DB_CONNECTION" value="testbench"/>
         <env name="DB_DATABASE" value=":memory:"/>
-        <env name="DGRAPH_URL" value="test-dgraph-alpha"/>
+        <env name="DGRAPH_URL" value="dgraph-server-test"/>
         <env name="DGRAPH_PORT" value="8082"/>
         <env name="STATS_CACHE_LENGTH" value="0"/>
     </php>
