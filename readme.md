@@ -3,13 +3,25 @@
 
 # OpenDialog - open-source conversational applications management system 
 
-OpenDialog is a Laravel-based application that enables you to quickly build conversational applications.
+OpenDialog enables you to quickly build conversational applications. 
 
-It provides a web frontend that can be styled to your specific needs and can be embedded on any website.
+It provides a web widget that can be styled to specific needs and can be embedded on any website. 
 
-Conversations are described using OpenDialog's flexible conversational markup language, while messages are defined using Opendialog's message markup.   
+You write conversational applications using OpenDialog's flexible conversational language, and define the messages that your bot will send the user through OpenDialog's message markup language. 
 
-# Set Up Instructions
+For all the details of how OpenDialog helps you build sophisticated chatbots visit our [documentation site](https://docs.opendialog.ai).
+
+# Trying out OpenDialog
+
+If you want to see OpenDialog in action you can try out the latest version through our automatically produced Docker image. 
+
+As long as you have Docker installed on your local machine you can do:
+- `cd docker/od-demo`
+- `docker-compose up -d app`
+- `docker-compose exec app bash docker/od-demo/update-docker.sh`
+
+You can then visit http://localhost and login to OpenDialog with admin@example.com / opendialog
+
 
 ## Quickstart
 
