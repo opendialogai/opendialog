@@ -50,6 +50,8 @@ services:
     command: dgraph zero --my=dgraph-zero:5080
     networks:
       - app-network
+    links:
+      - dgraph-server
   dgraph-server:
     image: dgraph/dgraph:v1.1.0
     volumes:
