@@ -16,6 +16,17 @@ After first run, or to update a running application, the `docker-update.sh` scri
     
 This will run all database migration files, set up the webchat settings, optionally load all conversations and create the default admin user (if not already created)
 
+If you need a newer copy of the same image, power down the app with
+ 
+ `docker-compose down`
+
+pull then new image
+
+`docker pull opendialogai/opendialog:dev`
+
+replacing dev with the tag you are interested in and then start it up again. 
+
+` docker-compose up -d --force-recreate app`
 
 ## Including Docker builds in your CI process
 
