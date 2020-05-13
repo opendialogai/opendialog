@@ -42,11 +42,11 @@ class OutgoingIntentsTest extends TestCase
     {
         $outgoingIntents = OutgoingIntent::all();
 
-        $this->get('/admin/api/outgoing-intents')
+        $this->get('/admin/api/outgoing-intent')
             ->assertStatus(302);
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/outgoing-intents?page=1')
+            ->json('GET', '/admin/api/outgoing-intent?page=1')
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
@@ -60,7 +60,7 @@ class OutgoingIntentsTest extends TestCase
         $this->assertEquals(count($response->data), 50);
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/outgoing-intents?page=2')
+            ->json('GET', '/admin/api/outgoing-intent?page=2')
             ->assertStatus(200)
             ->getData();
 
@@ -85,7 +85,7 @@ class OutgoingIntentsTest extends TestCase
     public function testOutgoingIntentsStoreEndpoint()
     {
         $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/outgoing-intents', [
+            ->json('POST', '/admin/api/outgoing-intent', [
                 'name' => 'test',
             ])
             ->assertStatus(201)
