@@ -20,7 +20,7 @@ If you need a newer copy of the same image, power down the app with
  
  `docker-compose down`
 
-pull then new image
+pull the new image
 
 `docker pull opendialogai/opendialog:dev`
 
