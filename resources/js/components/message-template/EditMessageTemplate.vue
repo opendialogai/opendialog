@@ -25,8 +25,13 @@
         <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
       </b-form-group>
 
+      <b-card>
+         <MessageBuilder v-if="previewData" :message="previewData" />
+      </b-card>
+
       <b-btn variant="primary" @click="saveMessageTemplate">Save</b-btn>
     </b-card>
+
   </div>
 </template>
 
@@ -36,15 +41,19 @@ import 'codemirror/mode/yaml/yaml';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
+import MessageBuilder from "./MessageBuilder";
 
 export default {
   name: 'edit-message-template',
   props: ['outgoingIntent', 'id'],
   components: {
+      MessageBuilder,
     codemirror,
   },
   data() {
     return {
+      previewData: {
+      },
       cmConditionsOptions: {
         tabSize: 4,
         mode: 'text/yaml',
@@ -67,6 +76,7 @@ export default {
     axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id).then(
       (response) => {
         this.messageTemplate = response.data.data;
+        this.previewData = this.messageTemplate;
       },
     );
   },
