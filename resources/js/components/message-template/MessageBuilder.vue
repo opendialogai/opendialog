@@ -102,7 +102,15 @@ export default {
 
       switch (message.type) {
         case 'text-message':
-          message.data = msg.val.trim();
+          let text = '';
+          msg.children.forEach((child) => {
+            if (child.type === 'element') {
+              text += ' <a target="_blank" href="' + child.childNamed('url').val.trim() + '">' + child.childNamed('text').val.trim() + '</a>';
+            } else if (child.type === 'text') {
+              text += ' ' + child.text.trim();
+            }
+          });
+          message.data = text.trim();
           break;
 
         case 'button-message':
