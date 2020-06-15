@@ -28,6 +28,9 @@
       <template v-if="message.type == 'long-text-message'">
         <LongTextMessage :message="message" />
       </template>
+      <template v-if="message.type == 'meta-message'">
+        <MetaMessage :message="message" />
+      </template>
       <template v-if="message.type == 'list-message'">
         <div class="list-message">
           <slider
@@ -61,6 +64,7 @@ import FormMessage from './Messages/FormMessage';
 import HandToHumanMessage from './Messages/HandToHumanMessage';
 import ImageMessage from './Messages/ImageMessage';
 import LongTextMessage from './Messages/LongTextMessage';
+import MetaMessage from './Messages/MetaMessage';
 import RichMessage from './Messages/RichMessage';
 import TextMessage from './Messages/TextMessage';
 
@@ -74,6 +78,7 @@ export default {
     HandToHumanMessage,
     ImageMessage,
     LongTextMessage,
+    MetaMessage,
     RichMessage,
     TextMessage,
     Slider,
@@ -209,7 +214,18 @@ export default {
 
           message.data.view_type = msg.attr['view-type'];
           message.data.items = items;
-          console.log(items);
+          break;
+
+        case 'meta-message':
+          let datas = [];
+          msg.childrenNamed('data').forEach((data) => {
+            datas.push({
+              name: data.attr.name,
+              value: data.val.trim(),
+            });
+          });
+
+          message.data.datas = datas;
           break;
       }
 
@@ -230,6 +246,7 @@ export default {
   .button-message,
   .image-message,
   .form-message,
+  .meta-message,
   .rich-message {
     border-radius: 6px;
     padding: 7px 10px;
