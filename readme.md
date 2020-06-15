@@ -18,7 +18,7 @@ If you want to see OpenDialog in action you can try out the latest version throu
 As long as you have Docker installed on your local machine you can do:
 - `cd docker/od-demo`
 - `docker-compose up -d app`
-- `docker-compose exec app bash docker/od-demo/update-docker.sh`
+- `docker-compose exec app bas docker/od-demo/update-docker.sh`
 
 You can then visit http://localhost and login to OpenDialog with admin@example.com / opendialog
 
@@ -29,4 +29,10 @@ To find out more about how OpenDialog works and a guide to building your first c
 # Developing with OpenDialog
 
 To setup a development environment for OpenDialog please check out the [OpenDialog development environment repository](https://github.com/opendialogai/opendialog-dev-environment) - it provides step by step instructions for setting up a Docker-based dev environment.  
+
+# Session Management
+
+Use sessions are handled by the standard Laravel session management systems (as defined in your `.env` file). By default, this is set to `file` which will only work as expected when there is a single OpenDialog app server.
+When there are multiple app servers behind a load balancer, switch to using `redis` or `database` as your session management tool.
+More info can be found in the [Laravel Session docs](https://laravel.com/docs/7.x/session)
 
