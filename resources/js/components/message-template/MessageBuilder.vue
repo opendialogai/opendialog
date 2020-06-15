@@ -32,20 +32,30 @@
         <MetaMessage :message="message" />
       </template>
       <template v-if="message.type == 'list-message'">
-        <div class="list-message">
-          <slider
-            :direction="message.data.view_type"
-            :pagination-visible="true"
-            :pagination-clickable="true"
-            :drag-enable="false"
-          >
-            <div v-for="(item, idx) in message.data.items" :key="idx">
+        <div class="list-message" :class="message.data.view_type">
+          <template v-if="message.data.view_type == 'list'">
+            <div class="list-message--item" v-for="(item, idx) in message.data.items" :key="idx">
               <TextMessage v-if="item.type === 'text-message'" :message="item" />
               <ButtonMessage v-else-if="item.type === 'button-message'" :message="item" />
               <ImageMessage v-else-if="item.type === 'image-message'" :message="item" />
               <RichMessage v-else-if="item.type === 'rich-message'" :message="item" />
             </div>
-          </slider>
+          </template>
+          <template v-else>
+            <slider
+              :direction="message.data.view_type"
+              :pagination-visible="true"
+              :pagination-clickable="true"
+              :drag-enable="false"
+            >
+              <div class="list-message--item" v-for="(item, idx) in message.data.items" :key="idx">
+                <TextMessage v-if="item.type === 'text-message'" :message="item" />
+                <ButtonMessage v-else-if="item.type === 'button-message'" :message="item" />
+                <ImageMessage v-else-if="item.type === 'image-message'" :message="item" />
+                <RichMessage v-else-if="item.type === 'rich-message'" :message="item" />
+              </div>
+            </slider>
+          </template>
         </div>
       </template>
     </div>
@@ -158,10 +168,12 @@ export default {
           message.data.button = {
             text: (msg.childNamed('button')) ? msg.childNamed('button').childNamed('text').val.trim() : '',
           };
-          message.data.image = {
-            src: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('src').val.trim() : '',
-            url: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('url').val.trim() : '',
-          };
+          if (msg.childNamed('image')) {
+            message.data.image = {
+              src: (msg.childNamed('image').childNamed('src')) ? msg.childNamed('image').childNamed('src').val.trim() : '',
+              url: (msg.childNamed('image').childNamed('url')) ? msg.childNamed('image').childNamed('url').val.trim() : '',
+            };
+          }
           break;
 
         case 'fp-form-message':
@@ -252,6 +264,25 @@ export default {
     padding: 7px 10px;
     background: #eaeaea;
     max-width: 300px;
+  }
+
+  .list-message {
+    .text-message,
+    .button-message,
+    .image-message,
+    .rich-message {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &.list {
+      .list-message--item {
+        border-bottom: 1px solid #c3c3c3;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
   }
 
   .slider {
