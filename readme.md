@@ -54,3 +54,8 @@ For this to run successfully, you will need to set up CircleCI to watch the proj
 
 By default, the `scripts/docker-build.sh` script will use either the current branch name, or the tag name if there is one associated with the current commit.
 Branch names will have `/` replaced with `_` to meet Docker naming convention.
+
+## GitHub Token during docker build
+
+If you OpenDialog project has a composer dependency on a private GitHub repo, a local auth.json file can be created and used during the docker build.
+To do this, just add a value for the environment variable `GITHUB_TOKEN` in CircleCI 
