@@ -18,7 +18,7 @@ If you want to see OpenDialog in action you can try out the latest version throu
 As long as you have Docker installed on your local machine you can do:
 - `cd docker/od-demo`
 - `docker-compose up -d app`
-- `docker-compose exec app bas docker/od-demo/update-docker.sh`
+- `docker-compose exec app bash docker/od-demo/update-docker.sh`
 
 You can then visit http://localhost and login to OpenDialog with admin@example.com / opendialog
 
