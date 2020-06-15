@@ -131,3 +131,8 @@ Route::prefix('stats')->middleware(['auth'])->group(function () {
 });
 
 Route::get('status', 'StatusController@handle');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('admin/logout', 'Auth\LoginController@logout');
+    Route::get('logout', 'Auth\LoginController@logout');
+});
