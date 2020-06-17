@@ -38,12 +38,15 @@ export default {
                 name: [],
               },
             },
+            'element': {
+              children: ['element_type', 'name', 'display', 'required', 'default_value']
+            },
             'empty-message': {},
             'form-message': {
-              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text'],
+              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text', 'element'],
             },
             'fp-form-message': {
-              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text'],
+              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text', 'element'],
             },
             'fp-rich-message': {
               children: ['button', 'image', 'subtitle', 'text', 'title'],
