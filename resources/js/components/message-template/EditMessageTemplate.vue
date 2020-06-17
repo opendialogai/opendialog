@@ -77,14 +77,6 @@ export default {
       },
     );
   },
-  watch: {
-    messageTemplate: {
-      handler (val) {
-        this.previewData = val
-      },
-      deep: true
-    }
-  },
   methods: {
     saveMessageTemplate() {
       this.error = {};
