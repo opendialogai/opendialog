@@ -1,39 +1,39 @@
 <template>
   <div>
     <div class="message mb-4" v-for="message in messages">
-      <template v-if="message.type == 'empty-message'">
+      <template v-if="message.type === 'empty-message'">
         <EmptyMessage :message="message" />
       </template>
-      <template v-if="message.type == 'hand-to-human-message'">
+      <template v-if="message.type === 'hand-to-human-message'">
         <HandToHumanMessage :message="message" />
       </template>
-      <template v-if="message.type == 'cta-message'">
+      <template v-if="message.type === 'cta-message'">
         <CtaMessage :message="message" />
       </template>
-      <template v-if="message.type == 'text-message'">
+      <template v-if="message.type === 'text-message'">
         <TextMessage :message="message" />
       </template>
-      <template v-if="message.type == 'button-message'">
+      <template v-if="message.type === 'button-message'">
         <ButtonMessage :message="message" />
       </template>
-      <template v-if="message.type == 'image-message'">
+      <template v-if="message.type === 'image-message'">
         <ImageMessage :message="message" />
       </template>
-      <template v-if="message.type == 'rich-message' || message.type == 'fp-rich-message'">
+      <template v-if="message.type === 'rich-message' || message.type === 'fp-rich-message'">
         <RichMessage :message="message" />
       </template>
-      <template v-if="message.type == 'form-message' || message.type == 'fp-form-message'">
+      <template v-if="message.type === 'form-message' || message.type === 'fp-form-message'">
         <FormMessage :message="message" />
       </template>
-      <template v-if="message.type == 'long-text-message'">
+      <template v-if="message.type === 'long-text-message'">
         <LongTextMessage :message="message" />
       </template>
-      <template v-if="message.type == 'meta-message'">
+      <template v-if="message.type === 'meta-message'">
         <MetaMessage :message="message" />
       </template>
-      <template v-if="message.type == 'list-message'">
+      <template v-if="message.type === 'list-message'">
         <div class="list-message" :class="message.data.view_type">
-          <template v-if="message.data.view_type == 'list'">
+          <template v-if="message.data.view_type === 'list'">
             <div class="list-message--item" v-for="(item, idx) in message.data.items" :key="idx">
               <TextMessage v-if="item.type === 'text-message'" :message="item" />
               <ButtonMessage v-else-if="item.type === 'button-message'" :message="item" />
@@ -96,34 +96,38 @@ export default {
   props: ['message'],
   data() {
     return {
+      watchMessage: this.message,
       messages: [],
     };
   },
   watch: {
-      message: {
+      watchMessage: {
         handler (val) {
-            this.message = val
-            this.buildMessages()
+            this.messages = [];
+            var document = new xmldoc.XmlDocument(val.message_markup);
+            this.parseDocumentForMessage(document)
         },
         deep: true
     }
   },
   mounted() {
-    var document = new xmldoc.XmlDocument(this.message.message_markup);
-    document.children.forEach((msg) => {
-      if (msg.type === 'element') {
-        const message = this.parseMessage(msg);
-        this.messages.push(message);
-      }
-    });
+    var document = new xmldoc.XmlDocument(this.watchMessage.message_markup);
+    this.parseDocumentForMessage(document)
   },
   methods: {
+    parseDocumentForMessage(document) {
+      document.children.forEach((msg) => {
+        if (msg.type === 'element') {
+          const message = this.parseMessage(msg);
+          this.messages.push(message);
+        }
+      });
+    },
     parseMessage(msg) {
       const message = {
         type: msg.name,
         data: {},
       };
-
       switch (message.type) {
         case 'text-message':
           let text = '';
