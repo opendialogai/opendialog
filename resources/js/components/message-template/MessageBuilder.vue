@@ -61,56 +61,71 @@ export default {
       messages: [],
     };
   },
-  mounted() {
-    var document = new xmldoc.XmlDocument(this.message.message_markup);
-    document.children.forEach((msg) => {
-      if (msg.type === 'element') {
-        const message = {
-          type: msg.name,
-          data: {},
-        };
-
-        switch (message.type) {
-          case 'text-message':
-            message.data = msg.val.trim();
-            break;
-
-          case 'button-message':
-            let buttons = [];
-            msg.childrenNamed('button').forEach((button) => {
-              buttons.push({
-                text: (button.childNamed('text')) ? button.childNamed('text').val.trim() : '',
-              });
-            });
-
-            message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : '';
-            message.data.buttons = buttons;
-            break;
-
-          case 'image-message':
-            message.data.src = (msg.childNamed('src')) ? msg.childNamed('src').val.trim() : '';
-            message.data.link = (msg.childNamed('link')) ? msg.childNamed('link').val.trim() : '';
-            break;
-
-          case 'fp-rich-message':
-          case 'rich-message':
-            message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
-            message.data.subtitle = (msg.childNamed('subtitle')) ? msg.childNamed('subtitle').val.trim() : ''(string);
-            message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : ''(string);
-            message.data.button = {
-              text: (msg.childNamed('button')) ? msg.childNamed('button').childNamed('text').val.trim() : '',
-            };
-            message.data.image = {
-              src: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('src').val.trim() : '',
-              url: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('url').val.trim() : '',
-            };
-            break;
-        }
-
-        this.messages.push(message);
-      }
-    });
+  watch: {
+      message: {
+        handler (val) {
+            this.message = val
+            this.buildMessages()
+        },
+        deep: true
+    }
   },
+  mounted() {
+    this.buildMessages()
+  },
+  methods: {
+      buildMessages() {
+          this.messages = [];
+          var document = new xmldoc.XmlDocument(this.message.message_markup);
+          document.children.forEach((msg) => {
+              if (msg.type === 'element') {
+                  const message = {
+                      type: msg.name,
+                      data: {},
+                  };
+
+                  switch (message.type) {
+                      case 'text-message':
+                          message.data = msg.val.trim();
+                          break;
+
+                      case 'button-message':
+                          let buttons = [];
+                          msg.childrenNamed('button').forEach((button) => {
+                              buttons.push({
+                                  text: (button.childNamed('text')) ? button.childNamed('text').val.trim() : '',
+                              });
+                          });
+
+                          message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : '';
+                          message.data.buttons = buttons;
+                          break;
+
+                      case 'image-message':
+                          message.data.src = (msg.childNamed('src')) ? msg.childNamed('src').val.trim() : '';
+                          message.data.link = (msg.childNamed('link')) ? msg.childNamed('link').val.trim() : '';
+                          break;
+
+                      case 'fp-rich-message':
+                      case 'rich-message':
+                          message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
+                          message.data.subtitle = (msg.childNamed('subtitle')) ? msg.childNamed('subtitle').val.trim() : ''(string);
+                          message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : ''(string);
+                          message.data.button = {
+                              text: (msg.childNamed('button')) ? msg.childNamed('button').childNamed('text').val.trim() : '',
+                          };
+                          message.data.image = {
+                              src: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('src').val.trim() : '',
+                              url: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('url').val.trim() : '',
+                          };
+                          break;
+                  }
+
+                  this.messages.push(message);
+              }
+          });
+      }
+  }
 };
 </script>
 

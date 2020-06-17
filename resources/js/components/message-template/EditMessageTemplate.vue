@@ -26,7 +26,7 @@
       </b-form-group>
 
       <b-card>
-         <MessageBuilder v-if="previewData" :message="previewData" />
+         <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData"/>
       </b-card>
 
       <b-btn variant="primary" @click="saveMessageTemplate">Save</b-btn>
@@ -52,7 +52,7 @@ export default {
   props: ['outgoingIntent', 'id'],
   mixins: [XmlCodemirror],
   components: {
-      MessageBuilder,
+    MessageBuilder,
     codemirror,
   },
   data() {
@@ -77,6 +77,14 @@ export default {
         this.previewData = this.messageTemplate;
       },
     );
+  },
+  watch: {
+    messageTemplate: {
+      handler (val) {
+        this.previewData = val
+      },
+      deep: true
+    }
   },
   methods: {
     saveMessageTemplate() {
