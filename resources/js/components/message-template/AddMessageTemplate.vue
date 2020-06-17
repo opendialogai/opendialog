@@ -32,29 +32,27 @@
 
 <script>
 import { codemirror } from 'vue-codemirror';
+import 'codemirror/addon/edit/closetag';
+import 'codemirror/addon/edit/matchtags';
 import 'codemirror/mode/yaml/yaml';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 
+import XmlCodemirror from '@/mixins/XmlCodemirror';
+
 export default {
   name: 'add-message-template',
   props: ['outgoingIntent'],
+  mixins: [XmlCodemirror],
   components: {
     codemirror,
   },
   data() {
     return {
       cmConditionsOptions: {
-        tabSize: 4,
+        tabSize: 2,
         mode: 'text/yaml',
-        theme: 'dracula',
-        lineNumbers: true,
-        line: true,
-      },
-      cmMarkupOptions: {
-        tabSize: 4,
-        mode: 'application/xml',
         theme: 'dracula',
         lineNumbers: true,
         line: true,
