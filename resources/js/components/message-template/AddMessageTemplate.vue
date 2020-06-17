@@ -25,6 +25,10 @@
         <codemirror v-model="message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
       </b-form-group>
 
+      <b-card>
+        <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData"/>
+      </b-card>
+
       <b-btn variant="primary" @click="addMessageTemplate">Create</b-btn>
     </b-card>
   </div>
@@ -40,16 +44,21 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 
 import XmlCodemirror from '@/mixins/XmlCodemirror';
+import MessageBuilder from "./MessageBuilder";
 
 export default {
   name: 'add-message-template',
   props: ['outgoingIntent'],
   mixins: [XmlCodemirror],
   components: {
+    MessageBuilder,
     codemirror,
   },
   data() {
     return {
+      previewData: {
+        message_markup: ''
+      },
       cmConditionsOptions: {
         tabSize: 2,
         mode: 'text/yaml',
@@ -62,6 +71,14 @@ export default {
       message_markup: '',
       error: {},
     };
+  },
+  watch: {
+    message_markup: {
+      handler (val) {
+        this.previewData.message_markup = val;
+      },
+      deep: true
+    }
   },
   methods: {
     addMessageTemplate() {

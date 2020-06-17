@@ -111,8 +111,10 @@ export default {
     }
   },
   mounted() {
-    var document = new xmldoc.XmlDocument(this.watchMessage.message_markup);
-    this.parseDocumentForMessage(document)
+      if (this.watchMessage.message_markup) {
+        var document = new xmldoc.XmlDocument(this.watchMessage.message_markup);
+        this.parseDocumentForMessage(document)
+      }
   },
   methods: {
     parseDocumentForMessage(document) {
