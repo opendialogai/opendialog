@@ -129,3 +129,10 @@ Route::prefix('stats')->middleware(['auth'])->group(function () {
     Route::get('incoming-intents', 'StatisticsController@incomingIntents');
     Route::get('message-templates', 'StatisticsController@messageTemplates');
 });
+
+Route::get('status', 'StatusController@handle');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('admin/logout', 'Auth\LoginController@logout');
+    Route::get('logout', 'Auth\LoginController@logout');
+});

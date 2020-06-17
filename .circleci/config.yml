@@ -14,6 +14,8 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mysql:9.4
 
+    resource_class: large
+
     working_directory: ~/repo
 
     steps:
@@ -64,7 +66,7 @@ jobs:
           command: |
             echo 'export OVERWRITE_DGRAPH_URL="http://localhost"' >> $BASH_ENV; echo 'export OVERWRITE_DGRAPH_PORT="8080"' >> $BASH_ENV
 
-      - run: phpdbg -qrr ./vendor/bin/phpunit --coverage-html build/coverage-report --configuration phpunit-ci.xml -d memory_limit=2048M
+      - run: phpdbg -qrr ./vendor/bin/phpunit --coverage-html build/coverage-report --configuration phpunit-ci.xml -d memory_limit=8000M
 
       - store_artifacts:
           path:  build/coverage-report
@@ -129,14 +131,36 @@ jobs:
               bash scripts/docker-build.sh
           fi
 
+  deploy:
+    docker:
+      - image: circleci/php:7.3.8-node-browsers
+    working_directory: ~/repo
+    steps:
+      - run: curl ${FORGE_URL}
+
 workflows:
   version: 2
-
   build_workflow:
     jobs:
-      - tests
-      - node_build
+      - tests:
+          filters:
+            branches:
+              ignore:
+                - /dev.*/
+                - /staging.*/
+      - node_build:
+          filters:
+            branches:
+              ignore:
+                - /dev.*/
+                - /staging.*/
       - docker_build:
           requires:
             - tests
             - node_build
+      - docker_build:
+          filters:
+            branches:
+              only:
+                - /dev.*/
+                - /staging.*/

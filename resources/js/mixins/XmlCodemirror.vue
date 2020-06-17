@@ -25,21 +25,28 @@ export default {
         hintOptions: {
           schemaInfo: {
             '!top': ['message'],
-            '!attrs': {
-              disable_text: ['true', 'false'],
-              hide_avatar: ['true', 'false'],
-            },
             'attribute-message': {},
+            'button': {
+              children: ['callback', 'display', 'download', 'link', 'tab_switch', 'text', 'value'],
+            },
             'button-message': {
               children: ['button', 'external', 'text'],
             },
             'cta-message': {},
+            'data': {
+              attrs: {
+                name: [],
+              },
+            },
+            'element': {
+              children: ['element_type', 'name', 'display', 'required', 'default_value']
+            },
             'empty-message': {},
             'form-message': {
-              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text'],
+              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text', 'element'],
             },
             'fp-form-message': {
-              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text'],
+              children: ['auto_submit', 'callback', 'cancel_callback', 'cancel_text', 'submit_text', 'text', 'element'],
             },
             'fp-rich-message': {
               children: ['button', 'image', 'subtitle', 'text', 'title'],
@@ -50,6 +57,11 @@ export default {
             'image-message': {
               children: ['link', 'src'],
             },
+            'link': {
+              attrs: {
+                new_tab: ['true', 'false'],
+              },
+            },
             'list-message': {
               attrs: {
                 'view-type': ['horizontal', 'vertical'],
@@ -58,6 +70,31 @@ export default {
             },
             'long-text-message': {
               children: ['callback', 'character_limit', 'confirmation_text', 'initial_text', 'placeholder', 'submit_text'],
+            },
+            'message': {
+              attrs: {
+                disable_text: ['true', 'false'],
+                hide_avatar: ['true', 'false'],
+              },
+              children: [
+                'attribute-message',
+                'button-message',
+                'cta-message',
+                'empty-message',
+                'form-message',
+                'fp-form-message',
+                'fp-rich-message',
+                'hand-to-human-message',
+                'image-message',
+                'list-message',
+                'long-text-message',
+                'meta-message',
+                'rich-message',
+                'text-message',
+              ],
+            },
+            'meta-message': {
+              children: ['data'],
             },
             'rich-message': {
               children: ['button', 'image', 'subtitle', 'text', 'title'],
