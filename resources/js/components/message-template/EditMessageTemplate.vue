@@ -57,8 +57,7 @@ export default {
   },
   data() {
     return {
-      previewData: {
-      },
+      previewData: {},
       cmConditionsOptions: {
         tabSize: 2,
         mode: 'text/yaml',
