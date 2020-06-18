@@ -31,6 +31,9 @@
       <template v-if="message.type === 'meta-message'">
         <MetaMessage :message="message" />
       </template>
+      <template v-if="message.type === 'error'">
+        <Error :message="message" />
+      </template>
       <template v-if="message.type === 'list-message'">
         <div class="list-message" :class="message.data.view_type">
           <template v-if="message.data.view_type === 'list'">
@@ -78,10 +81,12 @@ import MetaMessage from './Messages/MetaMessage';
 import RichMessage from './Messages/RichMessage';
 import TextMessage from './Messages/TextMessage';
 import MessageTypes from "@/mixins/MessageTypes";
+import Error from "./Messages/Error";
 
 export default {
   name: 'message-builder',
   components: {
+      Error,
     ButtonMessage,
     CtaMessage,
     EmptyMessage,
@@ -106,8 +111,20 @@ export default {
       watchMessage: {
         handler (val) {
             this.messages = [];
-            var document = new xmldoc.XmlDocument(val.message_markup);
-            this.parseDocumentForMessage(document)
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(val.message_markup, 'application/xml');
+            if (doc.getElementsByTagName('parsererror').length > 0) {
+                const error = doc.getElementsByTagName('parsererror')[0].getElementsByTagName('div')[0].innerHTML;
+                this.messages.push(
+                    {
+                        type: 'error',
+                        data:  `Validation error: ${error}`
+                    }
+                );
+            } else {
+                const document = new xmldoc.XmlDocument(val.message_markup);
+                this.parseDocumentForMessage(document)
+            }
         },
         deep: true
     }
@@ -135,6 +152,7 @@ export default {
 
       const messageTypes = MessageTypes.methods.getMessageTypes();
       const messageTypeConfig = messageTypes.find(messageConfig => messageConfig.type === message.type)
+      // update the message properties based on its type
       messageTypeConfig.function(message, msg);
       return message;
     },
