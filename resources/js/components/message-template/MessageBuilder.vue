@@ -134,52 +134,9 @@ export default {
       };
 
       const messageTypes = MessageTypes.methods.getMessageTypes();
-      const messageTypeConfig = messageTypes.find(x => x.type === message.type)
+      const messageTypeConfig = messageTypes.find(messageConfig => messageConfig.type === message.type)
       messageTypeConfig.function(message, msg);
-        // switch (message.type) {
-        //     case 'text-message':
-        //       MessageTypes.methods.parseTextMessage(message, msg);
-        //       break;
-        //
-        //     case 'button-message':
-        //       this.parseButtonMessage(message, msg);
-        //       break;
-        //
-        //     case 'image-message':
-        //       this.parseImageMessage(message, msg);
-        //       break;
-        //
-        //     case 'cta-message':
-        //       this.parseCtaMessage(message, msg)
-        //       break;
-        //
-        //     case 'hand-to-human-message':
-        //         this.parseH2hMssage(msg, message);
-        //         break;
-        //
-        //     case 'fp-rich-message':
-        //     case 'rich-message':
-        //         this.parseRichMessage(message, msg);
-        //         break;
-        //
-        //     case 'fp-form-message':
-        //     case 'form-message':
-        //         this.parseFormMessage(msg, message);
-        //         break;
-        //
-        //     case 'long-text-message':
-        //         this.parseLongTextMessage(message, msg);
-        //         break;
-        //
-        //     case 'list-message':
-        //         this.parseListMessage(msg, message);
-        //         break;
-        //
-        //     case 'meta-message':
-        //         this.parseMetaMessage(msg, message);
-        //         break;
-        // }
-    return message;
+      return message;
     },
   },
 };

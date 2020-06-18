@@ -11,17 +11,17 @@ export default {
     getMessageTypes() {
       return [
         {type: 'text-message', function: (message, msg) => {this.parseTextMessage(message, msg)}},
-        {'button-message': 'parseTextMessage'},
-        {'image-message': 'parseTextMessage'},
-        {'cta-message': 'parseTextMessage'},
-        {'hand-to-human-message': 'parseTextMessage'},
-        {'fp-rich-message': 'parseTextMessage'},
-        {'rich-message': 'parseTextMessage'},
-        {'fp-form-message': 'parseTextMessage'},
-        {'form-message': 'parseTextMessage'},
-        {'long-text-message': 'parseTextMessage'},
-        {'list-message': 'parseTextMessage'},
-        {'meta-message': 'parseTextMessage'}
+        {type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)}},
+        {type: 'image-message', function: (message, msg) => {this.parseImageMessage(message, msg)}},
+        {type: 'cta-message', function: (message, msg) => {this.parseCtaMessage(message, msg)}},
+        {type: 'hand-to-human-message', function: (message, msg) => {this.parseH2hMessage(message, msg)}},
+        {type: 'fp-rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}},
+        {type: 'rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}},
+        {type: 'fp-form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}},
+        {type: 'form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}},
+        {type: 'long-text-message', function: (message, msg) => {this.parseLongTextMessage(message, msg)}},
+        {type: 'list-message', function: (message, msg) => {this.parseListMessage(message, msg)}},
+        {type: 'meta-message', function: (message, msg) => {this.parseMetaMessage(message, msg)}},
       ];
     },
     parseTextMessage (message, msg) {
@@ -53,7 +53,7 @@ export default {
     parseCtaMessage(message, msg) {
       message.data.text = msg.val;
     },
-    parseH2hMssage: function (msg, message) {
+    parseH2hMessage: function (msg, message) {
       let data = [];
       msg.childrenNamed('data').forEach((d) => {
         data.push({
@@ -77,7 +77,7 @@ export default {
         };
       }
     },
-    parseFormMessage: function (msg, message) {
+    parseFormMessage: function (message, msg) {
       let elements = [];
       msg.childrenNamed('element').forEach((element) => {
         const elementType = element.childNamed('element_type').val.trim();
@@ -111,7 +111,7 @@ export default {
       message.data.confirmation_text = (msg.childNamed('confirmation_text')) ? msg.childNamed('confirmation_text').val.trim() : '';
       message.data.character_limit = (msg.childNamed('character_limit')) ? msg.childNamed('character_limit').val.trim() : '';
     },
-    parseListMessage: function (msg, message) {
+    parseListMessage: function (message, msg) {
       let items = [];
       msg.childrenNamed('item').forEach((item) => {
         item.children.forEach((children) => {
@@ -125,7 +125,7 @@ export default {
       message.data.view_type = msg.attr['view-type'];
       message.data.items = items;
     },
-    parseMetaMessage: function (msg, message) {
+    parseMetaMessage: function (message, msg) {
       let datas = [];
       msg.childrenNamed('data').forEach((data) => {
         datas.push({
