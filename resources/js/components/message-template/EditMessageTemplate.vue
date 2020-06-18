@@ -22,11 +22,11 @@
 
       <b-form-group>
         <label>Message Mark-up</label>
-        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
+        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''"/>
       </b-form-group>
 
       <b-card>
-         <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData"/>
+         <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData" v-on:errorEmit="errorEmitCatcher"/>
       </b-card>
 
       <b-btn variant="primary" @click="saveMessageTemplate">Save</b-btn>
@@ -99,6 +99,12 @@ export default {
         },
       );
     },
+    errorEmitCatcher(error) {
+      this.error = {};
+      if (error) {
+        this.error.field = 'message_markup';
+      }
+    }
   },
 };
 </script>

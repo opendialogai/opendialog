@@ -115,6 +115,7 @@ export default {
             const doc = parser.parseFromString(val.message_markup, 'application/xml');
             if (doc.getElementsByTagName('parsererror').length > 0) {
                 const error = doc.getElementsByTagName('parsererror')[0].getElementsByTagName('div')[0].innerHTML;
+                this.$emit('errorEmit', error);
                 this.messages.push(
                     {
                         type: 'error',
@@ -122,6 +123,7 @@ export default {
                     }
                 );
             } else {
+                this.$emit('errorEmit', '');
                 const document = new xmldoc.XmlDocument(val.message_markup);
                 this.parseDocumentForMessage(document)
             }

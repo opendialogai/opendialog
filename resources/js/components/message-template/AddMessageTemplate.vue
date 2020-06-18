@@ -26,7 +26,7 @@
       </b-form-group>
 
       <b-card>
-        <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData"/>
+        <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData" v-on:errorEmit="errorEmitCatcher"/>
       </b-card>
 
       <b-btn variant="primary" @click="addMessageTemplate">Create</b-btn>
@@ -100,6 +100,12 @@ export default {
         },
       );
     },
+    errorEmitCatcher(error) {
+      this.error = {};
+      if (error) {
+        this.error.field = 'message_markup';
+      }
+    }
   },
 };
 </script>
