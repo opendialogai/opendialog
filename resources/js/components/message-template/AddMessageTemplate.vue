@@ -20,6 +20,14 @@
         <codemirror v-model="conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" />
       </b-form-group>
 
+      <b-card header="Message Builder">
+        <b-form-group>
+          <label>Message Template</label>
+          <b-select v-on:change="addMarkup" :options="listMessageTypes">
+          </b-select>
+        </b-form-group>
+      </b-card>
+
       <b-form-group>
         <label>Message Mark-up</label>
         <codemirror v-model="message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
@@ -45,11 +53,12 @@ import 'codemirror/theme/dracula.css';
 
 import XmlCodemirror from '@/mixins/XmlCodemirror';
 import MessageBuilder from "./MessageBuilder";
+import MessageTypes from "../../mixins/MessageTypes";
 
 export default {
   name: 'add-message-template',
   props: ['outgoingIntent'],
-  mixins: [XmlCodemirror],
+  mixins: [XmlCodemirror, MessageTypes],
   components: {
     MessageBuilder,
     codemirror,
@@ -68,9 +77,19 @@ export default {
       },
       name: '',
       conditions: '',
-      message_markup: '',
+      message_markup: '<message></message>',
       error: {},
+      messageTypes: ''
     };
+  },
+  computed: {
+    listMessageTypes: () => {
+      let options = [''];
+      MessageTypes.methods.getMessageTypes().forEach((form) => {
+        options.push(form.type)
+      })
+      return options
+    }
   },
   watch: {
     message_markup: {
@@ -81,6 +100,10 @@ export default {
     }
   },
   methods: {
+    addMarkup(e) {
+      const messageTypeConfig = MessageTypes.methods.getMessageTypes().find(messageConfig => messageConfig.type === e);
+      this.message_markup = messageTypeConfig.xml;
+    },
     addMessageTemplate() {
       const data = {
         name: this.name,

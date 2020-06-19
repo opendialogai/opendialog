@@ -10,18 +10,29 @@ export default {
   methods: {
     getMessageTypes() {
       return [
-        {type: 'text-message', function: (message, msg) => {this.parseTextMessage(message, msg)}},
-        {type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)}},
-        {type: 'image-message', function: (message, msg) => {this.parseImageMessage(message, msg)}},
-        {type: 'cta-message', function: (message, msg) => {this.parseCtaMessage(message, msg)}},
-        {type: 'hand-to-human-message', function: (message, msg) => {this.parseH2hMessage(message, msg)}},
-        {type: 'fp-rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}},
-        {type: 'rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}},
-        {type: 'fp-form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}},
-        {type: 'form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}},
-        {type: 'long-text-message', function: (message, msg) => {this.parseLongTextMessage(message, msg)}},
-        {type: 'list-message', function: (message, msg) => {this.parseListMessage(message, msg)}},
-        {type: 'meta-message', function: (message, msg) => {this.parseMetaMessage(message, msg)}},
+        {type: 'text-message', function: (message, msg) => {this.parseTextMessage(message, msg)},
+          xml: `<message><text-message>This is the default No Match response. It means I didn't find any other conversation that could answer what you just said.</text-message></message>`
+        },
+        {type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)},
+          xml: ""
+        },
+        {type: 'image-message', function: (message, msg) => {this.parseImageMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <image-message>\n" +
+            "        <src>{img_src}</src>\n" +
+            "        <url new_tab=\"{true|false}\">{url}</url>\n" +
+            "    </image-message>\n" +
+            "</message>"
+        },
+        {type: 'cta-message', function: (message, msg) => {this.parseCtaMessage(message, msg)}, xml: ""},
+        {type: 'hand-to-human-message', function: (message, msg) => {this.parseH2hMessage(message, msg)}, xml: ""},
+        {type: 'fp-rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}, xml: ""},
+        {type: 'rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}, xml: ""},
+        {type: 'fp-form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}, xml: ""},
+        {type: 'form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}, xml: ""},
+        {type: 'long-text-message', function: (message, msg) => {this.parseLongTextMessage(message, msg)}, xml: ""},
+        {type: 'list-message', function: (message, msg) => {this.parseListMessage(message, msg)}, xml: ""},
+        {type: 'meta-message', function: (message, msg) => {this.parseMetaMessage(message, msg)}, xml: ""},
       ];
     },
     parseTextMessage (message, msg) {
