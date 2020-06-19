@@ -10,29 +10,153 @@ export default {
   methods: {
     getMessageTypes() {
       return [
-        {type: 'text-message', function: (message, msg) => {this.parseTextMessage(message, msg)},
-          xml: `<message><text-message>This is the default No Match response. It means I didn't find any other conversation that could answer what you just said.</text-message></message>`
+        {
+          type: 'text-message', function: (message, msg) => {this.parseTextMessage(message, msg)},
+          xml: "<message>\n" +
+            "  <text-message> \n" +
+            "    Hello, this is a text message.\n" +
+            "  </text-message>\n" +
+            "</message>"
         },
-        {type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)},
-          xml: ""
+        {
+          type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <button-message>\n" +
+            "       <text>{button message text}</text>\n" +
+            "        <external>true|false</external>\n" +
+            "        <clear_after_interaction>true|false</clear_after_interaction>\n" +
+            "    </button-message>\n" +
+            "</message>"
         },
-        {type: 'image-message', function: (message, msg) => {this.parseImageMessage(message, msg)},
+        {
+          type: 'image-message', function: (message, msg) => {this.parseImageMessage(message, msg)},
           xml: "<message>\n" +
             "    <image-message>\n" +
-            "        <src>{img_src}</src>\n" +
+            "        <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
             "        <url new_tab=\"{true|false}\">{url}</url>\n" +
             "    </image-message>\n" +
             "</message>"
         },
-        {type: 'cta-message', function: (message, msg) => {this.parseCtaMessage(message, msg)}, xml: ""},
-        {type: 'hand-to-human-message', function: (message, msg) => {this.parseH2hMessage(message, msg)}, xml: ""},
-        {type: 'fp-rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}, xml: ""},
-        {type: 'rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)}, xml: ""},
-        {type: 'fp-form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}, xml: ""},
-        {type: 'form-message', function: (message, msg) => {this.parseFormMessage(message, msg)}, xml: ""},
-        {type: 'long-text-message', function: (message, msg) => {this.parseLongTextMessage(message, msg)}, xml: ""},
-        {type: 'list-message', function: (message, msg) => {this.parseListMessage(message, msg)}, xml: ""},
-        {type: 'meta-message', function: (message, msg) => {this.parseMetaMessage(message, msg)}, xml: ""},
+        {
+          type: 'cta-message', function: (message, msg) => {this.parseCtaMessage(message, msg)},
+          xml: "<message>\n" +
+            "  <cta-message> \n" +
+            "    Hello, this is a cta message.\n" +
+            "  </cta-message>\n" +
+            "</message>"
+        },
+        {
+          type: 'hand-to-human-message', function: (message, msg) => {this.parseH2hMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <hand-to-human-message>\n" +
+            "        <data name=\"{name_attribute}\">{value}</data>\n" +
+            "    </hand-to-human-message>\n"+
+            "</message>"
+        },
+        {
+          type: 'fp-rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <rich-message>\n" +
+            "        <title>Rich Message</title>\n" +
+            "        <subtitle>With a subtitle</subtitle>\n" +
+            "        <text>Some engaging text</text>\n" +
+            "        <image>\n" +
+            "            <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
+            "            <url new_tab=\"true\">https://docs.opendialog.ai</url>\n" +
+            "        </image>\n" +
+            "    </rich-message>\n" +
+            "</message>"
+        },
+        {
+          type: 'rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <rich-message>\n" +
+            "        <title>Rich Message</title>\n" +
+            "        <subtitle>With a subtitle</subtitle>\n" +
+            "        <text>Some engaging text</text>\n" +
+            "        <image>\n" +
+            "            <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
+            "            <url new_tab=\"true\">https://docs.opendialog.ai</url>\n" +
+            "        </image>\n" +
+            "    </rich-message>\n" +
+            "</message>"
+        },
+        {
+          type: 'fp-form-message', function: (message, msg) => {this.parseFormMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <form-message>\n" +
+            "       <text>Text</text>\n" +
+            "       <submit_text>Submit Text</submit_text>\n" +
+            "       <callback>Callback</callback>\n" +
+            "       <auto_submit>true|false</auto_submit>\n" +
+            "    </form-message>\n" +
+            "</message>"
+        },
+        {
+          type: 'form-message', function: (message, msg) => {this.parseFormMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <form-message>\n" +
+            "        <text>Text</text>\n" +
+            "        <submit_text>Submit Text</submit_text>\n" +
+            "        <callback>Callback</callback>\n" +
+            "        <auto_submit>false</auto_submit>\n" +
+            "\n" +
+            "        <element>\n" +
+            "            <element_type>select</element_type>\n" +
+            "            <name>title</name>\n" +
+            "            <display>Title</display>\n" +
+            "            <options>\n" +
+            "                <option>\n" +
+            "                    <key>mr</key>\n" +
+            "                    <value>Mr.</value>\n" +
+            "                </option>\n" +
+            "                <option>\n" +
+            "                    <key>mrs</key>\n" +
+            "                    <value>Mrs.</value>\n" +
+            "                </option>\n" +
+            "                <option>\n" +
+            "                    <key>other</key>\n" +
+            "                    <value>Other</value>\n" +
+            "                </option>\n" +
+            "            </options>\n" +
+            "        </element>\n" +
+            "\n" +
+            "        <element>\n" +
+            "            <element_type>text</element_type>\n" +
+            "            <name>name</name>\n" +
+            "            <display>Name</display>\n" +
+            "        </element>\n" +
+            "\n" +
+            "    </form-message>\n" +
+            "</message>"
+        },
+        {
+          type: 'long-text-message', function: (message, msg) => {this.parseLongTextMessage(message, msg)},
+          xml: "<message>\n" +
+            "       <long-text-message>\n" +
+            "           <submit_text>Submit Text</submit_text>\n" +
+            "           <callback>callback</callback>\n" +
+            "           <initial_text>$this->initialText</initial_text>\n" +
+            "           <placeholder>$this->placeholder</placeholder>\n" +
+            "           <confirmation_text>$this->confirmationText</confirmation_text>\n" +
+            "           <character_limit>$this->characterLimit</character_limit>\n" +
+            "       </long-text-message>\n" +
+            "</message>"
+        },
+        {
+          type: 'list-message', function: (message, msg) => {this.parseListMessage(message, msg)},
+          xml: "<message>\n" +
+            "    <list-message list_type=\"horizontal\">\n" +
+            "        <text-message>{text_message}</text-message>\n" +
+            "        <image-message>{image_message}</image-message>\n" +
+            "        <rich-message>{rich_message}</rich-message>\n" +
+            "    </list-message>\n" +
+            "</message>"
+        },
+        {
+          type: 'meta-message', function: (message, msg) => {this.parseMetaMessage(message, msg)},
+          xml: "<message></message>"
+        },
       ];
     },
     parseTextMessage (message, msg) {
@@ -64,7 +188,7 @@ export default {
     parseCtaMessage(message, msg) {
       message.data.text = msg.val;
     },
-    parseH2hMessage: function (msg, message) {
+    parseH2hMessage: function (message, msg) {
       let data = [];
       msg.childrenNamed('data').forEach((d) => {
         data.push({
