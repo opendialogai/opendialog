@@ -17,12 +17,12 @@
 
       <b-form-group>
         <label>Conditions</label>
-        <codemirror v-model="messageTemplate.conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" />
+        <codemirror v-model="messageTemplate.conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" class ="collapse-codemirror"/>
       </b-form-group>
 
       <b-form-group>
         <label>Message Mark-up</label>
-        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''"/>
+        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" class="collapse-codemirror"/>
       </b-form-group>
 
       <b-card>
@@ -63,7 +63,7 @@ export default {
         mode: 'text/yaml',
         theme: 'dracula',
         lineNumbers: true,
-        line: true,
+        line: true
       },
       messageTemplate: null,
       error: {},
