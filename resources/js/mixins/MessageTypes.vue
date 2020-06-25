@@ -11,7 +11,7 @@ export default {
     getMessageTypes() {
       return [
         {
-          type: 'text-message', function: (message, msg) => {this.parseTextMessage(message, msg)},
+          type: 'text-message', renderer: (message, msg) => {this.parseTextMessage(message, msg)},
           xml: "<message>\n" +
             "  <text-message> \n" +
             "    Hello, this is a text message.\n" +
@@ -19,7 +19,7 @@ export default {
             "</message>"
         },
         {
-          type: 'attribute-message', function: (message, msg) => {this.parseAttributeMessage(message, msg)},
+          type: 'attribute-message', renderer: (message, msg) => {this.parseAttributeMessage(message, msg)},
           xml: "<message>\n" +
             "  <attribute-message> \n" +
             "    context_name.attribute_name\n" +
@@ -27,7 +27,7 @@ export default {
             "</message>"
         },
         {
-          type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)},
+          type: 'button-message', renderer: (message, msg) => {this.parseButtonMessage(message, msg)},
           xml: "<message>\n" +
             "  <button-message>\n" +
             "    <button>\n" +
@@ -40,7 +40,7 @@ export default {
             "</message>"
         },
         {
-          type: 'image-message', function: (message, msg) => {this.parseImageMessage(message, msg)},
+          type: 'image-message', renderer: (message, msg) => {this.parseImageMessage(message, msg)},
           xml: "<message>\n" +
             "    <image-message>\n" +
             "        <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
@@ -49,7 +49,7 @@ export default {
             "</message>"
         },
         {
-          type: 'cta-message', function: (message, msg) => {this.parseCtaMessage(message, msg)},
+          type: 'cta-message', renderer: (message, msg) => {this.parseCtaMessage(message, msg)},
           xml: "<message>\n" +
             "  <cta-message> \n" +
             "    Hello, this is a cta message.\n" +
@@ -57,7 +57,7 @@ export default {
             "</message>"
         },
         {
-          type: 'hand-to-human-message', function: (message, msg) => {this.parseH2hMessage(message, msg)},
+          type: 'hand-to-human-message', renderer: (message, msg) => {this.parseH2hMessage(message, msg)},
           xml: "<message>\n" +
             "    <hand-to-human-message>\n" +
             "        <data name=\"replace_name_attribute\">Value</data>\n" +
@@ -65,7 +65,7 @@ export default {
             "</message>"
         },
         {
-          type: 'fp-rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)},
+          type: 'fp-rich-message', renderer: (message, msg) => {this.parseRichMessage(message, msg)},
           xml: "<message>\n" +
             "    <fp-rich-message>\n" +
             "        <title>Rich Message</title>\n" +
@@ -79,7 +79,7 @@ export default {
             "</message>"
         },
         {
-          type: 'rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)},
+          type: 'rich-message', renderer: (message, msg) => {this.parseRichMessage(message, msg)},
           xml: "<message>\n" +
             "    <rich-message>\n" +
             "        <title>Rich Message</title>\n" +
@@ -93,7 +93,7 @@ export default {
             "</message>"
         },
         {
-          type: 'fp-form-message', function: (message, msg) => {this.parseFormMessage(message, msg)},
+          type: 'fp-form-message', renderer: (message, msg) => {this.parseFormMessage(message, msg)},
           xml: "<message>\n" +
             "    <form-message>\n" +
             "        <text>Text</text>\n" +
@@ -131,7 +131,7 @@ export default {
             "</message>"
         },
         {
-          type: 'form-message', function: (message, msg) => {this.parseFormMessage(message, msg)},
+          type: 'form-message', renderer: (message, msg) => {this.parseFormMessage(message, msg)},
           xml: "<message>\n" +
             "    <form-message>\n" +
             "        <text>Text</text>\n" +
@@ -169,7 +169,7 @@ export default {
             "</message>"
         },
         {
-          type: 'long-text-message', function: (message, msg) => {this.parseLongTextMessage(message, msg)},
+          type: 'long-text-message', renderer: (message, msg) => {this.parseLongTextMessage(message, msg)},
           xml: "<message>\n" +
             "       <long-text-message>\n" +
             "           <submit_text>Submit Text</submit_text>\n" +
@@ -182,7 +182,7 @@ export default {
             "</message>"
         },
         {
-          type: 'list-message', function: (message, msg) => {this.parseListMessage(message, msg)},
+          type: 'list-message', renderer: (message, msg) => {this.parseListMessage(message, msg)},
           xml: "<message>\n" +
             "    <list-message list_type=\"horizontal\">\n" +
             "        <text-message>Hello text message</text-message>\n" +
@@ -192,7 +192,7 @@ export default {
             "</message>"
         },
         {
-          type: 'meta-message', function: (message, msg) => {this.parseMetaMessage(message, msg)},
+          type: 'meta-message', renderer: (message, msg) => {this.parseMetaMessage(message, msg)},
           xml: "<message>\n" +
             "    <meta-message>\n" +
             "      <data name=\"key\">value</data>\n" +

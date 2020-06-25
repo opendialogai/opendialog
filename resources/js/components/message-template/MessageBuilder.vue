@@ -160,7 +160,7 @@ export default {
       const messageTypes = MessageTypes.methods.getMessageTypes();
       const messageTypeConfig = messageTypes.find(messageConfig => messageConfig.type === message.type)
       // update the message properties based on its type
-      messageTypeConfig.function(message, msg);
+      messageTypeConfig.renderer(message, msg);
       return message;
     },
   },
