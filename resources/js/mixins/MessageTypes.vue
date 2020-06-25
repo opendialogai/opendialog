@@ -59,7 +59,7 @@ export default {
         {
           type: 'fp-rich-message', function: (message, msg) => {this.parseRichMessage(message, msg)},
           xml: "<message>\n" +
-            "    <rich-message>\n" +
+            "    <fp-rich-message>\n" +
             "        <title>Rich Message</title>\n" +
             "        <subtitle>With a subtitle</subtitle>\n" +
             "        <text>Some engaging text</text>\n" +
@@ -67,7 +67,7 @@ export default {
             "            <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
             "            <url new_tab=\"true\">https://docs.opendialog.ai</url>\n" +
             "        </image>\n" +
-            "    </rich-message>\n" +
+            "    </fp-rich-message>\n" +
             "</message>"
         },
         {
