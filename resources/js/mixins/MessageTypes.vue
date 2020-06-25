@@ -21,11 +21,14 @@ export default {
         {
           type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)},
           xml: "<message>\n" +
-            "    <button-message>\n" +
-            "       <text>Button message text</text>\n" +
-            "        <external>false</external>\n" +
-            "        <clear_after_interaction>true</clear_after_interaction>\n" +
-            "    </button-message>\n" +
+            "  <button-message>\n" +
+            "    <button>\n" +
+            "      <text>Button text</text>\n" +
+            "      <value>button_value</value>\n" +
+            "      <callback>button_callback</callback>\n" +
+            "      <display>true</display>\n" +
+            "    </button>\n" +
+            "  </button-message>\n"+
             "</message>"
         },
         {
@@ -155,7 +158,11 @@ export default {
         },
         {
           type: 'meta-message', function: (message, msg) => {this.parseMetaMessage(message, msg)},
-          xml: "<message></message>"
+          xml: "<message>\n" +
+            "    <meta-message>\n" +
+            "      <data name=\"key\">value</data>\n" +
+            "    </meta-message>\n"+
+            "</message>"
         },
       ];
     },
