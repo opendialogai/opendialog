@@ -51,6 +51,9 @@ $simple-line-font-path: '~simple-line-icons/fonts/';
 }
 .collapse-codemirror {
     .CodeMirror {
-        height: auto
+        height: auto;
+    }
+    .CodeMirror-scroll {
+        max-height: 300px;
     }
 }
