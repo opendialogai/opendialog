@@ -25,7 +25,7 @@
         <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''"/>
       </b-form-group>
 
-      <b-card>
+      <b-card header="Message Preview">
          <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData" v-on:errorEmit="errorEmitCatcher"/>
       </b-card>
 
