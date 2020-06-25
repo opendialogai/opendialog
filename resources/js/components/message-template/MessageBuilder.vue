@@ -91,7 +91,7 @@ export default {
   name: 'message-builder',
   components: {
     AttributeMessage,
-      Error,
+    Error,
     ButtonMessage,
     CtaMessage,
     EmptyMessage,
