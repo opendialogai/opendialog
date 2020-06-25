@@ -96,10 +96,37 @@ export default {
           type: 'fp-form-message', function: (message, msg) => {this.parseFormMessage(message, msg)},
           xml: "<message>\n" +
             "    <form-message>\n" +
-            "       <text>Text</text>\n" +
-            "       <submit_text>Submit Text</submit_text>\n" +
-            "       <callback>Callback</callback>\n" +
-            "       <auto_submit>true|false</auto_submit>\n" +
+            "        <text>Text</text>\n" +
+            "        <submit_text>Submit Text</submit_text>\n" +
+            "        <callback>Callback</callback>\n" +
+            "        <auto_submit>false</auto_submit>\n" +
+            "\n" +
+            "        <element>\n" +
+            "            <element_type>select</element_type>\n" +
+            "            <name>title</name>\n" +
+            "            <display>Title</display>\n" +
+            "            <options>\n" +
+            "                <option>\n" +
+            "                    <key>mr</key>\n" +
+            "                    <value>Mr.</value>\n" +
+            "                </option>\n" +
+            "                <option>\n" +
+            "                    <key>mrs</key>\n" +
+            "                    <value>Mrs.</value>\n" +
+            "                </option>\n" +
+            "                <option>\n" +
+            "                    <key>other</key>\n" +
+            "                    <value>Other</value>\n" +
+            "                </option>\n" +
+            "            </options>\n" +
+            "        </element>\n" +
+            "\n" +
+            "        <element>\n" +
+            "            <element_type>text</element_type>\n" +
+            "            <name>name</name>\n" +
+            "            <display>Name</display>\n" +
+            "        </element>\n" +
+            "\n" +
             "    </form-message>\n" +
             "</message>"
         },
