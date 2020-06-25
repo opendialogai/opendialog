@@ -19,6 +19,14 @@ export default {
             "</message>"
         },
         {
+          type: 'attribute-message', function: (message, msg) => {this.parseAttributeMessage(message, msg)},
+          xml: "<message>\n" +
+            "  <attribute-message> \n" +
+            "    context_name.attribute_name\n" +
+            "  </attribute-message>\n" +
+            "</message>"
+        },
+        {
           type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)},
           xml: "<message>\n" +
             "  <button-message>\n" +
@@ -167,6 +175,17 @@ export default {
       ];
     },
     parseTextMessage (message, msg) {
+      let text = '';
+      msg.children.forEach((child) => {
+        if (child.type === 'element') {
+          text += ' <a target="_blank" href="' + child.childNamed('url').val.trim() + '">' + child.childNamed('text').val.trim() + '</a>';
+        } else if (child.type === 'text') {
+          text += ' ' + child.text.trim();
+        }
+      });
+      message.data = text.trim();
+    },
+    parseAttributeMessage (message, msg) {
       let text = '';
       msg.children.forEach((child) => {
         if (child.type === 'element') {

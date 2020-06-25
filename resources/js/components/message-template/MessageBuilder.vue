@@ -13,6 +13,9 @@
       <template v-if="message.type === 'text-message'">
         <TextMessage :message="message" />
       </template>
+      <template v-if="message.type === 'attribute-message'">
+        <AttributeMessage :message="message" />
+      </template>
       <template v-if="message.type === 'button-message'">
         <ButtonMessage :message="message" />
       </template>
@@ -82,10 +85,12 @@ import RichMessage from './Messages/RichMessage';
 import TextMessage from './Messages/TextMessage';
 import MessageTypes from "@/mixins/MessageTypes";
 import Error from "./Messages/Error";
+import AttributeMessage from "./Messages/AttributeMessage";
 
 export default {
   name: 'message-builder',
   components: {
+    AttributeMessage,
       Error,
     ButtonMessage,
     CtaMessage,
