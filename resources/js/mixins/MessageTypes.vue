@@ -22,9 +22,9 @@ export default {
           type: 'button-message', function: (message, msg) => {this.parseButtonMessage(message, msg)},
           xml: "<message>\n" +
             "    <button-message>\n" +
-            "       <text>{button message text}</text>\n" +
-            "        <external>true|false</external>\n" +
-            "        <clear_after_interaction>true|false</clear_after_interaction>\n" +
+            "       <text>Button message text</text>\n" +
+            "        <external>false</external>\n" +
+            "        <clear_after_interaction>true</clear_after_interaction>\n" +
             "    </button-message>\n" +
             "</message>"
         },
@@ -33,7 +33,7 @@ export default {
           xml: "<message>\n" +
             "    <image-message>\n" +
             "        <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
-            "        <url new_tab=\"{true|false}\">{url}</url>\n" +
+            "        <url new_tab=\"true\">{url}</url>\n" +
             "    </image-message>\n" +
             "</message>"
         },
@@ -49,7 +49,7 @@ export default {
           type: 'hand-to-human-message', function: (message, msg) => {this.parseH2hMessage(message, msg)},
           xml: "<message>\n" +
             "    <hand-to-human-message>\n" +
-            "        <data name=\"{name_attribute}\">{value}</data>\n" +
+            "        <data name=\"replace_name_attribute\">Value</data>\n" +
             "    </hand-to-human-message>\n"+
             "</message>"
         },
@@ -136,10 +136,10 @@ export default {
             "       <long-text-message>\n" +
             "           <submit_text>Submit Text</submit_text>\n" +
             "           <callback>callback</callback>\n" +
-            "           <initial_text>$this->initialText</initial_text>\n" +
-            "           <placeholder>$this->placeholder</placeholder>\n" +
-            "           <confirmation_text>$this->confirmationText</confirmation_text>\n" +
-            "           <character_limit>$this->characterLimit</character_limit>\n" +
+            "           <initial_text>initialText</initial_text>\n" +
+            "           <placeholder>placeholder</placeholder>\n" +
+            "           <confirmation_text>confirmationText</confirmation_text>\n" +
+            "           <character_limit>characterLimit</character_limit>\n" +
             "       </long-text-message>\n" +
             "</message>"
         },
@@ -147,9 +147,9 @@ export default {
           type: 'list-message', function: (message, msg) => {this.parseListMessage(message, msg)},
           xml: "<message>\n" +
             "    <list-message list_type=\"horizontal\">\n" +
-            "        <text-message>{text_message}</text-message>\n" +
-            "        <image-message>{image_message}</image-message>\n" +
-            "        <rich-message>{rich_message}</rich-message>\n" +
+            "        <text-message>Hello text message</text-message>\n" +
+            "        <image-message>Image message</image-message>\n" +
+            "        <rich-message>Rich message</rich-message>\n" +
             "    </list-message>\n" +
             "</message>"
         },
