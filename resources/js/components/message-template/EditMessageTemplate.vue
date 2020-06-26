@@ -17,16 +17,21 @@
 
       <b-form-group>
         <label>Conditions</label>
-        <codemirror v-model="messageTemplate.conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" />
+        <codemirror v-model="messageTemplate.conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" class ="collapse-codemirror"/>
       </b-form-group>
 
       <b-form-group>
         <label>Message Mark-up</label>
-        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
+        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" class="collapse-codemirror"/>
       </b-form-group>
+
+      <b-card header="Message Preview">
+         <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData" v-on:errorEmit="errorEmitCatcher"/>
+      </b-card>
 
       <b-btn variant="primary" @click="saveMessageTemplate">Save</b-btn>
     </b-card>
+
   </div>
 </template>
 
@@ -38,6 +43,7 @@ import 'codemirror/mode/yaml/yaml';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
+import MessageBuilder from "./MessageBuilder";
 
 import XmlCodemirror from '@/mixins/XmlCodemirror';
 
@@ -46,16 +52,18 @@ export default {
   props: ['outgoingIntent', 'id'],
   mixins: [XmlCodemirror],
   components: {
+    MessageBuilder,
     codemirror,
   },
   data() {
     return {
+      previewData: {},
       cmConditionsOptions: {
         tabSize: 2,
         mode: 'text/yaml',
         theme: 'dracula',
         lineNumbers: true,
-        line: true,
+        line: true
       },
       messageTemplate: null,
       error: {},
@@ -65,6 +73,7 @@ export default {
     axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id).then(
       (response) => {
         this.messageTemplate = response.data.data;
+        this.previewData = this.messageTemplate;
       },
     );
   },
@@ -90,6 +99,12 @@ export default {
         },
       );
     },
+    errorEmitCatcher(error) {
+      this.error = {};
+      if (error) {
+        this.error.field = 'message_markup';
+      }
+    }
   },
 };
 </script>
