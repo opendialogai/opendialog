@@ -17,13 +17,25 @@
 
       <b-form-group>
         <label>Conditions</label>
-        <codemirror v-model="conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" />
+        <codemirror v-model="conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" class="collapse-codemirror"/>
       </b-form-group>
+
+      <b-card header="Message Builder">
+        <b-form-group>
+          <label>Message Template</label>
+          <b-select v-on:change="addMarkup" :options="listMessageTypes">
+          </b-select>
+        </b-form-group>
+      </b-card>
 
       <b-form-group>
         <label>Message Mark-up</label>
-        <codemirror v-model="message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
+        <codemirror v-model="message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" class="collapse-codemirror"/>
       </b-form-group>
+
+      <b-card header="Message Preview">
+        <MessageBuilder v-if="previewData" :message="previewData" v-model="previewData" v-on:errorEmit="errorEmitCatcher"/>
+      </b-card>
 
       <b-btn variant="primary" @click="addMessageTemplate">Create</b-btn>
     </b-card>
@@ -40,16 +52,22 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 
 import XmlCodemirror from '@/mixins/XmlCodemirror';
+import MessageBuilder from "./MessageBuilder";
+import MessageTypes from "../../mixins/MessageTypes";
 
 export default {
   name: 'add-message-template',
   props: ['outgoingIntent'],
-  mixins: [XmlCodemirror],
+  mixins: [XmlCodemirror, MessageTypes],
   components: {
+    MessageBuilder,
     codemirror,
   },
   data() {
     return {
+      previewData: {
+        message_markup: ''
+      },
       cmConditionsOptions: {
         tabSize: 2,
         mode: 'text/yaml',
@@ -59,11 +77,33 @@ export default {
       },
       name: '',
       conditions: '',
-      message_markup: '',
+      message_markup: '<message>\n</message>',
       error: {},
+      messageTypes: ''
     };
   },
+  computed: {
+    listMessageTypes: () => {
+      let options = [''];
+      MessageTypes.methods.getMessageTypes().forEach((form) => {
+        options.push(form.type)
+      })
+      return options
+    }
+  },
+  watch: {
+    message_markup: {
+      handler (val) {
+        this.previewData.message_markup = val;
+      },
+      deep: true
+    }
+  },
   methods: {
+    addMarkup(e) {
+      const messageTypeConfig = MessageTypes.methods.getMessageTypes().find(messageConfig => messageConfig.type === e);
+      this.message_markup = messageTypeConfig.xml;
+    },
     addMessageTemplate() {
       const data = {
         name: this.name,
@@ -83,6 +123,12 @@ export default {
         },
       );
     },
+    errorEmitCatcher(error) {
+      this.error = {};
+      if (error) {
+        this.error.field = 'message_markup';
+      }
+    }
   },
 };
 </script>

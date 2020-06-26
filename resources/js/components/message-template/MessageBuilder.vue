@@ -1,49 +1,67 @@
 <template>
   <div>
     <div class="message mb-4" v-for="message in messages">
-      <template v-if="message.type == 'text-message'">
-        <div class="text-message" v-html="message.data"></div>
+      <template v-if="message.type === 'empty-message'">
+        <EmptyMessage :message="message" />
       </template>
-      <template v-if="message.type == 'button-message'">
-        <div class="button-message">
-          <div v-html="message.data.text"></div>
-          <div class="buttons" v-for="button in message.data.buttons">
-            <button class="btn btn-default btn-primary mt-1 mr-2">{{ button.text }}</button>
-          </div>
-        </div>
+      <template v-if="message.type === 'hand-to-human-message'">
+        <HandToHumanMessage :message="message" />
       </template>
-      <template v-if="message.type == 'image-message'">
-        <div class="image-message">
-          <template v-if="message.data.link">
-            <a :href="message.data.link">
-              <img :src="message.data.src" />
-            </a>
+      <template v-if="message.type === 'cta-message'">
+        <CtaMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'text-message'">
+        <TextMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'attribute-message'">
+        <AttributeMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'button-message'">
+        <ButtonMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'image-message'">
+        <ImageMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'rich-message' || message.type === 'fp-rich-message'">
+        <RichMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'form-message' || message.type === 'fp-form-message'">
+        <FormMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'long-text-message'">
+        <LongTextMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'meta-message'">
+        <MetaMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'error'">
+        <Error :message="message" />
+      </template>
+      <template v-if="message.type === 'list-message'">
+        <div class="list-message" :class="message.data.view_type">
+          <template v-if="message.data.view_type === 'list'">
+            <div class="list-message--item" v-for="(item, idx) in message.data.items" :key="idx">
+              <TextMessage v-if="item.type === 'text-message'" :message="item" />
+              <ButtonMessage v-else-if="item.type === 'button-message'" :message="item" />
+              <ImageMessage v-else-if="item.type === 'image-message'" :message="item" />
+              <RichMessage v-else-if="item.type === 'rich-message'" :message="item" />
+            </div>
           </template>
           <template v-else>
-            <img :src="message.data.src" />
+            <slider
+              :direction="message.data.view_type"
+              :pagination-visible="true"
+              :pagination-clickable="true"
+              :drag-enable="false"
+            >
+              <div class="list-message--item" v-for="(item, idx) in message.data.items" :key="idx">
+                <TextMessage v-if="item.type === 'text-message'" :message="item" />
+                <ButtonMessage v-else-if="item.type === 'button-message'" :message="item" />
+                <ImageMessage v-else-if="item.type === 'image-message'" :message="item" />
+                <RichMessage v-else-if="item.type === 'rich-message'" :message="item" />
+              </div>
+            </slider>
           </template>
-        </div>
-      </template>
-      <template v-if="message.type == 'rich-message' || message.type == 'fp-rich-message'">
-        <div class="rich-message">
-          <div class="rich-message--title mb-1" v-if="message.data.title">{{ message.data.title }}</div>
-          <div class="rich-message--subtitle mb-2" v-if="message.data.subtitle">{{ message.data.subtitle }}</div>
-          <div class="rich-message--text" v-html="message.data.text"></div>
-
-          <div class="rich-message--image mt-2 mb-1" v-if="message.data.image.src">
-            <template v-if="message.data.image.url">
-              <a :href="message.data.image.url">
-                <img :src="message.data.image.src" />
-              </a>
-            </template>
-            <template v-else>
-              <img :src="message.data.image.src" />
-            </template>
-          </div>
-
-          <div class="buttons" v-if="message.data.button.text">
-            <button class="btn btn-default btn-primary mt-1 mr-2">{{ message.data.button.text }}</button>
-          </div>
         </div>
       </template>
     </div>
@@ -53,77 +71,142 @@
 <script>
 import xmldoc from 'xmldoc';
 
+import Slider from 'vue-plain-slider';
+
+import ButtonMessage from './Messages/ButtonMessage';
+import CtaMessage from './Messages/CtaMessage';
+import EmptyMessage from './Messages/EmptyMessage';
+import FormMessage from './Messages/FormMessage';
+import HandToHumanMessage from './Messages/HandToHumanMessage';
+import ImageMessage from './Messages/ImageMessage';
+import LongTextMessage from './Messages/LongTextMessage';
+import MetaMessage from './Messages/MetaMessage';
+import RichMessage from './Messages/RichMessage';
+import TextMessage from './Messages/TextMessage';
+import MessageTypes from "@/mixins/MessageTypes";
+import Error from "./Messages/Error";
+import AttributeMessage from "./Messages/AttributeMessage";
+
 export default {
   name: 'message-builder',
+  components: {
+    AttributeMessage,
+    Error,
+    ButtonMessage,
+    CtaMessage,
+    EmptyMessage,
+    FormMessage,
+    HandToHumanMessage,
+    ImageMessage,
+    LongTextMessage,
+    MetaMessage,
+    RichMessage,
+    TextMessage,
+    Slider,
+  },
   props: ['message'],
+  mixins: [MessageTypes],
   data() {
     return {
+      watchMessage: this.message,
       messages: [],
     };
   },
+  watch: {
+      watchMessage: {
+        handler (val) {
+            this.messages = [];
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(val.message_markup, 'application/xml');
+            if (doc.getElementsByTagName('parsererror').length > 0) {
+                const error = doc.getElementsByTagName('parsererror')[0].getElementsByTagName('div')[0].innerHTML;
+                this.$emit('errorEmit', error);
+                this.messages.push(
+                    {
+                        type: 'error',
+                        data:  `Validation error: ${error}`
+                    }
+                );
+            } else {
+                this.$emit('errorEmit', '');
+                const document = new xmldoc.XmlDocument(val.message_markup);
+                this.parseDocumentForMessage(document)
+            }
+        },
+        deep: true
+    }
+  },
   mounted() {
-    var document = new xmldoc.XmlDocument(this.message.message_markup);
-    document.children.forEach((msg) => {
-      if (msg.type === 'element') {
-        const message = {
-          type: msg.name,
-          data: {},
-        };
-
-        switch (message.type) {
-          case 'text-message':
-            message.data = msg.val.trim();
-            break;
-
-          case 'button-message':
-            let buttons = [];
-            msg.childrenNamed('button').forEach((button) => {
-              buttons.push({
-                text: (button.childNamed('text')) ? button.childNamed('text').val.trim() : '',
-              });
-            });
-
-            message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : '';
-            message.data.buttons = buttons;
-            break;
-
-          case 'image-message':
-            message.data.src = (msg.childNamed('src')) ? msg.childNamed('src').val.trim() : '';
-            message.data.link = (msg.childNamed('link')) ? msg.childNamed('link').val.trim() : '';
-            break;
-
-          case 'fp-rich-message':
-          case 'rich-message':
-            message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
-            message.data.subtitle = (msg.childNamed('subtitle')) ? msg.childNamed('subtitle').val.trim() : ''(string);
-            message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : ''(string);
-            message.data.button = {
-              text: (msg.childNamed('button')) ? msg.childNamed('button').childNamed('text').val.trim() : '',
-            };
-            message.data.image = {
-              src: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('src').val.trim() : '',
-              url: (msg.childNamed('image')) ? msg.childNamed('image').childNamed('url').val.trim() : '',
-            };
-            break;
-        }
-
-        this.messages.push(message);
+      if (this.watchMessage.message_markup) {
+        var document = new xmldoc.XmlDocument(this.watchMessage.message_markup);
+        this.parseDocumentForMessage(document)
       }
-    });
+  },
+  methods: {
+    parseDocumentForMessage(document) {
+      document.children.forEach((msg) => {
+          if (msg.type === 'element') {
+              const message = this.parseMessage(msg);
+              this.messages.push(message);
+          }
+      });
+    },
+    parseMessage(msg) {
+      const message = {
+        type: msg.name,
+        data: {},
+      };
+
+      const messageTypes = MessageTypes.methods.getMessageTypes();
+      const messageTypeConfig = messageTypes.find(messageConfig => messageConfig.type === message.type)
+      // update the message properties based on its type
+      messageTypeConfig.renderer(message, msg);
+      return message;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .message {
+  .list-message,
+  .long-text-message,
+  .cta-message,
+  .empty-message,
+  .hand-to-human-message,
   .text-message,
   .button-message,
   .image-message,
+  .form-message,
+  .meta-message,
   .rich-message {
     border-radius: 6px;
     padding: 7px 10px;
     background: #eaeaea;
     max-width: 300px;
+  }
+
+  .list-message {
+    .text-message,
+    .button-message,
+    .image-message,
+    .rich-message {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &.list {
+      .list-message--item {
+        border-bottom: 1px solid #c3c3c3;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  .slider {
+    padding-bottom: 30px;
   }
 }
 </style>
