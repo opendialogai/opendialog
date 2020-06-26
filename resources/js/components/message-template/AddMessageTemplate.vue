@@ -17,7 +17,7 @@
 
       <b-form-group>
         <label>Conditions</label>
-        <codemirror v-model="conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" />
+        <codemirror v-model="conditions" :options="cmConditionsOptions" :class="(error.field == 'conditions') ? 'is-invalid' : ''" class="collapse-codemirror"/>
       </b-form-group>
 
       <b-card header="Message Builder">
@@ -30,7 +30,7 @@
 
       <b-form-group>
         <label>Message Mark-up</label>
-        <codemirror v-model="message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" />
+        <codemirror v-model="message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" class="collapse-codemirror"/>
       </b-form-group>
 
       <b-card header="Message Preview">
@@ -77,7 +77,7 @@ export default {
       },
       name: '',
       conditions: '',
-      message_markup: '<message></message>',
+      message_markup: '<message>\n</message>',
       error: {},
       messageTypes: ''
     };
