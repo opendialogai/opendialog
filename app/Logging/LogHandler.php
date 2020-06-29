@@ -3,6 +3,8 @@
 namespace App\Logging;
 
 use App\Warning;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -19,7 +21,11 @@ class LogHandler extends AbstractProcessingHandler
         if (!empty($record['formatted'])) {
             $log = new Warning();
             $log->fill($record['formatted']);
-            $log->save();
+            try {
+                $log->save();
+            } catch (QueryException $e) {
+                Log::debug(sprintf('Warning was not persisted to the database: %s', $e->getMessage()));
+            }
         }
     }
 

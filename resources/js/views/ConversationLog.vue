@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-card header="Conversation Log">
+      <Breadcrumbs />
+      <b-card header="Conversation Log">
       <div class="d-inline-block mb-2 w-100">
         <div class="float-left font-weight-bolder">Bot</div>
         <div class="float-right font-weight-bolder">User</div>
@@ -36,7 +37,7 @@
               </template>
             </div>
           </template>
-          <template v-if="message.type == 'rich'">
+          <template v-if="message.type == 'rich' || v-if="message.type == 'fp-rich'">
             <div class="rich-message">
               <div class="rich-message--title mb-1" v-if="message.data.title">{{ message.data.title }}</div>
               <div class="rich-message--subtitle mb-2" v-if="message.data.subtitle">{{ message.data.subtitle }}</div>
@@ -108,9 +109,14 @@
 </template>
 
 <script>
-export default {
+    import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+
+    export default {
   name: 'conversation-log',
   props: ['id'],
+  components: {
+      Breadcrumbs
+  },
   data() {
     return {
       messages: [],

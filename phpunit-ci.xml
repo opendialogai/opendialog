@@ -33,5 +33,6 @@
         <env name="DB_DATABASE" value=":memory:"/>
         <env name="DGRAPH_URL" value="http://localhost"/>
         <env name="DGRAPH_PORT" value="8080"/>
+        <env name="STATS_CACHE_LENGTH" value="0"/>
     </php>
 </phpunit>

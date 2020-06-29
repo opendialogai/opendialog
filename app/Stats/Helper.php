@@ -7,6 +7,7 @@ use DatePeriod;
 use DateTime;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationLog\Message;
 
@@ -104,5 +105,55 @@ abstract class Helper
         ];
 
         return $data;
+    }
+
+    /**
+     * @param $statName
+     * @param $value
+     * @param $startDate
+     * @param $endDate
+     */
+    public static function setCache($statName, $value, $startDate = null, $endDate = null)
+    {
+        $key = self::getCacheKey($statName, $startDate, $endDate);
+
+        Cache::put($key, json_encode($value), config('admin-stats.cache_length'));
+    }
+
+    /**
+     * @param $statName
+     * @param $startDate
+     * @param $endDate
+     * @return mixed|null
+     */
+    public static function getCache($statName, $startDate = null, $endDate = null)
+    {
+        $key = self::getCacheKey($statName, $startDate, $endDate);
+
+        if ($value = Cache::get($key)) {
+            return json_decode($value, true);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $statName
+     * @param $startDate
+     * @param $endDate
+     * @return string
+     */
+    private static function getCacheKey($statName, $startDate = null, $endDate = null)
+    {
+        if ($startDate && $endDate) {
+            return sprintf(
+                'statistic|%s|%s|%s',
+                $startDate->format('Y-m-d'),
+                $endDate->format('Y-m-d'),
+                $statName,
+            );
+        } else {
+            return sprintf('statistic|%s', $statName);
+        }
     }
 }

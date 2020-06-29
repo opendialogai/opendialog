@@ -6,7 +6,7 @@
       <div class="col-12">
         <div class="float-right">
           <b-btn variant="primary mr-4" @click="createMessageTemplate">Create Message Template</b-btn>
-          <b-btn variant="primary" @click="editOutgoingIntent">Edit</b-btn>
+          <b-btn variant="primary" @click="editOutgoingIntent">Edit Outgoing Intent Name</b-btn>
           <b-btn variant="danger" @click="showDeleteOutgoingIntentModal">Delete</b-btn>
         </div>
       </div>
@@ -200,7 +200,7 @@ export default {
 
       this.messageTemplates = this.messageTemplates.filter(obj => obj.id !== this.currentMessageTemplate);
 
-      axios.delete('/admin/api/outgoing-intents/' + this.id + '/message-templates/' + this.currentMessageTemplate);
+      axios.delete('/admin/api/outgoing-intents/' + this.id);
     },
   },
 };
