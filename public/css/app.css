@@ -23011,3 +23011,11 @@ body {
   cursor: not-allowed;
 }
 
+.collapse-codemirror .CodeMirror {
+  height: auto;
+}
+
+.collapse-codemirror .CodeMirror-scroll {
+  max-height: 300px;
+}
+

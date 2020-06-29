@@ -13,6 +13,12 @@
     <div v-if="message.data.character_limit" class="long-text-message--character-limit">
       <b>Character limit:</b> <span>{{ message.data.character_limit }}</span>
     </div>
+    <div v-if="message.data.submit_text" class="long-text-message--submit-text">
+      <b>Submit text:</b> <span>{{ message.data.submit_text }}</span>
+    </div>
+    <div v-if="message.data.callback" class="long-text-message--callback">
+      <b>Callback:</b> <span>{{ message.data.callback }}</span>
+    </div>
   </div>
 </template>
 

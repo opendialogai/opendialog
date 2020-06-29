@@ -271,7 +271,7 @@ export default {
         const elementType = element.childNamed('element_type').val.trim();
         let options = [];
 
-        if (elementType == 'radio' || elementType == 'auto_complete_select') {
+        if (elementType == 'radio' || elementType == 'select' || elementType == 'auto_complete_select') {
           element.childNamed('options').childrenNamed('option').forEach((option) => {
             options.push({
               key: (option.childNamed('key')) ? option.childNamed('key').val.trim() : '',
@@ -294,6 +294,7 @@ export default {
     },
     parseLongTextMessage: function (message, msg) {
       message.data.submit_text = (msg.childNamed('submit_text')) ? msg.childNamed('submit_text').val.trim() : '';
+      message.data.callback = (msg.childNamed('callback')) ? msg.childNamed('callback').val.trim() : '';
       message.data.initial_text = (msg.childNamed('initial_text')) ? msg.childNamed('initial_text').val.trim() : '';
       message.data.placeholder = (msg.childNamed('placeholder')) ? msg.childNamed('placeholder').val.trim() : '';
       message.data.confirmation_text = (msg.childNamed('confirmation_text')) ? msg.childNamed('confirmation_text').val.trim() : '';
@@ -323,6 +324,18 @@ export default {
       });
 
       message.data.datas = datas;
+    },
+    parseMessage(msg) {
+      const message = {
+        type: msg.name,
+        data: {},
+      };
+
+      const messageTypes = this.getMessageTypes();
+      const messageTypeConfig = messageTypes.find(messageConfig => messageConfig.type === message.type)
+      // update the message properties based on its type
+      messageTypeConfig.renderer(message, msg);
+      return message;
     },
   },
 };
