@@ -4,9 +4,11 @@ The OpenDialog CI process builds a docker image for every feature branch. This d
 
 ## Running Docker locally
 
-To run OpenDialog from a docker image, you should use the `docker-compose.yml` file included with this project alongside the `.env` file in this directory. Any environment variables placed in this file will be used by the application. The `TAG` variable sets which image tag to use. This is set to dev by default.
+To run OpenDialog from a Docker image, you should use the `docker-compose.yml` file included with this project alongside the `.env.example` file in this directory.
 
-To get the application up and running use: 
+First, copy the `.env.example` to `.env`. Any environment variables placed in this file will be used by the application. The `TAG` variable sets which image tag to use from the OpenDialog public DockerHub [repository](https://hub.docker.com/repository/registry-1.docker.io/opendialogai/opendialog/tags). This is set to `develop` by default.
+
+Once you've created a `.env` file, to get the application up and running use: 
 
     `docker-compose up -d app`
 
@@ -14,7 +16,9 @@ After first run, or to update a running application, the `docker-update.sh` scri
 
     `docker-compose exec app bash docker/od-demo/update-docker.sh`
     
-This will run all database migration files, set up the webchat settings, optionally load all conversations and create the default admin user (if not already created)
+This will run all database migration files, set up the webchat settings, optionally load all conversations and create the default admin user (if not already created).
+
+You can then visit `http://localhost` and you should be able to login to the OpenDialog application (user:admin@example.com \ password: opendialog)
 
 If you need a newer copy of the same image, power down the app with
  
@@ -22,7 +26,7 @@ If you need a newer copy of the same image, power down the app with
 
 pull the new image
 
-`docker pull opendialogai/opendialog:dev`
+`docker pull opendialogai/opendialog:develop`
 
 replacing dev with the tag you are interested in and then start it up again. 
 
