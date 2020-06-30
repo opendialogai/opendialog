@@ -23,7 +23,7 @@
       <b-card header="Message Builder">
         <b-form-group>
           <label>Message Template</label>
-          <b-select v-on:change="addMarkup" :options="listMessageTypes">
+          <b-select @change="addMarkup" :options="listMessageTypes">
           </b-select>
         </b-form-group>
       </b-card>
@@ -52,8 +52,8 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 
 import XmlCodemirror from '@/mixins/XmlCodemirror';
-import MessageBuilder from "./MessageBuilder";
-import MessageTypes from "../../mixins/MessageTypes";
+import MessageBuilder from './MessageBuilder';
+import MessageTypes from '@/mixins/MessageTypes';
 
 export default {
   name: 'add-message-template',
@@ -86,23 +86,25 @@ export default {
     listMessageTypes: () => {
       let options = [''];
       MessageTypes.methods.getMessageTypes().forEach((form) => {
-        options.push(form.type)
-      })
-      return options
-    }
+        options.push(form.type);
+      });
+      return options;
+    },
   },
   watch: {
     message_markup: {
       handler (val) {
         this.previewData.message_markup = val;
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
-    addMarkup(e) {
-      const messageTypeConfig = MessageTypes.methods.getMessageTypes().find(messageConfig => messageConfig.type === e);
-      this.message_markup = messageTypeConfig.xml;
+    addMarkup(messageType) {
+      if (messageType) {
+        const messageTypeConfig = MessageTypes.methods.getMessageTypes().find(messageConfig => messageConfig.type === messageType);
+        this.message_markup = messageTypeConfig.xml;
+      }
     },
     addMessageTemplate() {
       const data = {

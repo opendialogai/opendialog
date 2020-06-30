@@ -42,10 +42,10 @@ export default {
         {
           type: 'image-message', renderer: (message, msg) => {this.parseImageMessage(message, msg)},
           xml: "<message>\n" +
-            "    <image-message>\n" +
-            "        <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
-            "        <url new_tab=\"true\">{url}</url>\n" +
-            "    </image-message>\n" +
+            "  <image-message>\n" +
+            "    <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
+            "    <url new_tab=\"true\">{url}</url>\n" +
+            "  </image-message>\n" +
             "</message>"
         },
         {
@@ -59,144 +59,144 @@ export default {
         {
           type: 'hand-to-human-message', renderer: (message, msg) => {this.parseH2hMessage(message, msg)},
           xml: "<message>\n" +
-            "    <hand-to-human-message>\n" +
-            "        <data name=\"replace_name_attribute\">Value</data>\n" +
-            "    </hand-to-human-message>\n"+
+            "  <hand-to-human-message>\n" +
+            "    <data name=\"replace_name_attribute\">Value</data>\n" +
+            "  </hand-to-human-message>\n"+
             "</message>"
         },
         {
           type: 'fp-rich-message', renderer: (message, msg) => {this.parseRichMessage(message, msg)},
           xml: "<message>\n" +
-            "    <fp-rich-message>\n" +
-            "        <title>Rich Message</title>\n" +
-            "        <subtitle>With a subtitle</subtitle>\n" +
-            "        <text>Some engaging text</text>\n" +
-            "        <image>\n" +
-            "            <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
-            "            <url new_tab=\"true\">https://docs.opendialog.ai</url>\n" +
-            "        </image>\n" +
-            "    </fp-rich-message>\n" +
+            "  <fp-rich-message>\n" +
+            "    <title>Rich Message</title>\n" +
+            "    <subtitle>With a subtitle</subtitle>\n" +
+            "    <text>Some engaging text</text>\n" +
+            "    <image>\n" +
+            "      <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
+            "      <url new_tab=\"true\">https://docs.opendialog.ai</url>\n" +
+            "    </image>\n" +
+            "  </fp-rich-message>\n" +
             "</message>"
         },
         {
           type: 'rich-message', renderer: (message, msg) => {this.parseRichMessage(message, msg)},
           xml: "<message>\n" +
-            "    <rich-message>\n" +
-            "        <title>Rich Message</title>\n" +
-            "        <subtitle>With a subtitle</subtitle>\n" +
-            "        <text>Some engaging text</text>\n" +
-            "        <image>\n" +
-            "            <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
-            "            <url new_tab=\"true\">https://docs.opendialog.ai</url>\n" +
-            "        </image>\n" +
-            "    </rich-message>\n" +
+            "  <rich-message>\n" +
+            "    <title>Rich Message</title>\n" +
+            "    <subtitle>With a subtitle</subtitle>\n" +
+            "    <text>Some engaging text</text>\n" +
+            "    <image>\n" +
+            "      <src>https://docs.opendialog.ai/img/od-logo-with-credit.jpg</src>\n" +
+            "      <url new_tab=\"true\">https://docs.opendialog.ai</url>\n" +
+            "    </image>\n" +
+            "  </rich-message>\n" +
             "</message>"
         },
         {
           type: 'fp-form-message', renderer: (message, msg) => {this.parseFormMessage(message, msg)},
           xml: "<message>\n" +
-            "    <form-message>\n" +
-            "        <text>Text</text>\n" +
-            "        <submit_text>Submit Text</submit_text>\n" +
-            "        <callback>Callback</callback>\n" +
-            "        <auto_submit>false</auto_submit>\n" +
+            "  <form-message>\n" +
+            "    <text>Text</text>\n" +
+            "    <submit_text>Submit Text</submit_text>\n" +
+            "    <callback>Callback</callback>\n" +
+            "    <auto_submit>false</auto_submit>\n" +
             "\n" +
-            "        <element>\n" +
-            "            <element_type>select</element_type>\n" +
-            "            <name>title</name>\n" +
-            "            <display>Title</display>\n" +
-            "            <options>\n" +
-            "                <option>\n" +
-            "                    <key>mr</key>\n" +
-            "                    <value>Mr.</value>\n" +
-            "                </option>\n" +
-            "                <option>\n" +
-            "                    <key>mrs</key>\n" +
-            "                    <value>Mrs.</value>\n" +
-            "                </option>\n" +
-            "                <option>\n" +
-            "                    <key>other</key>\n" +
-            "                    <value>Other</value>\n" +
-            "                </option>\n" +
-            "            </options>\n" +
-            "        </element>\n" +
+            "    <element>\n" +
+            "      <element_type>select</element_type>\n" +
+            "      <name>title</name>\n" +
+            "      <display>Title</display>\n" +
+            "      <options>\n" +
+            "        <option>\n" +
+            "          <key>mr</key>\n" +
+            "          <value>Mr.</value>\n" +
+            "        </option>\n" +
+            "        <option>\n" +
+            "          <key>mrs</key>\n" +
+            "          <value>Mrs.</value>\n" +
+            "        </option>\n" +
+            "        <option>\n" +
+            "          <key>other</key>\n" +
+            "          <value>Other</value>\n" +
+            "        </option>\n" +
+            "      </options>\n" +
+            "    </element>\n" +
             "\n" +
-            "        <element>\n" +
-            "            <element_type>text</element_type>\n" +
-            "            <name>name</name>\n" +
-            "            <display>Name</display>\n" +
-            "        </element>\n" +
+            "    <element>\n" +
+            "      <element_type>text</element_type>\n" +
+            "      <name>name</name>\n" +
+            "      <display>Name</display>\n" +
+            "    </element>\n" +
             "\n" +
-            "    </form-message>\n" +
+            "  </form-message>\n" +
             "</message>"
         },
         {
           type: 'form-message', renderer: (message, msg) => {this.parseFormMessage(message, msg)},
           xml: "<message>\n" +
-            "    <form-message>\n" +
-            "        <text>Text</text>\n" +
-            "        <submit_text>Submit Text</submit_text>\n" +
-            "        <callback>Callback</callback>\n" +
-            "        <auto_submit>false</auto_submit>\n" +
+            "  <form-message>\n" +
+            "    <text>Text</text>\n" +
+            "    <submit_text>Submit Text</submit_text>\n" +
+            "    <callback>Callback</callback>\n" +
+            "    <auto_submit>false</auto_submit>\n" +
             "\n" +
-            "        <element>\n" +
-            "            <element_type>select</element_type>\n" +
-            "            <name>title</name>\n" +
-            "            <display>Title</display>\n" +
-            "            <options>\n" +
-            "                <option>\n" +
-            "                    <key>mr</key>\n" +
-            "                    <value>Mr.</value>\n" +
-            "                </option>\n" +
-            "                <option>\n" +
-            "                    <key>mrs</key>\n" +
-            "                    <value>Mrs.</value>\n" +
-            "                </option>\n" +
-            "                <option>\n" +
-            "                    <key>other</key>\n" +
-            "                    <value>Other</value>\n" +
-            "                </option>\n" +
-            "            </options>\n" +
-            "        </element>\n" +
+            "    <element>\n" +
+            "      <element_type>select</element_type>\n" +
+            "      <name>title</name>\n" +
+            "      <display>Title</display>\n" +
+            "      <options>\n" +
+            "        <option>\n" +
+            "          <key>mr</key>\n" +
+            "          <value>Mr.</value>\n" +
+            "        </option>\n" +
+            "        <option>\n" +
+            "          <key>mrs</key>\n" +
+            "          <value>Mrs.</value>\n" +
+            "        </option>\n" +
+            "        <option>\n" +
+            "          <key>other</key>\n" +
+            "          <value>Other</value>\n" +
+            "        </option>\n" +
+            "      </options>\n" +
+            "    </element>\n" +
             "\n" +
-            "        <element>\n" +
-            "            <element_type>text</element_type>\n" +
-            "            <name>name</name>\n" +
-            "            <display>Name</display>\n" +
-            "        </element>\n" +
+            "    <element>\n" +
+            "      <element_type>text</element_type>\n" +
+            "      <name>name</name>\n" +
+            "      <display>Name</display>\n" +
+            "    </element>\n" +
             "\n" +
-            "    </form-message>\n" +
+            "  </form-message>\n" +
             "</message>"
         },
         {
           type: 'long-text-message', renderer: (message, msg) => {this.parseLongTextMessage(message, msg)},
           xml: "<message>\n" +
-            "       <long-text-message>\n" +
-            "           <submit_text>Submit Text</submit_text>\n" +
-            "           <callback>callback</callback>\n" +
-            "           <initial_text>initialText</initial_text>\n" +
-            "           <placeholder>placeholder</placeholder>\n" +
-            "           <confirmation_text>confirmationText</confirmation_text>\n" +
-            "           <character_limit>characterLimit</character_limit>\n" +
-            "       </long-text-message>\n" +
+            "  <long-text-message>\n" +
+            "    <submit_text>Submit Text</submit_text>\n" +
+            "    <callback>callback</callback>\n" +
+            "    <initial_text>initialText</initial_text>\n" +
+            "    <placeholder>placeholder</placeholder>\n" +
+            "    <confirmation_text>confirmationText</confirmation_text>\n" +
+            "    <character_limit>characterLimit</character_limit>\n" +
+            "  </long-text-message>\n" +
             "</message>"
         },
         {
           type: 'list-message', renderer: (message, msg) => {this.parseListMessage(message, msg)},
           xml: "<message>\n" +
-            "    <list-message list_type=\"horizontal\">\n" +
-            "        <text-message>Hello text message</text-message>\n" +
-            "        <image-message>Image message</image-message>\n" +
-            "        <rich-message>Rich message</rich-message>\n" +
-            "    </list-message>\n" +
+            "  <list-message list_type=\"horizontal\">\n" +
+            "    <text-message>Hello text message</text-message>\n" +
+            "    <image-message>Image message</image-message>\n" +
+            "    <rich-message>Rich message</rich-message>\n" +
+            "  </list-message>\n" +
             "</message>"
         },
         {
           type: 'meta-message', renderer: (message, msg) => {this.parseMetaMessage(message, msg)},
           xml: "<message>\n" +
-            "    <meta-message>\n" +
-            "      <data name=\"key\">value</data>\n" +
-            "    </meta-message>\n"+
+            "  <meta-message>\n" +
+            "    <data name=\"key\">value</data>\n" +
+            "  </meta-message>\n"+
             "</message>"
         },
       ];
