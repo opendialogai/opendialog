@@ -4,7 +4,29 @@ USER="${DOCKER_USER}"
 PASSWD="${DOCKER_PASS}"
 
 PROJECT_NAME=${DOCKER_PROJECT_NAME}
-TAG=$(git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
+
+TAG=$(git tag --points-at HEAD)
+
+if [[ ! -n ${TAG} ]]
+then
+    TAG=$(git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
+fi
+
+
+if [[ ! -z ${GITHUB_TOKEN} ]]
+then
+    echo "Creating local auth.json file"
+
+    cat > auth.json <<EOL
+    {
+        "github-oauth": {
+            "github.com": "${GITHUB_TOKEN}"
+        }
+    }
+EOL
+else
+     echo "Not creating a local auth.json file - no GitHub token supplied"
+fi
 
 echo "Building docker image tagged with branch name - ${TAG}"
 
