@@ -47,8 +47,14 @@ lando artisan webchat:setup
 echo "Application level config files"
 lando artisan vendor:publish --tag=od-config
 
+echo "Initializing dgraph schema..."
+lando artisan schema:init
+
 echo "Creating example conversations..."
 lando artisan conversations:setup
+
+echo "Creating outgoing intents and message templates..."
+lando artisan messages:setup
 
 echo "Generating key..."
 lando php artisan key:generate
