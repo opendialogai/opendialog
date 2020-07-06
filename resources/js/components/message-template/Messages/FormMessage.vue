@@ -19,8 +19,8 @@
       </template>
       <template v-if="element.element_type == 'select'">
         <select class="form-message--element-select">
-          <option v-for="(option_text, option_value) in element.options" v-bind:value="option_value">
-            {{ option_text }}
+          <option v-for="option in element.options" v-bind:value="option.key">
+            {{ option.value }}
           </option>
         </select>
       </template>
