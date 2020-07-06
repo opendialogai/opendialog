@@ -53,13 +53,13 @@ class SetWebchatSettings extends Command
 
         $settings = [
             WebchatSetting::URL => "$odUrl/web-chat",
-            WebchatSetting::HIDE_OPEN_CLOSE_ICONS => true,
             WebchatSetting::OPEN => true,
             WebchatSetting::TEAM_NAME => 'OpenDialog Webchat',
             WebchatSetting::MESSAGE_DELAY => '1000',
             WebchatSetting::COLOURS => 'colours',
-            WebchatSetting::HEADER_BACKGROUND => '#0000FF',
-            WebchatSetting::CHATBOT_AVATAR_PATH => "$odUrl/images/logo.svg",
+            WebchatSetting::HEADER_BACKGROUND => '#1b212a',
+            WebchatSetting::CHATBOT_AVATAR_PATH => "$odUrl/images/avatar.svg",
+            WebchatSetting::LOGO => "/images/homepage-logo.svg",
             WebchatSetting::CHATBOT_NAME => 'OpenDialog',
             WebchatSetting::USE_HUMAN_AVATAR => true,
             WebchatSetting::USE_BOT_AVATAR => true,
@@ -88,6 +88,7 @@ class SetWebchatSettings extends Command
             WebchatSetting::SHOW_HISTORY => true,
             WebchatSetting::NUMBER_OF_MESSAGES => 10,
             WebchatSetting::COLLECT_USER_IP => true,
+            WebchatSetting::HIDE_MESSAGE_TIME => true,
         ];
 
         foreach ($settings as $name => $value) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46a4152b6c4f3e221af45c7109fe9193",
+    "content-hash": "289b80180f7c871cddc106a4ff0e8961",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2022,16 +2022,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "0.5.5",
+            "version": "dev-feature/webchat-chat-service",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265"
+                "reference": "b0221f419061da38baf3632180007114757045d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/250f48dda3c7c19c6c52bbef955ce86bdafec265",
-                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/b0221f419061da38baf3632180007114757045d9",
+                "reference": "b0221f419061da38baf3632180007114757045d9",
                 "shasum": ""
             },
             "require": {
@@ -2039,6 +2039,7 @@
                 "php": "^7.3.0"
             },
             "require-dev": {
+                "opendialogai/core": "0.6.8",
                 "orchestra/testbench": "^4.0",
                 "phpunit/phpunit": "^8.3",
                 "squizlabs/php_codesniffer": "^3.4"
@@ -2047,7 +2048,8 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "OpenDialogAi\\Webchat\\PackageServiceProvider"
+                        "OpenDialogAi\\Webchat\\PackageServiceProvider",
+                        "OpenDialogAi\\Webchat\\WebchatSettingsConfiguration\\WebchatSettingsConfigurationServiceProvider"
                     ]
                 }
             },
@@ -2068,7 +2070,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2019-11-28T16:30:10+00:00"
+            "time": "2020-07-06T11:21:43+00:00"
         },
         {
             "name": "opis/closure",
@@ -2342,6 +2344,56 @@
                 }
             ],
             "time": "2020-06-07T10:40:07+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16T16:22:20+00:00"
         },
         {
             "name": "propaganistas/laravel-phone",
@@ -8148,7 +8200,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "opendialogai/core": 20
+        "opendialogai/core": 20,
+        "opendialogai/webchat": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
