@@ -95,7 +95,7 @@ export default {
         {
           type: 'fp-form-message', renderer: (message, msg) => {this.parseFormMessage(message, msg)},
           xml: "<message>\n" +
-            "  <form-message>\n" +
+            "  <fp-form-message>\n" +
             "    <text>Text</text>\n" +
             "    <submit_text>Submit Text</submit_text>\n" +
             "    <callback>Callback</callback>\n" +
@@ -127,7 +127,7 @@ export default {
             "      <display>Name</display>\n" +
             "    </element>\n" +
             "\n" +
-            "  </form-message>\n" +
+            "  </fp-form-message>\n" +
             "</message>"
         },
         {

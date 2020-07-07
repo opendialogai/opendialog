@@ -33,7 +33,7 @@
 
       <b-form-group>
         <label>Message Mark-up</label>
-        <codemirror v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" class="collapse-codemirror"/>
+        <codemirror ref="messageMarkup" v-model="messageTemplate.message_markup" :options="cmMarkupOptions" :class="(error.field == 'message_markup') ? 'is-invalid' : ''" class="collapse-codemirror"/>
       </b-form-group>
 
       <b-card header="Message Preview">
@@ -108,13 +108,19 @@ export default {
           xml.splice(0, 1);
           xml.splice(-1, 1);
 
-          var rows = this.messageTemplate.message_markup.split('\n');
+          let line = 0;
+          const rows = this.messageTemplate.message_markup.split('\n');
           rows.forEach((row, i) => {
             if (row.includes('</message>')) {
               rows.splice(i, 0, ...xml);
+              line = Math.min(i + 10, rows.length - 1);
             }
           });
           this.messageTemplate.message_markup = rows.join('\n');
+
+          setTimeout(() => {
+            this.$refs.messageMarkup.cminstance.scrollIntoView({ line });
+          }, 100);
         } else {
           this.messageTemplate.message_markup = messageTypeConfig.xml;
         }
