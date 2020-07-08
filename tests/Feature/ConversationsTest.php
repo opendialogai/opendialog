@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\User;
 use Illuminate\Support\Str;
 use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
 class ConversationsTest extends TestCase
@@ -183,6 +185,62 @@ class ConversationsTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/conversation/' . $conversation->id . '/archive')
             ->assertStatus(200);
+    }
+
+    public function testConversationsMessageTemplatesEndpoint()
+    {
+        $conversation1 = Conversation::all()->get(1);
+        $conversation2 = Conversation::all()->get(2);
+
+        $intent1 = $conversation1->outgoing_intents[0]['name'];
+        $intent2 = $conversation2->outgoing_intents[0]['name'];
+
+        $outgoingIntent1 = OutgoingIntent::create([
+            'name' => $intent1,
+        ]);
+        $outgoingIntent2 = OutgoingIntent::create([
+            'name' => $intent2,
+        ]);
+
+        for ($j = 0; $j < 5; $j++) {
+            $messageTemplate = factory(MessageTemplate::class)->make();
+            $messageTemplate->outgoing_intent_id = $outgoingIntent1->id;
+            $messageTemplate->save();
+        }
+
+        for ($j = 0; $j < 3; $j++) {
+            $messageTemplate = factory(MessageTemplate::class)->make();
+            $messageTemplate->outgoing_intent_id = $outgoingIntent2->id;
+            $messageTemplate->save();
+        }
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation/' . $conversation1->id . '/message-templates')
+            ->assertStatus(200);
+        $content = json_decode($response->content());
+        $data = $content->data;
+
+        $this->assertEquals(count($data), 5);
+        foreach ($data as $message) {
+            $this->assertEquals(!empty($message->id), true);
+            $this->assertEquals(!empty($message->outgoing_intent), true);
+            $this->assertEquals($message->outgoing_intent_id, $outgoingIntent1->id);
+            $this->assertEquals($message->outgoing_intent->name, $intent1);
+        }
+
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation/' . $conversation2->id . '/message-templates')
+            ->assertStatus(200);
+        $content = json_decode($response->content());
+        $data = $content->data;
+
+        $this->assertEquals(count($data), 3);
+        foreach ($data as $message) {
+            $this->assertEquals(!empty($message->id), true);
+            $this->assertEquals(!empty($message->outgoing_intent), true);
+            $this->assertEquals($message->outgoing_intent_id, $outgoingIntent2->id);
+            $this->assertEquals($message->outgoing_intent->name, $intent2);
+        }
     }
 
     public function testConversationsInvalidStoreEndpoint()
