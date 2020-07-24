@@ -51,6 +51,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/add', 'AdminController@handle');
         Route::get('/{id}', 'AdminController@handle');
         Route::get('/{id}/edit', 'AdminController@handle');
+        Route::get('/{id}/message-templates', 'AdminController@handle');
     });
 
     /**

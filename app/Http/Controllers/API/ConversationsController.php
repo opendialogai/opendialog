@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
+use App\Http\Resources\MessageTemplateCollection;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\Yaml\Yaml;
 use ZipStream\ZipStream;
@@ -92,6 +94,41 @@ class ConversationsController extends Controller
     {
         $conversation = Conversation::conversationWithHistory($id);
         return new ConversationResource($conversation);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param int $id
+     * @return MessageTemplateCollection|Response
+     */
+    public function messageTemplates($id)
+    {
+        if ($conversation = Conversation::find($id)) {
+            $outgoingIntentIds = collect($conversation->outgoing_intents)
+                ->filter(function ($item) {
+                    return isset($item['id']);
+                })
+                ->map(function ($item) {
+                    return $item['id'];
+                })
+                ->unique();
+
+            $messageTemplateCollection = new MessageTemplateCollection(
+                MessageTemplate::with('outgoingIntent')
+                    ->whereIn('outgoing_intent_id', $outgoingIntentIds)
+                    ->paginate(50)
+            );
+
+            $messageTemplateCollection->each(function ($item) {
+                $item->makeVisible('id');
+                $item->makeVisible('outgoingIntent');
+            });
+
+            return $messageTemplateCollection;
+        }
+
+        return response()->noContent(404);
     }
 
 

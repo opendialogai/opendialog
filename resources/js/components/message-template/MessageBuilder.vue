@@ -113,55 +113,43 @@ export default {
     };
   },
   watch: {
-      watchMessage: {
-        handler (val) {
-            this.messages = [];
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(val.message_markup, 'application/xml');
-            if (doc.getElementsByTagName('parsererror').length > 0) {
-                const error = doc.getElementsByTagName('parsererror')[0].getElementsByTagName('div')[0].innerHTML;
-                this.$emit('errorEmit', error);
-                this.messages.push(
-                    {
-                        type: 'error',
-                        data:  `Validation error: ${error}`
-                    }
-                );
-            } else {
-                this.$emit('errorEmit', '');
-                const document = new xmldoc.XmlDocument(val.message_markup);
-                this.parseDocumentForMessage(document)
+    watchMessage: {
+      handler (val) {
+        this.messages = [];
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(val.message_markup, 'application/xml');
+        if (doc.getElementsByTagName('parsererror').length > 0) {
+          const error = doc.getElementsByTagName('parsererror')[0].getElementsByTagName('div')[0].innerHTML;
+          this.$emit('errorEmit', error);
+          this.messages.push(
+            {
+              type: 'error',
+              data:  `Validation error: ${error}`
             }
-        },
-        deep: true
-    }
+          );
+        } else {
+          this.$emit('errorEmit', '');
+          const document = new xmldoc.XmlDocument(val.message_markup);
+          this.parseDocumentForMessage(document)
+        }
+      },
+      deep: true,
+    },
   },
   mounted() {
-      if (this.watchMessage.message_markup) {
-        var document = new xmldoc.XmlDocument(this.watchMessage.message_markup);
-        this.parseDocumentForMessage(document)
-      }
+    if (this.watchMessage.message_markup) {
+      var document = new xmldoc.XmlDocument(this.watchMessage.message_markup);
+      this.parseDocumentForMessage(document)
+    }
   },
   methods: {
     parseDocumentForMessage(document) {
       document.children.forEach((msg) => {
-          if (msg.type === 'element') {
-              const message = this.parseMessage(msg);
-              this.messages.push(message);
-          }
+        if (msg.type === 'element') {
+          const message = this.parseMessage(msg);
+          this.messages.push(message);
+        }
       });
-    },
-    parseMessage(msg) {
-      const message = {
-        type: msg.name,
-        data: {},
-      };
-
-      const messageTypes = MessageTypes.methods.getMessageTypes();
-      const messageTypeConfig = messageTypes.find(messageConfig => messageConfig.type === message.type)
-      // update the message properties based on its type
-      messageTypeConfig.renderer(message, msg);
-      return message;
     },
   },
 };
