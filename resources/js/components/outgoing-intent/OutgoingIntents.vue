@@ -6,6 +6,11 @@
       <div class="col-12">
         <div class="float-right">
           <b-btn variant="primary" @click="createOutgoingIntent">Create</b-btn>
+
+          <input ref="file" type="file" hidden multiple @change="importOutgoingIntents"/>
+
+          <b-btn class="ml-3" variant="info" @click="downloadOutgoingIntents">Download All</b-btn>
+          <b-btn variant="info" @click="uploadOutgoingIntents">Upload All</b-btn>
         </div>
       </div>
     </div>

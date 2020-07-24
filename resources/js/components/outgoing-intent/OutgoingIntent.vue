@@ -22,6 +22,11 @@
           <b-btn variant="primary mr-4" @click="createMessageTemplate">Create Message Template</b-btn>
           <b-btn variant="primary" @click="editOutgoingIntent">Edit Outgoing Intent Name</b-btn>
           <b-btn variant="danger" @click="showDeleteOutgoingIntentModal">Delete</b-btn>
+
+          <input ref="file" type="file" hidden @change="importOutgoingIntent"/>
+
+          <b-btn class="ml-3" variant="info" @click="downloadOutgoingIntent">Download</b-btn>
+          <b-btn variant="info" @click="uploadOutgoingIntent">Upload</b-btn>
         </div>
       </div>
     </div>
@@ -171,13 +176,13 @@ export default {
     const urlParams = new URLSearchParams(window.location.search);
     this.currentPage = (urlParams.get('page')) ? urlParams.get('page') : 1;
 
-    axios.get('/admin/api/outgoing-intents/' + this.id).then(
+    axios.get('/admin/api/outgoing-intent/' + this.id).then(
       (response) => {
         this.outgoingIntent = response.data.data;
       },
     );
 
-    axios.get('/admin/api/outgoing-intents/' + this.id + '/message-templates?page=' + this.currentPage).then(
+    axios.get('/admin/api/outgoing-intent/' + this.id + '/message-templates?page=' + this.currentPage).then(
       (response) => {
         this.totalPages = parseInt(response.data.meta.last_page);
         this.messageTemplates = response.data.data;
