@@ -39,7 +39,7 @@ COPY --chown=www-data:www-data . /var/www
 RUN rm /etc/nginx/sites-enabled/default
 RUN rm /etc/nginx/sites-available/default
 
-COPY --chown=www-data:www-data docker-app.conf /etc/nginx/sites-available
+COPY --chown=www-data:www-data docker/nginx-conf/docker-app.conf /etc/nginx/sites-available
 
 RUN ln -s /etc/nginx/sites-available/docker-app.conf /etc/nginx/sites-enabled/docker-app.conf
 
