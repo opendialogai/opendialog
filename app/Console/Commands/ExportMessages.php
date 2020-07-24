@@ -7,7 +7,7 @@ use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ExportMessages extends Command
 {
-    protected $signature = 'messages:export {outgoingIntent?}';
+    protected $signature = 'messages:export {outgoingIntent?} {--y|yes}';
 
     protected $description = 'Export all message templates';
 
@@ -15,7 +15,9 @@ class ExportMessages extends Command
     {
         $outgoingIntentName = $this->argument('outgoingIntent');
 
-        if ($outgoingIntentName) {
+        if ($this->option("yes")) {
+            $continue = true;
+        } elseif ($outgoingIntentName) {
             $continue = $this->confirm(
                 sprintf(
                     'Do you want to export %s outgoing intent and it own messages?',

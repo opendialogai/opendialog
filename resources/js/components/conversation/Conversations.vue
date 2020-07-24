@@ -21,6 +21,11 @@
         <div class="float-right">
           <b-btn variant="secondary" @click="viewArchive">View archive</b-btn>
           <b-btn variant="primary" @click="createConversation">Create</b-btn>
+
+          <input ref="file" type="file" hidden multiple @change="importConversations"/>
+
+          <b-btn class="ml-3" variant="info" @click="downloadConversations">Download All</b-btn>
+          <b-btn variant="info" @click="uploadConversations">Upload All</b-btn>
         </div>
       </div>
     </div>
@@ -257,6 +262,41 @@
                 this.errorMessage = 'Sorry, I wasn\'t able to archive this conversation from DGraph.';
             }
         );
+    },
+    downloadConversations() {
+      axios.get('/admin/api/conversations/export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'conversations.zip');
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadConversations() {
+      this.$refs.file.click();
+    },
+    importConversations(event) {
+      const formData = new FormData();
+
+      event.target.files.forEach((file, i) => {
+        formData.append('file' + (i + 1), file);
+      });
+
+      axios.post('/admin/api/conversations/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Conversations updated.';
+          this.fetchConversations();
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update this conversations.';
+        }
+      });
     },
   },
 };

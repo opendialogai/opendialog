@@ -8,15 +8,19 @@ use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class SetUpMessages extends Command
 {
-    protected $signature = 'messages:setup';
+    protected $signature = 'messages:setup {--y|yes}';
 
     protected $description = 'Sets up all messages';
 
     public function handle()
     {
-        $continue = $this->confirm(
-            'This will import or update all messages. Are you sure you want to continue?'
-        );
+        if ($this->option("yes")) {
+            $continue = true;
+        } else {
+            $continue = $this->confirm(
+                'This will import or update all messages. Are you sure you want to continue?'
+            );
+        }
 
         if ($continue) {
             $files = preg_grep('/^([^.])/', scandir('resources/messages'));
@@ -31,7 +35,8 @@ class SetUpMessages extends Command
     {
         $this->info(sprintf('Importing outgoing intent %s', $outgoingIntentName));
 
-        $data = json_decode(file_get_contents("resources/messages/$outgoingIntentName"));
+        $filename = base_path("resources/messages/$outgoingIntentName");
+        $data = json_decode(file_get_contents($filename));
 
         $this->info(sprintf('Adding/updating intent with name %s', $data->outgoingIntent));
         $newIntent = OutgoingIntent::firstOrNew(['name' => $data->outgoingIntent]);

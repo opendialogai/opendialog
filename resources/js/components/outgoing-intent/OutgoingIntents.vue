@@ -107,7 +107,7 @@ export default {
     fetchOutgoingIntents() {
       this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage).then(
+      axios.get('/admin/api/outgoing-intent?page=' + this.currentPage).then(
         (response) => {
           this.totalPages = parseInt(response.data.meta.last_page);
           this.outgoingIntents = response.data.data;
@@ -132,7 +132,42 @@ export default {
 
       this.outgoingIntents = this.outgoingIntents.filter(obj => obj.id !== this.currentOutgoingIntent);
 
-      axios.delete('/admin/api/outgoing-intents/' + this.currentOutgoingIntent);
+      axios.delete('/admin/api/outgoing-intent/' + this.currentOutgoingIntent);
+    },
+    downloadOutgoingIntents() {
+      axios.get('/admin/api/outgoing-intents/export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'outgoing-intents.zip');
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadOutgoingIntents() {
+      this.$refs.file.click();
+    },
+    importOutgoingIntents(event) {
+      const formData = new FormData();
+
+      event.target.files.forEach((file, i) => {
+        formData.append('file' + (i + 1), file);
+      });
+
+      axios.post('/admin/api/outgoing-intents/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Outgoing Intents updated.';
+          this.fetchOutgoingIntents();
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update this outgoing intents.';
+        }
+      });
     },
   },
 };

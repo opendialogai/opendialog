@@ -1,5 +1,19 @@
 <template>
   <div v-if="outgoingIntent">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
     <h2 class="mb-3">Outgoing Intent</h2>
 
     <div class="row mb-4">
@@ -146,6 +160,8 @@ export default {
   },
   data() {
     return {
+      errorMessage: '',
+      successMessage: '',
       outgoingIntent: null,
       messageTemplates: [],
       currentMessageTemplate: null,
@@ -169,6 +185,23 @@ export default {
     );
   },
   methods: {
+    fetchOutgoingIntent() {
+      this.outgoingIntent = null;
+      this.messageTemplates = [];
+
+      axios.get('/admin/api/outgoing-intent/' + this.id).then(
+        (response) => {
+          this.outgoingIntent = response.data.data;
+        },
+      );
+
+      axios.get('/admin/api/outgoing-intent/' + this.id + '/message-templates?page=' + this.currentPage).then(
+        (response) => {
+          this.totalPages = parseInt(response.data.meta.last_page);
+          this.messageTemplates = response.data.data;
+        },
+      );
+    },
     editOutgoingIntent() {
       this.$router.push({ name: 'edit-outgoing-intent', params: { id: this.outgoingIntent.id } });
     },
@@ -178,7 +211,7 @@ export default {
     deleteOutgoingIntent() {
       $('#deleteOutgoingIntentModal').modal('hide');
 
-      axios.delete('/admin/api/outgoing-intents/' + this.outgoingIntent.id);
+      axios.delete('/admin/api/outgoing-intent/' + this.outgoingIntent.id);
 
       this.$router.push({ name: 'outgoing-intents', params: { outgoingIntent: this.outgoingIntent } });
     },
@@ -200,7 +233,43 @@ export default {
 
       this.messageTemplates = this.messageTemplates.filter(obj => obj.id !== this.currentMessageTemplate);
 
-      axios.delete('/admin/api/outgoing-intents/' + this.id);
+      axios.delete('/admin/api/outgoing-intent/' + this.id);
+    },
+    downloadOutgoingIntent() {
+      axios.get('/admin/api/outgoing-intent/' + this.outgoingIntent.id + '/export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${this.outgoingIntent.name}.yml`);
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadOutgoingIntent() {
+      this.$refs.file.click();
+    },
+    importOutgoingIntent(event) {
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      axios.post('/admin/api/outgoing-intent/' + this.outgoingIntent.id + '/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Outgoing Intent updated.';
+          this.fetchOutgoingIntent();
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update this outgoing intent.';
+        }
+      });
     },
   },
 };

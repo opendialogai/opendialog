@@ -38,7 +38,7 @@ export default {
         name: this.name,
       };
 
-      axios.post('/admin/api/outgoing-intents', data).then(
+      axios.post('/admin/api/outgoing-intent', data).then(
         (response) => {
           this.$router.push({ name: 'view-outgoing-intent', params: { id: response.data.data.id } });
         },

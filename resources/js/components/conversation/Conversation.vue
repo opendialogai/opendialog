@@ -35,6 +35,11 @@
             <b-btn v-if="conversation.status == 'deactivated'" variant="danger mr-4" @click="showArchiveConversationModal">Archive</b-btn>
             <b-btn variant="success" @click="activateConversation">Activate</b-btn>
           </template>
+
+          <input ref="file" type="file" hidden @change="importConversation"/>
+
+          <b-btn class="ml-3" variant="info" @click="downloadConversation">Download</b-btn>
+          <b-btn variant="info" @click="uploadConversation">Upload</b-btn>
         </div>
       </div>
     </div>
@@ -405,6 +410,42 @@ export default {
       if (status == 'activated' || status == 'validated') return 'green-status';
       if (status == 'deactivated' || status == 'invalid') return 'red-status';
       if (status == 'archived') return 'gray-status';
+    },
+    downloadConversation() {
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${this.conversation.name}.yml`);
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadConversation() {
+      this.$refs.file.click();
+    },
+    importConversation(event) {
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      axios.post('/admin/api/conversation/' + this.conversation.id + '/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Conversation updated.';
+          this.fetchConversation();
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update this conversation.';
+        }
+      });
     },
   },
 };

@@ -8,7 +8,7 @@ use OpenDialogAi\ConversationBuilder\Conversation;
 
 class ExportConversations extends Command
 {
-    protected $signature = 'conversations:export';
+    protected $signature = 'conversations:export {--y|yes}';
 
     protected $description = 'Export all conversations';
 
@@ -16,7 +16,11 @@ class ExportConversations extends Command
     {
         $conversations = config('opendialog.active_conversations');
 
-        $continue = $this->confirm('Do you want to export all conversations?');
+        if ($this->option("yes")) {
+            $continue = true;
+        } else {
+            $continue = $this->confirm('Do you want to export all conversations?');
+        }
 
         if ($continue) {
             $conversations = Conversation::all();

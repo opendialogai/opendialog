@@ -75,7 +75,7 @@ export default {
     };
   },
   mounted() {
-    axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.id).then(
+    axios.get('/admin/api/outgoing-intent/' + this.outgoingIntent + '/message-templates/' + this.id).then(
       (response) => {
         this.messageTemplate = response.data.data;
       },
@@ -91,7 +91,7 @@ export default {
     deleteMessageTemplate() {
       $('#deleteMessageTemplateModal').modal('hide');
 
-      axios.delete('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.messageTemplate.id);
+      axios.delete('/admin/api/outgoing-intent/' + this.outgoingIntent + '/message-templates/' + this.messageTemplate.id);
 
       this.$router.push({ name: 'message-templates', params: { outgoingIntent: this.outgoingIntent } });
     },
