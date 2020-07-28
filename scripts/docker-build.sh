@@ -38,6 +38,6 @@ docker login --username ${USER} --password ${PASSWD}
 
 echo "Pushing to docker hub"
 
-docker push opendialogai/opendialog:${TAG}
+docker push ${PROJECT_NAME}:${TAG}
 
 echo "Finished"
