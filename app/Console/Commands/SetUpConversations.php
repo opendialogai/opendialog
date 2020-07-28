@@ -10,7 +10,7 @@ use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
 
 class SetUpConversations extends Command
 {
-    protected $signature = 'conversations:setup';
+    protected $signature = 'conversations:setup {--non-interactive}';
 
     protected $description = 'Sets up some example conversations for the opendialog project';
 
@@ -18,9 +18,11 @@ class SetUpConversations extends Command
     {
         $conversations = config('opendialog.active_conversations');
 
-        $continue = $this->confirm(
-            'This will clear your local dgraph and all conversations. Are you sure you want to continue?'
-        );
+        $continue =
+            $this->option('non-interactive') ||
+            $this->confirm(
+                'This will clear your local dgraph and all conversations. Are you sure you want to continue?'
+            );
 
         if ($continue) {
             $client = app()->make(DGraphClient::class);
