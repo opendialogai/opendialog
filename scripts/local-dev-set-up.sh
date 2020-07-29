@@ -27,7 +27,7 @@ else
     cp opendialog-development-environment/nginx/sites/opendialog.conf.example opendialog-development-environment/nginx/sites/${PROJECT_NAME}.conf
 
     echo "Modifying Nginx conf for project"
-    sed -i -e "s/root \/var\/www\/opendialog\/public;/root \/var\/www\/public;/g"
+    sed -i -e "s/root \/var\/www\/opendialog\/public/root \/var\/www\/public/g" opendialog-development-environment/nginx/sites/${PROJECT_NAME}.conf
     sed -i -e "s/opendialog/${PROJECT_NAME}/g" opendialog-development-environment/nginx/sites/${PROJECT_NAME}.conf
     rm -f opendialog-development-environment/nginx/sites/${PROJECT_NAME}.conf-e
 fi
@@ -56,7 +56,7 @@ else
     echo "127.0.0.1 ${PROJECT_NAME}.test" >> /etc/hosts
 fi
 
-echo "Updating .emv to be project specific"
+echo "Updating .env to be project specific"
 sed -i -e "s/DATA_PATH_HOST=~\/.laradock\/opendialog\/data/DATA_PATH_HOST=~\/.laradock\/${PROJECT_NAME}\/data/g" opendialog-development-environment/.env
 sed -i -e "s/COMPOSE_PROJECT_NAME=opendialog/COMPOSE_PROJECT_NAME=${PROJECT_NAME}/g" opendialog-development-environment/.env
 rm -f opendialog-development-environment/.env-e
