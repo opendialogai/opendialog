@@ -45,8 +45,8 @@ RUN ln -s /etc/nginx/sites-available/docker-app.conf /etc/nginx/sites-enabled/do
 
 RUN chown -R www-data:www-data /var/www
 
-RUN chmod +x ./scripts/set_up_od_docker.sh
-RUN ./scripts/set_up_od_docker.sh
+RUN chmod +x ./scripts/set-up-od-docker.sh
+RUN ./scripts/set-up-od-docker.sh
 
 RUN chmod -R 755 /var/www/storage
 
