@@ -37,7 +37,7 @@ if [[ `grep "${PROJECT_NAME}.test" /etc/hosts` ]]; then
     echo "Hosts file contains an entry for this project, please confirm manually in /etc/hosts"
 else
     echo "Adding to hosts file"
-    echo "127.0.0.1 ${PROJECT_NAME}.test" >> /etc/hosts
+    sudo -- sh -c "echo \"127.0.0.1 ${PROJECT_NAME}.test\" >> /etc/hosts"
 fi
 
 # Copy the laradock .env file
