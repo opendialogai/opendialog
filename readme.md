@@ -28,7 +28,16 @@ To find out more about how OpenDialog works and a guide to building your first c
 
 # Developing with OpenDialog
 
-To setup a development environment for OpenDialog please check out the [OpenDialog development environment repository](https://github.com/opendialogai/opendialog-dev-environment) - it provides step by step instructions for setting up a Docker-based dev environment.  
+For a quick set up, run the following form your project root:
+```bash
+bash scripts/local-dev-set-up.sh {project_name}
+```
+
+This should checkout the dev environment repo locally and set up the entire application.
+The script is written to function on Mac OS and will likely have issues on other operation systems, but is untested
+
+Local development is handled by the [OpenDialog development environment repository](https://github.com/opendialogai/opendialog-dev-environment). 
+Check out that repo for full manual instructions of installation.
 
 # Session Management
 
