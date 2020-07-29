@@ -8,6 +8,9 @@ fi
 PROJECT_NAME=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+echo "Stopping any currently running docker containers to avoid port clashes"
+docker stop $(docker ps -aq)
+
 # Clone into local dir
 if [[ -d "${DIR}/../opendialog-development-environment" ]]; then
   echo "Dev environment already exists, not cloning again"
