@@ -16,9 +16,6 @@ dgraph
 update-web-chat.sh
 auth.json
 xdebug.log
-.lando.yml
-.env-e
-.lando.yml-e
 storage/app/public/*
 storage/framework/cache/data/*
 storage/framework/sessions/*
