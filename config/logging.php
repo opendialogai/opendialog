@@ -87,6 +87,12 @@ return [
             ],
         ],
 
+        'stackdriver' => [
+            'driver' => 'custom',
+            'via' => App\Logging\CreateStackdriverLogger::class,
+            'level' => 'debug',
+        ],
+
         'stderr' => [
             'driver' => 'monolog',
             'handler' => StreamHandler::class,
