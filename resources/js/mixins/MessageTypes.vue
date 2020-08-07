@@ -199,6 +199,20 @@ export default {
             "  </meta-message>\n"+
             "</message>"
         },
+        {
+          type: 'autocomplete-message', renderer: (message, msg) => {this.parseMetaMessage(message, msg)},
+          xml: "<message>\n" +
+            "  <autocomplete-message>\n" +
+            "    <title>Title</title>\n" +
+            "    <options-endpoint>\n" +
+            "      <params>\n" +
+            "        <param name=\"name\" value=\"value\" />\n" +
+            "      </params>\n" +
+            "      <query-param-name>name</query-param-name>\n" +
+            "    </options-endpoint>\n" +
+            "  </autocomplete-message>\n"+
+            "</message>"
+        },
       ];
     },
     parseTextMessage (message, msg) {
