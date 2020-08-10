@@ -34,6 +34,9 @@
       <template v-if="message.type === 'meta-message'">
         <MetaMessage :message="message" />
       </template>
+      <template v-if="message.type === 'autocomplete-message'">
+        <AutocompleteMessage :message="message" />
+      </template>
       <template v-if="message.type === 'error'">
         <Error :message="message" />
       </template>
@@ -73,6 +76,7 @@ import xmldoc from 'xmldoc';
 
 import Slider from 'vue-plain-slider';
 
+import AutocompleteMessage from './Messages/AutocompleteMessage';
 import ButtonMessage from './Messages/ButtonMessage';
 import CtaMessage from './Messages/CtaMessage';
 import EmptyMessage from './Messages/EmptyMessage';
@@ -91,6 +95,7 @@ export default {
   name: 'message-builder',
   components: {
     AttributeMessage,
+    AutocompleteMessage,
     Error,
     ButtonMessage,
     CtaMessage,
@@ -157,6 +162,7 @@ export default {
 
 <style lang="scss" scoped>
 .message {
+  .autocomplete-message,
   .list-message,
   .long-text-message,
   .cta-message,

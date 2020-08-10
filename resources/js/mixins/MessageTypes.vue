@@ -199,6 +199,22 @@ export default {
             "  </meta-message>\n"+
             "</message>"
         },
+        {
+          type: 'autocomplete-message', renderer: (message, msg) => {this.parseAutoCompleteMessage(message, msg)},
+          xml: "<message>\n" +
+            "  <autocomplete-message>\n" +
+            "    <title>Title</title>\n" +
+            "   <callback>callback.id</callback>\n" +
+            "   <submit_text>Submit</submit_text>\n" +
+            "    <options-endpoint>\n" +
+            "      <params>\n" +
+            "        <param name=\"name\" value=\"value\" />\n" +
+            "      </params>\n" +
+            "      <query-param-name>name</query-param-name>\n" +
+            "    </options-endpoint>\n" +
+            "  </autocomplete-message>\n"+
+            "</message>"
+        },
       ];
     },
     parseTextMessage (message, msg) {
@@ -324,6 +340,11 @@ export default {
       });
 
       message.data.datas = datas;
+    },
+    parseAutoCompleteMessage: function (message, msg) {
+      message.data.submit_text = (msg.childNamed('submit_text')) ? msg.childNamed('submit_text').val.trim() : '';
+      message.data.callback = (msg.childNamed('callback')) ? msg.childNamed('callback').val.trim() : '';
+      message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
     },
     parseMessage(msg) {
       const message = {
