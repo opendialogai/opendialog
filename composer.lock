@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5e088868b15504e9698eaf0c8b4342a",
+    "content-hash": "e6ad88b52920d8293c41dd2739346599",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1790,16 +1790,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/autocomplete-message-type",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "6f6744c1bf800564689b5f2e83544a11fb952806"
+                "reference": "0db5ef9b53620dfd148ed51f3b79a0c0a37ffe95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/6f6744c1bf800564689b5f2e83544a11fb952806",
-                "reference": "6f6744c1bf800564689b5f2e83544a11fb952806",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/0db5ef9b53620dfd148ed51f3b79a0c0a37ffe95",
+                "reference": "0db5ef9b53620dfd148ed51f3b79a0c0a37ffe95",
                 "shasum": ""
             },
             "require": {
@@ -1878,7 +1878,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2020-08-10T15:09:19+00:00"
+            "time": "2020-08-10T12:41:26+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
