@@ -27,7 +27,7 @@ export default {
             '!top': ['message'],
             'attribute-message': {},
             'autocomplete-message': {
-              children: ['options-endpoint', 'title'],
+              children: ['options-endpoint', 'title', 'callback', 'submit_text'],
             },
             'button': {
               children: ['callback', 'display', 'download', 'link', 'tab_switch', 'text', 'value'],

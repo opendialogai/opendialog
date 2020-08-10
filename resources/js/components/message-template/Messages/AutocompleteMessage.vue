@@ -1,8 +1,8 @@
 <template>
   <div class="autocomplete-message">
-    <input />
-    <button class="btn btn-default btn-primary">Submit</button>
     <div>{{ message.data.title }}</div>
+    <input />
+    <button class="btn btn-default btn-primary">{{ message.data.submit_text}}</button>
   </div>
 </template>
 
