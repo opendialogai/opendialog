@@ -37,7 +37,7 @@
         "flag-icon-css": "^3.3.0",
         "font-awesome": "^4.7.0",
         "moment": "^2.24.0",
-        "serialize-javascript": "2.1.1",
+        "serialize-javascript": "3.1.0",
         "shortid": "^2.2.14",
         "simple-line-icons": "^2.4.1",
         "vue-chartjs": "^3.4.2",
