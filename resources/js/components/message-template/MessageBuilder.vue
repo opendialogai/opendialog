@@ -4,8 +4,8 @@
       <template v-if="message.type === 'empty-message'">
         <EmptyMessage :message="message" />
       </template>
-      <template v-if="message.type === 'hand-to-human-message'">
-        <HandToHumanMessage :message="message" />
+      <template v-if="message.type === 'hand-to-system-message'">
+        <HandToSystemMessage :message="message" />
       </template>
       <template v-if="message.type === 'cta-message'">
         <CtaMessage :message="message" />
@@ -81,7 +81,7 @@ import ButtonMessage from './Messages/ButtonMessage';
 import CtaMessage from './Messages/CtaMessage';
 import EmptyMessage from './Messages/EmptyMessage';
 import FormMessage from './Messages/FormMessage';
-import HandToHumanMessage from './Messages/HandToHumanMessage';
+import HandToSystemMessage from './Messages/HandToSystemMessage';
 import ImageMessage from './Messages/ImageMessage';
 import LongTextMessage from './Messages/LongTextMessage';
 import MetaMessage from './Messages/MetaMessage';
@@ -101,7 +101,7 @@ export default {
     CtaMessage,
     EmptyMessage,
     FormMessage,
-    HandToHumanMessage,
+    HandToSystemMessage,
     ImageMessage,
     LongTextMessage,
     MetaMessage,
@@ -167,7 +167,7 @@ export default {
   .long-text-message,
   .cta-message,
   .empty-message,
-  .hand-to-human-message,
+  .hand-to-system-message,
   .text-message,
   .button-message,
   .image-message,

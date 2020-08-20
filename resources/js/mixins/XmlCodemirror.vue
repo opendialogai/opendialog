@@ -54,7 +54,10 @@ export default {
             'fp-rich-message': {
               children: ['button', 'image', 'subtitle', 'text', 'title'],
             },
-            'hand-to-human-message': {
+            'hand-to-system-message': {
+              attrs: {
+                system: [],
+              },
               children: ['data'],
             },
             'image-message': {
@@ -88,7 +91,7 @@ export default {
                 'form-message',
                 'fp-form-message',
                 'fp-rich-message',
-                'hand-to-human-message',
+                'hand-to-system-message',
                 'image-message',
                 'list-message',
                 'long-text-message',

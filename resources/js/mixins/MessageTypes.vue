@@ -57,11 +57,11 @@ export default {
             "</message>"
         },
         {
-          type: 'hand-to-human-message', renderer: (message, msg) => {this.parseH2hMessage(message, msg)},
+          type: 'hand-to-system-message', renderer: (message, msg) => {this.parseH2sMessage(message, msg)},
           xml: "<message>\n" +
-            "  <hand-to-human-message>\n" +
+            "  <hand-to-system-message system=\"my-custom-system\">\n" +
             "    <data name=\"replace_name_attribute\">Value</data>\n" +
-            "  </hand-to-human-message>\n"+
+            "  </hand-to-system-message>\n"+
             "</message>"
         },
         {
@@ -257,7 +257,7 @@ export default {
     parseCtaMessage(message, msg) {
       message.data.text = msg.val;
     },
-    parseH2hMessage: function (message, msg) {
+    parseH2sMessage: function (message, msg) {
       let data = [];
       msg.childrenNamed('data').forEach((d) => {
         data.push({
@@ -265,6 +265,7 @@ export default {
           val: d.val,
         });
       });
+      message.data.system = msg.attr['system'];
       message.data.data = data;
     },
     parseRichMessage: function (message, msg) {
