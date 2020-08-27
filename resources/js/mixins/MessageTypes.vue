@@ -204,8 +204,8 @@ export default {
           xml: "<message>\n" +
             "  <autocomplete-message>\n" +
             "    <title>Title</title>\n" +
-            "   <callback>callback.id</callback>\n" +
-            "   <submit_text>Submit</submit_text>\n" +
+            "    <callback>callback.id</callback>\n" +
+            "    <submit_text>Submit</submit_text>\n" +
             "    <options-endpoint>\n" +
             "      <params>\n" +
             "        <param name=\"name\" value=\"value\" />\n" +
@@ -213,6 +213,22 @@ export default {
             "      <query-param-name>name</query-param-name>\n" +
             "    </options-endpoint>\n" +
             "  </autocomplete-message>\n"+
+            "</message>"
+        },
+        {
+          type: 'date-picker-message', renderer: (message, msg) => {this.parseDatepickerMessage(message, msg)},
+          xml: "<message>\n" +
+            "  <date-picker-message>\n" +
+            "    <text>Title</text>\n" +
+            "    <callback>callback.id</callback>\n" +
+            "    <submit_text>Submit</submit_text>\n" +
+            "    <day_required>false</day_required>\n" +
+            "    <month_required>false</month_required>\n" +
+            "    <year_required>true</year_required>\n" +
+            "    <max_date>today</max_date>\n" +
+            "    <min_date>1900-01-01</min_date>\n" +
+            "    <attribute_name>Attribute name</attribute_name>\n" +
+            "  </date-picker-message>\n"+
             "</message>"
         },
       ];
@@ -345,6 +361,17 @@ export default {
       message.data.submit_text = (msg.childNamed('submit_text')) ? msg.childNamed('submit_text').val.trim() : '';
       message.data.callback = (msg.childNamed('callback')) ? msg.childNamed('callback').val.trim() : '';
       message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
+    },
+    parseDatepickerMessage: function (message, msg) {
+      message.data.text = (msg.childNamed('text')) ? msg.childNamed('text').val.trim() : '';
+      message.data.callback = (msg.childNamed('callback')) ? msg.childNamed('callback').val.trim() : '';
+      message.data.submit_text = (msg.childNamed('submit_text')) ? msg.childNamed('submit_text').val.trim() : '';
+      message.data.day_required = (msg.childNamed('day_required')) ? msg.childNamed('day_required').val.trim() : '';
+      message.data.month_required = (msg.childNamed('month_required')) ? msg.childNamed('month_required').val.trim() : '';
+      message.data.year_required = (msg.childNamed('year_required')) ? msg.childNamed('year_required').val.trim() : '';
+      message.data.max_date = (msg.childNamed('max_date')) ? msg.childNamed('max_date').val.trim() : '';
+      message.data.min_date = (msg.childNamed('min_date')) ? msg.childNamed('min_date').val.trim() : '';
+      message.data.attribute_name = (msg.childNamed('attribute_name')) ? msg.childNamed('attribute_name').val.trim() : '';
     },
     parseMessage(msg) {
       const message = {
