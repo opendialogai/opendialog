@@ -41,6 +41,9 @@ export default {
                 name: [],
               },
             },
+            'date-picker-message': {
+              children: ['attribute_name', 'callback', 'day_required', 'max_date', 'min_date', 'month_required', 'submit_text', 'text', 'year_required'],
+            },
             'element': {
               children: ['element_type', 'name', 'display', 'required', 'default_value']
             },
@@ -84,6 +87,7 @@ export default {
                 'autocomplete-message',
                 'button-message',
                 'cta-message',
+                'date-picker-message',
                 'empty-message',
                 'form-message',
                 'fp-form-message',
