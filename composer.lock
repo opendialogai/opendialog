@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2949500b631ed5f8964ada33716423a8",
+    "content-hash": "e6ad88b52920d8293c41dd2739346599",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1898,16 +1898,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/hand-to-system-message",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "6ae20229e36432c048f4cd90bc45b98e82a3d6f6"
+                "reference": "b82ae7dd9dbc11c5fab9e467abfe25a035b9f774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/6ae20229e36432c048f4cd90bc45b98e82a3d6f6",
-                "reference": "6ae20229e36432c048f4cd90bc45b98e82a3d6f6",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/b82ae7dd9dbc11c5fab9e467abfe25a035b9f774",
+                "reference": "b82ae7dd9dbc11c5fab9e467abfe25a035b9f774",
                 "shasum": ""
             },
             "require": {
@@ -1986,7 +1986,7 @@
                 }
             ],
             "description": "The OpenDialog core package",
-            "time": "2020-08-20T14:16:43+00:00"
+            "time": "2020-08-28T15:42:53+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
