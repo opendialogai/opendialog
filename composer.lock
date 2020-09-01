@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6ad88b52920d8293c41dd2739346599",
+    "content-hash": "1c55ffa4aaa4c772fdfeb8c2be75de39",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2391,6 +2391,16 @@
                 "predis",
                 "redis"
             ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/tillkruss",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tillkruss",
+                    "type": "github"
+                }
+            ],
             "time": "2016-06-16T16:22:20+00:00"
         },
         {
@@ -3122,24 +3132,24 @@
         },
         {
             "name": "spatie/laravel-flash",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-flash.git",
-                "reference": "3a5cad275184c65c5665efa1615ffb1ec2767494"
+                "reference": "4d7264ca3dc9447e4f88bdcfbb7be8168935b4b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-flash/zipball/3a5cad275184c65c5665efa1615ffb1ec2767494",
-                "reference": "3a5cad275184c65c5665efa1615ffb1ec2767494",
+                "url": "https://api.github.com/repos/spatie/laravel-flash/zipball/4d7264ca3dc9447e4f88bdcfbb7be8168935b4b6",
+                "reference": "4d7264ca3dc9447e4f88bdcfbb7be8168935b4b6",
                 "shasum": ""
             },
             "require": {
-                "illuminate/session": "^5.5|^5.6|^5.7|^5.8|^6.0",
+                "illuminate/session": "^5.5|^5.6|^5.7|^5.8|^6.0|^7.0",
                 "php": "^7.1"
             },
             "require-dev": {
-                "orchestra/testbench": "^3.5|^3.6|^3.7|^3.8|^4.0"
+                "orchestra/testbench": "^3.5|^3.6|^3.7|^3.8|^4.0|^5.0"
             },
             "type": "library",
             "autoload": {
@@ -3168,7 +3178,13 @@
                 "laravel-flash",
                 "spatie"
             ],
-            "time": "2019-09-04T12:23:19+00:00"
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-04-06T14:22:04+00:00"
         },
         {
             "name": "srmklive/authy",
