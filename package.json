@@ -43,7 +43,7 @@
         "vue-chartjs": "^3.4.2",
         "vue-codemirror": "^4.0.6",
         "vue-color": "^2.7.0",
-        "vue-cookies": "^1.6.1",
+        "vue-cookies": "^1.7.4",
         "vue-plain-slider": "^1.1.1",
         "vue-prismjs": "^1.2.0",
         "vue-router": "^3.0.6",
