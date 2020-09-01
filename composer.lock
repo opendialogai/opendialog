@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6ad88b52920d8293c41dd2739346599",
+    "content-hash": "1f10c2f9d7cdc38e631e6fadf8cd7391",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2022,16 +2022,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "0.5.5",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265"
+                "reference": "e97af92c19843efb5d7b6b1a1c49716bb89632ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/250f48dda3c7c19c6c52bbef955ce86bdafec265",
-                "reference": "250f48dda3c7c19c6c52bbef955ce86bdafec265",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/e97af92c19843efb5d7b6b1a1c49716bb89632ef",
+                "reference": "e97af92c19843efb5d7b6b1a1c49716bb89632ef",
                 "shasum": ""
             },
             "require": {
@@ -2039,6 +2039,7 @@
                 "php": "^7.3.0"
             },
             "require-dev": {
+                "opendialogai/core": "0.6.8",
                 "orchestra/testbench": "^4.0",
                 "phpunit/phpunit": "^8.3",
                 "squizlabs/php_codesniffer": "^3.4"
@@ -2047,7 +2048,8 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "OpenDialogAi\\Webchat\\PackageServiceProvider"
+                        "OpenDialogAi\\Webchat\\PackageServiceProvider",
+                        "OpenDialogAi\\Webchat\\WebchatSettingsConfiguration\\WebchatSettingsConfigurationServiceProvider"
                     ]
                 }
             },
@@ -2068,7 +2070,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2019-11-28T16:30:10+00:00"
+            "time": "2020-08-21T16:44:48+00:00"
         },
         {
             "name": "opis/closure",
@@ -2390,6 +2392,16 @@
                 "nosql",
                 "predis",
                 "redis"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/tillkruss",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tillkruss",
+                    "type": "github"
+                }
             ],
             "time": "2016-06-16T16:22:20+00:00"
         },
