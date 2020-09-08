@@ -53,7 +53,6 @@ class SetWebchatSettings extends Command
 
         $settings = [
             WebchatSetting::URL => "$odUrl/web-chat",
-            WebchatSetting::HIDE_OPEN_CLOSE_ICONS => true,
             WebchatSetting::OPEN => true,
             WebchatSetting::TEAM_NAME => 'OpenDialog Webchat',
             WebchatSetting::MESSAGE_DELAY => '1000',
