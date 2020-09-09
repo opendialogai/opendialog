@@ -348,7 +348,7 @@ class ConversationsController extends Controller
             $stream = fopen('php://memory', 'r+');
             fwrite($stream, $conversation->model);
             rewind($stream);
-            $zip->addFileFromStream($conversation->name, $stream);
+            $zip->addFileFromStream($conversation->name . '.conv', $stream);
             fclose($stream);
         }
 

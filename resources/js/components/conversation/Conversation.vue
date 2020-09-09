@@ -412,7 +412,7 @@ export default {
           const url = window.URL.createObjectURL(response.data);
           const link = document.createElement('a');
           link.href = url;
-          link.setAttribute('download', `${this.conversation.name}.yml`);
+          link.setAttribute('download', `${this.conversation.name}.conv`);
           document.body.appendChild(link);
           link.click();
         },
