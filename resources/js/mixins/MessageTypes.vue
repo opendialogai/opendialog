@@ -57,11 +57,11 @@ export default {
             "</message>"
         },
         {
-          type: 'hand-to-human-message', renderer: (message, msg) => {this.parseH2hMessage(message, msg)},
+          type: 'hand-to-system-message', renderer: (message, msg) => {this.parseH2sMessage(message, msg)},
           xml: "<message>\n" +
-            "  <hand-to-human-message>\n" +
+            "  <hand-to-system-message system=\"my-custom-system\">\n" +
             "    <data name=\"replace_name_attribute\">Value</data>\n" +
-            "  </hand-to-human-message>\n"+
+            "  </hand-to-system-message>\n"+
             "</message>"
         },
         {
@@ -199,6 +199,22 @@ export default {
             "  </meta-message>\n"+
             "</message>"
         },
+        {
+          type: 'autocomplete-message', renderer: (message, msg) => {this.parseAutoCompleteMessage(message, msg)},
+          xml: "<message>\n" +
+            "  <autocomplete-message>\n" +
+            "    <title>Title</title>\n" +
+            "   <callback>callback.id</callback>\n" +
+            "   <submit_text>Submit</submit_text>\n" +
+            "    <options-endpoint>\n" +
+            "      <params>\n" +
+            "        <param name=\"name\" value=\"value\" />\n" +
+            "      </params>\n" +
+            "      <query-param-name>name</query-param-name>\n" +
+            "    </options-endpoint>\n" +
+            "  </autocomplete-message>\n"+
+            "</message>"
+        },
       ];
     },
     parseTextMessage (message, msg) {
@@ -241,7 +257,7 @@ export default {
     parseCtaMessage(message, msg) {
       message.data.text = msg.val;
     },
-    parseH2hMessage: function (message, msg) {
+    parseH2sMessage: function (message, msg) {
       let data = [];
       msg.childrenNamed('data').forEach((d) => {
         data.push({
@@ -249,6 +265,7 @@ export default {
           val: d.val,
         });
       });
+      message.data.system = msg.attr['system'];
       message.data.data = data;
     },
     parseRichMessage: function (message, msg) {
@@ -324,6 +341,11 @@ export default {
       });
 
       message.data.datas = datas;
+    },
+    parseAutoCompleteMessage: function (message, msg) {
+      message.data.submit_text = (msg.childNamed('submit_text')) ? msg.childNamed('submit_text').val.trim() : '';
+      message.data.callback = (msg.childNamed('callback')) ? msg.childNamed('callback').val.trim() : '';
+      message.data.title = (msg.childNamed('title')) ? msg.childNamed('title').val.trim() : '';
     },
     parseMessage(msg) {
       const message = {

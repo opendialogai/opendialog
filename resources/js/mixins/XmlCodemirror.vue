@@ -26,6 +26,9 @@ export default {
           schemaInfo: {
             '!top': ['message'],
             'attribute-message': {},
+            'autocomplete-message': {
+              children: ['options-endpoint', 'title', 'callback', 'submit_text'],
+            },
             'button': {
               children: ['callback', 'display', 'download', 'link', 'tab_switch', 'text', 'value'],
             },
@@ -51,7 +54,10 @@ export default {
             'fp-rich-message': {
               children: ['button', 'image', 'subtitle', 'text', 'title'],
             },
-            'hand-to-human-message': {
+            'hand-to-system-message': {
+              attrs: {
+                system: [],
+              },
               children: ['data'],
             },
             'image-message': {
@@ -78,13 +84,14 @@ export default {
               },
               children: [
                 'attribute-message',
+                'autocomplete-message',
                 'button-message',
                 'cta-message',
                 'empty-message',
                 'form-message',
                 'fp-form-message',
                 'fp-rich-message',
-                'hand-to-human-message',
+                'hand-to-system-message',
                 'image-message',
                 'list-message',
                 'long-text-message',
@@ -95,6 +102,18 @@ export default {
             },
             'meta-message': {
               children: ['data'],
+            },
+            'options-endpoint': {
+              children: ['params', 'query-param-name', 'url'],
+            },
+            'param': {
+              attrs: {
+                name: [],
+                value: [],
+              },
+            },
+            'params': {
+              children: ['param'],
             },
             'rich-message': {
               children: ['button', 'image', 'subtitle', 'text', 'title'],

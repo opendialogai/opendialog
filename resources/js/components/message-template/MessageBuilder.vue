@@ -4,8 +4,8 @@
       <template v-if="message.type === 'empty-message'">
         <EmptyMessage :message="message" />
       </template>
-      <template v-if="message.type === 'hand-to-human-message'">
-        <HandToHumanMessage :message="message" />
+      <template v-if="message.type === 'hand-to-system-message'">
+        <HandToSystemMessage :message="message" />
       </template>
       <template v-if="message.type === 'cta-message'">
         <CtaMessage :message="message" />
@@ -33,6 +33,9 @@
       </template>
       <template v-if="message.type === 'meta-message'">
         <MetaMessage :message="message" />
+      </template>
+      <template v-if="message.type === 'autocomplete-message'">
+        <AutocompleteMessage :message="message" />
       </template>
       <template v-if="message.type === 'error'">
         <Error :message="message" />
@@ -73,11 +76,12 @@ import xmldoc from 'xmldoc';
 
 import Slider from 'vue-plain-slider';
 
+import AutocompleteMessage from './Messages/AutocompleteMessage';
 import ButtonMessage from './Messages/ButtonMessage';
 import CtaMessage from './Messages/CtaMessage';
 import EmptyMessage from './Messages/EmptyMessage';
 import FormMessage from './Messages/FormMessage';
-import HandToHumanMessage from './Messages/HandToHumanMessage';
+import HandToSystemMessage from './Messages/HandToSystemMessage';
 import ImageMessage from './Messages/ImageMessage';
 import LongTextMessage from './Messages/LongTextMessage';
 import MetaMessage from './Messages/MetaMessage';
@@ -91,12 +95,13 @@ export default {
   name: 'message-builder',
   components: {
     AttributeMessage,
+    AutocompleteMessage,
     Error,
     ButtonMessage,
     CtaMessage,
     EmptyMessage,
     FormMessage,
-    HandToHumanMessage,
+    HandToSystemMessage,
     ImageMessage,
     LongTextMessage,
     MetaMessage,
@@ -157,11 +162,12 @@ export default {
 
 <style lang="scss" scoped>
 .message {
+  .autocomplete-message,
   .list-message,
   .long-text-message,
   .cta-message,
   .empty-message,
-  .hand-to-human-message,
+  .hand-to-system-message,
   .text-message,
   .button-message,
   .image-message,
