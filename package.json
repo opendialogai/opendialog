@@ -38,9 +38,11 @@
         "font-awesome": "^4.7.0",
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.31",
+        "promise-polyfill": "^8.1.3",
         "serialize-javascript": "2.1.1",
         "shortid": "^2.2.14",
         "simple-line-icons": "^2.4.1",
+        "url-search-params-polyfill": "^8.1.0",
         "vue-chartjs": "^3.4.2",
         "vue-codemirror": "^4.0.6",
         "vue-color": "^2.7.0",
@@ -49,7 +51,9 @@
         "vue-prismjs": "^1.2.0",
         "vue-router": "^3.0.6",
         "vue-select": "^3.9.4",
+        "vue-uuid": "^2.0.2",
         "vue2-daterange-picker": "^0.4.4",
+        "whatwg-fetch": "^3.4.1",
         "xmldoc": "^1.1.2"
     }
 }

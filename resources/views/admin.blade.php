@@ -41,7 +41,7 @@
         };
       </script>
 
-      <script src="{{ env('APP_URL') }}/vendor/webchat/js/opendialog-bot.js"></script>
+      <script src="{{ env('APP_URL') }}/js/bootstrap-iframe.js"></script>
     @endif
   </body>
 </html>
