@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f10c2f9d7cdc38e631e6fadf8cd7391",
+    "content-hash": "82eb4e2fb4e715e9b8c2d00ae48efab8",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -408,6 +408,20 @@
                 "uppercase",
                 "words"
             ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finflector",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-05-29T15:13:26+00:00"
         },
         {
@@ -469,6 +483,20 @@
                 "lexer",
                 "parser",
                 "php"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Flexer",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-05-25T17:44:05+00:00"
         },
@@ -2063,16 +2091,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "0.7.0",
+            "version": "dev-feature/chat-service-abstraction",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "e97af92c19843efb5d7b6b1a1c49716bb89632ef"
+                "reference": "5b234358b59f78466350c7701783ac21345f5c92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/e97af92c19843efb5d7b6b1a1c49716bb89632ef",
-                "reference": "e97af92c19843efb5d7b6b1a1c49716bb89632ef",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/5b234358b59f78466350c7701783ac21345f5c92",
+                "reference": "5b234358b59f78466350c7701783ac21345f5c92",
                 "shasum": ""
             },
             "require": {
@@ -2111,7 +2139,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2020-08-21T16:44:48+00:00"
+            "time": "2020-09-09T12:07:30+00:00"
         },
         {
             "name": "opis/closure",
@@ -3115,6 +3143,16 @@
                 "log",
                 "spatie",
                 "user"
+            ],
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
             ],
             "time": "2020-05-19T14:31:33+00:00"
         },
@@ -5552,9 +5590,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
-                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de"
+                    "homepage": "https://beyondco.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -5872,6 +5910,20 @@
             "keywords": [
                 "constructor",
                 "instantiate"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finstantiator",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-05-29T17:27:14+00:00"
         },
@@ -8380,7 +8432,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "opendialogai/core": 20
+        "opendialogai/core": 20,
+        "opendialogai/webchat": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

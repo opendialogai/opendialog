@@ -1,3 +1,5 @@
+import {registerCustomChatModes} from './bots/registerChatModes';
+
 window._ = require('lodash');
 
 /**
@@ -55,3 +57,11 @@ window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Laravel.apiT
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+window.openDialogWebchat = {
+    chatService: {
+        getCustomModes() {
+            return registerCustomChatModes();
+        }
+    }
+};
