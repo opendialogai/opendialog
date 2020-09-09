@@ -1,0 +1,19 @@
+<intent>intent.datingBot.SexualOrientationQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: a
+</conditions>
+<message>
+  <button-message>
+    <text>What is your sexual orientation? (Heterosexual, Homosexual, Bisexual, or anything else)</text>
+    <button>
+      <text>next question</text>
+      <callback>next_question</callback>
+    </button>
+  </button-message>
+</message>

@@ -1,0 +1,19 @@
+<intent>intent.datingBot.SexImportantQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: b
+</conditions>
+<message>
+  <button-message>
+    <text>How important is sex to you? Can you give me a number between 1 til 5, whereas 1 is not important and 5 is very important?</text>
+    <button>
+      <text>next question</text>
+      <callback>next_question</callback>
+    </button>
+  </button-message>
+</message>

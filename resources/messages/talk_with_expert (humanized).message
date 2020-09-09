@@ -1,0 +1,15 @@
+<intent>intent.datingBot.TalkWithExpertQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: b
+</conditions>
+<message>
+  <text-message>
+Ah, I almost forgot 😉. How important would it be for you to have a follow-up interview with a professional consultant to get a more detailed profile based on your answers? Your anonymity will be fully guaranteed. (1=no interest - 7=great interest)
+  </text-message>
+</message>

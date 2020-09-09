@@ -1,0 +1,22 @@
+<intent>intent.datingBot.RelationshipQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: b
+</conditions>
+<message>
+  <button-message>
+    <text>
+Ok, got that.
+What are you looking for - a relationship, a one night stand or anything else?
+    </text>
+    <button>
+      <text>next question</text>
+      <callback>next_question</callback>
+    </button>
+  </button-message>
+</message>

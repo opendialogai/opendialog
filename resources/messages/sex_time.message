@@ -1,0 +1,19 @@
+<intent>intent.datingBot.SexTimeQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: a
+</conditions>
+<message>
+  <button-message>
+    <text>How often do you want to practice sex per week?</text>
+    <button>
+      <text>next question</text>
+      <callback>next_question</callback>
+    </button>
+  </button-message>
+</message>

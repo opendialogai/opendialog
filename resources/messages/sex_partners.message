@@ -1,0 +1,19 @@
+<intent>intent.datingBot.SexPartnersQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: a
+</conditions>
+<message>
+  <button-message>
+    <text>How many sex partners have you had so far?</text>
+    <button>
+      <text>next question</text>
+      <callback>next_question</callback>
+    </button>
+  </button-message>
+</message>

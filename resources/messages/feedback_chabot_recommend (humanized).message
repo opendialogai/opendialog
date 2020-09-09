@@ -1,0 +1,13 @@
+<intent>intent.datingBot.FeedbackChabotRecommendQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: b
+</conditions>
+<message>
+  <text-message>How likely is it that you would recommend this Dating Chatbot to a friend or colleague? Please indicate a number on a 0-10 scale.</text-message>
+</message>

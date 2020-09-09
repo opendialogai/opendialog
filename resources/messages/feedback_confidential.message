@@ -1,0 +1,13 @@
+<intent>intent.datingBot.FeedbackConfidentialQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: a
+</conditions>
+<message>
+  <text-message>How confidential do you consider the topic you just discussed (please assign a number from 1 to 7, from 1=non-confidential to 7=confidential)</text-message>
+</message>

@@ -1,0 +1,15 @@
+<intent>intent.datingBot.endFeedbackConversation</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: b
+</conditions>
+<message disable_text="1">
+  <text-message>This is your personal code: {user.personal_code}</text-message>
+  <text-message>Thank you so much for taking part in this study - all data will be handled anonymously. Since this study is a research project on human-machine interaction and due to the limited scope of my masterthesis we will not be able to conduct the follow-up interview. If you want to know more about this study and/or if you want to win one of the Zalando vouchers please click on the following link to register - of course the following informations can't be traced back and will be handled anonymously.
+<link><url>/link?link=https://ww2.unipark.de/uc/mastudy&amp;user_id={user.email}</url><text>https://ww2.unipark.de/uc/mastudy</text></link></text-message>
+</message>

@@ -45,20 +45,20 @@ class ExportMessages extends Command
     {
         $this->info(sprintf('Exporting outgoing intent %s', $outgoingIntent->name));
 
-        $messageTemplates = [];
+        $intent = "<intent>" . $outgoingIntent->name . "</intent>\n";
+
         foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
-            $messageTemplates[$messageTemplate->name] = [
-                'conditions' => $messageTemplate->conditions,
-                'message_markup' => $messageTemplate->message_markup,
-            ];
+            $output = $intent;
+            if ($messageTemplate->conditions) {
+                $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
+            }
+            $output .= $messageTemplate->message_markup;
+
+            $filename = "resources/messages/$messageTemplate->name.message";
+            file_put_contents($filename, $output);
         }
 
-        $output = json_encode([
-            'outgoingIntent' => $outgoingIntent->name,
-            'messageTemplates' => $messageTemplates,
-        ]);
-
         $filename = "resources/messages/$outgoingIntent->name";
-        file_put_contents($filename, $output);
+        file_put_contents($filename, $outgoingIntent->name);
     }
 }

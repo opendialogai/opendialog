@@ -127,24 +127,33 @@ class OutgoingIntentsController extends Controller
         /** @var OutgoingIntent $outgoingIntent */
         $outgoingIntent = OutgoingIntent::find($id);
 
-        $messageTemplates = [];
+        $fileName = $outgoingIntent->name . '.zip';
+
+        $zip = new ZipStream($fileName);
+
+        $intent = "<intent>" . $outgoingIntent->name . "</intent>\n";
+
         foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
-            $messageTemplates[$messageTemplate->name] = [
-                'conditions' => $messageTemplate->conditions,
-                'message_markup' => $messageTemplate->message_markup,
-            ];
+            $output = $intent;
+            if ($messageTemplate->conditions) {
+                $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
+            }
+            $output .= $messageTemplate->message_markup;
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $output);
+            rewind($stream);
+            $zip->addFileFromStream($messageTemplate->name . '.message', $stream);
+            fclose($stream);
         }
 
-        $output = json_encode([
-            'outgoingIntent' => $outgoingIntent->name,
-            'messageTemplates' => $messageTemplates,
-        ]);
-
         $stream = fopen('php://memory', 'r+');
-        fwrite($stream, $output);
+        fwrite($stream, $outgoingIntent->name);
         rewind($stream);
+        $zip->addFileFromStream($outgoingIntent->name, $stream);
+        fclose($stream);
 
-        return stream_get_contents($stream);
+        $zip->finish();
     }
 
     /**
@@ -186,21 +195,24 @@ class OutgoingIntentsController extends Controller
         $outgoingIntents = OutgoingIntent::all();
 
         foreach ($outgoingIntents as $outgoingIntent) {
-            $messageTemplates = [];
+            $intent = "<intent>" . $outgoingIntent->name . "</intent>\n";
+
             foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
-                $messageTemplates[$messageTemplate->name] = [
-                    'conditions' => $messageTemplate->conditions,
-                    'message_markup' => $messageTemplate->message_markup,
-                ];
+                $output = $intent;
+                if ($messageTemplate->conditions) {
+                    $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
+                }
+                $output .= $messageTemplate->message_markup;
+
+                $stream = fopen('php://memory', 'r+');
+                fwrite($stream, $output);
+                rewind($stream);
+                $zip->addFileFromStream($messageTemplate->name . '.message', $stream);
+                fclose($stream);
             }
 
-            $output = json_encode([
-                'outgoingIntent' => $outgoingIntent->name,
-                'messageTemplates' => $messageTemplates,
-            ]);
-
             $stream = fopen('php://memory', 'r+');
-            fwrite($stream, $output);
+            fwrite($stream, $outgoingIntent->name);
             rewind($stream);
             $zip->addFileFromStream($outgoingIntent->name, $stream);
             fclose($stream);

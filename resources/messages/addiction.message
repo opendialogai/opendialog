@@ -1,0 +1,19 @@
+<intent>intent.datingBot.AddictionQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: a
+</conditions>
+<message>
+  <button-message>
+    <text>Have you ever had an addiction before, or still having one? If so, which one(s)?</text>
+    <button>
+      <text>next question</text>
+      <callback>next_question</callback>
+    </button>
+  </button-message>
+</message>

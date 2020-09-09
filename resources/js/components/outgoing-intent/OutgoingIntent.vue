@@ -246,7 +246,7 @@ export default {
           const url = window.URL.createObjectURL(response.data);
           const link = document.createElement('a');
           link.href = url;
-          link.setAttribute('download', `${this.outgoingIntent.name}.yml`);
+          link.setAttribute('download', `${this.outgoingIntent.name}.zip`);
           document.body.appendChild(link);
           link.click();
         },

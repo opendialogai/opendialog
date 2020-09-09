@@ -1,0 +1,13 @@
+<intent>intent.datingBot.FeedbackPresentMyselfQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: b
+</conditions>
+<message>
+  <text-message>To what degree do you agree with the following statement? I was concerned about the way I present myself (from 1=totally disagree to 7=totally agree)</text-message>
+</message>

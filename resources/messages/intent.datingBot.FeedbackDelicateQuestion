@@ -1,1 +1,1 @@
-{"outgoingIntent":"intent.datingBot.FeedbackDelicateQuestion","messageTemplates":{"feedback_delicate":{"conditions":null,"message_markup":"<message>\r\n  <text-message>How delicate do you consider the topic you just discussed (please assign a number from 1 to 7, from 1=not delicate to 7=delicate)<\/text-message>\r\n<\/message>"}}}
+intent.datingBot.FeedbackDelicateQuestion

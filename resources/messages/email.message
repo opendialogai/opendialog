@@ -1,0 +1,13 @@
+<intent>intent.datingBot.EmailQuestion</intent>
+<conditions>
+conditions: 
+  - condition:
+      operation: eq
+      attributes:
+        ab: user.ab
+      parameters:
+        value: a
+</conditions>
+<message>
+  <text-message>Thank you for the information. The creation of your profil will now start. If you wish to receive the profil please provide your e-mail address.</text-message>
+</message>
