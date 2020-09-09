@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82eb4e2fb4e715e9b8c2d00ae48efab8",
+    "content-hash": "33a453bcbb1282c374c8d4fe571be1eb",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2091,16 +2091,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "dev-feature/chat-service-abstraction",
+            "version": "dev-feature/custom-boostrap-abstraction",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "5b234358b59f78466350c7701783ac21345f5c92"
+                "reference": "696a6d3f29c566c6f5c24c4371f2375fc2f8ff19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/5b234358b59f78466350c7701783ac21345f5c92",
-                "reference": "5b234358b59f78466350c7701783ac21345f5c92",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/696a6d3f29c566c6f5c24c4371f2375fc2f8ff19",
+                "reference": "696a6d3f29c566c6f5c24c4371f2375fc2f8ff19",
                 "shasum": ""
             },
             "require": {
@@ -2139,7 +2139,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2020-09-09T12:07:30+00:00"
+            "time": "2020-09-09T16:57:00+00:00"
         },
         {
             "name": "opis/closure",
