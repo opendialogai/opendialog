@@ -26,28 +26,40 @@ class SetUpMessages extends Command
             $files = preg_grep('/^([^.])/', scandir('resources/messages'));
 
             foreach ($files as $messageName) {
-                $this->importOutgoingIntent($messageName);
+                $this->importMessage($messageName);
             }
         }
     }
 
-    protected function importOutgoingIntent($outgoingIntentName): void
+    protected function importMessage($messageFileName): void
     {
-        $this->info(sprintf('Importing outgoing intent %s', $outgoingIntentName));
+        $messageName = preg_replace('/.message$/', '', $messageFileName);
 
-        $filename = base_path("resources/messages/$outgoingIntentName");
-        $data = json_decode(file_get_contents($filename));
+        $this->info(sprintf('Importing message %s', $messageName));
 
-        $this->info(sprintf('Adding/updating intent with name %s', $data->outgoingIntent));
-        $newIntent = OutgoingIntent::firstOrNew(['name' => $data->outgoingIntent]);
+        $filename = base_path("resources/messages/$messageFileName");
+        $data = file_get_contents($filename);
+
+        preg_match('/<intent>(.*?)<\/intent>/s', $data, $matches);
+        $intentName = $matches[1];
+        $data = str_replace($matches[0], '', $data);
+
+        preg_match('/<conditions>(.*?)<\/conditions>/s', $data, $matches);
+        $condition = null;
+        if ($matches) {
+            $condition = $matches[1];
+            $data = str_replace($matches[0], '', $data);
+        }
+
+        $this->info(sprintf('Adding/updating intent with name %s', $intentName));
+        $newIntent = OutgoingIntent::firstOrNew(['name' => $intentName]);
         $newIntent->save();
 
-        foreach ($data->messageTemplates as $messageName => $messageTemplate) {
-            $this->info(sprintf('Adding/updating message template with name %s', $messageName));
-            $message = MessageTemplate::firstOrNew(['name' => $messageName]);
-            $message->fill((array) $messageTemplate);
-            $message->outgoing_intent_id = $newIntent->id;
-            $message->save();
-        }
+        $this->info(sprintf('Adding/updating message template with name %s', $messageName));
+        $message = MessageTemplate::firstOrNew(['name' => $messageName]);
+        $message->conditions = trim($condition);
+        $message->message_markup = trim($data);
+        $message->outgoing_intent_id = $newIntent->id;
+        $message->save();
     }
 }

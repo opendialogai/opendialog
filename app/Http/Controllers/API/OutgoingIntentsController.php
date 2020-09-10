@@ -147,12 +147,6 @@ class OutgoingIntentsController extends Controller
             fclose($stream);
         }
 
-        $stream = fopen('php://memory', 'r+');
-        fwrite($stream, $outgoingIntent->name);
-        rewind($stream);
-        $zip->addFileFromStream($outgoingIntent->name, $stream);
-        fclose($stream);
-
         $zip->finish();
     }
 

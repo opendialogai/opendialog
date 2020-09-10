@@ -57,8 +57,5 @@ class ExportMessages extends Command
             $filename = "resources/messages/$messageTemplate->name.message";
             file_put_contents($filename, $output);
         }
-
-        $filename = "resources/messages/$outgoingIntent->name";
-        file_put_contents($filename, $outgoingIntent->name);
     }
 }
