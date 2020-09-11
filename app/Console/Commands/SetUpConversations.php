@@ -22,7 +22,7 @@ class SetUpConversations extends Command
         }
 
         if ($continue) {
-            $files = preg_grep('/^([^.])/', scandir('resources/conversations'));
+            $files = preg_grep('/^([^.])/', scandir(base_path('resources/conversations')));
 
             foreach ($files as $conversationName) {
                 $this->importConversation($conversationName);

@@ -23,7 +23,7 @@
           <b-btn variant="primary" @click="editOutgoingIntent">Edit Outgoing Intent Name</b-btn>
           <b-btn variant="danger" @click="showDeleteOutgoingIntentModal">Delete</b-btn>
 
-          <input ref="file" type="file" hidden @change="importOutgoingIntent"/>
+          <input ref="file" type="file" hidden multiple @change="importOutgoingIntent"/>
 
           <b-btn class="ml-3" variant="info" @click="downloadOutgoingIntent">Download</b-btn>
           <b-btn variant="info" @click="uploadOutgoingIntent">Upload</b-btn>
@@ -259,9 +259,11 @@ export default {
       this.errorMessage = '';
       this.successMessage = '';
 
-      const file = event.target.files[0];
       const formData = new FormData();
-      formData.append('file', file);
+
+      event.target.files.forEach((file, i) => {
+        formData.append('file' + (i + 1), file);
+      });
 
       axios.post('/admin/api/outgoing-intent/' + this.outgoingIntent.id + '/import', formData, {
         headers: {

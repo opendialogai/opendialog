@@ -160,11 +160,19 @@ class OutgoingIntentsController extends Controller
         /** @var OutgoingIntent $outgoingIntent */
         $outgoingIntent = OutgoingIntent::find($id);
 
-        $file = $request->file('file');
+        $i = 1;
+        while (true) {
+            if ($file = $request->file('file' . $i)) {
+                $messageFileName = $file->getClientOriginalName();
+                $filename = base_path("resources/messages/$messageFileName");
+                File::delete($filename);
+                File::put($filename, $file->get());
 
-        $filename = base_path("resources/messages/$outgoingIntent->name");
-        File::delete($filename);
-        File::put($filename, $file->get());
+                $i++;
+            } else {
+                break;
+            }
+        }
 
         Artisan::call(
             'messages:update',
@@ -204,12 +212,6 @@ class OutgoingIntentsController extends Controller
                 $zip->addFileFromStream($messageTemplate->name . '.message', $stream);
                 fclose($stream);
             }
-
-            $stream = fopen('php://memory', 'r+');
-            fwrite($stream, $outgoingIntent->name);
-            rewind($stream);
-            $zip->addFileFromStream($outgoingIntent->name, $stream);
-            fclose($stream);
         }
 
         $zip->finish();
@@ -224,24 +226,23 @@ class OutgoingIntentsController extends Controller
         $i = 1;
         while (true) {
             if ($file = $request->file('file' . $i)) {
-                $outgoingIntentName = $file->getClientOriginalName();
-                $filename = base_path("resources/messages/$outgoingIntentName");
+                $messageFileName = $file->getClientOriginalName();
+                $filename = base_path("resources/messages/$messageFileName");
                 File::delete($filename);
                 File::put($filename, $file->get());
-
-                Artisan::call(
-                    'messages:update',
-                    [
-                        'conversation' => $outgoingIntentName,
-                        '--yes' => true
-                    ]
-                );
 
                 $i++;
             } else {
                 break;
             }
         }
+
+        Artisan::call(
+            'messages:update',
+            [
+                '--yes' => true
+            ]
+        );
 
         return response()->noContent(200);
     }

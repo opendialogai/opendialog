@@ -8,12 +8,14 @@ use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class UpdateMessages extends Command
 {
-    protected $signature = 'messages:update {--y|yes}';
+    protected $signature = 'messages:update {outgoingIntent?} {--y|yes}';
 
     protected $description = 'Update message templates';
 
     public function handle()
     {
+        $outgoingIntentName = $this->argument('outgoingIntent');
+
         if ($this->option("yes")) {
             $continue = true;
         } else {
@@ -21,10 +23,10 @@ class UpdateMessages extends Command
         }
 
         if ($continue) {
-            $files = preg_grep('/^([^.])/', scandir('resources/messages'));
+            $files = preg_grep('/^([^.])/', scandir(base_path('resources/messages')));
 
             foreach ($files as $messageName) {
-                $this->importMessage($messageName);
+                $this->importMessage($messageName, $outgoingIntentName);
             }
 
             $this->info('Imports finished');
@@ -33,11 +35,9 @@ class UpdateMessages extends Command
         }
     }
 
-    protected function importMessage($messageFileName): void
+    protected function importMessage($messageFileName, $outgoingIntentName): void
     {
         $messageName = preg_replace('/.message$/', '', $messageFileName);
-
-        $this->info(sprintf('Importing message %s', $messageName));
 
         $filename = base_path("resources/messages/$messageFileName");
         $data = file_get_contents($filename);
@@ -46,22 +46,26 @@ class UpdateMessages extends Command
         $intentName = $matches[1];
         $data = str_replace($matches[0], '', $data);
 
-        preg_match('/<conditions>(.*?)<\/conditions>/s', $data, $matches);
-        $condition = null;
-        if ($matches) {
-            $condition = $matches[1];
-            $data = str_replace($matches[0], '', $data);
+        if ($outgoingIntentName == null || $outgoingIntentName == $intentName) {
+            $this->info(sprintf('Importing message %s', $messageName));
+
+            preg_match('/<conditions>(.*?)<\/conditions>/s', $data, $matches);
+            $condition = null;
+            if ($matches) {
+                $condition = $matches[1];
+                $data = str_replace($matches[0], '', $data);
+            }
+
+            $this->info(sprintf('Adding/updating intent with name %s', $intentName));
+            $newIntent = OutgoingIntent::firstOrNew(['name' => $intentName]);
+            $newIntent->save();
+
+            $this->info(sprintf('Adding/updating message template with name %s', $messageName));
+            $message = MessageTemplate::firstOrNew(['name' => $messageName]);
+            $message->conditions = trim($condition);
+            $message->message_markup = trim($data);
+            $message->outgoing_intent_id = $newIntent->id;
+            $message->save();
         }
-
-        $this->info(sprintf('Adding/updating intent with name %s', $intentName));
-        $newIntent = OutgoingIntent::firstOrNew(['name' => $intentName]);
-        $newIntent->save();
-
-        $this->info(sprintf('Adding/updating message template with name %s', $messageName));
-        $message = MessageTemplate::firstOrNew(['name' => $messageName]);
-        $message->conditions = trim($condition);
-        $message->message_markup = trim($data);
-        $message->outgoing_intent_id = $newIntent->id;
-        $message->save();
     }
 }

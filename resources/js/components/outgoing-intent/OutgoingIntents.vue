@@ -155,6 +155,9 @@ export default {
       this.$refs.file.click();
     },
     importOutgoingIntents(event) {
+      this.errorMessage = '';
+      this.successMessage = '';
+
       const formData = new FormData();
 
       event.target.files.forEach((file, i) => {

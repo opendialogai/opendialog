@@ -23,7 +23,7 @@ class SetUpMessages extends Command
         }
 
         if ($continue) {
-            $files = preg_grep('/^([^.])/', scandir('resources/messages'));
+            $files = preg_grep('/^([^.])/', scandir(base_path('resources/messages')));
 
             foreach ($files as $messageName) {
                 $this->importMessage($messageName);
