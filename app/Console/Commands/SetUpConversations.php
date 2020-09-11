@@ -24,8 +24,8 @@ class SetUpConversations extends Command
         if ($continue) {
             $files = preg_grep('/^([^.])/', scandir(base_path('resources/conversations')));
 
-            foreach ($files as $conversationName) {
-                $this->importConversation($conversationName);
+            foreach ($files as $conversationFileName) {
+                $this->importConversation($conversationFileName);
             }
 
             $this->info('Imports finished');
@@ -34,11 +34,13 @@ class SetUpConversations extends Command
         }
     }
 
-    protected function importConversation($conversationName): void
+    protected function importConversation($conversationFileName): void
     {
+        $conversationName = preg_replace('/.conv$/', '', $conversationFileName);
+
         $this->info(sprintf('Importing conversation %s', $conversationName));
 
-        $filename = base_path("resources/conversations/$conversationName");
+        $filename = base_path("resources/conversations/$conversationFileName");
         $model = file_get_contents($filename);
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);

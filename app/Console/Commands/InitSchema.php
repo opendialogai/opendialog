@@ -7,15 +7,19 @@ use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
 
 class InitSchema extends Command
 {
-    protected $signature = 'schema:init';
+    protected $signature = 'schema:init {--y|yes}';
 
     protected $description = 'Init local dgraph schema';
 
     public function handle()
     {
-        $continue = $this->confirm(
-            'This will clear your local dgraph schema. Are you sure you want to continue?'
-        );
+        if ($this->option("yes")) {
+            $continue = true;
+        } else {
+            $continue = $this->confirm(
+                'This will clear your local dgraph schema. Are you sure you want to continue?'
+            );
+        }
 
         if ($continue) {
             $client = app()->make(DGraphClient::class);
