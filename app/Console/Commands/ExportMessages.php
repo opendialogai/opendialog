@@ -54,7 +54,7 @@ class ExportMessages extends Command
             }
             $output .= $messageTemplate->message_markup;
 
-            $filename = "resources/messages/$messageTemplate->name.message";
+            $filename = base_path("resources/messages/$messageTemplate->name.message");
             file_put_contents($filename, $output);
         }
     }

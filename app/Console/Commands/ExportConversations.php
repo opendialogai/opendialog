@@ -39,7 +39,7 @@ class ExportConversations extends Command
     {
         $this->info(sprintf('Exporting conversation %s', $conversation->name));
 
-        $filename = "resources/conversations/$conversation->name.conv";
+        $filename = base_path("resources/conversations/$conversation->name.conv");
         file_put_contents($filename, $conversation->model);
     }
 }

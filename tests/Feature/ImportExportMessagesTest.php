@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Artisan;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Tests\TestCase;
 
 class ImportExportMessagesTest extends TestCase
@@ -44,6 +45,25 @@ class ImportExportMessagesTest extends TestCase
 
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
 
+        $messageTemplate = MessageTemplate::where('name', 'Did not understand')->first();
+        $messageTemplate->message_markup = str_replace('<text-message>', '<text-message>Export', $messageTemplate->message_markup);
+        $messageTemplate->save();
+
+        Artisan::call(
+            'messages:export',
+            [
+                '--yes' => true
+            ]
+        );
+
+        $filename = base_path("resources/messages/$messageTemplate->name.message");
+        $message = file_get_contents($filename);
+        $this->assertStringContainsString('<text-message>Export', $message);
+
+        $messageTemplate = MessageTemplate::where('name', 'Did not understand')->first();
+        $messageTemplate->message_markup = str_replace('<text-message>Export', '<text-message>', $messageTemplate->message_markup);
+        $messageTemplate->save();
+
         Artisan::call(
             'messages:export',
             [
@@ -62,6 +82,13 @@ class ImportExportMessagesTest extends TestCase
         );
 
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
+        $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
+
+        $filename = base_path('resources/messages/Did not understand.message');
+
+        $message = file_get_contents($filename);
+        $message = str_replace('<text-message>', '<text-message>Export', $message);
+        file_put_contents($filename, $message);
 
         Artisan::call(
             'messages:update',
@@ -69,5 +96,11 @@ class ImportExportMessagesTest extends TestCase
                 '--yes' => true
             ]
         );
+
+        $messageTemplate = MessageTemplate::where('name', 'Did not understand')->first();
+        $this->assertStringContainsString('<text-message>Export', $messageTemplate->message_markup);
+
+        $message = str_replace('<text-message>Export', '<text-message>', $message);
+        file_put_contents($filename, $message);
     }
 }
