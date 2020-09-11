@@ -318,7 +318,7 @@ class ConversationsController extends Controller
 
         $file = $request->file('file');
 
-        $filename = base_path("resources/conversations/$conversation->name");
+        $filename = base_path("resources/conversations/$conversation->name.conv");
         File::delete($filename);
         File::put($filename, $file->get());
 
@@ -364,10 +364,12 @@ class ConversationsController extends Controller
         $i = 1;
         while (true) {
             if ($file = $request->file('file' . $i)) {
-                $conversationName = $file->getClientOriginalName();
-                $filename = base_path("resources/conversations/$conversationName");
+                $conversationFileName = $file->getClientOriginalName();
+                $filename = base_path("resources/conversations/$conversationFileName");
                 File::delete($filename);
                 File::put($filename, $file->get());
+
+                $conversationName = preg_replace('/.conv$/', '', $conversationFileName);
 
                 Artisan::call(
                     'conversations:update',

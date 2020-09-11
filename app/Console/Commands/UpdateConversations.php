@@ -39,7 +39,7 @@ class UpdateConversations extends Command
     {
         $this->info(sprintf('Importing conversation %s', $conversationName));
 
-        $filename = base_path("resources/conversations/$conversationName");
+        $filename = base_path("resources/conversations/$conversationName.conv");
         $model = file_get_contents($filename);
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
