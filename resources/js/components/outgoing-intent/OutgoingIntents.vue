@@ -9,8 +9,8 @@
 
           <input ref="file" type="file" hidden multiple @change="importOutgoingIntents"/>
 
-          <b-btn class="ml-3" variant="info" @click="downloadOutgoingIntents">Download All</b-btn>
-          <b-btn variant="info" @click="uploadOutgoingIntents">Upload All</b-btn>
+          <b-btn class="ml-3" variant="info" @click="downloadOutgoingIntents">Export</b-btn>
+          <b-btn variant="info" @click="uploadOutgoingIntents">Import all</b-btn>
         </div>
       </div>
     </div>

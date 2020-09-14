@@ -37,9 +37,11 @@
           </template>
 
           <input ref="file" type="file" hidden @change="importConversation"/>
+          <input ref="file2" type="file" hidden @change="importConversationAndActivate"/>
 
-          <b-btn class="ml-3" variant="info" @click="downloadConversation">Download</b-btn>
-          <b-btn variant="info" @click="uploadConversation">Upload</b-btn>
+          <b-btn class="ml-3" variant="info" @click="downloadConversation">Export</b-btn>
+          <b-btn variant="info" @click="uploadConversation">Import</b-btn>
+          <b-btn variant="info" @click="uploadConversationAndActivate">Import and activate</b-btn>
         </div>
       </div>
     </div>
@@ -421,13 +423,17 @@ export default {
     uploadConversation() {
       this.$refs.file.click();
     },
-    importConversation(event) {
+    uploadConversationAndActivate() {
+      this.$refs.file2.click();
+    },
+    importConversation(event, activate = false) {
       this.errorMessage = '';
       this.successMessage = '';
 
       const file = event.target.files[0];
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('activate', activate);
 
       axios.post('/admin/api/conversation/' + this.conversation.id + '/import', formData, {
         headers: {
@@ -441,6 +447,9 @@ export default {
           this.errorMessage = 'Sorry, I wasn\'t able to update this conversation.';
         }
       });
+    },
+    importConversationAndActivate(event) {
+      this.importConversation(event, true);
     },
   },
 };

@@ -318,17 +318,30 @@ class ConversationsController extends Controller
 
         $file = $request->file('file');
 
+        $activate = ($request->post('activate') == 'true') ? true : false;
+
         $filename = base_path("resources/conversations/$conversation->name.conv");
         File::delete($filename);
         File::put($filename, $file->get());
 
-        Artisan::call(
-            'conversations:update',
-            [
-                'conversation' => $conversation->name,
-                '--yes' => true
-            ]
-        );
+        if ($activate) {
+            Artisan::call(
+                'conversations:update',
+                [
+                    'conversation' => $conversation->name,
+                    '--yes' => true,
+                    '--activate' => true
+                ]
+            );
+        } else {
+            Artisan::call(
+                'conversations:update',
+                [
+                    'conversation' => $conversation->name,
+                    '--yes' => true
+                ]
+            );
+        }
 
         return response()->noContent(200);
     }
@@ -361,6 +374,8 @@ class ConversationsController extends Controller
      */
     public function importAll(Request $request)
     {
+        $activate = ($request->post('activate') == 'true') ? true : false;
+
         $i = 1;
         while (true) {
             if ($file = $request->file('file' . $i)) {
@@ -371,13 +386,24 @@ class ConversationsController extends Controller
 
                 $conversationName = preg_replace('/.conv$/', '', $conversationFileName);
 
-                Artisan::call(
-                    'conversations:update',
-                    [
-                        'conversation' => $conversationName,
-                        '--yes' => true
-                    ]
-                );
+                if ($activate) {
+                    Artisan::call(
+                        'conversations:update',
+                        [
+                            'conversation' => $conversationName,
+                            '--yes' => true,
+                            '--activate' => true
+                        ]
+                    );
+                } else {
+                    Artisan::call(
+                        'conversations:update',
+                        [
+                            'conversation' => $conversationName,
+                            '--yes' => true
+                        ]
+                    );
+                }
 
                 $i++;
             } else {

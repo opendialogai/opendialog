@@ -7,13 +7,13 @@ use OpenDialogAi\ConversationBuilder\Conversation;
 
 class SetUpConversations extends Command
 {
-    protected $signature = 'conversations:setup {--y|yes}';
+    protected $signature = 'conversations:setup {--y|yes} {--activate|activate}';
 
     protected $description = 'Sets up all active conversations';
 
     public function handle()
     {
-        if ($this->option("yes")) {
+        if ($this->option('yes')) {
             $continue = true;
         } else {
             $continue = $this->confirm(
@@ -22,10 +22,12 @@ class SetUpConversations extends Command
         }
 
         if ($continue) {
+            $activate = ($this->option('activate')) ? true : false;
+
             $files = preg_grep('/^([^.])/', scandir(base_path('resources/conversations')));
 
             foreach ($files as $conversationFileName) {
-                $this->importConversation($conversationFileName);
+                $this->importConversation($conversationFileName, $activate);
             }
 
             $this->info('Imports finished');
@@ -34,7 +36,7 @@ class SetUpConversations extends Command
         }
     }
 
-    protected function importConversation($conversationFileName): void
+    protected function importConversation($conversationFileName, $activate): void
     {
         $conversationName = preg_replace('/.conv$/', '', $conversationFileName);
 
@@ -47,7 +49,9 @@ class SetUpConversations extends Command
         $newConversation->fill(['model' => $model]);
         $newConversation->save();
 
-        $this->info(sprintf('Activating conversation with name %s', $newConversation->name));
-        $newConversation->activateConversation();
+        if ($activate) {
+            $this->info(sprintf('Activating conversation with name %s', $newConversation->name));
+            $newConversation->activateConversation();
+        }
     }
 }

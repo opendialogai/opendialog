@@ -23,9 +23,11 @@
           <b-btn variant="primary" @click="createConversation">Create</b-btn>
 
           <input ref="file" type="file" hidden multiple @change="importConversations"/>
+          <input ref="file2" type="file" hidden multiple @change="importConversationsAndActivate"/>
 
-          <b-btn class="ml-3" variant="info" @click="downloadConversations">Download All</b-btn>
-          <b-btn variant="info" @click="uploadConversations">Upload All</b-btn>
+          <b-btn class="ml-3" variant="info" @click="downloadConversations">Export</b-btn>
+          <b-btn variant="info" @click="uploadConversations">Import all</b-btn>
+          <b-btn variant="info" @click="uploadConversationsAndActivate">Import all and activate</b-btn>
         </div>
       </div>
     </div>
@@ -278,8 +280,12 @@
     uploadConversations() {
       this.$refs.file.click();
     },
-    importConversations(event) {
+    uploadConversationsAndActivate() {
+      this.$refs.file2.click();
+    },
+    importConversations(event, activate = false) {
       const formData = new FormData();
+      formData.append('activate', activate);
 
       event.target.files.forEach((file, i) => {
         formData.append('file' + (i + 1), file);
@@ -297,6 +303,9 @@
           this.errorMessage = 'Sorry, I wasn\'t able to update this conversations.';
         }
       });
+    },
+    importConversationsAndActivate(event) {
+      this.importConversations(event, true);
     },
   },
 };
