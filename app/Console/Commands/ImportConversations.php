@@ -5,9 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 
-class SetUpConversations extends Command
+class ImportConversations extends Command
 {
-    protected $signature = 'conversations:setup {--y|yes} {--activate|activate}';
+    protected $signature = 'conversations:import {--y|yes} {--activate|activate}';
 
     protected $description = 'Sets up all active conversations';
 

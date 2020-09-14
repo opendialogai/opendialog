@@ -45,7 +45,7 @@ class ExportConversations extends Command
                 }
             }
 
-            $this->info('Exports finished');
+            $this->info('Export of conversations finished');
         } else {
             $this->info('Bye');
         }

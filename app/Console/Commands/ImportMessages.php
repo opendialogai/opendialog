@@ -6,9 +6,9 @@ use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class SetUpMessages extends Command
+class ImportMessages extends Command
 {
-    protected $signature = 'messages:setup {--y|yes}';
+    protected $signature = 'messages:import {--y|yes}';
 
     protected $description = 'Sets up all messages';
 

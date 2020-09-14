@@ -40,7 +40,7 @@ class ExportIntents extends Command
                 }
             }
 
-            $this->info('Exports finished');
+            $this->info('Export of intents finished');
         } else {
             $this->info('Bye');
         }

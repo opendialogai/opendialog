@@ -40,7 +40,7 @@ class ExportMessages extends Command
                 }
             }
 
-            $this->info('Exports finished');
+            $this->info('Export of messages finished');
         } else {
             $this->info('Bye');
         }
