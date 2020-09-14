@@ -15,24 +15,29 @@ class ExportIntents extends Command
     {
         $outgoingIntentName = $this->argument('outgoingIntent');
 
-        if ($this->option("yes")) {
+        if ($this->option('yes')) {
             $continue = true;
         } elseif ($outgoingIntentName) {
             $continue = $this->confirm(
                 sprintf(
-                    'Do you want to export %s outgoing intent and it own messages?',
+                    'Do you want to export %s outgoing intent?',
                     $outgoingIntentName
                 )
             );
         } else {
-            $continue = $this->confirm('Do you want to export all outgoing intents and messages?');
+            $continue = $this->confirm('Do you want to export all outgoing intents?');
         }
 
         if ($continue) {
-            $outgoingIntents = OutgoingIntent::all();
-
-            foreach ($outgoingIntents as $outgoingIntent) {
+            if ($outgoingIntentName) {
+                $outgoingIntent = OutgoingIntent::where('name', $outgoingIntentName)->first();
                 $this->exportoutgoingIntent($outgoingIntent);
+            } else {
+                $outgoingIntents = OutgoingIntent::all();
+
+                foreach ($outgoingIntents as $outgoingIntent) {
+                    $this->exportoutgoingIntent($outgoingIntent);
+                }
             }
 
             $this->info('Exports finished');
