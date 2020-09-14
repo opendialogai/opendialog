@@ -3,36 +3,41 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
 
 class ExportMessages extends Command
 {
-    protected $signature = 'messages:export {outgoingIntent?} {--y|yes}';
+    protected $signature = 'messages:export {message?} {--y|yes}';
 
     protected $description = 'Export all message templates';
 
     public function handle()
     {
-        $outgoingIntentName = $this->argument('outgoingIntent');
+        $messageName = $this->argument('message');
 
         if ($this->option("yes")) {
             $continue = true;
-        } elseif ($outgoingIntentName) {
+        } elseif ($messageName) {
             $continue = $this->confirm(
                 sprintf(
-                    'Do you want to export %s outgoing intent and it own messages?',
-                    $outgoingIntentName
+                    'Do you want to export message %s?',
+                    $messageName
                 )
             );
         } else {
-            $continue = $this->confirm('Do you want to export all outgoing intents and messages?');
+            $continue = $this->confirm('Do you want to export all messages?');
         }
 
         if ($continue) {
-            $outgoingIntents = OutgoingIntent::all();
+            if ($messageName) {
+                $messageTemplate = MessageTemplate::where('name', $messageName)->first();
+                $this->exportMessageTemplate($messageTemplate);
+            } else {
+                $messageTemplates = MessageTemplate::all();
 
-            foreach ($outgoingIntents as $outgoingIntent) {
-                $this->exportoutgoingIntent($outgoingIntent);
+                foreach ($messageTemplates as $messageTemplate) {
+                    $this->exportMessageTemplate($messageTemplate);
+                }
             }
 
             $this->info('Exports finished');
@@ -41,21 +46,19 @@ class ExportMessages extends Command
         }
     }
 
-    protected function exportoutgoingIntent(OutgoingIntent $outgoingIntent): void
+    protected function exportMessageTemplate(MessageTemplate $messageTemplate): void
     {
-        $this->info(sprintf('Exporting outgoing intent %s', $outgoingIntent->name));
+        $this->info(sprintf('Exporting messsge %s', $messageTemplate->name));
 
-        $intent = "<intent>" . $outgoingIntent->name . "</intent>\n";
+        $output = "<intent>" . $messageTemplate->outgoingIntent->name . "</intent>\n";
+        $output .= "<name>" . $messageTemplate->name . "</name>\n";
 
-        foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
-            $output = $intent;
-            if ($messageTemplate->conditions) {
-                $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
-            }
-            $output .= $messageTemplate->message_markup;
-
-            $filename = base_path("resources/messages/$messageTemplate->name.message");
-            file_put_contents($filename, $output);
+        if ($messageTemplate->conditions) {
+            $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
         }
+        $output .= $messageTemplate->message_markup;
+
+        $filename = base_path("resources/messages/$messageTemplate->name.message");
+        file_put_contents($filename, $output);
     }
 }
