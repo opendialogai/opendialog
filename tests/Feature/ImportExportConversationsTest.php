@@ -20,12 +20,12 @@ class ImportExportConversationsTest extends TestCase
         );
     }
 
-    public function testSetUpConversations()
+    public function testImportConversations()
     {
         $this->assertDatabaseMissing('conversations', ['name' => 'no_match_conversation']);
 
         Artisan::call(
-            'conversations:setup',
+            'conversations:import',
             [
                 '--yes' => true
             ]
@@ -37,7 +37,7 @@ class ImportExportConversationsTest extends TestCase
     public function testExportConversations()
     {
         Artisan::call(
-            'conversations:setup',
+            'conversations:import',
             [
                 '--yes' => true
             ]
@@ -75,7 +75,7 @@ class ImportExportConversationsTest extends TestCase
     public function testUpdateConversations()
     {
         Artisan::call(
-            'conversations:setup',
+            'conversations:import',
             [
                 '--yes' => true
             ]
@@ -90,7 +90,7 @@ class ImportExportConversationsTest extends TestCase
         file_put_contents($filename, $model);
 
         Artisan::call(
-            'conversations:update',
+            'conversations:import',
             [
                 '--yes' => true,
                 'conversation' => 'no_match_conversation'

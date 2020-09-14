@@ -20,12 +20,12 @@ class ImportExportMessagesTest extends TestCase
         );
     }
 
-    public function testSetUpMessages()
+    public function testImportMessages()
     {
         $this->assertDatabaseMissing('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
 
         Artisan::call(
-            'messages:setup',
+            'messages:import',
             [
                 '--yes' => true
             ]
@@ -37,7 +37,7 @@ class ImportExportMessagesTest extends TestCase
     public function testExportMessages()
     {
         Artisan::call(
-            'messages:setup',
+            'messages:import',
             [
                 '--yes' => true
             ]
@@ -75,7 +75,7 @@ class ImportExportMessagesTest extends TestCase
     public function testUpdateMessages()
     {
         Artisan::call(
-            'messages:setup',
+            'messages:import',
             [
                 '--yes' => true
             ]
@@ -91,7 +91,7 @@ class ImportExportMessagesTest extends TestCase
         file_put_contents($filename, $message);
 
         Artisan::call(
-            'messages:update',
+            'messages:import',
             [
                 '--yes' => true
             ]
