@@ -1,5 +1,18 @@
 <template>
   <div class="animated fadeIn">
+    <div class="alert alert-success" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <b-row class="mb-4">
+      <b-col>
+        <b-btn variant="primary" class="mr-2" @click="specificationImport">Specification import</b-btn>
+        <b-btn variant="primary" @click="specificationExport">Specification export</b-btn>
+      </b-col>
+    </b-row>
     <b-row class="mb-4">
       <b-col>
         <date-range-picker
@@ -69,6 +82,7 @@ export default {
       },
       startDate: moment().subtract(6, 'days').format('YYYY-MM-DD'),
       endDate: moment().format('YYYY-MM-DD'),
+      successMessage: '',
     };
   },
   computed: {
@@ -93,6 +107,16 @@ export default {
       this.endDate = moment(this.dateRange.endDate).format('YYYY-MM-DD');
 
       this.$cookies.set('filterDateRange', this.dateRange, 0);
+    },
+    specificationImport() {
+      axios.get('/admin/api/specification-import').then(() => {
+        this.successMessage = 'Specification import completed';
+      });
+    },
+    specificationExport() {
+      axios.get('/admin/api/specification-export').then(() => {
+        this.successMessage = 'Specification export completed';
+      });
     },
   }
 };
