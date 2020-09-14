@@ -39,9 +39,13 @@
           <input ref="file" type="file" hidden @change="importConversation"/>
           <input ref="file2" type="file" hidden @change="importConversationAndActivate"/>
 
-          <b-btn class="ml-3" variant="info" @click="downloadConversation">Export</b-btn>
-          <b-btn variant="info" @click="uploadConversation">Import</b-btn>
-          <b-btn variant="info" @click="uploadConversationAndActivate">Import and activate</b-btn>
+          <b-btn class="ml-3 mr-1" variant="info" @click="downloadConversation">Export</b-btn>
+          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversation">Import</b-btn>
+          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversationAndActivate">Import and activate</b-btn>
+          <b-btn v-if="importingConversation" variant="primary">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+            Importing ...
+          </b-btn>
         </div>
       </div>
     </div>
@@ -256,7 +260,8 @@ export default {
       errorMessage: '',
       successMessage: '',
       currentHistoryModel: null,
-      currentHistoryId: null
+      currentHistoryId: null,
+      importingConversation: false,
     };
   },
   watch: {
@@ -429,6 +434,7 @@ export default {
     importConversation(event, activate = false) {
       this.errorMessage = '';
       this.successMessage = '';
+      this.importingConversation = true;
 
       const file = event.target.files[0];
       const formData = new FormData();
@@ -446,6 +452,10 @@ export default {
         } else {
           this.errorMessage = 'Sorry, I wasn\'t able to update this conversation.';
         }
+
+        this.$refs.file.value = null;
+        this.$refs.file2.value = null;
+        this.importingConversation = false;
       });
     },
     importConversationAndActivate(event) {

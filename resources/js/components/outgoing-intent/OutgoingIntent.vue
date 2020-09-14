@@ -25,8 +25,12 @@
 
           <input ref="file" type="file" hidden multiple @change="importOutgoingIntent"/>
 
-          <b-btn class="ml-3" variant="info" @click="downloadOutgoingIntent">Export</b-btn>
-          <b-btn variant="info" @click="uploadOutgoingIntent">Import</b-btn>
+          <b-btn v-if="!importingOutgoingIntent" class="ml-3" variant="info" @click="downloadOutgoingIntent">Export</b-btn>
+          <b-btn v-if="!importingOutgoingIntent" variant="info" @click="uploadOutgoingIntent">Import</b-btn>
+          <b-btn v-if="importingOutgoingIntent" variant="primary">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+            Importing ...
+          </b-btn>
         </div>
       </div>
     </div>
@@ -170,6 +174,7 @@ export default {
       outgoingIntent: null,
       messageTemplates: [],
       currentMessageTemplate: null,
+      importingOutgoingIntent: false,
     };
   },
   mounted() {
@@ -258,6 +263,7 @@ export default {
     importOutgoingIntent(event) {
       this.errorMessage = '';
       this.successMessage = '';
+      this.importingOutgoingIntent = true;
 
       const formData = new FormData();
 
@@ -276,6 +282,8 @@ export default {
         } else {
           this.errorMessage = 'Sorry, I wasn\'t able to update this outgoing intent.';
         }
+
+        this.importingOutgoingIntent = false;
       });
     },
   },

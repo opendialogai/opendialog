@@ -2,6 +2,20 @@
   <div>
     <h2 class="mb-3">Outgoing Intents</h2>
 
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
@@ -9,8 +23,12 @@
 
           <input ref="file" type="file" hidden multiple @change="importOutgoingIntents"/>
 
-          <b-btn class="ml-3" variant="info" @click="downloadOutgoingIntents">Export</b-btn>
-          <b-btn variant="info" @click="uploadOutgoingIntents">Import all</b-btn>
+          <b-btn v-if="!importingOutgoingIntents" class="ml-3" variant="info" @click="downloadOutgoingIntents">Export</b-btn>
+          <b-btn v-if="!importingOutgoingIntents" variant="info" @click="uploadOutgoingIntents">Import all</b-btn>
+          <b-btn v-if="importingOutgoingIntents" variant="primary">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+            Importing ...
+          </b-btn>
         </div>
       </div>
     </div>
@@ -98,6 +116,7 @@ export default {
     return {
       outgoingIntents: [],
       currentOutgoingIntent: null,
+      importingOutgoingIntents: false,
     };
   },
   watch: {
@@ -157,6 +176,7 @@ export default {
     importOutgoingIntents(event) {
       this.errorMessage = '';
       this.successMessage = '';
+      this.importingOutgoingIntents = true;
 
       const formData = new FormData();
 
@@ -175,6 +195,8 @@ export default {
         } else {
           this.errorMessage = 'Sorry, I wasn\'t able to update this outgoing intents.';
         }
+
+        this.importingOutgoingIntents = false;
       });
     },
   },
