@@ -1,4 +1,0 @@
-<intent>intent.datingBot.FeedbackDelicateQuestion</intent>
-<message>
-  <text-message>How delicate do you consider the topic you just discussed (please assign a number from 1 to 7, from 1=not delicate to 7=delicate)</text-message>
-</message>

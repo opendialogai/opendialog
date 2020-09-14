@@ -1,0 +1,10 @@
+conversation:
+  id: test_list_message
+  scenes:
+    opening_scene:
+      intents:
+        - u: 
+            i: intent.core.TestListMessage
+        - b: 
+            i: intent.core.TestListMessageResponse
+            completes: true
