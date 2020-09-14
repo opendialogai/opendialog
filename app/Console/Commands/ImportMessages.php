@@ -8,14 +8,23 @@ use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ImportMessages extends Command
 {
-    protected $signature = 'messages:import {--y|yes}';
+    protected $signature = 'messages:import {message?} {--y|yes}';
 
     protected $description = 'Sets up all messages';
 
     public function handle()
     {
-        if ($this->option("yes")) {
+        $messageName = $this->argument('message');
+
+        if ($this->option('yes')) {
             $continue = true;
+        } elseif ($messageName) {
+            $continue = $this->confirm(
+                sprintf(
+                    'Do you want to import message %s?',
+                    $messageName
+                )
+            );
         } else {
             $continue = $this->confirm(
                 'This will import or update all messages. Are you sure you want to continue?'
@@ -23,22 +32,32 @@ class ImportMessages extends Command
         }
 
         if ($continue) {
-            $files = preg_grep('/^([^.])/', scandir(base_path('resources/messages')));
+            if ($messageName) {
+                $this->importMessage($messageName . '.message');
+            } else {
+                $files = preg_grep('/^([^.])/', scandir(base_path('resources/messages')));
 
-            foreach ($files as $messageName) {
-                $this->importMessage($messageName);
+                foreach ($files as $messageName) {
+                    $this->importMessage($messageName);
+                }
             }
+
+            $this->info('Import of messages finished');
+        } else {
+            $this->info('Bye');
         }
     }
 
     protected function importMessage($messageFileName): void
     {
-        $messageName = preg_replace('/.message$/', '', $messageFileName);
-
-        $this->info(sprintf('Importing message %s', $messageName));
-
         $filename = base_path("resources/messages/$messageFileName");
         $data = file_get_contents($filename);
+
+        preg_match('/<name>(.*?)<\/name>/s', $data, $matches);
+        $messageName = $matches[1];
+        $data = str_replace($matches[0], '', $data);
+
+        $this->info(sprintf('Importing message %s', $messageName));
 
         preg_match('/<intent>(.*?)<\/intent>/s', $data, $matches);
         $intentName = $matches[1];

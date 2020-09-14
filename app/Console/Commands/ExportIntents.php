@@ -46,7 +46,7 @@ class ExportIntents extends Command
         }
     }
 
-    protected function exportoutgoingIntent(OutgoingIntent $outgoingIntent): void
+    protected function exportOutgoingIntent(OutgoingIntent $outgoingIntent): void
     {
         $this->info(sprintf('Exporting outgoing intent %s', $outgoingIntent->name));
 

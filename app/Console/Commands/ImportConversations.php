@@ -7,30 +7,43 @@ use OpenDialogAi\ConversationBuilder\Conversation;
 
 class ImportConversations extends Command
 {
-    protected $signature = 'conversations:import {--y|yes} {--activate|activate}';
+    protected $signature = 'conversations:import {conversation?} {--y|yes} {--activate|activate}';
 
-    protected $description = 'Sets up all active conversations';
+    protected $description = 'Import all conversations';
 
     public function handle()
     {
+        $conversationName = $this->argument('conversation');
+
         if ($this->option('yes')) {
             $continue = true;
+        } elseif ($conversationName) {
+            $continue = $this->confirm(
+                sprintf(
+                    'Do you want to import conversation %s?',
+                    $conversationName
+                )
+            );
         } else {
             $continue = $this->confirm(
-                'This will import or update all active conversations. Are you sure you want to continue?'
+                'This will import or update all conversations. Are you sure you want to continue?'
             );
         }
 
         if ($continue) {
             $activate = ($this->option('activate')) ? true : false;
 
-            $files = preg_grep('/^([^.])/', scandir(base_path('resources/conversations')));
+            if ($conversationName) {
+                $this->importConversation($conversationName . '.conv', $activate);
+            } else {
+                $files = preg_grep('/^([^.])/', scandir(base_path('resources/conversations')));
 
-            foreach ($files as $conversationFileName) {
-                $this->importConversation($conversationFileName, $activate);
+                foreach ($files as $conversationFileName) {
+                    $this->importConversation($conversationFileName, $activate);
+                }
             }
 
-            $this->info('Imports finished');
+            $this->info('Import of conversations finished');
         } else {
             $this->info('OK, not running');
         }

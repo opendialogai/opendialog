@@ -15,7 +15,7 @@ class ExportMessages extends Command
     {
         $messageName = $this->argument('message');
 
-        if ($this->option("yes")) {
+        if ($this->option('yes')) {
             $continue = true;
         } elseif ($messageName) {
             $continue = $this->confirm(

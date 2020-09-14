@@ -13,7 +13,7 @@ class InitSchema extends Command
 
     public function handle()
     {
-        if ($this->option("yes")) {
+        if ($this->option('yes')) {
             $continue = true;
         } else {
             $continue = $this->confirm(
