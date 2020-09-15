@@ -319,6 +319,18 @@ class ConversationsController extends Controller
             ];
         }
 
+        if ($existingConversation = Conversation::where('name', $yaml['id'])->first()) {
+            if ($existingConversation->id != $conversation->id) {
+                return [
+                    'field' => 'name',
+                    'message' => sprintf(
+                        'A conversation with the ID %s already exists, conversations should have unique IDs.',
+                        $yaml['id']
+                    ),
+                ];
+            }
+        }
+
         return null;
     }
 
