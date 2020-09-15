@@ -45,7 +45,7 @@ class OutgoingIntentsController extends Controller
      * @param Request $request
      * @return OutgoingIntentResource
      */
-    public function store(Request $request): OutgoingIntentResource
+    public function store(Request $request)
     {
         /** @var OutgoingIntent $outgoingIntent */
         $outgoingIntent = OutgoingIntent::make($request->all());
@@ -134,6 +134,18 @@ class OutgoingIntentsController extends Controller
                 'field' => 'name',
                 'message' => 'Outgoing intent name field is required.',
             ];
+        }
+
+        if ($existingOutgoingIntent = OutgoingIntent::where('name', $outgoingIntent->name)->first()) {
+            if ($existingOutgoingIntent->id != $outgoingIntent->id) {
+                return [
+                    'field' => 'name',
+                    'message' => sprintf(
+                        'An outgoing intent with the Name %s already exists, outgoing intents should have unique Names.',
+                        $outgoingIntent->name
+                    ),
+                ];
+            }
         }
 
         return null;
