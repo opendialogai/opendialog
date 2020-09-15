@@ -135,6 +135,7 @@ class OutgoingIntentsController extends Controller
 
         foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
             $output = $intent;
+            $output .= "<name>" . $messageTemplate->name . "</name>\n";
             if ($messageTemplate->conditions) {
                 $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
             }
@@ -199,8 +200,15 @@ class OutgoingIntentsController extends Controller
         foreach ($outgoingIntents as $outgoingIntent) {
             $intent = "<intent>" . $outgoingIntent->name . "</intent>\n";
 
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $intent);
+            rewind($stream);
+            $zip->addFileFromStream('intents/' . $outgoingIntent->name . '.intent', $stream);
+            fclose($stream);
+
             foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
                 $output = $intent;
+                $output .= "<name>" . $messageTemplate->name . "</name>\n";
                 if ($messageTemplate->conditions) {
                     $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
                 }
@@ -209,7 +217,7 @@ class OutgoingIntentsController extends Controller
                 $stream = fopen('php://memory', 'r+');
                 fwrite($stream, $output);
                 rewind($stream);
-                $zip->addFileFromStream($messageTemplate->name . '.message', $stream);
+                $zip->addFileFromStream('messages/' . $messageTemplate->name . '.message', $stream);
                 fclose($stream);
             }
         }
