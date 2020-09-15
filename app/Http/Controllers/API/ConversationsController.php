@@ -326,7 +326,7 @@ class ConversationsController extends Controller
 
         if ($activate) {
             Artisan::call(
-                'conversations:update',
+                'conversations:import',
                 [
                     'conversation' => $conversation->name,
                     '--yes' => true,
@@ -335,7 +335,7 @@ class ConversationsController extends Controller
             );
         } else {
             Artisan::call(
-                'conversations:update',
+                'conversations:import',
                 [
                     'conversation' => $conversation->name,
                     '--yes' => true
@@ -388,7 +388,7 @@ class ConversationsController extends Controller
 
                 if ($activate) {
                     Artisan::call(
-                        'conversations:update',
+                        'conversations:import',
                         [
                             'conversation' => $conversationName,
                             '--yes' => true,
@@ -397,7 +397,7 @@ class ConversationsController extends Controller
                     );
                 } else {
                     Artisan::call(
-                        'conversations:update',
+                        'conversations:import',
                         [
                             'conversation' => $conversationName,
                             '--yes' => true

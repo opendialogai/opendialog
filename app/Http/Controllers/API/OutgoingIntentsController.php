@@ -176,7 +176,7 @@ class OutgoingIntentsController extends Controller
         }
 
         Artisan::call(
-            'messages:update',
+            'messages:import',
             [
                 'outgoingIntent' => $outgoingIntent->name,
                 '--yes' => true
@@ -234,23 +234,43 @@ class OutgoingIntentsController extends Controller
         $i = 1;
         while (true) {
             if ($file = $request->file('file' . $i)) {
-                $messageFileName = $file->getClientOriginalName();
-                $filename = base_path("resources/messages/$messageFileName");
-                File::delete($filename);
-                File::put($filename, $file->get());
+                $fileName = $file->getClientOriginalName();
+
+                if (substr($fileName, -8) == '.message') {
+                    $messageFileName = base_path("resources/messages/$fileName");
+                    File::delete($messageFileName);
+                    File::put($messageFileName, $file->get());
+
+                    $messageName = substr($fileName, 0, -8);
+
+                    Artisan::call(
+                        'messages:import',
+                        [
+                            '--yes' => true,
+                            'message' => $messageName
+                        ]
+                    );
+                } elseif (substr($fileName, -7) == '.intent') {
+                    $intentFileName = base_path("resources/intents/$fileName");
+                    File::delete($intentFileName);
+                    File::put($intentFileName, $file->get());
+
+                    $intentName = substr($fileName, 0, -7);
+
+                    Artisan::call(
+                        'intents:import',
+                        [
+                            '--yes' => true,
+                            'outgoingIntent' => $intentName
+                        ]
+                    );
+                }
 
                 $i++;
             } else {
                 break;
             }
         }
-
-        Artisan::call(
-            'messages:update',
-            [
-                '--yes' => true
-            ]
-        );
 
         return response()->noContent(200);
     }

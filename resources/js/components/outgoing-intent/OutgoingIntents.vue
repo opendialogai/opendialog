@@ -114,6 +114,8 @@ export default {
   mixins: [Pager],
   data() {
     return {
+      errorMessage: '',
+      successMessage: '',
       outgoingIntents: [],
       currentOutgoingIntent: null,
       importingOutgoingIntents: false,
