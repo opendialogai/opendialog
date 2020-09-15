@@ -33,6 +33,7 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
         Route::get('/activate', 'ConversationsController@activate');
         Route::get('/deactivate', 'ConversationsController@deactivate');
         Route::get('/archive', 'ConversationsController@archive');
+        Route::get('/message-templates', 'ConversationsController@messageTemplates');
 
         Route::get('/restore/{versionId}', 'ConversationsController@restore');
         Route::get('/reactivate/{versionId}', 'ConversationsController@reactivate');

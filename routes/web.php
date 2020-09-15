@@ -51,6 +51,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/add', 'AdminController@handle');
         Route::get('/{id}', 'AdminController@handle');
         Route::get('/{id}/edit', 'AdminController@handle');
+        Route::get('/{id}/message-templates', 'AdminController@handle');
     });
 
     /**
@@ -128,4 +129,11 @@ Route::prefix('stats')->middleware(['auth'])->group(function () {
     Route::get('conversations', 'StatisticsController@conversations');
     Route::get('incoming-intents', 'StatisticsController@incomingIntents');
     Route::get('message-templates', 'StatisticsController@messageTemplates');
+});
+
+Route::get('status', 'StatusController@handle');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('admin/logout', 'Auth\LoginController@logout');
+    Route::get('logout', 'Auth\LoginController@logout');
 });
