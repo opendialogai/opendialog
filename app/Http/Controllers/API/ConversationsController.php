@@ -43,20 +43,24 @@ class ConversationsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource with only id and name.
      *
      * @return Response
      */
     public function list()
     {
-        $conversations = [];
-        foreach (Conversation::withoutStatus(ConversationNode::ARCHIVED)->get() as $conversation) {
-            $conversations[] = [
+        $conversations = Conversation::withoutStatus(ConversationNode::ARCHIVED)
+            ->orderBy('name')
+            ->get();
+
+        $response = [];
+        foreach ($conversations as $conversation) {
+            $response[] = [
                 'id' => $conversation->id,
                 'name' => $conversation->name,
             ];
         }
-        return $conversations;
+        return $response;
     }
 
     /**
