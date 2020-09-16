@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mb-3">Outgoing Intents</h2>
+    <h2 class="mb-3">Message Templates</h2>
 
     <div class="row mb-4">
       <div class="col-12">
@@ -10,8 +10,25 @@
       </div>
     </div>
 
+    <div class="inline mb-2">
+      <label class="mr-2 mt-1 mb-0">Filter conversation:</label>
+      <v-select :options="conversations" :reduce="option => option.id" label="name" v-model="searchConversation" @input="conversationFilterInput"></v-select>
+    </div>
+
+    <div class="inline mb-2">
+      <label class="mr-2 mt-1 mb-0">Filter intents:</label>
+      <input class="form-control mt-1 mr-1" v-model="searchStringIntents" @keyup="searchIntents" />
+      <button class="btn btn-danger mt-1" @click="clearSearchIntents">Clear</button>
+    </div>
+
+    <div class="inline mb-4">
+      <label class="mr-2 mt-1 mb-0">Search message content:</label>
+      <input class="form-control mt-1 mr-1" v-model="searchStringMessageContent" @keyup="searchMessageContent" />
+      <button class="btn btn-danger mt-1" @click="clearSearchMessageContent">Clear</button>
+    </div>
+
     <div class="overflow-auto">
-      <table class="table table-hover">
+      <table class="table">
         <thead class="thead-light">
           <tr>
             <th scope="col">#</th>
@@ -20,14 +37,44 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="outgoingIntent in outgoingIntents">
+          <tr v-for="(outgoingIntent, idx) in outgoingIntents">
             <td>
               {{ outgoingIntent.id }}
             </td>
             <td>
-              {{ outgoingIntent.name }}
+              <div>{{ outgoingIntent.name }}</div>
+
+              <div class=" mt-3 collapse" :id="'collapse-' + idx">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="messageTemplate in outgoingIntent.message_templates">
+                      <td style="width: 10%">{{ messageTemplate.id }}</td>
+                      <td style="width: 70%">{{ messageTemplate.name }}</td>
+                      <td style="width: 20%">
+                        <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewMessageTemplate(messageTemplate)">
+                          <i class="fa fa-eye"></i>
+                        </button>
+                        <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit" @click.stop="editMessageTemplate(messageTemplate)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </td>
             <td class="actions">
+              <button class="btn btn-warning mr-2" data-toggle="collapse" :data-target="'#collapse-' + idx" aria-expanded="false" :aria-controls="'collapse-' + idx">
+                <span class="expand-label">expand</span>
+                <span class="collapse-label">collapse</span>
+              </button>
               <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewOutgoingIntent(outgoingIntent.id)">
                 <i class="fa fa-eye"></i>
               </button>
@@ -84,30 +131,61 @@
 </template>
 
 <script>
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
+
 import Pager from '@/mixins/Pager';
 
 export default {
   name: 'outgoing-intents',
   mixins: [Pager],
+  components: {
+    vSelect,
+  },
   data() {
     return {
       outgoingIntents: [],
       currentOutgoingIntent: null,
+      filterConversation: null,
+      searchConversation: null,
+      searchStringMessageContent: '',
+      searchStringIntents: '',
+      conversations: [],
     };
   },
   watch: {
     '$route' () {
+      this.fetchConversations();
       this.fetchOutgoingIntents();
     }
   },
   mounted() {
+    this.fetchConversations();
     this.fetchOutgoingIntents();
   },
   methods: {
+    fetchConversations() {
+      axios.get('/admin/api/conversation-list').then(
+        (response) => {
+          this.conversations = response.data;
+
+          if (this.filterConversation) {
+            this.conversations.forEach((conversation) => {
+              if (conversation.id == this.filterConversation) {
+                this.searchConversation = conversation;
+              }
+            });
+          }
+        },
+      );
+    },
     fetchOutgoingIntents() {
+      this.filterConversation = (this.$route.query.conversation) ? (this.$route.query.conversation) : '';
+      this.searchStringMessageContent = this.$route.query.filterMessageContent || '';
+      this.searchStringIntents = this.$route.query.filterIntents || '';
       this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage).then(
+      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage + '&filterMessageContent=' + this.searchStringMessageContent + '&filterIntents=' + this.searchStringIntents + '&conversation=' + this.filterConversation).then(
         (response) => {
           this.totalPages = parseInt(response.data.meta.last_page);
           this.outgoingIntents = response.data.data;
@@ -134,6 +212,59 @@ export default {
 
       axios.delete('/admin/api/outgoing-intents/' + this.currentOutgoingIntent);
     },
+    searchMessageContent(event) {
+      if (this.searchStringMessageContent.length >= 4 || event.keyCode == 13 || event.keyCode == 8) {
+        this.$router.push({ name: 'outgoing-intents', query: {
+          filterMessageContent: this.searchStringMessageContent,
+          filterIntents: this.searchStringIntents,
+          conversation: this.filterConversation,
+        } });
+      }
+    },
+    searchIntents(event) {
+      if (this.searchStringIntents.length >= 4 || event.keyCode == 13 || event.keyCode == 8) {
+        this.$router.push({ name: 'outgoing-intents', query: {
+          filterMessageContent: this.searchStringMessageContent,
+          filterIntents: this.searchStringIntents,
+          conversation: this.filterConversation,
+        } });
+      }
+    },
+    clearSearchIntents() {
+      this.$router.push({ name: 'outgoing-intents', query: {
+        filterMessageContent: this.searchStringMessageContent,
+        filterIntents: '',
+        conversation: this.filterConversation,
+      } });
+    },
+    clearSearchMessageContent() {
+      this.$router.push({ name: 'outgoing-intents', query: {
+        filterMessageContent: '',
+        filterIntents: this.searchStringIntents,
+        conversation: this.filterConversation,
+      } });
+    },
+    conversationFilterInput(value) {
+      this.filterConversation = value;
+
+      this.$router.push({ name: 'outgoing-intents', query: {
+        filterMessageContent: this.searchStringMessageContent,
+        filterIntents: this.searchStringIntents,
+        conversation: this.filterConversation,
+      } });
+    },
+    viewMessageTemplate(messageTemplate) {
+      this.$router.push({ name: 'view-message-template', params: {
+        outgoingIntent: messageTemplate.outgoing_intent_id,
+        id: messageTemplate.id,
+      } });
+    },
+    editMessageTemplate(messageTemplate) {
+      this.$router.push({ name: 'edit-message-template', params: {
+        outgoingIntent: messageTemplate.outgoing_intent_id,
+        id: messageTemplate.id,
+      } });
+    },
   },
 };
 </script>
@@ -141,5 +272,35 @@ export default {
 <style lang="scss" scoped>
 table td.actions {
   min-width: 160px;
+}
+
+.inline {
+  * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .form-control {
+    width: 300px;
+  }
+}
+
+.v-select {
+  min-width: 300px;
+  background: white;
+}
+
+tr {
+  td.actions {
+    button[aria-expanded="true"] {
+      .expand-label {
+        display: none;
+      }
+    }
+    button[aria-expanded="false"] {
+      .collapse-label {
+        display: none;
+      }
+    }
+  }
 }
 </style>

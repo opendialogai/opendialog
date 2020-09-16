@@ -42,6 +42,22 @@ class ConversationsController extends Controller
         return new ConversationCollection($conversations);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function list()
+    {
+        $conversations = [];
+        foreach (Conversation::withoutStatus(ConversationNode::ARCHIVED)->get() as $conversation) {
+            $conversations[] = [
+                'id' => $conversation->id,
+                'name' => $conversation->name,
+            ];
+        }
+        return $conversations;
+    }
 
     /**
      * Display an archive listing.

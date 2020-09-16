@@ -124,22 +124,7 @@ const router = new VueRouter({
             }
         },
         {
-            path: 'conversations/:id/message-templates',
-            name: 'conversation-message-templates',
-            props: true,
-            component: Conversation,
-            meta: {
-                breadcrumbs: [{
-                    name: "Back to conversations",
-                    routename: "conversations"
-                },{
-                    name: "Back to conversation",
-                    routename: "view-conversation"
-                }]
-            }
-        },
-        {
-          path: 'outgoing-intents/',
+          path: 'outgoing-intents',
           name: 'outgoing-intents',
           component: OutgoingIntent,
         },

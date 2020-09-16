@@ -4,7 +4,7 @@ return [
 
     'items' => [
         [
-            'title' => 'Message Editor',
+            'title' => 'Message Templates',
             'url' => '/admin/outgoing-intents',
             'icon' => 'icon-list',
         ],

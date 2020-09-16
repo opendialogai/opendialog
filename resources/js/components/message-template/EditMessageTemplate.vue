@@ -98,21 +98,12 @@ export default {
         this.messageTemplate = response.data.data;
         this.previewData = this.messageTemplate;
 
-        if (!this.$route.query.conversationId) {
-          this.nextState = {
-            name: 'view-message-template',
-            params: {
-              outgoingIntent: this.outgoingIntent, id: this.messageTemplate.id
-            }
-          };
-        } else {
-          this.nextState = {
-            name: 'conversation-message-templates',
-            params: {
-              id: this.$route.query.conversationId
-            }
-          };
-        }
+        this.nextState = {
+          name: 'view-message-template',
+          params: {
+            outgoingIntent: this.outgoingIntent, id: this.messageTemplate.id
+          }
+        };
       },
     );
   },

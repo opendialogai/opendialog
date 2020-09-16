@@ -28,7 +28,9 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
 
     Route::apiResource('global-context', 'GlobalContextsController');
 
+    Route::get('conversation-list', 'ConversationsController@list');
     Route::get('conversation-archive', 'ConversationsController@viewArchive');
+
     Route::prefix('conversation/{id}')->group(function () {
         Route::get('/activate', 'ConversationsController@activate');
         Route::get('/deactivate', 'ConversationsController@deactivate');

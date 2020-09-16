@@ -97,7 +97,7 @@
           <b-row>
             <b-col class="font-weight-bold mt-1 mb-1" cols="5" md="3">Outgoing Intents:</b-col>
             <b-col class="mt-1 mb-1" cols="7" md="9">
-                <router-link :to="{ name: 'conversation-message-templates', params: { id: this.id } }">
+                <router-link :to="{ name: 'outgoing-intents', query: { conversation: this.id } }">
                     View all
                 </router-link>
             </b-col>

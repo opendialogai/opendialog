@@ -7,6 +7,7 @@ use App\Http\Resources\OutgoingIntentCollection;
 use App\Http\Resources\OutgoingIntentResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class OutgoingIntentsController extends Controller
@@ -27,13 +28,46 @@ class OutgoingIntentsController extends Controller
      *
      * @return OutgoingIntentCollection
      */
-    public function index(): OutgoingIntentCollection
+    public function index(Request $request): OutgoingIntentCollection
     {
+        $filterMessageContent = $request->get('filterMessageContent');
+        $filterIntents = $request->get('filterIntents');
+        $conversationId = $request->get('conversation');
+
+        $query = OutgoingIntent::query();
+
+        if ($filterIntents) {
+            $query->where('name', 'like', '%' . $filterIntents . '%');
+        }
+
+        if ($filterMessageContent) {
+            $query->whereHas('messageTemplates', function ($subQuery) use ($filterMessageContent) {
+                $subQuery->where('message_markup', 'like', '%' . $filterMessageContent . '%');
+            });
+        }
+
+        if ($conversationId) {
+            $conversation = Conversation::find($conversationId);
+
+            $outgoingIntentIds = [];
+            foreach ($conversation->outgoing_intents as $outgoingIntent) {
+                $outgoingIntentIds[] = $outgoingIntent['id'];
+            }
+
+            $query->whereIn('id', $outgoingIntentIds);
+        }
+
+        $query->with('messageTemplates');
+
         /** @var OutgoingIntent $outgoingIntents */
-        $outgoingIntents = OutgoingIntent::paginate(50);
+        $outgoingIntents = $query->paginate(50);
 
         foreach ($outgoingIntents as $outgoingIntent) {
             $outgoingIntent->makeVisible('id');
+
+            foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
+                $messageTemplate->makeVisible('id');
+            }
         }
 
         return new OutgoingIntentCollection($outgoingIntents);
