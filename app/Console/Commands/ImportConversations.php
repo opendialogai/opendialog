@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 
 class ImportConversations extends Command
 {
@@ -59,6 +60,9 @@ class ImportConversations extends Command
         $model = file_get_contents($filename);
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
+        $newConversation->status = ConversationNode::SAVED;
+        $newConversation->version_number = 0;
+        $newConversation->graph_uid = null;
         $newConversation->fill(['model' => $model]);
         $newConversation->save();
 
