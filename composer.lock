@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f10c2f9d7cdc38e631e6fadf8cd7391",
+    "content-hash": "07daaac863975bb2c965b36672e1daa4",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -137,32 +137,33 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "2.10.2",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "aab745e7b6b2de3b47019da81e7225e14dcfdac8"
+                "reference": "0d4e1a8b29dd987704842f0465aded378f441dca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/aab745e7b6b2de3b47019da81e7225e14dcfdac8",
-                "reference": "aab745e7b6b2de3b47019da81e7225e14dcfdac8",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/0d4e1a8b29dd987704842f0465aded378f441dca",
+                "reference": "0d4e1a8b29dd987704842f0465aded378f441dca",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^1.0",
                 "doctrine/event-manager": "^1.0",
                 "ext-pdo": "*",
-                "php": "^7.2"
+                "php": "^7.3"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^6.0",
+                "doctrine/coding-standard": "^8.1",
                 "jetbrains/phpstorm-stubs": "^2019.1",
                 "nikic/php-parser": "^4.4",
-                "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "^8.4.1",
+                "phpstan/phpstan": "^0.12.40",
+                "phpunit/phpunit": "^9.3",
+                "psalm/plugin-phpunit": "^0.10.0",
                 "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
-                "vimeo/psalm": "^3.11"
+                "vimeo/psalm": "^3.14.2"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -173,8 +174,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.10.x-dev",
-                    "dev-develop": "3.0.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -241,7 +241,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-04-20T17:19:26+00:00"
+            "time": "2020-09-20T23:24:53+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -556,16 +556,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.20",
+            "version": "2.1.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "f46887bc48db66c7f38f668eb7d6ae54583617ff"
+                "reference": "563d0cdde5d862235ffe24a158497f4d490191b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/f46887bc48db66c7f38f668eb7d6ae54583617ff",
-                "reference": "f46887bc48db66c7f38f668eb7d6ae54583617ff",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/563d0cdde5d862235ffe24a158497f4d490191b5",
+                "reference": "563d0cdde5d862235ffe24a158497f4d490191b5",
                 "shasum": ""
             },
             "require": {
@@ -610,7 +610,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-09-06T13:44:32+00:00"
+            "time": "2020-09-19T14:37:56+00:00"
         },
         {
             "name": "fideloper/proxy",
@@ -723,16 +723,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.9",
+            "version": "8.12.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "674b79ae3362409d08e550cb196d982485a76225"
+                "reference": "befffd590d1e2333bbb6d712541ccccf5fc08f1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/674b79ae3362409d08e550cb196d982485a76225",
-                "reference": "674b79ae3362409d08e550cb196d982485a76225",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/befffd590d1e2333bbb6d712541ccccf5fc08f1f",
+                "reference": "befffd590d1e2333bbb6d712541ccccf5fc08f1f",
                 "shasum": ""
             },
             "require": {
@@ -787,7 +787,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2020-08-31T09:51:44+00:00"
+            "time": "2020-09-22T07:23:22+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -1684,16 +1684,16 @@
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "fda190b62b962d96a069fcc414d781db66d65b69"
+                "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/fda190b62b962d96a069fcc414d781db66d65b69",
-                "reference": "fda190b62b962d96a069fcc414d781db66d65b69",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ea2fbfc988bade315acd5967e6d02274086d0f28",
+                "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28",
                 "shasum": ""
             },
             "require": {
@@ -1731,7 +1731,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-09T10:34:01+00:00"
+            "time": "2020-09-21T18:10:53+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1826,16 +1826,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.39.2",
+            "version": "2.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "326efde1bc09077a26cb77f6e2e32e13f06c27f2"
+                "reference": "6c7646154181013ecd55e80c201b9fd873c6ee5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/326efde1bc09077a26cb77f6e2e32e13f06c27f2",
-                "reference": "326efde1bc09077a26cb77f6e2e32e13f06c27f2",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/6c7646154181013ecd55e80c201b9fd873c6ee5d",
+                "reference": "6c7646154181013ecd55e80c201b9fd873c6ee5d",
                 "shasum": ""
             },
             "require": {
@@ -1911,20 +1911,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-10T12:16:42+00:00"
+            "time": "2020-09-11T19:00:58+00:00"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.9.1",
+            "version": "v4.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "88e519766fc58bd46b8265561fb79b54e2e00b28"
+                "reference": "1c13d05035deff45f1230ca68bd7d74d621762d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/88e519766fc58bd46b8265561fb79b54e2e00b28",
-                "reference": "88e519766fc58bd46b8265561fb79b54e2e00b28",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1c13d05035deff45f1230ca68bd7d74d621762d9",
+                "reference": "1c13d05035deff45f1230ca68bd7d74d621762d9",
                 "shasum": ""
             },
             "require": {
@@ -1963,28 +1963,28 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-08-30T16:15:20+00:00"
+            "time": "2020-09-19T14:52:48+00:00"
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-develop",
+            "version": "0.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "7e4ff64673f49bcc1c5f07dd7ec5167c2280b0de"
+                "reference": "b810df911a6669127d14136bc7331c54099b46d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/7e4ff64673f49bcc1c5f07dd7ec5167c2280b0de",
-                "reference": "7e4ff64673f49bcc1c5f07dd7ec5167c2280b0de",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/b810df911a6669127d14136bc7331c54099b46d6",
+                "reference": "b810df911a6669127d14136bc7331c54099b46d6",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "2.10.2",
+                "doctrine/dbal": "^2.10",
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "~6.3",
                 "justinrainbow/json-schema": "^5.2",
-                "opendialogai/dgraph-docker": "1.1.0",
+                "opendialogai/dgraph-docker": "1.2.5",
                 "php": "^7.3.0",
                 "php-ds/php-ds": "~1.2.",
                 "spatie/laravel-activitylog": "^3.8",
@@ -2044,31 +2044,21 @@
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
-                    "name": "Stuart Haigh",
-                    "email": "stuarth@greenshootlabs.com"
-                },
-                {
-                    "name": "Ronald Ashri",
-                    "email": "ronalda@greenshootlabs.com"
-                }
-            ],
-            "description": "The OpenDialog core package",
-            "time": "2020-09-14T13:59:22+00:00"
+            "description": "The OpenDialog Core package",
+            "time": "2020-09-22T15:59:07+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
-            "version": "1.1.0",
+            "version": "1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/dgraph-docker.git",
-                "reference": "646b9b0dec42b6bced5a6b7687574c4db5b19de7"
+                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/646b9b0dec42b6bced5a6b7687574c4db5b19de7",
-                "reference": "646b9b0dec42b6bced5a6b7687574c4db5b19de7",
+                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/8d1984dd62268c6e95c964e57b9ad442fe385ae2",
+                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2",
                 "shasum": ""
             },
             "type": "library",
@@ -2087,20 +2077,20 @@
                 }
             ],
             "description": "The OpenDialog DGraph Docker compose file",
-            "time": "2019-09-10T19:22:02+00:00"
+            "time": "2020-06-08T13:23:00+00:00"
         },
         {
             "name": "opendialogai/webchat",
-            "version": "0.7.0",
+            "version": "0.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "e97af92c19843efb5d7b6b1a1c49716bb89632ef"
+                "reference": "0faac26eeeeb6b334f0473acc4e12ab6fed1f2f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/e97af92c19843efb5d7b6b1a1c49716bb89632ef",
-                "reference": "e97af92c19843efb5d7b6b1a1c49716bb89632ef",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/0faac26eeeeb6b334f0473acc4e12ab6fed1f2f7",
+                "reference": "0faac26eeeeb6b334f0473acc4e12ab6fed1f2f7",
                 "shasum": ""
             },
             "require": {
@@ -2139,7 +2129,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2020-08-21T16:44:48+00:00"
+            "time": "2020-09-15T15:36:53+00:00"
         },
         {
             "name": "opis/closure",
@@ -3072,28 +3062,28 @@
         },
         {
             "name": "spatie/laravel-activitylog",
-            "version": "3.15.0",
+            "version": "3.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-activitylog.git",
-                "reference": "5b019b152d23400da99be0be742c250970204bc4"
+                "reference": "a01fce5f3011c8b7eac86b18e2121da55f0564cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/5b019b152d23400da99be0be742c250970204bc4",
-                "reference": "5b019b152d23400da99be0be742c250970204bc4",
+                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/a01fce5f3011c8b7eac86b18e2121da55f0564cd",
+                "reference": "a01fce5f3011c8b7eac86b18e2121da55f0564cd",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": "^6.0|^7.0|^8.0",
-                "illuminate/database": "^6.0|^7.0|^8.0",
-                "illuminate/support": "^6.0|^7.0|^8.0",
+                "illuminate/config": "^6.0 || ^7.0 || ^8.0",
+                "illuminate/database": "^6.0 || ^7.0 || ^8.0",
+                "illuminate/support": "^6.0 || ^7.0 || ^8.0",
                 "php": "^7.2"
             },
             "require-dev": {
                 "ext-json": "*",
-                "orchestra/testbench": "^4.0|^5.0|^6.0",
-                "phpunit/phpunit": "^8.0|^9.0"
+                "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
+                "phpunit/phpunit": "^8.0 || ^9.0"
             },
             "type": "library",
             "extra": {
@@ -3154,7 +3144,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-14T11:27:06+00:00"
+            "time": "2020-09-16T15:28:13+00:00"
         },
         {
             "name": "spatie/laravel-cors",
@@ -6652,16 +6642,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.2.1",
+            "version": "5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44"
+                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d870572532cd70bc3fab58f2e23ad423c8404c44",
-                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/069a785b2141f5bcf49f3e353548dc1cce6df556",
+                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556",
                 "shasum": ""
             },
             "require": {
@@ -6700,20 +6690,20 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-08-15T11:14:08+00:00"
+            "time": "2020-09-03T19:13:55+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "e878a14a65245fbe78f8080eba03b47c3b705651"
+                "reference": "6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/e878a14a65245fbe78f8080eba03b47c3b705651",
-                "reference": "e878a14a65245fbe78f8080eba03b47c3b705651",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0",
+                "reference": "6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0",
                 "shasum": ""
             },
             "require": {
@@ -6745,7 +6735,7 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-06-27T10:12:23+00:00"
+            "time": "2020-09-17T18:55:26+00:00"
         },
         {
             "name": "phpro/grumphp",
@@ -8446,7 +8436,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "opendialogai/core": 20
+        "opendialogai/core": 20,
+        "opendialogai/webchat": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
