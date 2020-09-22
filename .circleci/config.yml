@@ -100,8 +100,6 @@ jobs:
             - ./node_modules
           key: v1-node-dependencies-{{ checksum "yarn.lock" }}
 
-      - run: yarn run prod
-
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "composer.lock" }}
@@ -116,6 +114,8 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.lock" }}
 
       - run: bash update-web-chat.sh -yip
+
+      - run: yarn run prod
 
   docker_build:
     docker:
