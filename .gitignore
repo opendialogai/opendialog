@@ -12,7 +12,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea
-/public/js/app.js
+/public/js/*
 /public/css/app.css
 /public/css/*.css
 /public/admin

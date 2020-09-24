@@ -41,7 +41,7 @@
         };
       </script>
 
-      <script src="{{ env('APP_URL') }}/js/bootstrap-iframe.js"></script>
+      <script src="{{ env('APP_URL') }}/js/opendialog-iframe.js"></script>
     @endif
   </body>
 </html>

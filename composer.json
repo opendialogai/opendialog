@@ -10,7 +10,7 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "opendialogai/core": "dev-develop",
-        "opendialogai/webchat": "dev-feature/chat-service-abstraction",
+        "opendialogai/webchat": "0.7.2",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
         "propaganistas/laravel-phone": "^4.2",
