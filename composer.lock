@@ -2095,12 +2095,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "696a6d3f29c566c6f5c24c4371f2375fc2f8ff19"
+                "reference": "490e13e133cefae73bbd100cec684550f72ddc2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/696a6d3f29c566c6f5c24c4371f2375fc2f8ff19",
-                "reference": "696a6d3f29c566c6f5c24c4371f2375fc2f8ff19",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/490e13e133cefae73bbd100cec684550f72ddc2c",
+                "reference": "490e13e133cefae73bbd100cec684550f72ddc2c",
                 "shasum": ""
             },
             "require": {
@@ -2139,7 +2139,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2020-09-09T16:57:00+00:00"
+            "time": "2020-09-24T11:43:43+00:00"
         },
         {
             "name": "opis/closure",
