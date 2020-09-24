@@ -2,6 +2,6 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/css/home.css": "/css/home.css",
-    "/js/bootstrap-fullpage.js": "/js/bootstrap-fullpage.js",
-    "/js/bootstrap-iframe.js": "/js/bootstrap-iframe.js"
+    "/js/opendialog-fullpage.js": "/js/opendialog-fullpage.js",
+    "/js/opendialog-iframe.js": "/js/opendialog-iframe.js"
 }
