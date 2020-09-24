@@ -1,3 +1,5 @@
+import {registerCustomChatModes} from './bots/registerChatModes';
+
 window._ = require('lodash');
 
 /**
