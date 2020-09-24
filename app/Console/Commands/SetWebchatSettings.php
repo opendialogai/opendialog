@@ -58,7 +58,6 @@ class SetWebchatSettings extends Command
             WebchatSetting::MESSAGE_DELAY => '1000',
             WebchatSetting::COLOURS => 'colours',
             WebchatSetting::HEADER_BACKGROUND => '#0000FF',
-            WebchatSetting::HEADER_BACKGROUND => 'transparent',
             WebchatSetting::LOGO => "$odUrl/images/homepage-logo.svg",
             WebchatSetting::CHATBOT_AVATAR_PATH => "$odUrl/vendor/webchat/images/avatar.svg",
             WebchatSetting::CHATBOT_NAME => 'OpenDialog',
