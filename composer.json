@@ -10,7 +10,7 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "opendialogai/core": "0.7.x-dev",
-        "opendialogai/webchat": "0.7.x-dev",
+        "opendialogai/webchat": "dev-feature/build-assets",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
         "propaganistas/laravel-phone": "^4.2",
@@ -69,11 +69,13 @@
         ],
         "post-install-cmd": [
             "@php artisan vendor:publish --tag=scripts --force",
-            "@php artisan vendor:publish --tag=dgraph --force"
+            "@php artisan vendor:publish --tag=dgraph --force",
+            "@php artisan vendor:publish --tag=public --force"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=scripts --force",
-            "@php artisan vendor:publish --tag=dgraph --force"
+            "@php artisan vendor:publish --tag=dgraph --force",
+            "@php artisan vendor:publish --tag=public --force"
         ]
     }
 }
