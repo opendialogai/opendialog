@@ -37,6 +37,9 @@
       <template v-if="message.type === 'autocomplete-message'">
         <AutocompleteMessage :message="message" />
       </template>
+      <template v-if="message.type === 'date-picker-message'">
+        <DatepickerMessage :message="message" />
+      </template>
       <template v-if="message.type === 'error'">
         <Error :message="message" />
       </template>
@@ -79,6 +82,7 @@ import Slider from 'vue-plain-slider';
 import AutocompleteMessage from './Messages/AutocompleteMessage';
 import ButtonMessage from './Messages/ButtonMessage';
 import CtaMessage from './Messages/CtaMessage';
+import DatepickerMessage from './Messages/DatepickerMessage';
 import EmptyMessage from './Messages/EmptyMessage';
 import FormMessage from './Messages/FormMessage';
 import HandToSystemMessage from './Messages/HandToSystemMessage';
@@ -99,6 +103,7 @@ export default {
     Error,
     ButtonMessage,
     CtaMessage,
+    DatepickerMessage,
     EmptyMessage,
     FormMessage,
     HandToSystemMessage,
@@ -163,6 +168,7 @@ export default {
 <style lang="scss" scoped>
 .message {
   .autocomplete-message,
+  .datepicker-message,
   .list-message,
   .long-text-message,
   .cta-message,
