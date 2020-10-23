@@ -146,14 +146,12 @@ workflows:
           filters:
             branches:
               ignore:
-                - /dev.*/
-                - /staging.*/
+                - /demo.*/
       - node_build:
           filters:
             branches:
               ignore:
-                - /dev.*/
-                - /staging.*/
+                - /demo.*/
       - docker_build:
           requires:
             - tests
@@ -162,5 +160,4 @@ workflows:
           filters:
             branches:
               only:
-                - /dev.*/
-                - /staging.*/
+                - /demo.*/
