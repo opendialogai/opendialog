@@ -140,8 +140,8 @@ workflows:
   version: 2
   build_workflow:
     jobs:
-      - tests:
-      - node_build:
+      - tests
+      - node_build
       - docker_build:
           requires:
             - tests
