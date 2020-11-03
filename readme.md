@@ -17,6 +17,7 @@ If you want to see OpenDialog in action you can try out the latest version throu
 
 As long as you have Docker installed on your local machine you can do:
 - `cd docker/od-demo`
+- `cp .env.example .env`
 - `docker-compose up -d app`
 - `docker-compose exec app bash docker/od-demo/update-docker.sh`
 
