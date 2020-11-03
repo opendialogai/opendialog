@@ -115,8 +115,6 @@ jobs:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.lock" }}
 
-      - run: bash update-web-chat.sh -yip
-
   docker_build:
     docker:
       - image: circleci/php:7.4.10-node-browsers
