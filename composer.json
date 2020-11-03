@@ -68,12 +68,12 @@
             "@php artisan key:generate --ansi"
         ],
         "post-install-cmd": [
-            "@php artisan vendor:publish --tag=scripts --force",
-            "@php artisan vendor:publish --tag=dgraph --force"
+            "@php artisan vendor:publish --tag=dgraph --force",
+            "@php artisan vendor:publish --tag=public --force"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=scripts --force",
-            "@php artisan vendor:publish --tag=dgraph --force"
+            "@php artisan vendor:publish --tag=dgraph --force",
+            "@php artisan vendor:publish --tag=public --force"
         ]
     }
 }
