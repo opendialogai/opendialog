@@ -141,21 +141,8 @@ workflows:
   build_workflow:
     jobs:
       - tests:
-          filters:
-            branches:
-              ignore:
-                - /demo.*/
       - node_build:
-          filters:
-            branches:
-              ignore:
-                - /demo.*/
       - docker_build:
           requires:
             - tests
             - node_build
-      - docker_build:
-          filters:
-            branches:
-              only:
-                - /demo.*/
