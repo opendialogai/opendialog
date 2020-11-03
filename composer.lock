@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ee632e9f046a3e7d8a217641aeb7659",
+    "content-hash": "07daaac863975bb2c965b36672e1daa4",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1839,12 +1839,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "0479b7c823505e05bed2cb7f0f53fb1aa301369e"
+                "reference": "baa03c2af8ec466ea3635315d610cb40b38d4876"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/0479b7c823505e05bed2cb7f0f53fb1aa301369e",
-                "reference": "0479b7c823505e05bed2cb7f0f53fb1aa301369e",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/baa03c2af8ec466ea3635315d610cb40b38d4876",
+                "reference": "baa03c2af8ec466ea3635315d610cb40b38d4876",
                 "shasum": ""
             },
             "require": {
@@ -1913,7 +1913,7 @@
                 "Apache-2.0"
             ],
             "description": "The OpenDialog Core package",
-            "time": "2020-10-21T10:52:15+00:00"
+            "time": "2020-10-26T18:35:57+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -1949,16 +1949,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "dev-feature/build-plus-od-theme",
+            "version": "0.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "4475c678c9df391dcccf2b83c4ee9bffb1a424e8"
+                "reference": "a1dd79d97653b247a6d62cdaf027376e461044b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/4475c678c9df391dcccf2b83c4ee9bffb1a424e8",
-                "reference": "4475c678c9df391dcccf2b83c4ee9bffb1a424e8",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/a1dd79d97653b247a6d62cdaf027376e461044b7",
+                "reference": "a1dd79d97653b247a6d62cdaf027376e461044b7",
                 "shasum": ""
             },
             "require": {
@@ -1997,7 +1997,7 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "time": "2020-10-22T13:46:21+00:00"
+            "time": "2020-11-03T10:35:44+00:00"
         },
         {
             "name": "opis/closure",
@@ -5551,6 +5551,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
