@@ -58,4 +58,10 @@ Branch names will have `/` replaced with `_` to meet Docker naming convention.
 ## GitHub Token during docker build
 
 If you OpenDialog project has a composer dependency on a private GitHub repo, a local auth.json file can be created and used during the docker build.
-To do this, just add a value for the environment variable `GITHUB_TOKEN` in CircleCI 
+To do this, just add a value for the environment variable `GITHUB_TOKEN` in CircleCI
+
+# Application Envs
+
+There are a number of environment variables that can be set in the applications `.env` file. This section describes some of them
+
++ `FORCE_HTTPS` - If set to true, all assets will be requested via HTTPS 
