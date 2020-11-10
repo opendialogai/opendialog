@@ -61,7 +61,6 @@ class SetWebchatSettings extends Command
             WebchatSetting::LOGO => "$odUrl/images/homepage-logo.svg",
             WebchatSetting::CHATBOT_AVATAR_PATH => "$odUrl/vendor/webchat/images/avatar.svg",
             WebchatSetting::CHATBOT_NAME => 'OpenDialog',
-            WebchatSetting::WEBCHAT_FULL_PAGE_PUBLIC => false,
             WebchatSetting::USE_HUMAN_AVATAR => true,
             WebchatSetting::USE_BOT_AVATAR => true,
             WebchatSetting::COMMENTS => 'comments',
