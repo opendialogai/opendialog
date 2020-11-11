@@ -63,6 +63,7 @@ class SetWebchatSettings extends Command
             WebchatSetting::CHATBOT_NAME => 'OpenDialog',
             WebchatSetting::USE_HUMAN_AVATAR => true,
             WebchatSetting::USE_BOT_AVATAR => true,
+            WebchatSetting::WEB_CHAT_ALERT_MESSAGE => false,
             WebchatSetting::COMMENTS => 'comments',
             WebchatSetting::COMMENTS_ENABLED => false,
             WebchatSetting::COMMENTS_NAME => 'Comments',
