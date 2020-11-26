@@ -85,6 +85,8 @@ class SetWebchatSettings extends Command
             WebchatSetting::CHATBOT_FULLPAGE_CSS_PATH => "",
             WebchatSetting::CHATBOT_CSS_PATH => "",
             WebchatSetting::PAGE_CSS_PATH => "",
+            WebchatSetting::SHOW_TEXT_INPUT_WITH_EXTERNAL_BUTTONS => false,
+            WebchatSetting::FORM_RESPONSE_TEXT => null,
             WebchatSetting::COMMENTS => 'comments',
             WebchatSetting::COMMENTS_ENABLED => false,
             WebchatSetting::COMMENTS_NAME => 'Comments',
