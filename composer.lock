@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d96aa0bfe28d44f6465b92b2d21bb91",
+    "content-hash": "fa3bd3f41a84aeff197c56bca64977c0",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -118,20 +118,6 @@
                 "php",
                 "redis",
                 "xcache"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fcache",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-07T18:54:01+00:00"
         },
@@ -303,20 +289,6 @@
                 "event system",
                 "events"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fevent-manager",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-05-29T18:28:51+00:00"
         },
         {
@@ -394,20 +366,6 @@
                 "uppercase",
                 "words"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finflector",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-05-29T15:13:26+00:00"
         },
         {
@@ -469,20 +427,6 @@
                 "lexer",
                 "parser",
                 "php"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Flexer",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-05-25T17:44:05+00:00"
         },
@@ -651,6 +595,56 @@
                 "trusted proxy"
             ],
             "time": "2020-06-23T01:36:47+00:00"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "v5.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/feb0e820b8436873675fd3aca04f3728eb2185cb",
+                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.8 <=9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "keywords": [
+                "jwt",
+                "php"
+            ],
+            "time": "2020-03-25T18:49:23+00:00"
         },
         {
             "name": "genealabs/laravel-caffeine",
@@ -823,6 +817,596 @@
             ],
             "description": "Locale functions required by libphonenumber-for-php",
             "time": "2020-07-07T11:16:24+00:00"
+        },
+        {
+            "name": "google/auth",
+            "version": "v1.14.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/google-auth-library-php.git",
+                "reference": "c1503299c779af0cbc99b43788f75930988852cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/c1503299c779af0cbc99b43788f75930988852cf",
+                "reference": "c1503299c779af0cbc99b43788f75930988852cf",
+                "shasum": ""
+            },
+            "require": {
+                "firebase/php-jwt": "~2.0|~3.0|~4.0|~5.0",
+                "guzzlehttp/guzzle": "^5.3.1|^6.2.1|^7.0",
+                "guzzlehttp/psr7": "^1.2",
+                "php": ">=5.4",
+                "psr/cache": "^1.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "guzzlehttp/promises": "0.1.1|^1.3",
+                "kelvinmo/simplejwt": "^0.2.5",
+                "phpseclib/phpseclib": "^2",
+                "phpunit/phpunit": "^4.8.36|^5.7",
+                "sebastian/comparator": ">=1.2.3",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "suggest": {
+                "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings or for token management. Please require version ^2."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\Auth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Google Auth Library for PHP",
+            "homepage": "http://github.com/google/google-auth-library-php",
+            "keywords": [
+                "Authentication",
+                "google",
+                "oauth2"
+            ],
+            "time": "2020-10-16T21:33:48+00:00"
+        },
+        {
+            "name": "google/cloud",
+            "version": "v0.147.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/google-cloud-php.git",
+                "reference": "ee54bb5c81529c032b2f71203534784ec019f901"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php/zipball/ee54bb5c81529c032b2f71203534784ec019f901",
+                "reference": "ee54bb5c81529c032b2f71203534784ec019f901",
+                "shasum": ""
+            },
+            "require": {
+                "google/auth": "^1.6",
+                "google/common-protos": "^1.0",
+                "google/crc32": "^0.1.0",
+                "google/gax": "^1.1",
+                "guzzlehttp/guzzle": "^5.3|^6.0|^7.0",
+                "guzzlehttp/psr7": "^1.2",
+                "monolog/monolog": "^1.1|^2.0",
+                "php": ">=5.5",
+                "psr/http-message": "1.0.*",
+                "ramsey/uuid": "^3.0|^4.0",
+                "rize/uri-template": "~0.3"
+            },
+            "replace": {
+                "google/analytics-admin": "0.1.0",
+                "google/analytics-data": "0.1.0",
+                "google/cloud-asset": "1.3.0",
+                "google/cloud-assured-workloads": "0.1.1",
+                "google/cloud-automl": "1.3.2",
+                "google/cloud-bigquery": "1.20.1",
+                "google/cloud-bigquery-connection": "0.3.2",
+                "google/cloud-bigquery-reservation": "0.2.2",
+                "google/cloud-bigquery-storage": "1.0.2",
+                "google/cloud-bigquerydatatransfer": "1.2.2",
+                "google/cloud-bigtable": "1.7.1",
+                "google/cloud-billing": "1.2.2",
+                "google/cloud-common-protos": "0.2.1",
+                "google/cloud-container": "1.2.1",
+                "google/cloud-core": "1.40.0",
+                "google/cloud-data-catalog": "1.0.2",
+                "google/cloud-dataproc": "1.3.2",
+                "google/cloud-datastore": "1.12.2",
+                "google/cloud-datastore-admin": "0.1.1",
+                "google/cloud-debugger": "1.3.3",
+                "google/cloud-dialogflow": "0.17.4",
+                "google/cloud-dlp": "1.1.1",
+                "google/cloud-error-reporting": "0.18.2",
+                "google/cloud-firestore": "1.19.0",
+                "google/cloud-game-servers": "0.2.1",
+                "google/cloud-iot": "1.3.2",
+                "google/cloud-kms": "1.11.2",
+                "google/cloud-language": "0.24.4",
+                "google/cloud-logging": "1.21.0",
+                "google/cloud-memcache": "0.3.2",
+                "google/cloud-monitoring": "1.0.1",
+                "google/cloud-osconfig": "0.1.1",
+                "google/cloud-oslogin": "1.2.2",
+                "google/cloud-pubsub": "1.29.3",
+                "google/cloud-recaptcha-enterprise": "1.0.2",
+                "google/cloud-recommendations-ai": "0.2.3",
+                "google/cloud-recommender": "1.2.2",
+                "google/cloud-redis": "1.2.2",
+                "google/cloud-scheduler": "1.5.2",
+                "google/cloud-secret-manager": "1.2.1",
+                "google/cloud-security-center": "1.0.3",
+                "google/cloud-security-private-ca": "0.1.0",
+                "google/cloud-service-directory": "0.3.2",
+                "google/cloud-spanner": "1.32.2",
+                "google/cloud-speech": "1.3.2",
+                "google/cloud-storage": "1.23.0",
+                "google/cloud-talent": "0.15.1",
+                "google/cloud-tasks": "1.8.2",
+                "google/cloud-text-to-speech": "1.2.2",
+                "google/cloud-trace": "1.3.2",
+                "google/cloud-translate": "1.9.1",
+                "google/cloud-videointelligence": "1.11.2",
+                "google/cloud-vision": "1.2.2",
+                "google/cloud-web-risk": "1.0.2",
+                "google/cloud-web-security-scanner": "0.6.3",
+                "google/cloud-workflows": "0.1.0"
+            },
+            "require-dev": {
+                "erusev/parsedown": "^1.6",
+                "google/cloud-tools": "^0.12.0",
+                "opis/closure": "^3.0",
+                "phpdocumentor/reflection": "^3.0",
+                "phpseclib/phpseclib": "^2",
+                "phpunit/phpunit": "^4.8|^5.0",
+                "squizlabs/php_codesniffer": "2.*",
+                "swaggest/json-schema": "^0.12.0",
+                "symfony/console": "^3.0",
+                "symfony/lock": "3.3.x-dev#1ba6ac9",
+                "vierbergenlars/php-semver": "^3.0"
+            },
+            "suggest": {
+                "opis/closure": "May be used to serialize closures to process jobs in the batch daemon. Please require version ^3.",
+                "phpseclib/phpseclib": "May be used in place of OpenSSL for creating signed Cloud Storage URLs. Please require version ^2."
+            },
+            "bin": [
+                "Core/bin/google-cloud-batch",
+                "Debugger/bin/google-cloud-debugger"
+            ],
+            "type": "library",
+            "extra": {
+                "component": {
+                    "id": "google-cloud",
+                    "target": "googleapis/google-cloud-php.git",
+                    "path": "src",
+                    "entry": [
+                        "Version.php",
+                        "ServiceBuilder.php"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GPBMetadata\\Google\\": "CommonProtos/metadata",
+                    "GPBMetadata\\Google\\Analytics\\Admin\\": "AnalyticsAdmin/metadata",
+                    "GPBMetadata\\Google\\Analytics\\Data\\": "AnalyticsData/metadata",
+                    "GPBMetadata\\Google\\Bigtable\\": "Bigtable/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Asset\\": "Asset/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Assuredworkloads\\": "AssuredWorkloads/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Automl\\": "AutoMl/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Connection\\": "BigQueryConnection/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Datatransfer\\": "BigQueryDataTransfer/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Reservation\\": "BigQueryReservation/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Storage\\": "BigQueryStorage/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Billing\\": "Billing/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Datacatalog\\": "DataCatalog/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Dataproc\\": "Dataproc/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Dialogflow\\": "Dialogflow/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Gaming\\": "Gaming/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Iot\\": "Iot/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Kms\\": "Kms/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Language\\": "Language/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Memcache\\": "Memcache/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Orgpolicy\\": "Asset/external/metadata/Cloud/Orgpolicy",
+                    "GPBMetadata\\Google\\Cloud\\Osconfig\\": "OsConfig/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Oslogin\\": "OsLogin/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Recaptchaenterprise\\": "RecaptchaEnterprise/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Recommendationengine\\": "RecommendationEngine/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Recommender\\": "Recommender/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Redis\\": "Redis/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Scheduler\\": "Scheduler/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Secretmanager\\": "SecretManager/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Secrets\\": "SecretManager/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Security\\Privateca\\": "SecurityPrivateCa/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Securitycenter\\": "SecurityCenter/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Servicedirectory\\": "ServiceDirectory/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Speech\\": "Speech/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Talent\\": "Talent/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Tasks\\": "Tasks/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Texttospeech\\": "TextToSpeech/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Translate\\": "Translate/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Videointelligence\\": "VideoIntelligence/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Vision\\": "Vision/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Webrisk\\": "WebRisk/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Websecurityscanner\\": "WebSecurityScanner/metadata",
+                    "GPBMetadata\\Google\\Cloud\\Workflows\\": "Workflows/metadata",
+                    "GPBMetadata\\Google\\Container\\": "Container/metadata",
+                    "GPBMetadata\\Google\\Datastore\\": "Datastore/metadata",
+                    "GPBMetadata\\Google\\Datastore\\Admin\\": "DatastoreAdmin/metadata",
+                    "GPBMetadata\\Google\\Devtools\\Clouddebugger\\": "Debugger/metadata",
+                    "GPBMetadata\\Google\\Devtools\\Clouderrorreporting\\": "ErrorReporting/metadata",
+                    "GPBMetadata\\Google\\Devtools\\Cloudtrace\\": "Trace/metadata",
+                    "GPBMetadata\\Google\\Firestore\\": "Firestore/metadata",
+                    "GPBMetadata\\Google\\Identity\\": "Asset/external/metadata/Identity",
+                    "GPBMetadata\\Google\\Logging\\": "Logging/metadata",
+                    "GPBMetadata\\Google\\Monitoring\\": "Monitoring/metadata",
+                    "GPBMetadata\\Google\\Privacy\\Dlp\\": "Dlp/metadata",
+                    "GPBMetadata\\Google\\Pubsub\\": "PubSub/metadata",
+                    "GPBMetadata\\Google\\Spanner\\": "Spanner/metadata",
+                    "Google\\Analytics\\Admin\\": "AnalyticsAdmin/src",
+                    "Google\\Cloud\\": [
+                        "src",
+                        "CommonProtos/src"
+                    ],
+                    "Google\\Analytics\\Data\\": "AnalyticsData/src",
+                    "Google\\Cloud\\Asset\\": "Asset/src",
+                    "Google\\Cloud\\AssuredWorkloads\\": "AssuredWorkloads/src",
+                    "Google\\Cloud\\AutoMl\\": "AutoMl/src",
+                    "Google\\Cloud\\BigQuery\\": "BigQuery/src",
+                    "Google\\Cloud\\BigQuery\\Connection\\": "BigQueryConnection/src",
+                    "Google\\Cloud\\BigQuery\\DataTransfer\\": "BigQueryDataTransfer/src",
+                    "Google\\Cloud\\BigQuery\\Reservation\\": "BigQueryReservation/src",
+                    "Google\\Cloud\\BigQuery\\Storage\\": "BigQueryStorage/src",
+                    "Google\\Cloud\\Bigtable\\": "Bigtable/src",
+                    "Google\\Cloud\\Billing\\": "Billing/src",
+                    "Google\\Cloud\\Container\\": "Container/src",
+                    "Google\\Cloud\\Core\\": "Core/src",
+                    "Google\\Cloud\\DataCatalog\\": "DataCatalog/src",
+                    "Google\\Cloud\\Dataproc\\": "Dataproc/src",
+                    "Google\\Cloud\\Datastore\\": "Datastore/src",
+                    "Google\\Cloud\\Datastore\\Admin\\": "DatastoreAdmin/src",
+                    "Google\\Cloud\\Debugger\\": "Debugger/src",
+                    "Google\\Cloud\\Dialogflow\\": "Dialogflow/src",
+                    "Google\\Cloud\\Dlp\\": "Dlp/src",
+                    "Google\\Cloud\\ErrorReporting\\": "ErrorReporting/src",
+                    "Google\\Cloud\\Firestore\\": "Firestore/src",
+                    "Google\\Cloud\\Gaming\\": "Gaming/src",
+                    "Google\\Cloud\\Iot\\": "Iot/src",
+                    "Google\\Cloud\\Kms\\": "Kms/src",
+                    "Google\\Cloud\\Language\\": "Language/src",
+                    "Google\\Cloud\\Logging\\": "Logging/src",
+                    "Google\\Cloud\\Memcache\\": "Memcache/src",
+                    "Google\\Cloud\\Monitoring\\": "Monitoring/src",
+                    "Google\\Cloud\\OrgPolicy\\": "Asset/external/protos/Cloud/OrgPolicy",
+                    "Google\\Cloud\\OsConfig\\": "OsConfig/src",
+                    "Google\\Cloud\\OsLogin\\": "OsLogin/src",
+                    "Google\\Cloud\\PubSub\\": "PubSub/src",
+                    "Google\\Cloud\\RecaptchaEnterprise\\": "RecaptchaEnterprise/src",
+                    "Google\\Cloud\\RecommendationEngine\\": "RecommendationEngine/src",
+                    "Google\\Cloud\\Recommender\\": "Recommender/src",
+                    "Google\\Cloud\\Redis\\": "Redis/src",
+                    "Google\\Cloud\\Scheduler\\": "Scheduler/src",
+                    "Google\\Cloud\\SecretManager\\": "SecretManager/src",
+                    "Google\\Cloud\\SecurityCenter\\": "SecurityCenter/src",
+                    "Google\\Cloud\\Security\\PrivateCA\\": "SecurityPrivateCa/src",
+                    "Google\\Cloud\\ServiceDirectory\\": "ServiceDirectory/src",
+                    "Google\\Cloud\\Spanner\\": "Spanner/src",
+                    "Google\\Cloud\\Speech\\": "Speech/src",
+                    "Google\\Cloud\\Storage\\": "Storage/src",
+                    "Google\\Cloud\\Talent\\": "Talent/src",
+                    "Google\\Cloud\\Tasks\\": "Tasks/src",
+                    "Google\\Cloud\\TextToSpeech\\": "TextToSpeech/src",
+                    "Google\\Cloud\\Trace\\": "Trace/src",
+                    "Google\\Cloud\\Translate\\": "Translate/src",
+                    "Google\\Cloud\\VideoIntelligence\\": "VideoIntelligence/src",
+                    "Google\\Cloud\\Vision\\": "Vision/src",
+                    "Google\\Cloud\\WebRisk\\": "WebRisk/src",
+                    "Google\\Cloud\\WebSecurityScanner\\": "WebSecurityScanner/src",
+                    "Google\\Cloud\\Workflows\\": "Workflows/src",
+                    "Google\\Identity\\": "Asset/external/protos/Identity"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Dave Supplee",
+                    "email": "dwsupplee@gmail.com"
+                },
+                {
+                    "name": "John Pedrie",
+                    "email": "john@pedrie.com"
+                }
+            ],
+            "description": "Google Cloud Client Library",
+            "homepage": "http://github.com/googleapis/google-cloud-php",
+            "keywords": [
+                "Tasks",
+                "big query",
+                "bigquery",
+                "bigtable",
+                "cloud",
+                "datastore",
+                "gcs",
+                "google",
+                "google api",
+                "google api client",
+                "google apis",
+                "google apis client",
+                "google cloud",
+                "google cloud platform",
+                "kms",
+                "language",
+                "natural language",
+                "pub sub",
+                "pubsub",
+                "spanner",
+                "speech",
+                "stackdriver logging",
+                "storage",
+                "translate",
+                "translation",
+                "vision"
+            ],
+            "time": "2020-12-04T23:27:56+00:00"
+        },
+        {
+            "name": "google/common-protos",
+            "version": "1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/common-protos-php.git",
+                "reference": "535f489ff1c3433c0ea64cd5aa0560f926949ac5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/535f489ff1c3433c0ea64cd5aa0560f926949ac5",
+                "reference": "535f489ff1c3433c0ea64cd5aa0560f926949ac5",
+                "shasum": ""
+            },
+            "require": {
+                "google/protobuf": "^3.6.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.36",
+                "sami/sami": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\": "src",
+                    "GPBMetadata\\Google\\": "metadata"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Google API Common Protos for PHP",
+            "homepage": "https://github.com/googleapis/common-protos-php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2020-08-26T16:05:09+00:00"
+        },
+        {
+            "name": "google/crc32",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/php-crc32.git",
+                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/php-crc32/zipball/a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
+                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.13 || v2.14.2",
+                "paragonie/random_compat": ">=2",
+                "phpunit/phpunit": "^4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\CRC32\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Brampton",
+                    "email": "bramp@google.com"
+                }
+            ],
+            "description": "Various CRC32 implementations",
+            "homepage": "https://github.com/google/php-crc32",
+            "time": "2019-05-09T06:24:58+00:00"
+        },
+        {
+            "name": "google/gax",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/gax-php.git",
+                "reference": "2f5f46fc94f766fef6585a0278f289a811945252"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/2f5f46fc94f766fef6585a0278f289a811945252",
+                "reference": "2f5f46fc94f766fef6585a0278f289a811945252",
+                "shasum": ""
+            },
+            "require": {
+                "google/auth": "^1.2.0",
+                "google/common-protos": "^1.0",
+                "google/grpc-gcp": "^0.1.0",
+                "google/protobuf": "^3.12.2",
+                "grpc/grpc": "^1.13",
+                "guzzlehttp/promises": "^1.3",
+                "guzzlehttp/psr7": "^1.2",
+                "php": ">=5.5"
+            },
+            "conflict": {
+                "ext-protobuf": "<3.7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.36",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\ApiCore\\": "src",
+                    "GPBMetadata\\ApiCore\\": "metadata/ApiCore"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Google API Core for PHP",
+            "homepage": "https://github.com/googleapis/gax-php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2020-10-30T21:13:24+00:00"
+        },
+        {
+            "name": "google/grpc-gcp",
+            "version": "0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GoogleCloudPlatform/grpc-gcp-php.git",
+                "reference": "bb9bdbf62f6ae4e73d5209d85b1d0a0b9855ff36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/bb9bdbf62f6ae4e73d5209d85b1d0a0b9855ff36",
+                "reference": "bb9bdbf62f6ae4e73d5209d85b1d0a0b9855ff36",
+                "shasum": ""
+            },
+            "require": {
+                "google/auth": "^1.3",
+                "google/protobuf": "^v3.3.0",
+                "grpc/grpc": "^v1.13.0",
+                "php": ">=5.5.0",
+                "psr/cache": "^1.0.1"
+            },
+            "require-dev": {
+                "google/cloud-spanner": "^1.7",
+                "phpunit/phpunit": "4.8.36"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Grpc\\Gcp\\": "src/"
+                },
+                "classmap": [
+                    "src/generated/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "gRPC GCP library for channel management",
+            "time": "2020-05-26T17:21:09+00:00"
+        },
+        {
+            "name": "google/protobuf",
+            "version": "v3.14.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/protocolbuffers/protobuf-php.git",
+                "reference": "03f132a66f09f96064309e81c5fac8d35b7474e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/03f132a66f09f96064309e81c5fac8d35b7474e1",
+                "reference": "03f132a66f09f96064309e81c5fac8d35b7474e1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.8.0"
+            },
+            "suggest": {
+                "ext-bcmath": "Need to support JSON deserialization"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\Protobuf\\": "src/Google/Protobuf",
+                    "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "proto library for PHP",
+            "homepage": "https://developers.google.com/protocol-buffers/",
+            "keywords": [
+                "proto"
+            ],
+            "time": "2020-11-13T23:41:35+00:00"
+        },
+        {
+            "name": "grpc/grpc",
+            "version": "1.34.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/grpc/grpc-php.git",
+                "reference": "f84e39861fd9f48ce6cc671688a05df13c7cd7e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/f84e39861fd9f48ce6cc671688a05df13c7cd7e8",
+                "reference": "f84e39861fd9f48ce6cc671688a05df13c7cd7e8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "google/auth": "^v1.3.0"
+            },
+            "suggest": {
+                "ext-protobuf": "For better performance, install the protobuf C extension.",
+                "google/protobuf": "To get started using grpc quickly, install the native protobuf library."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Grpc\\": "src/lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "gRPC library for PHP",
+            "homepage": "https://grpc.io",
+            "keywords": [
+                "rpc"
+            ],
+            "time": "2020-12-02T22:47:45+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1214,10 +1798,6 @@
                 "json",
                 "schema"
             ],
-            "support": {
-                "issues": "https://github.com/justinrainbow/json-schema/issues",
-                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.10"
-            },
             "time": "2020-05-27T16:41:55+00:00"
         },
         {
@@ -1584,12 +2164,6 @@
                 "sftp",
                 "storage"
             ],
-            "funding": [
-                {
-                    "url": "https://offset.earth/frankdejonge",
-                    "type": "other"
-                }
-            ],
             "time": "2020-08-23T07:39:11+00:00"
         },
         {
@@ -1766,16 +2340,6 @@
                 "logging",
                 "psr-3"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/Seldaek",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-23T08:41:23+00:00"
         },
         {
@@ -1945,7 +2509,6 @@
                 "phpunit/phpunit": "8.3.5",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1990,10 +2553,6 @@
                 "Apache-2.0"
             ],
             "description": "The OpenDialog Core package",
-            "support": {
-                "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/0.7.4"
-            },
             "time": "2020-11-18T15:15:34+00:00"
         },
         {
@@ -2026,10 +2585,6 @@
                 }
             ],
             "description": "The OpenDialog DGraph Docker compose file",
-            "support": {
-                "issues": "https://github.com/opendialogai/dgraph-docker/issues",
-                "source": "https://github.com/opendialogai/dgraph-docker/tree/1.2.5"
-            },
             "time": "2020-06-08T13:23:00+00:00"
         },
         {
@@ -2056,7 +2611,6 @@
                 "phpunit/phpunit": "^8.3",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2084,10 +2638,6 @@
                 }
             ],
             "description": "Webchat front end component for the Open Dialog project",
-            "support": {
-                "issues": "https://github.com/opendialogai/webchat/issues",
-                "source": "https://github.com/opendialogai/webchat/tree/0.7.4"
-            },
             "time": "2020-11-20T11:18:54+00:00"
         },
         {
@@ -2359,16 +2909,6 @@
                 "php",
                 "type"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpoption/phpoption",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-20T17:29:33+00:00"
         },
         {
@@ -2500,6 +3040,52 @@
                 "validation"
             ],
             "time": "2020-09-08T18:43:48+00:00"
+        },
+        {
+            "name": "psr/cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "time": "2016-08-06T20:24:11+00:00"
         },
         {
             "name": "psr/container",
@@ -2897,6 +3483,50 @@
             "time": "2020-02-21T04:36:14+00:00"
         },
         {
+            "name": "rize/uri-template",
+            "version": "0.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rize/UriTemplate.git",
+                "reference": "9e5fdd5c47147aa5adf7f760002ee591ed37b9ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rize/UriTemplate/zipball/9e5fdd5c47147aa5adf7f760002ee591ed37b9ca",
+                "reference": "9e5fdd5c47147aa5adf7f760002ee591ed37b9ca",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Rize\\UriTemplate": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marut K",
+                    "homepage": "http://twitter.com/rezigned"
+                }
+            ],
+            "description": "PHP URI Template (RFC 6570) supports both expansion & extraction",
+            "keywords": [
+                "RFC 6570",
+                "template",
+                "uri"
+            ],
+            "time": "2017-06-14T03:57:53+00:00"
+        },
+        {
             "name": "scrivo/highlight.php",
             "version": "v9.18.1.2",
             "source": {
@@ -2962,12 +3592,6 @@
                 "highlight.js",
                 "highlight.php",
                 "syntax"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/allejo",
-                    "type": "github"
-                }
             ],
             "time": "2020-08-27T03:24:44+00:00"
         },
@@ -3099,16 +3723,6 @@
                 "issues": "https://github.com/spatie/laravel-activitylog/issues",
                 "source": "https://github.com/spatie/laravel-activitylog/tree/3.16.1"
             },
-            "funding": [
-                {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
             "time": "2020-11-03T11:34:26+00:00"
         },
         {
@@ -3414,20 +4028,6 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T07:07:21+00:00"
         },
         {
@@ -3481,20 +4081,6 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-05-20T17:43:50+00:00"
         },
         {
@@ -3552,20 +4138,6 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-10T07:47:39+00:00"
         },
         {
@@ -3623,20 +4195,6 @@
             ],
             "description": "Symfony ErrorHandler Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-17T09:56:45+00:00"
         },
         {
@@ -3707,20 +4265,6 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-13T14:18:44+00:00"
         },
         {
@@ -3783,20 +4327,6 @@
                 "interoperability",
                 "standards"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-06T13:19:58+00:00"
         },
         {
@@ -3846,20 +4376,6 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-17T09:56:45+00:00"
         },
         {
@@ -3915,20 +4431,6 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-17T07:39:58+00:00"
         },
         {
@@ -4020,20 +4522,6 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T08:09:29+00:00"
         },
         {
@@ -4097,20 +4585,6 @@
                 "mime",
                 "mime-type"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-17T10:01:29+00:00"
         },
         {
@@ -4172,20 +4646,6 @@
                 "ctype",
                 "polyfill",
                 "portable"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -4249,20 +4709,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -4335,20 +4781,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-04T06:02:08+00:00"
         },
         {
@@ -4416,20 +4848,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -4492,20 +4910,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -4570,20 +4974,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -4642,20 +5032,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -4718,20 +5094,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -4799,20 +5161,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -4862,20 +5210,6 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-23T08:31:43+00:00"
         },
         {
@@ -4951,20 +5285,6 @@
                 "routing",
                 "uri",
                 "url"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-08-10T07:27:51+00:00"
         },
@@ -5104,20 +5424,6 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-17T09:56:45+00:00"
         },
         {
@@ -5256,20 +5562,6 @@
                 "debug",
                 "dump"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-17T07:31:35+00:00"
         },
         {
@@ -5329,20 +5621,6 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-26T08:30:46+00:00"
         },
         {
@@ -5455,16 +5733,6 @@
                 "env",
                 "environment"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/vlucas/phpdotenv",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T19:04:52+00:00"
         }
     ],
@@ -5517,9 +5785,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
+                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de",
-                    "role": "Developer"
+                    "homepage": "https://beyondco.de"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -5632,20 +5900,6 @@
             "keywords": [
                 "Xdebug",
                 "performance"
-            ],
-            "funding": [
-                {
-                    "url": "https://packagist.com",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/composer",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-08-19T10:27:58+00:00"
         },
@@ -5838,20 +6092,6 @@
                 "constructor",
                 "instantiate"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finstantiator",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-05-29T17:27:14+00:00"
         },
         {
@@ -6004,12 +6244,6 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "funding": [
-                {
-                    "url": "https://github.com/keradus",
-                    "type": "github"
-                }
-            ],
             "time": "2020-06-27T23:57:46+00:00"
         },
         {
@@ -6060,6 +6294,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
@@ -6120,12 +6355,6 @@
                 }
             ],
             "description": "Library for accessing git",
-            "funding": [
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/gitonomy/gitlib",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-30T14:54:11+00:00"
         },
         {
@@ -6288,12 +6517,6 @@
                 "duplicate",
                 "object",
                 "object graph"
-            ],
-            "funding": [
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/myclabs/deep-copy",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-06-29T13:22:24+00:00"
         },
@@ -7161,16 +7384,6 @@
                 "testing",
                 "xunit"
             ],
-            "funding": [
-                {
-                    "url": "https://phpunit.de/donate.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
-                }
-            ],
             "time": "2020-06-22T07:06:58+00:00"
         },
         {
@@ -7835,16 +8048,6 @@
                 "parser",
                 "validator"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/Seldaek",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/seld/jsonlint",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-25T06:56:57+00:00"
         },
         {
@@ -7960,20 +8163,6 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-10T07:27:51+00:00"
         },
         {
@@ -8047,20 +8236,6 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-01T17:42:15+00:00"
         },
         {
@@ -8111,20 +8286,6 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-21T17:19:37+00:00"
         },
         {
@@ -8179,20 +8340,6 @@
                 "configuration",
                 "options"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-10T09:12:14+00:00"
         },
         {
@@ -8243,20 +8390,6 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-05-20T17:43:50+00:00"
         },
         {
@@ -8297,12 +8430,6 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "funding": [
-                {
-                    "url": "https://github.com/theseer",
-                    "type": "github"
-                }
-            ],
             "time": "2020-07-12T23:59:07+00:00"
         },
         {
@@ -8367,5 +8494,5 @@
         "php": "^7.3.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }

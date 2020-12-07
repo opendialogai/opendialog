@@ -11,11 +11,28 @@ return [
 //         'example_type' => 'first_name'
     ],
 
+    'dialogflow_config' => [
+        'project_ids' => [
+            'agent_1' => env('DIALOGFLOW_AGENT_1_PROJECT_ID'),
+            'agent_2' => env('DIALOGFLOW_AGENT_2_PROJECT_ID'),
+        ],
+        'credentials' => [
+            'gsl-ava-dev-presales' => env('DIALOGFLOW_AGENT_1_CREDENTIALS'),
+            'gsl-ava-dev-support' => env('DIALOGFLOW_AGENT_2_CREDENTIALS'),
+            '_fallback' => env('DIALOGFLOW_FALLBACK_CREDENTIALS'),
+        ],
+        'languageCodes' => [
+            'agent_1' => 'en-GB',
+            'agent_2' => 'en-GB'
+        ]
+    ],
+
     /**
      * Custom interpreters registered in the format
      */
     'custom_interpreters' => [
-//    \OpenDialogAi\InterpreterEngine\tests\Interpreters\DummyInterpreter::class
+        \App\Bot\Interpreter\Agent1DialogflowInterpreter::class,
+        \App\Bot\Interpreter\Agent2DialogflowInterpreter::class,
     ],
 
     'default_interpreter' => 'interpreter.core.callbackInterpreter',

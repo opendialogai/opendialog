@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Bot\DialogFlow\DialogflowClient;
 use App\User;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\URL;
@@ -26,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(DialogflowClient::class, function () {
+            return new DialogflowClient([
+                'language_code' => 'en-GB'
+            ]);
+        });
+
         User::observe(UserObserver::class);
 
         if (config('app.force_https')) {

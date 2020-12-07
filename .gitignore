@@ -34,3 +34,4 @@ build
 .php_cs.cache
 composer-dev.json
 composer-dev.lock
+/resources/credentials/
