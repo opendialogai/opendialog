@@ -4,6 +4,10 @@ namespace Tests\Feature;
 
 use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\Filesystem;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
@@ -14,6 +18,9 @@ use Tests\TestCase;
  */
 class ImportExportIntentsTest extends TestCase
 {
+    /** @var Filesystem $disk */
+    private $disk;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -24,6 +31,12 @@ class ImportExportIntentsTest extends TestCase
                 '--yes' => true
             ]
         );
+
+        $this->disk = Storage::fake('specifications');
+
+        /** @var AbstractAdapter $diskAdapter */
+        $diskAdapter = $this->disk->getAdapter();
+        File::copyDirectory(resource_path('specifications'), $diskAdapter->getPathPrefix());
     }
 
     public function testImportIntents()
@@ -62,22 +75,12 @@ class ImportExportIntentsTest extends TestCase
             ]
         );
 
-        $filename = BaseSpecificationCommand::getIntentPath("intent.core.NoMatchResponseExport.intent");
-        $intent = file_get_contents($filename);
+        $intentFileName = "intent.core.NoMatchResponseExport.intent";
+        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($intentFileName));
+
+        $filename = BaseSpecificationCommand::getIntentPath($intentFileName);
+        $intent = $this->disk->get($filename);
         $this->assertStringContainsString('<intent>intent.core.NoMatchResponseExport</intent>', $intent);
-
-        $outgoingIntent = OutgoingIntent::where('name', 'intent.core.NoMatchResponseExport')->first();
-        $outgoingIntent->name = 'intent.core.NoMatchResponse';
-        $outgoingIntent->save();
-
-        Artisan::call(
-            'intents:export',
-            [
-                '--yes' => true
-            ]
-        );
-
-        unlink($filename);
     }
 
     public function testUpdateIntents()
@@ -93,9 +96,9 @@ class ImportExportIntentsTest extends TestCase
 
         $filename = BaseSpecificationCommand::getIntentPath("intent.core.NoMatchResponse.intent");
 
-        $intent = file_get_contents($filename);
+        $intent = $this->disk->get($filename);
         $intent = str_replace('</intent>', 'Export</intent>', $intent);
-        file_put_contents($filename, $intent);
+        $this->disk->put($filename, $intent);
 
         Artisan::call(
             'intents:import',
@@ -106,8 +109,5 @@ class ImportExportIntentsTest extends TestCase
 
         $outgoingIntent = OutgoingIntent::where('name', 'intent.core.NoMatchResponseExport')->first();
         $this->assertEquals('intent.core.NoMatchResponseExport', $outgoingIntent->name);
-
-        $intent = str_replace('Export</intent>', '</intent>', $intent);
-        file_put_contents($filename, $intent);
     }
 }

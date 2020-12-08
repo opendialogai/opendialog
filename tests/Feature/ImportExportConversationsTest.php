@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Adapter\AbstractAdapter;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use Tests\TestCase;
 
@@ -14,6 +17,11 @@ use Tests\TestCase;
  */
 class ImportExportConversationsTest extends TestCase
 {
+    /**
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    private $disk;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -24,6 +32,12 @@ class ImportExportConversationsTest extends TestCase
                 '--yes' => true
             ]
         );
+
+        $this->disk = Storage::fake('specifications');
+
+        /** @var AbstractAdapter $diskAdapter */
+        $diskAdapter = $this->disk->getAdapter();
+        File::copyDirectory(resource_path('specifications'), $diskAdapter->getPathPrefix());
     }
 
     public function testImportConversations()
@@ -64,19 +78,8 @@ class ImportExportConversationsTest extends TestCase
 
         $conversationFileName = "$conversation->name.conv";
         $filename = BaseSpecificationCommand::getConversationPath($conversationFileName);
-        $model = file_get_contents($filename);
+        $model = $this->disk->get($filename);
         $this->assertStringContainsString('intent.core.NoMatchResponse2', $model);
-
-        $conversation = Conversation::where('name', 'no_match_conversation')->first();
-        $conversation->model = str_replace('intent.core.NoMatchResponse2', 'intent.core.NoMatchResponse', $conversation->model);
-        $conversation->save();
-
-        Artisan::call(
-            'conversations:export',
-            [
-                '--yes' => true
-            ]
-        );
     }
 
     public function testUpdateConversations()
@@ -95,7 +98,7 @@ class ImportExportConversationsTest extends TestCase
 
         $conversationFileName = "$conversation->name.conv";
         $filename = BaseSpecificationCommand::getConversationPath($conversationFileName);
-        file_put_contents($filename, $model);
+        $this->disk->put($filename, $model);
 
         Artisan::call(
             'conversations:import',
@@ -107,8 +110,5 @@ class ImportExportConversationsTest extends TestCase
 
         $conversation = Conversation::where('name', 'no_match_conversation')->first();
         $this->assertStringContainsString('intent.core.NoMatchResponse2', $conversation->model);
-
-        $model = str_replace('intent.core.NoMatchResponse2', 'intent.core.NoMatchResponse', $model);
-        file_put_contents($filename, $model);
     }
 }

@@ -58,7 +58,6 @@ class ExportMessages extends BaseSpecificationCommand
         $output .= $messageTemplate->message_markup;
 
         $messageFileName = "$messageTemplate->name.message";
-        $filename = $this->getMessagePath($messageFileName);
-        file_put_contents($filename, $output);
+        $this->createMessageFile($messageFileName, $output);
     }
 }

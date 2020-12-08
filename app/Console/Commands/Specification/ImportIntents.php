@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Specification;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ImportIntents extends BaseSpecificationCommand
@@ -26,7 +27,7 @@ class ImportIntents extends BaseSpecificationCommand
             if ($outgoingIntentName) {
                 $this->importOutgoingIntent($outgoingIntentName . '.intent');
             } else {
-                $files = preg_grep('/^([^.])/', scandir($this->getIntentsPath()));
+                $files = $this->getIntentFiles();
 
                 foreach ($files as $messageName) {
                     $this->importOutgoingIntent($messageName);
@@ -41,8 +42,12 @@ class ImportIntents extends BaseSpecificationCommand
 
     protected function importOutgoingIntent($outgoingIntentFileName): void
     {
-        $filename = $this->getIntentPath($outgoingIntentFileName);
-        $data = file_get_contents($filename);
+        try {
+            $data = $this->getIntentFileData($outgoingIntentFileName);
+        } catch (FileNotFoundException $e) {
+            $this->warn(sprintf('Could not find intent at %s', $outgoingIntentFileName));
+            return;
+        }
 
         $intentName = $this->getIntentNameFromIntentXml($data);
 

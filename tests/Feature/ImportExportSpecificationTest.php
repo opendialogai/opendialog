@@ -2,7 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Adapter\AbstractAdapter;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Tests\TestCase;
 
 /**
@@ -12,6 +17,11 @@ use Tests\TestCase;
  */
 class ImportExportSpecificationTest extends TestCase
 {
+    /**
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    private $disk;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -22,6 +32,12 @@ class ImportExportSpecificationTest extends TestCase
                 '--yes' => true
             ]
         );
+
+        $this->disk = Storage::fake('specifications');
+
+        /** @var AbstractAdapter $diskAdapter */
+        $diskAdapter = $this->disk->getAdapter();
+        File::copyDirectory(resource_path('specifications'), $diskAdapter->getPathPrefix());
     }
 
     public function testImportSpecification()
@@ -59,11 +75,22 @@ class ImportExportSpecificationTest extends TestCase
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
         $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
 
+        /** @var MessageTemplate $messageTemplate */
+        $messageTemplate = MessageTemplate::where('name', 'Did not understand')->first();
+        $markup = "<message><empty-message></empty-message></message>";
+        $messageTemplate->message_markup = $markup;
+        $messageTemplate->save();
+
         Artisan::call(
             'specification:export',
             [
                 '--yes' => true
             ]
         );
+
+        $messageFileName = "$messageTemplate->name.message";
+        $filename = BaseSpecificationCommand::getMessagePath($messageFileName);
+        $message = $this->disk->get($filename);
+        $this->assertStringContainsString($markup, $message);
     }
 }

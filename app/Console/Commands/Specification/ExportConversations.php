@@ -54,7 +54,6 @@ class ExportConversations extends BaseSpecificationCommand
         $this->info(sprintf('Exporting conversation %s', $conversation->name));
 
         $conversationFileName = "$conversation->name.conv";
-        $filename = $this->getConversationPath($conversationFileName);
-        file_put_contents($filename, $conversation->model);
+        $this->createConversationFile($conversationFileName, $conversation->model);
     }
 }

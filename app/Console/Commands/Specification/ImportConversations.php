@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Specification;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 
@@ -36,7 +37,7 @@ class ImportConversations extends BaseSpecificationCommand
             if ($conversationName) {
                 $this->importConversation($conversationName . '.conv', $activate);
             } else {
-                $files = preg_grep('/^([^.])/', scandir($this->getConversationsPath()));
+                $files = $this->getConversationFiles();
 
                 foreach ($files as $conversationFileName) {
                     $this->importConversation($conversationFileName, $activate);
@@ -55,8 +56,12 @@ class ImportConversations extends BaseSpecificationCommand
 
         $this->info(sprintf('Importing conversation %s', $conversationName));
 
-        $filename = $this->getConversationPath($conversationFileName);
-        $model = file_get_contents($filename);
+        try {
+            $model = $this->getConversationFileData($conversationFileName);
+        } catch (FileNotFoundException $e) {
+            $this->warn(sprintf('Could not find conversation at %s', $conversationFileName));
+            return;
+        }
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
         $newConversation->status = ConversationNode::SAVED;

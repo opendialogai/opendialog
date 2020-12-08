@@ -52,7 +52,6 @@ class ExportIntents extends BaseSpecificationCommand
         $output = "<intent>" . $outgoingIntent->name . "</intent>";
 
         $intentFileName = "$outgoingIntent->name.intent";
-        $filename = $this->getIntentPath($intentFileName);
-        file_put_contents($filename, $output);
+        $this->createIntentFile($intentFileName, $output);
     }
 }

@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Adapter\AbstractAdapter;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Tests\TestCase;
 
@@ -14,6 +17,11 @@ use Tests\TestCase;
  */
 class ImportExportMessagesTest extends TestCase
 {
+    /**
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    private $disk;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -24,6 +32,12 @@ class ImportExportMessagesTest extends TestCase
                 '--yes' => true
             ]
         );
+
+        $this->disk = Storage::fake('specifications');
+
+        /** @var AbstractAdapter $diskAdapter */
+        $diskAdapter = $this->disk->getAdapter();
+        File::copyDirectory(resource_path('specifications'), $diskAdapter->getPathPrefix());
     }
 
     public function testImportMessages()
@@ -64,19 +78,8 @@ class ImportExportMessagesTest extends TestCase
 
         $messageFileName = "$messageTemplate->name.message";
         $filename = BaseSpecificationCommand::getMessagePath($messageFileName);
-        $message = file_get_contents($filename);
+        $message = $this->disk->get($filename);
         $this->assertStringContainsString('<text-message>Export', $message);
-
-        $messageTemplate = MessageTemplate::where('name', 'Did not understand')->first();
-        $messageTemplate->message_markup = str_replace('<text-message>Export', '<text-message>', $messageTemplate->message_markup);
-        $messageTemplate->save();
-
-        Artisan::call(
-            'messages:export',
-            [
-                '--yes' => true
-            ]
-        );
     }
 
     public function testUpdateMessages()
@@ -91,12 +94,11 @@ class ImportExportMessagesTest extends TestCase
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
         $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
 
-
         $filename = BaseSpecificationCommand::getMessagePath("Did not understand.message");
 
-        $message = file_get_contents($filename);
+        $message = $this->disk->get($filename);
         $message = str_replace('<text-message>', '<text-message>Export', $message);
-        file_put_contents($filename, $message);
+        $this->disk->put($filename, $message);
 
         Artisan::call(
             'messages:import',
@@ -107,8 +109,5 @@ class ImportExportMessagesTest extends TestCase
 
         $messageTemplate = MessageTemplate::where('name', 'Did not understand')->first();
         $this->assertStringContainsString('<text-message>Export', $messageTemplate->message_markup);
-
-        $message = str_replace('<text-message>Export', '<text-message>', $message);
-        file_put_contents($filename, $message);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Specification;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
@@ -34,7 +35,7 @@ class ImportMessages extends BaseSpecificationCommand
             if ($messageName) {
                 $this->importMessage($messageName . '.message');
             } else {
-                $files = preg_grep('/^([^.])/', scandir(self::getMessagesPath()));
+                $files = $this->getMessageFiles();
 
                 foreach ($files as $messageName) {
                     $this->importMessage($messageName);
@@ -49,8 +50,12 @@ class ImportMessages extends BaseSpecificationCommand
 
     protected function importMessage($messageFileName): void
     {
-        $filename = self::getMessagePath($messageFileName);
-        $data = file_get_contents($filename);
+        try {
+            $data = $this->getMessageFileData($messageFileName);
+        } catch (FileNotFoundException $e) {
+            $this->warn(sprintf('Could not find message at %s', $messageFileName));
+            return;
+        }
 
         preg_match('/<name>(.*?)<\/name>/s', $data, $matches);
         $messageName = $matches[1];

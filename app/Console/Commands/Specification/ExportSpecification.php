@@ -17,27 +17,24 @@ class ExportSpecification extends BaseSpecificationCommand
         }
 
         if ($continue) {
-            $conversationsPath = $this->getConversationsPath();
-            $conversationFiles = glob("$conversationsPath/*");
+            $conversationFiles = self::getConversationFiles();
             foreach ($conversationFiles as $conversationFile) {
                 if (is_file($conversationFile)) {
-                    unlink($conversationFile);
+                    self::deleteConversationFile($conversationFile);
                 }
             }
 
-            $intentsPath = $this->getIntentsPath();
-            $intentFiles = glob("$intentsPath/*");
+            $intentFiles = self::getIntentFiles();
             foreach ($intentFiles as $intentFile) {
                 if (is_file($intentFile)) {
-                    unlink($intentFile);
+                    self::deleteIntentFile($intentFile);
                 }
             }
 
-            $messagesPath = $this->getMessagesPath();
-            $messageFiles = glob("$messagesPath/*");
+            $messageFiles = self::getMessageFiles();
             foreach ($messageFiles as $messageFile) {
                 if (is_file($messageFile)) {
-                    unlink($messageFile);
+                    self::deleteMessageFile($messageFile);
                 }
             }
 
