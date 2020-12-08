@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
@@ -61,7 +62,7 @@ class ImportExportIntentsTest extends TestCase
             ]
         );
 
-        $filename = base_path('resources/intents/intent.core.NoMatchResponseExport.intent');
+        $filename = BaseSpecificationCommand::getIntentPath("intent.core.NoMatchResponseExport.intent");
         $intent = file_get_contents($filename);
         $this->assertStringContainsString('<intent>intent.core.NoMatchResponseExport</intent>', $intent);
 
@@ -90,7 +91,7 @@ class ImportExportIntentsTest extends TestCase
 
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
 
-        $filename = base_path('resources/intents/intent.core.NoMatchResponse.intent');
+        $filename = BaseSpecificationCommand::getIntentPath("intent.core.NoMatchResponse.intent");
 
         $intent = file_get_contents($filename);
         $intent = str_replace('</intent>', 'Export</intent>', $intent);

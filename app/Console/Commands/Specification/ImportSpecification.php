@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ImportSpecification extends Command
+class ImportSpecification extends BaseSpecificationCommand
 {
     protected $signature = 'specification:import {--y|yes}';
 

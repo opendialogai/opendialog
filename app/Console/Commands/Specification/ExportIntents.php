@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ExportIntents extends Command
+class ExportIntents extends BaseSpecificationCommand
 {
     protected $signature = 'intents:export {outgoingIntent?} {--y|yes}';
 
@@ -52,7 +51,8 @@ class ExportIntents extends Command
 
         $output = "<intent>" . $outgoingIntent->name . "</intent>";
 
-        $filename = base_path("resources/intents/$outgoingIntent->name.intent");
+        $intentFileName = "$outgoingIntent->name.intent";
+        $filename = $this->getIntentPath($intentFileName);
         file_put_contents($filename, $output);
     }
 }

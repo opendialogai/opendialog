@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ConversationBuilder\Conversation;
 
-class ExportConversations extends Command
+class ExportConversations extends BaseSpecificationCommand
 {
     protected $signature = 'conversations:export {conversation?} {--y|yes} {--active|active}';
 
@@ -55,7 +53,8 @@ class ExportConversations extends Command
     {
         $this->info(sprintf('Exporting conversation %s', $conversation->name));
 
-        $filename = base_path("resources/conversations/$conversation->name.conv");
+        $conversationFileName = "$conversation->name.conv";
+        $filename = $this->getConversationPath($conversationFileName);
         file_put_contents($filename, $conversation->model);
     }
 }

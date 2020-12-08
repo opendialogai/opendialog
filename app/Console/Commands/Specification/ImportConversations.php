@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 
-class ImportConversations extends Command
+class ImportConversations extends BaseSpecificationCommand
 {
     protected $signature = 'conversations:import {conversation?} {--y|yes} {--activate|activate}';
 
@@ -37,7 +36,7 @@ class ImportConversations extends Command
             if ($conversationName) {
                 $this->importConversation($conversationName . '.conv', $activate);
             } else {
-                $files = preg_grep('/^([^.])/', scandir(base_path('resources/conversations')));
+                $files = preg_grep('/^([^.])/', scandir($this->getConversationsPath()));
 
                 foreach ($files as $conversationFileName) {
                     $this->importConversation($conversationFileName, $activate);
@@ -52,11 +51,11 @@ class ImportConversations extends Command
 
     protected function importConversation($conversationFileName, $activate): void
     {
-        $conversationName = preg_replace('/.conv$/', '', $conversationFileName);
+        $conversationName = $this->getConversationNameFromFileName($conversationFileName);
 
         $this->info(sprintf('Importing conversation %s', $conversationName));
 
-        $filename = base_path("resources/conversations/$conversationFileName");
+        $filename = $this->getConversationPath($conversationFileName);
         $model = file_get_contents($filename);
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);

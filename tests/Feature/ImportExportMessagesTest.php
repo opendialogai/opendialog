@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Tests\TestCase;
@@ -61,7 +62,8 @@ class ImportExportMessagesTest extends TestCase
             ]
         );
 
-        $filename = base_path("resources/messages/$messageTemplate->name.message");
+        $messageFileName = "$messageTemplate->name.message";
+        $filename = BaseSpecificationCommand::getMessagePath($messageFileName);
         $message = file_get_contents($filename);
         $this->assertStringContainsString('<text-message>Export', $message);
 
@@ -89,7 +91,8 @@ class ImportExportMessagesTest extends TestCase
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
         $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
 
-        $filename = base_path('resources/messages/Did not understand.message');
+
+        $filename = BaseSpecificationCommand::getMessagePath("Did not understand.message");
 
         $message = file_get_contents($filename);
         $message = str_replace('<text-message>', '<text-message>Export', $message);

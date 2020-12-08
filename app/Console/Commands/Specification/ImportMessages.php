@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ImportMessages extends Command
+class ImportMessages extends BaseSpecificationCommand
 {
     protected $signature = 'messages:import {message?} {--y|yes}';
 
@@ -35,7 +34,7 @@ class ImportMessages extends Command
             if ($messageName) {
                 $this->importMessage($messageName . '.message');
             } else {
-                $files = preg_grep('/^([^.])/', scandir(base_path('resources/messages')));
+                $files = preg_grep('/^([^.])/', scandir(self::getMessagesPath()));
 
                 foreach ($files as $messageName) {
                     $this->importMessage($messageName);
@@ -50,7 +49,7 @@ class ImportMessages extends Command
 
     protected function importMessage($messageFileName): void
     {
-        $filename = base_path("resources/messages/$messageFileName");
+        $filename = self::getMessagePath($messageFileName);
         $data = file_get_contents($filename);
 
         preg_match('/<name>(.*?)<\/name>/s', $data, $matches);

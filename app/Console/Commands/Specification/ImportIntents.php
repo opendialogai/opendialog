@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
-use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ImportIntents extends Command
+class ImportIntents extends BaseSpecificationCommand
 {
     protected $signature = 'intents:import {outgoingIntent?} {--y|yes}';
 
@@ -28,7 +26,7 @@ class ImportIntents extends Command
             if ($outgoingIntentName) {
                 $this->importOutgoingIntent($outgoingIntentName . '.intent');
             } else {
-                $files = preg_grep('/^([^.])/', scandir(base_path('resources/intents')));
+                $files = preg_grep('/^([^.])/', scandir($this->getIntentsPath()));
 
                 foreach ($files as $messageName) {
                     $this->importOutgoingIntent($messageName);
@@ -43,12 +41,10 @@ class ImportIntents extends Command
 
     protected function importOutgoingIntent($outgoingIntentFileName): void
     {
-        $filename = base_path("resources/intents/$outgoingIntentFileName");
+        $filename = $this->getIntentPath($outgoingIntentFileName);
         $data = file_get_contents($filename);
 
-        preg_match('/<intent>(.*?)<\/intent>/s', $data, $matches);
-        $intentName = $matches[1];
-        $data = str_replace($matches[0], '', $data);
+        $intentName = $this->getIntentNameFromIntentXml($data);
 
         $this->info(sprintf('Importing intent %s', $intentName));
 

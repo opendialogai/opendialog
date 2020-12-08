@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
-
-class ExportSpecification extends Command
+class ExportSpecification extends BaseSpecificationCommand
 {
     protected $signature = 'specification:export {--y|yes}';
 
@@ -19,23 +17,24 @@ class ExportSpecification extends Command
         }
 
         if ($continue) {
-            $conversationfiles = preg_grep('/^([^.])/', scandir(base_path('resources/conversations')));
-
-            $conversationFiles = glob(base_path('resources/conversations/*'));
+            $conversationsPath = $this->getConversationsPath();
+            $conversationFiles = glob("$conversationsPath/*");
             foreach ($conversationFiles as $conversationFile) {
                 if (is_file($conversationFile)) {
                     unlink($conversationFile);
                 }
             }
 
-            $intentFiles = glob(base_path('resources/intents/*'));
+            $intentsPath = $this->getIntentsPath();
+            $intentFiles = glob("$intentsPath/*");
             foreach ($intentFiles as $intentFile) {
                 if (is_file($intentFile)) {
                     unlink($intentFile);
                 }
             }
 
-            $messageFiles = glob(base_path('resources/messages/*'));
+            $messagesPath = $this->getMessagesPath();
+            $messageFiles = glob("$messagesPath/*");
             foreach ($messageFiles as $messageFile) {
                 if (is_file($messageFile)) {
                     unlink($messageFile);

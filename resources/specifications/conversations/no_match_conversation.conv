@@ -7,5 +7,5 @@ conversation:
             i: intent.core.NoMatch
             interpreter: interpreter.core.callbackInterpreter
         - b:
-            i: intent.core.NoMatchResponse
+            i: intent.core.NoMatchResponse2
             completes: true

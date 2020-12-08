@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Specification;
 
-use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 
-class ExportMessages extends Command
+class ExportMessages extends BaseSpecificationCommand
 {
     protected $signature = 'messages:export {message?} {--y|yes}';
 
@@ -48,7 +47,7 @@ class ExportMessages extends Command
 
     protected function exportMessageTemplate(MessageTemplate $messageTemplate): void
     {
-        $this->info(sprintf('Exporting messsge %s', $messageTemplate->name));
+        $this->info(sprintf('Exporting message %s', $messageTemplate->name));
 
         $output = "<intent>" . $messageTemplate->outgoingIntent->name . "</intent>\n";
         $output .= "<name>" . $messageTemplate->name . "</name>\n";
@@ -58,7 +57,8 @@ class ExportMessages extends Command
         }
         $output .= $messageTemplate->message_markup;
 
-        $filename = base_path("resources/messages/$messageTemplate->name.message");
+        $messageFileName = "$messageTemplate->name.message";
+        $filename = $this->getMessagePath($messageFileName);
         file_put_contents($filename, $output);
     }
 }
