@@ -17,6 +17,7 @@ If you want to see OpenDialog in action you can try out the latest version throu
 
 As long as you have Docker installed on your local machine you can do:
 - `cd docker/od-demo`
+- `cp .env.example .env`
 - `docker-compose up -d app`
 - `docker-compose exec app bash docker/od-demo/update-docker.sh`
 
@@ -58,4 +59,10 @@ Branch names will have `/` replaced with `_` to meet Docker naming convention.
 ## GitHub Token during docker build
 
 If you OpenDialog project has a composer dependency on a private GitHub repo, a local auth.json file can be created and used during the docker build.
-To do this, just add a value for the environment variable `GITHUB_TOKEN` in CircleCI 
+To do this, just add a value for the environment variable `GITHUB_TOKEN` in CircleCI
+
+# Application Envs
+
+There are a number of environment variables that can be set in the applications `.env` file. This section describes some of them
+
++ `FORCE_HTTPS` - If set to true, all assets will be requested via HTTPS 

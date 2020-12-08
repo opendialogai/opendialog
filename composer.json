@@ -10,8 +10,8 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "maennchen/zipstream-php": "^2.0",
-        "opendialogai/core": "dev-develop",
-        "opendialogai/webchat": "0.7.0",
+        "opendialogai/core": "0.7.x-dev",
+        "opendialogai/webchat": "0.7.x-dev",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
         "propaganistas/laravel-phone": "^4.2",
@@ -27,7 +27,7 @@
         "fzaninotto/faker": "^1.8",
         "mockery/mockery": "^1.2",
         "nunomaduro/collision": "^2.1",
-        "phpro/grumphp": "^0.16.0",
+        "phpro/grumphp": "^0.18.1",
         "phpunit/phpunit": "^8.3",
         "squizlabs/php_codesniffer": "^3.4"
     },
@@ -69,12 +69,12 @@
             "@php artisan key:generate --ansi"
         ],
         "post-install-cmd": [
-            "@php artisan vendor:publish --tag=scripts --force",
-            "@php artisan vendor:publish --tag=dgraph --force"
+            "@php artisan vendor:publish --tag=dgraph --force",
+            "@php artisan vendor:publish --tag=public --force"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=scripts --force",
-            "@php artisan vendor:publish --tag=dgraph --force"
+            "@php artisan vendor:publish --tag=dgraph --force",
+            "@php artisan vendor:publish --tag=public --force"
         ]
     }
 }
