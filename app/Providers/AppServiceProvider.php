@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Bot\DialogFlow\DialogflowClient;
+use App\Bot\Dialogflow\DialogflowClient;
 use App\User;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\URL;

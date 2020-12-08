@@ -2,8 +2,8 @@
 
 namespace App\Bot\Interpreter;
 
-use App\Bot\DialogFlow\DialogflowClient;
-use App\Bot\DialogFlow\DialogflowResponse;
+use App\Bot\Dialogflow\DialogflowClient;
+use App\Bot\Dialogflow\DialogflowResponse;
 use Google\Cloud\Dialogflow\V2\Intent\Message\Platform;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ContextEngine\Facades\AttributeResolver;

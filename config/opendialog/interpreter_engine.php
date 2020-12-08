@@ -17,8 +17,8 @@ return [
             'agent_2' => env('DIALOGFLOW_AGENT_2_PROJECT_ID'),
         ],
         'credentials' => [
-            'gsl-ava-dev-presales' => env('DIALOGFLOW_AGENT_1_CREDENTIALS'),
-            'gsl-ava-dev-support' => env('DIALOGFLOW_AGENT_2_CREDENTIALS'),
+            env('DIALOGFLOW_AGENT_1_PROJECT_ID') => env('DIALOGFLOW_AGENT_1_CREDENTIALS'),
+            env('DIALOGFLOW_AGENT_2_PROJECT_ID') => env('DIALOGFLOW_AGENT_2_CREDENTIALS'),
             '_fallback' => env('DIALOGFLOW_FALLBACK_CREDENTIALS'),
         ],
         'languageCodes' => [

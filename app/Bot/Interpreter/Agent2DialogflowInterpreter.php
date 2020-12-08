@@ -3,7 +3,7 @@
 
 namespace App\Bot\Interpreter;
 
-use App\Bot\DialogFlow\DialogflowClient;
+use App\Bot\Dialogflow\DialogflowClient;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\Core\Utterances\UtteranceInterface;
 
