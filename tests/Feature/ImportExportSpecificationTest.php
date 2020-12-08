@@ -3,9 +3,13 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Artisan;
-use OpenDialogAi\ConversationBuilder\Conversation;
 use Tests\TestCase;
 
+/**
+ * Class ImportExportSpecificationTest
+ * @package Tests\Feature
+ * @group SpecificationTests
+ */
 class ImportExportSpecificationTest extends TestCase
 {
     public function setUp(): void

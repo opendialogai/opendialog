@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
+/**
+ * Class ImportExportIntentsTest
+ * @package Tests\Feature
+ * @group SpecificationTests
+ */
 class ImportExportIntentsTest extends TestCase
 {
     public function setUp(): void

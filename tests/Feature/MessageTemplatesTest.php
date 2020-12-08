@@ -7,6 +7,11 @@ use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
+/**
+ * Class MessageTemplatesTest
+ * @package Tests\Feature
+ * @group SpecificationTests
+ */
 class MessageTemplatesTest extends TestCase
 {
     protected $user;

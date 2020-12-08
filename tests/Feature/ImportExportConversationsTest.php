@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use Tests\TestCase;
 
+/**
+ * Class ImportExportConversationsTest
+ * @package Tests\Feature
+ * @group SpecificationTests
+ */
 class ImportExportConversationsTest extends TestCase
 {
     public function setUp(): void

@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Tests\TestCase;
 
+/**
+ * Class ImportExportMessagesTest
+ * @package Tests\Feature
+ * @group SpecificationTests
+ */
 class ImportExportMessagesTest extends TestCase
 {
     public function setUp(): void

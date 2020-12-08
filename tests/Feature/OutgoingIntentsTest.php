@@ -6,6 +6,11 @@ use App\User;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
+/**
+ * Class OutgoingIntentsTest
+ * @package Tests\Feature
+ * @group SpecificationTests
+ */
 class OutgoingIntentsTest extends TestCase
 {
     protected $user;
