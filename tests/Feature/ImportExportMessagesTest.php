@@ -46,6 +46,7 @@ class ImportExportMessagesTest extends BaseSpecificationTest
         $messageXml = new \SimpleXMLElement($messageData);
         $intentName = (string) $messageXml->intent;
         $messageTemplateName = (string) $messageXml->name;
+        $conditions = (string) $messageXml->conditions;
         $markup = $messageXml->markup->message->asXML();
 
         $this->assertDatabaseMissing('outgoing_intents', ['name' => 'intent.opendialog.WelcomeResponse']);
@@ -71,7 +72,9 @@ class ImportExportMessagesTest extends BaseSpecificationTest
 
         /** @var MessageTemplate $messageTemplate */
         $messageTemplate = MessageTemplate::where(['name' => $messageTemplateName])->first();
+
         $this->assertEquals($markup, $messageTemplate->message_markup);
+        $this->assertEquals($conditions, $messageTemplate->conditions);
     }
 
     public function testImportSingleMessageContaingAttribute()
@@ -189,6 +192,7 @@ class ImportExportMessagesTest extends BaseSpecificationTest
         $this->assertDatabaseHas('message_templates', ['name' => $noMatchMessageTemplateName]);
 
         // Make a change to the welcome message, even though we won't export it
+        /** @var MessageTemplate $welcomeMessageTemplate */
         $welcomeMessageTemplate = MessageTemplate::where('name', $welcomeMessageTemplateName)->first();
         $welcomeNewMarkup = '<text-message>WelcomeExport';
         $welcomeOriginalMarkup = $welcomeMessageTemplate->message_markup;
@@ -197,8 +201,18 @@ class ImportExportMessagesTest extends BaseSpecificationTest
             $welcomeNewMarkup,
             $welcomeMessageTemplate->message_markup
         );
+        $welcomeMessageTemplate->conditions = <<<EOT
+conditions:
+  - condition:
+      operation: test_operation
+      attributes:
+        attribute: session.test_attribute
+      parameters:
+        value: true
+EOT;
         $welcomeMessageTemplate->save();
 
+        /** @var MessageTemplate $noMatchMessageTemplate */
         $noMatchMessageTemplate = MessageTemplate::where('name', $noMatchMessageTemplateName)->first();
         $noMatchNewMarkup = '<text-message>NoMatchExport';
         $noMatchMessageTemplate->message_markup = str_replace(
@@ -206,6 +220,17 @@ class ImportExportMessagesTest extends BaseSpecificationTest
             $noMatchNewMarkup,
             $noMatchMessageTemplate->message_markup
         );
+        $noMatchNewConditions = <<<EOT
+conditions:
+  - condition:
+      operation: test_operation
+      attributes:
+        attribute: session.test_attribute
+      parameters:
+        value: true
+EOT;
+        $noMatchMessageTemplate->conditions = $noMatchNewConditions;
+
         $noMatchMessageTemplate->save();
 
         Artisan::call(
@@ -224,7 +249,11 @@ class ImportExportMessagesTest extends BaseSpecificationTest
 
         // We didn't export the welcome message change so it should be as it was prior the the database change
         $this->assertStringContainsString($welcomeOriginalMarkup, $welcomeMessage);
+        $this->assertStringNotContainsString("<conditions", $welcomeMessage);
+
         $this->assertStringContainsString($noMatchNewMarkup, $noMatchMessage);
+        $this->assertStringNotContainsString("<conditions></conditions>", $welcomeMessage);
+        $this->assertStringContainsString($noMatchNewConditions, $noMatchMessage);
     }
 
     public function testExportSingleMessageContainingAttribute()
