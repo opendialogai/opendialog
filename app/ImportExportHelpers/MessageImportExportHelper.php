@@ -8,6 +8,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 class MessageImportExportHelper extends BaseImportExportHelper
 {
     const MESSAGE_RESOURCE_DIRECTORY = 'messages';
+    const MESSAGE_FILE_ROOT_ELEMENT = 'message-template';
     const MESSAGE_FILE_EXTENSION = ".message.xml";
 
     /**

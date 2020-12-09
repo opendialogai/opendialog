@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\Generator\MessageFileGenerator;
 use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
@@ -57,21 +58,17 @@ class ExportMessages extends Command
     {
         $this->info(sprintf('Exporting message %s', $messageTemplate->name));
 
-        $xml = new \SimpleXMLElement("<parent></parent>");
-        $xml->addChild('message-template');
-        $xml->{'message-template'}->addChild('intent', $messageTemplate->outgoingIntent->name);
-        $xml->{'message-template'}->addChild('name', $messageTemplate->name);
+        $messageFile = new MessageFileGenerator(
+            $messageTemplate->name,
+            $messageTemplate->outgoingIntent->name,
+            $messageTemplate->message_markup
+        );
 
         if ($messageTemplate->conditions) {
-            $xml->{'message-template'}->addChild('conditions', $messageTemplate->conditions);
+            $messageFile->setConditions($messageTemplate->conditions);
         }
 
-        $xml->{'message-template'}->addChild('markup');
-
-        $data = $xml->{'message-template'}->asXML();
-        $data = str_replace('<markup/>', sprintf('<markup>%s</markup>', $messageTemplate->message_markup), $data);
-
         $messageFileName = MessageImportExportHelper::addMessageFileExtension($messageTemplate->name);
-        MessageImportExportHelper::createMessageFile($messageFileName, $data);
+        MessageImportExportHelper::createMessageFile($messageFileName, $messageFile);
     }
 }

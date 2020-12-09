@@ -88,8 +88,8 @@ class ImportExportIntentsTest extends BaseSpecificationTest
         $welcomeIntent = $this->disk->get($welcomeFilePath);
         $noMatchFilePath = IntentImportExportHelper::getIntentPath($noMatchIntentFileName);
         $noMatchIntent = $this->disk->get($noMatchFilePath);
-        $this->assertStringContainsString('<intent>intent.opendialog.WelcomeResponseExport</intent>', $welcomeIntent);
-        $this->assertStringContainsString('<intent>intent.core.NoMatchResponseExport</intent>', $noMatchIntent);
+        $this->assertStringContainsString('<intent><name>intent.opendialog.WelcomeResponseExport</name></intent>', $welcomeIntent);
+        $this->assertStringContainsString('<intent><name>intent.core.NoMatchResponseExport</name></intent>', $noMatchIntent);
     }
 
     public function testExportSingleIntent()
@@ -137,8 +137,8 @@ class ImportExportIntentsTest extends BaseSpecificationTest
         $welcomeIntent = $this->disk->get($welcomeFilePath);
         $noMatchFilePath = IntentImportExportHelper::getIntentPath($noMatchIntentFileName);
         $noMatchIntent = $this->disk->get($noMatchFilePath);
-        $this->assertStringNotContainsString('<intent>intent.opendialog.WelcomeResponseExport.intent</intent>', $welcomeIntent);
-        $this->assertStringContainsString('<intent>intent.core.NoMatchResponseExport</intent>', $noMatchIntent);
+        $this->assertStringNotContainsString('<intent><name>intent.opendialog.WelcomeResponseExport</name>.intent</intent>', $welcomeIntent);
+        $this->assertStringContainsString('<intent><name>intent.core.NoMatchResponseExport</name></intent>', $noMatchIntent);
     }
 
     public function testUpdateIntents()

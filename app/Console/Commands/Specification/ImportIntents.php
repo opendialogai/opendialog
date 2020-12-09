@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\Generator\IntentFileGenerator;
+use App\ImportExportHelpers\Generator\InvalidFileFormatException;
 use App\ImportExportHelpers\IntentImportExportHelper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -53,12 +55,16 @@ class ImportIntents extends Command
             return;
         }
 
-        $xml = new \SimpleXMLElement($data);
-        $intentName = (string) $xml->name;
+        try {
+            $fileGenerator = IntentFileGenerator::fromString($data);
+        } catch (InvalidFileFormatException $e) {
+            $this->error(sprintf('Invalid file formatting (%s) in %s', $e->getMessage(), $outgoingIntentFileName));
+            return;
+        }
 
-        $this->info(sprintf('Importing intent %s', $intentName));
+        $this->info(sprintf('Importing intent %s', $fileGenerator->getName()));
 
-        $newIntent = OutgoingIntent::firstOrNew(['name' => $intentName]);
+        $newIntent = OutgoingIntent::firstOrNew(['name' => $fileGenerator->getName()]);
         $newIntent->save();
     }
 }

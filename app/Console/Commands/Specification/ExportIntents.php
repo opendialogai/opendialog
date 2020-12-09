@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\Generator\IntentFileGenerator;
 use App\ImportExportHelpers\IntentImportExportHelper;
 use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
@@ -57,7 +58,7 @@ class ExportIntents extends Command
     {
         $this->info(sprintf('Exporting outgoing intent %s', $outgoingIntent->name));
 
-        $output = "<intent>" . $outgoingIntent->name . "</intent>";
+        $output = new IntentFileGenerator($outgoingIntent->name);
 
         $intentFileName = IntentImportExportHelper::addIntentFileExtension($outgoingIntent->name);
         IntentImportExportHelper::createIntentFile($intentFileName, $output);

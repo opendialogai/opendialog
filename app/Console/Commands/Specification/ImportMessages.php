@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\Generator\InvalidFileFormatException;
+use App\ImportExportHelpers\Generator\MessageFileGenerator;
 use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -61,23 +63,23 @@ class ImportMessages extends Command
             return;
         }
 
-        $xml = new \SimpleXMLElement($data);
-        $messageName = $xml->name;
+        try {
+            $messageFileGenerator = MessageFileGenerator::fromString($data);
+        } catch (InvalidFileFormatException $e) {
+            $this->error(sprintf('Invalid file formatting (%s) in %s', $e->getMessage(), $messageFileName));
+            return;
+        }
 
-        $this->info(sprintf('Importing message %s', $messageName));
+        $this->info(sprintf('Importing message %s', $messageFileGenerator->getName()));
 
-        $intentName = $xml->intent;
-        $condition = $xml->conditions;
-        $markup = $xml->markup->message->asXML();
-
-        $this->info(sprintf('Adding/updating intent with name %s', $intentName));
-        $newIntent = OutgoingIntent::firstOrNew(['name' => $intentName]);
+        $this->info(sprintf('Adding/updating intent with name %s', $messageFileGenerator->getIntent()));
+        $newIntent = OutgoingIntent::firstOrNew(['name' => $messageFileGenerator->getIntent()]);
         $newIntent->save();
 
-        $this->info(sprintf('Adding/updating message template with name %s', $messageName));
-        $message = MessageTemplate::firstOrNew(['name' => $messageName]);
-        $message->conditions = trim($condition);
-        $message->message_markup = trim($markup);
+        $this->info(sprintf('Adding/updating message template with name %s', $messageFileGenerator->getName()));
+        $message = MessageTemplate::firstOrNew(['name' => $messageFileGenerator->getName()]);
+        $message->conditions = trim($messageFileGenerator->getConditions());
+        $message->message_markup = trim($messageFileGenerator->getMarkup());
         $message->outgoing_intent_id = $newIntent->id;
         $message->save();
     }

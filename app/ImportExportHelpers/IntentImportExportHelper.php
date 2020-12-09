@@ -8,6 +8,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 class IntentImportExportHelper extends BaseImportExportHelper
 {
     const INTENT_RESOURCE_DIRECTORY = 'intents';
+    const INTENT_FILE_ROOT_ELEMENT = 'intent';
     const INTENT_FILE_EXTENSION = ".intent.xml";
 
     /**
