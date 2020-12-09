@@ -4,42 +4,16 @@ namespace Tests\Feature;
 
 use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Adapter\AbstractAdapter;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
-use Tests\TestCase;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 /**
  * Class ImportExportMessagesTest
  * @package Tests\Feature
  * @group SpecificationTests
  */
-class ImportExportMessagesTest extends TestCase
+class ImportExportMessagesTest extends BaseSpecificationTest
 {
-    /**
-     * @var \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    private $disk;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Artisan::call(
-            'schema:init',
-            [
-                '--yes' => true
-            ]
-        );
-
-        $this->disk = Storage::fake('specifications');
-
-        /** @var AbstractAdapter $diskAdapter */
-        $diskAdapter = $this->disk->getAdapter();
-        File::copyDirectory(resource_path('specifications'), $diskAdapter->getPathPrefix());
-    }
-
     public function testImportMessages()
     {
         $messageData = $this->disk->get(BaseSpecificationCommand::getMessagePath('Did not understand.message.xml'));

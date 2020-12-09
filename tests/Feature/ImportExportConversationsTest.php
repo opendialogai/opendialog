@@ -4,42 +4,15 @@ namespace Tests\Feature;
 
 use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Adapter\AbstractAdapter;
 use OpenDialogAi\ConversationBuilder\Conversation;
-use Tests\TestCase;
 
 /**
  * Class ImportExportConversationsTest
  * @package Tests\Feature
  * @group SpecificationTests
  */
-class ImportExportConversationsTest extends TestCase
+class ImportExportConversationsTest extends BaseSpecificationTest
 {
-    /**
-     * @var \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    private $disk;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Artisan::call(
-            'schema:init',
-            [
-                '--yes' => true
-            ]
-        );
-
-        $this->disk = Storage::fake('specifications');
-
-        /** @var AbstractAdapter $diskAdapter */
-        $diskAdapter = $this->disk->getAdapter();
-        File::copyDirectory(resource_path('specifications'), $diskAdapter->getPathPrefix());
-    }
-
     public function testImportConversations()
     {
         $this->assertDatabaseMissing('conversations', ['name' => 'no_match_conversation']);

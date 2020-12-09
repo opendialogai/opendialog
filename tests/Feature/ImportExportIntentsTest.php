@@ -4,41 +4,15 @@ namespace Tests\Feature;
 
 use App\Console\Commands\Specification\BaseSpecificationCommand;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\Filesystem;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
-use Tests\TestCase;
 
 /**
  * Class ImportExportIntentsTest
  * @package Tests\Feature
  * @group SpecificationTests
  */
-class ImportExportIntentsTest extends TestCase
+class ImportExportIntentsTest extends BaseSpecificationTest
 {
-    /** @var Filesystem $disk */
-    private $disk;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Artisan::call(
-            'schema:init',
-            [
-                '--yes' => true
-            ]
-        );
-
-        $this->disk = Storage::fake('specifications');
-
-        /** @var AbstractAdapter $diskAdapter */
-        $diskAdapter = $this->disk->getAdapter();
-        File::copyDirectory(resource_path('specifications'), $diskAdapter->getPathPrefix());
-    }
-
     public function testImportIntents()
     {
         $this->assertDatabaseMissing('outgoing_intents', ['name' => 'intent.opendialog.WelcomeResponse']);
