@@ -15,6 +15,10 @@ abstract class BaseSpecificationCommand extends Command
     const INTENT_RESOURCE_DIRECTORY = 'intents';
     const MESSAGE_RESOURCE_DIRECTORY = 'messages';
 
+    const CONVERSATION_FILE_EXTENSION = ".conv.yml";
+    const INTENT_FILE_EXTENSION = ".intent.xml";
+    const MESSAGE_FILE_EXTENSION = ".message.xml";
+
     /**
      * @return Filesystem
      */
@@ -85,6 +89,15 @@ abstract class BaseSpecificationCommand extends Command
     }
 
     /**
+     * @param $conversationFileName
+     * @return string
+     */
+    public static function addConversationFileExtension($conversationFileName): string
+    {
+        return $conversationFileName . self::CONVERSATION_FILE_EXTENSION;
+    }
+
+    /**
      * @return string
      */
     public static function getIntentsPath(): string
@@ -137,6 +150,15 @@ abstract class BaseSpecificationCommand extends Command
     }
 
     /**
+     * @param $intentFileName
+     * @return string
+     */
+    public static function addIntentFileExtension($intentFileName): string
+    {
+        return $intentFileName . self::INTENT_FILE_EXTENSION;
+    }
+
+    /**
      * @return string
      */
     public static function getMessagesPath(): string
@@ -186,5 +208,14 @@ abstract class BaseSpecificationCommand extends Command
     public static function deleteMessageFile($messageFileName): void
     {
         self::getDisk()->delete($messageFileName);
+    }
+
+    /**
+     * @param $messageFileName
+     * @return string
+     */
+    public static function addMessageFileExtension($messageFileName): string
+    {
+        return $messageFileName . self::MESSAGE_FILE_EXTENSION;
     }
 }

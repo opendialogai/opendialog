@@ -88,7 +88,7 @@ class ImportExportSpecificationTest extends TestCase
             ]
         );
 
-        $messageFileName = "$messageTemplate->name.message";
+        $messageFileName = BaseSpecificationCommand::addMessageFileExtension($messageTemplate->name);
         $filename = BaseSpecificationCommand::getMessagePath($messageFileName);
         $message = $this->disk->get($filename);
         $this->assertStringContainsString($markup, $message);

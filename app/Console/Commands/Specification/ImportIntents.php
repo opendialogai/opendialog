@@ -25,7 +25,9 @@ class ImportIntents extends BaseSpecificationCommand
 
         if ($continue) {
             if ($outgoingIntentName) {
-                $this->importOutgoingIntent($outgoingIntentName . '.intent');
+                $intentFileNameWithExtension = $this->addIntentFileExtension($outgoingIntentName);
+                $filePath = $this->getIntentPath($intentFileNameWithExtension);
+                $this->importOutgoingIntent($filePath);
             } else {
                 $files = $this->getIntentFiles();
 
@@ -45,7 +47,7 @@ class ImportIntents extends BaseSpecificationCommand
         try {
             $data = $this->getIntentFileData($outgoingIntentFileName);
         } catch (FileNotFoundException $e) {
-            $this->warn(sprintf('Could not find intent at %s', $outgoingIntentFileName));
+            $this->error(sprintf('Could not find intent at %s', $outgoingIntentFileName));
             return;
         }
 

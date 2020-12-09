@@ -30,12 +30,18 @@ class ExportIntents extends BaseSpecificationCommand
         if ($continue) {
             if ($outgoingIntentName) {
                 $outgoingIntent = OutgoingIntent::where('name', $outgoingIntentName)->first();
-                $this->exportoutgoingIntent($outgoingIntent);
+
+                if (is_null($outgoingIntent)) {
+                    $this->error(sprintf('%s doesn\'t exist.', $outgoingIntentName));
+                    return;
+                } else {
+                    $this->exportOutgoingIntent($outgoingIntent);
+                }
             } else {
                 $outgoingIntents = OutgoingIntent::all();
 
                 foreach ($outgoingIntents as $outgoingIntent) {
-                    $this->exportoutgoingIntent($outgoingIntent);
+                    $this->exportOutgoingIntent($outgoingIntent);
                 }
             }
 
@@ -51,7 +57,7 @@ class ExportIntents extends BaseSpecificationCommand
 
         $output = "<intent>" . $outgoingIntent->name . "</intent>";
 
-        $intentFileName = "$outgoingIntent->name.intent";
-        $this->createIntentFile($intentFileName, $output);
+        $intentFileName = self::addIntentFileExtension($outgoingIntent->name);
+        self::createIntentFile($intentFileName, $output);
     }
 }

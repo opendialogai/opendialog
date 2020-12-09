@@ -30,7 +30,13 @@ class ExportMessages extends BaseSpecificationCommand
         if ($continue) {
             if ($messageName) {
                 $messageTemplate = MessageTemplate::where('name', $messageName)->first();
-                $this->exportMessageTemplate($messageTemplate);
+
+                if (is_null($messageTemplate)) {
+                    $this->error(sprintf('%s doesn\'t exist.', $messageName));
+                    return;
+                } else {
+                    $this->exportMessageTemplate($messageTemplate);
+                }
             } else {
                 $messageTemplates = MessageTemplate::all();
 
@@ -49,15 +55,21 @@ class ExportMessages extends BaseSpecificationCommand
     {
         $this->info(sprintf('Exporting message %s', $messageTemplate->name));
 
-        $output = "<intent>" . $messageTemplate->outgoingIntent->name . "</intent>\n";
-        $output .= "<name>" . $messageTemplate->name . "</name>\n";
+        $xml = new \SimpleXMLElement("<parent></parent>");
+        $xml->addChild('message-template');
+        $xml->{'message-template'}->addChild('intent', $messageTemplate->outgoingIntent->name);
+        $xml->{'message-template'}->addChild('name', $messageTemplate->name);
 
         if ($messageTemplate->conditions) {
-            $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
+            $xml->{'message-template'}->addChild('conditions', $messageTemplate->conditions);
         }
-        $output .= $messageTemplate->message_markup;
 
-        $messageFileName = "$messageTemplate->name.message";
-        $this->createMessageFile($messageFileName, $output);
+        $xml->{'message-template'}->addChild('markup');
+
+        $data = $xml->{'message-template'}->asXML();
+        $data = str_replace('<markup/>', sprintf('<markup>%s</markup>', $messageTemplate->message_markup), $data);
+
+        $messageFileName = $this->addMessageFileExtension($messageTemplate->name);
+        $this->createMessageFile($messageFileName, $data);
     }
 }

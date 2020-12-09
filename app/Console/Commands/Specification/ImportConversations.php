@@ -59,7 +59,7 @@ class ImportConversations extends BaseSpecificationCommand
         try {
             $model = $this->getConversationFileData($conversationFileName);
         } catch (FileNotFoundException $e) {
-            $this->warn(sprintf('Could not find conversation at %s', $conversationFileName));
+            $this->error(sprintf('Could not find conversation at %s', $conversationFileName));
             return;
         }
 

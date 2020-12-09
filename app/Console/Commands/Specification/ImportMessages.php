@@ -33,7 +33,9 @@ class ImportMessages extends BaseSpecificationCommand
 
         if ($continue) {
             if ($messageName) {
-                $this->importMessage($messageName . '.message');
+                $messageFileNameWithExtension = $this->addMessageFileExtension($messageName);
+                $filePath = $this->getMessagePath($messageFileNameWithExtension);
+                $this->importMessage($filePath);
             } else {
                 $files = $this->getMessageFiles();
 
@@ -53,7 +55,7 @@ class ImportMessages extends BaseSpecificationCommand
         try {
             $data = $this->getMessageFileData($messageFileName);
         } catch (FileNotFoundException $e) {
-            $this->warn(sprintf('Could not find message at %s', $messageFileName));
+            $this->error(sprintf('Could not find message at %s', $messageFileName));
             return;
         }
 
@@ -64,7 +66,7 @@ class ImportMessages extends BaseSpecificationCommand
 
         $intentName = $xml->intent;
         $condition = $xml->conditions;
-        $markup = $xml->markup->asXML();
+        $markup = $xml->markup->message->asXML();
 
         $this->info(sprintf('Adding/updating intent with name %s', $intentName));
         $newIntent = OutgoingIntent::firstOrNew(['name' => $intentName]);

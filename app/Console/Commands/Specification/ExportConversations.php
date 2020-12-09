@@ -30,7 +30,13 @@ class ExportConversations extends BaseSpecificationCommand
         if ($continue) {
             if ($conversationName) {
                 $conversation = Conversation::where('name', $conversationName)->first();
-                $this->exportConversation($conversation);
+
+                if (is_null($conversation)) {
+                    $this->error(sprintf('%s doesn\'t exist.', $conversationName));
+                    return;
+                } else {
+                    $this->exportConversation($conversation);
+                }
             } else {
                 $activeConversations = config('opendialog.active_conversations');
 
