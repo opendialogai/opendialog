@@ -74,6 +74,32 @@ class ImportExportMessagesTest extends BaseSpecificationTest
         $this->assertEquals($markup, $messageTemplate->message_markup);
     }
 
+    public function testImportSingleMessageContaingAttribute()
+    {
+        $messageTemplateName = 'Attribute';
+        $messageTemplateFileName = BaseSpecificationCommand::addMessageFileExtension($messageTemplateName);
+        $messageTemplateFilePath = BaseSpecificationCommand::getMessagePath($messageTemplateFileName);
+        $messageData = $this->disk->get($messageTemplateFilePath);
+        $messageXml = new \SimpleXMLElement($messageData);
+        $markup = $messageXml->markup->message->asXML();
+
+        $this->assertDatabaseMissing('message_templates', ['name' => $messageTemplateName]);
+
+        Artisan::call(
+            'messages:import',
+            [
+                'message' => $messageTemplateName,
+                '--yes' => true
+            ]
+        );
+
+        $this->assertDatabaseHas('message_templates', ['name' => $messageTemplateName]);
+
+        /** @var MessageTemplate $messageTemplate */
+        $messageTemplate = MessageTemplate::where(['name' => $messageTemplateName])->first();
+        $this->assertEquals($markup, $messageTemplate->message_markup);
+    }
+
     public function testExportMessages()
     {
         $welcomeMessageFileName = BaseSpecificationCommand::addMessageFileExtension('Welcome');
@@ -199,6 +225,35 @@ class ImportExportMessagesTest extends BaseSpecificationTest
         // We didn't export the welcome message change so it should be as it was prior the the database change
         $this->assertStringContainsString($welcomeOriginalMarkup, $welcomeMessage);
         $this->assertStringContainsString($noMatchNewMarkup, $noMatchMessage);
+    }
+
+    public function testExportSingleMessageContainingAttribute()
+    {
+        $messageTemplateName = 'AttributeMessage';
+        $messageTemplateFileName = BaseSpecificationCommand::addMessageFileExtension($messageTemplateName);
+        $messageTemplateFilePath = BaseSpecificationCommand::getMessagePath($messageTemplateFileName);
+
+        /** @var OutgoingIntent $outgoingIntent */
+        $outgoingIntent = OutgoingIntent::create(['name' => 'intent.app.attributeResponse']);
+
+        /** @var MessageTemplate $messageTemplate */
+        $messageTemplate = MessageTemplate::make();
+        $messageTemplate->name = $messageTemplateName;
+        $markup = "<message><text-message>Testing...</text-message>{session.my_attribute}</message>";
+        $messageTemplate->message_markup = $markup;
+        $messageTemplate->outgoing_intent_id = $outgoingIntent->id;
+        $messageTemplate->save();
+
+        Artisan::call(
+            'messages:export',
+            [
+                'message' => $messageTemplateName,
+                '--yes' => true
+            ]
+        );
+
+        $message = $this->disk->get($messageTemplateFilePath);
+        $this->assertStringContainsString($markup, $message);
     }
 
     public function testUpdateMessages()
