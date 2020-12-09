@@ -57,22 +57,14 @@ class ImportMessages extends BaseSpecificationCommand
             return;
         }
 
-        preg_match('/<name>(.*?)<\/name>/s', $data, $matches);
-        $messageName = $matches[1];
-        $data = str_replace($matches[0], '', $data);
+        $xml = new \SimpleXMLElement($data);
+        $messageName = $xml->name;
 
         $this->info(sprintf('Importing message %s', $messageName));
 
-        preg_match('/<intent>(.*?)<\/intent>/s', $data, $matches);
-        $intentName = $matches[1];
-        $data = str_replace($matches[0], '', $data);
-
-        preg_match('/<conditions>(.*?)<\/conditions>/s', $data, $matches);
-        $condition = null;
-        if ($matches) {
-            $condition = $matches[1];
-            $data = str_replace($matches[0], '', $data);
-        }
+        $intentName = $xml->intent;
+        $condition = $xml->conditions;
+        $markup = $xml->markup->asXML();
 
         $this->info(sprintf('Adding/updating intent with name %s', $intentName));
         $newIntent = OutgoingIntent::firstOrNew(['name' => $intentName]);
@@ -81,7 +73,7 @@ class ImportMessages extends BaseSpecificationCommand
         $this->info(sprintf('Adding/updating message template with name %s', $messageName));
         $message = MessageTemplate::firstOrNew(['name' => $messageName]);
         $message->conditions = trim($condition);
-        $message->message_markup = trim($data);
+        $message->message_markup = trim($markup);
         $message->outgoing_intent_id = $newIntent->id;
         $message->save();
     }

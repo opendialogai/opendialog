@@ -46,7 +46,7 @@ abstract class BaseSpecificationCommand extends Command
      */
     public static function getConversationNameFromFileName(string $conversationFileName): ?string
     {
-        return preg_replace(['/.conv$/', '/^conversations\//'], '', $conversationFileName);
+        return preg_replace(['/.conv.yml$/', '/^conversations\//'], '', $conversationFileName);
     }
 
     /**
@@ -99,16 +99,6 @@ abstract class BaseSpecificationCommand extends Command
     public static function getIntentPath(string $intentFileName): string
     {
         return self::getIntentsPath() . "/$intentFileName";
-    }
-
-    /**
-     * @param string $data
-     * @return string
-     */
-    public static function getIntentNameFromIntentXml(string $data): string
-    {
-        preg_match('/<intent>(.*?)<\/intent>/s', $data, $matches);
-        return $matches[1];
     }
 
     /**

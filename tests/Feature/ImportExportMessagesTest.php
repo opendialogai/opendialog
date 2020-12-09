@@ -94,7 +94,7 @@ class ImportExportMessagesTest extends TestCase
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
         $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
 
-        $filename = BaseSpecificationCommand::getMessagePath("Did not understand.message");
+        $filename = BaseSpecificationCommand::getMessagePath("Did not understand.message.xml");
 
         $message = $this->disk->get($filename);
         $message = str_replace('<text-message>', '<text-message>Export', $message);

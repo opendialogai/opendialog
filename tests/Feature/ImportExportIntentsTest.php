@@ -94,11 +94,14 @@ class ImportExportIntentsTest extends TestCase
 
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
 
-        $filename = BaseSpecificationCommand::getIntentPath("intent.core.NoMatchResponse.intent");
+        $filename = BaseSpecificationCommand::getIntentPath("intent.core.NoMatchResponse.intent.xml");
 
         $intent = $this->disk->get($filename);
-        $intent = str_replace('</intent>', 'Export</intent>', $intent);
-        $this->disk->put($filename, $intent);
+        $xml = new \SimpleXMLElement(sprintf("<parent>%s</parent>", $intent));
+        $xml->intent->name = ((string) $xml->intent->name) . "Export";
+
+        $newIntent = $xml->intent->asXML();
+        $this->disk->put($filename, $newIntent);
 
         Artisan::call(
             'intents:import',

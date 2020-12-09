@@ -5,6 +5,7 @@
     "license": "Apache-2.0",
     "require": {
         "php": "^7.3.0",
+        "ext-simplexml": "*",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.2",
         "laravel/framework": "^6.0",

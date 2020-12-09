@@ -49,7 +49,8 @@ class ImportIntents extends BaseSpecificationCommand
             return;
         }
 
-        $intentName = $this->getIntentNameFromIntentXml($data);
+        $xml = new \SimpleXMLElement($data);
+        $intentName = (string) $xml->name;
 
         $this->info(sprintf('Importing intent %s', $intentName));
 
