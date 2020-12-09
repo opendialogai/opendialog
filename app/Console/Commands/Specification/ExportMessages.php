@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\MessageImportExportHelper;
+use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 
-class ExportMessages extends BaseSpecificationCommand
+class ExportMessages extends Command
 {
     protected $signature = 'messages:export {message?} {--y|yes}';
 
@@ -69,7 +71,7 @@ class ExportMessages extends BaseSpecificationCommand
         $data = $xml->{'message-template'}->asXML();
         $data = str_replace('<markup/>', sprintf('<markup>%s</markup>', $messageTemplate->message_markup), $data);
 
-        $messageFileName = $this->addMessageFileExtension($messageTemplate->name);
-        $this->createMessageFile($messageFileName, $data);
+        $messageFileName = MessageImportExportHelper::addMessageFileExtension($messageTemplate->name);
+        MessageImportExportHelper::createMessageFile($messageFileName, $data);
     }
 }

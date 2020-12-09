@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\ConversationImportExportHelper;
+use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 
-class ExportConversations extends BaseSpecificationCommand
+class ExportConversations extends Command
 {
     protected $signature = 'conversations:export {conversation?} {--y|yes} {--active|active}';
 
@@ -60,6 +62,6 @@ class ExportConversations extends BaseSpecificationCommand
         $this->info(sprintf('Exporting conversation %s', $conversation->name));
 
         $conversationFileName = "$conversation->name.conv";
-        $this->createConversationFile($conversationFileName, $conversation->model);
+        ConversationImportExportHelper::createConversationFile($conversationFileName, $conversation->model);
     }
 }

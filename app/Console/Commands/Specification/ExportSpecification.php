@@ -2,7 +2,12 @@
 
 namespace App\Console\Commands\Specification;
 
-class ExportSpecification extends BaseSpecificationCommand
+use App\ImportExportHelpers\ConversationImportExportHelper;
+use App\ImportExportHelpers\IntentImportExportHelper;
+use App\ImportExportHelpers\MessageImportExportHelper;
+use Illuminate\Console\Command;
+
+class ExportSpecification extends Command
 {
     protected $signature = 'specification:export {--y|yes}';
 
@@ -17,24 +22,24 @@ class ExportSpecification extends BaseSpecificationCommand
         }
 
         if ($continue) {
-            $conversationFiles = self::getConversationFiles();
+            $conversationFiles = ConversationImportExportHelper::getConversationFiles();
             foreach ($conversationFiles as $conversationFile) {
                 if (is_file($conversationFile)) {
-                    self::deleteConversationFile($conversationFile);
+                    ConversationImportExportHelper::deleteConversationFile($conversationFile);
                 }
             }
 
-            $intentFiles = self::getIntentFiles();
+            $intentFiles = IntentImportExportHelper::getIntentFiles();
             foreach ($intentFiles as $intentFile) {
                 if (is_file($intentFile)) {
-                    self::deleteIntentFile($intentFile);
+                    IntentImportExportHelper::deleteIntentFile($intentFile);
                 }
             }
 
-            $messageFiles = self::getMessageFiles();
+            $messageFiles = MessageImportExportHelper::getMessageFiles();
             foreach ($messageFiles as $messageFile) {
                 if (is_file($messageFile)) {
-                    self::deleteMessageFile($messageFile);
+                    MessageImportExportHelper::deleteMessageFile($messageFile);
                 }
             }
 

@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\IntentImportExportHelper;
+use Illuminate\Console\Command;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ExportIntents extends BaseSpecificationCommand
+class ExportIntents extends Command
 {
     protected $signature = 'intents:export {outgoingIntent?} {--y|yes}';
 
@@ -57,7 +59,7 @@ class ExportIntents extends BaseSpecificationCommand
 
         $output = "<intent>" . $outgoingIntent->name . "</intent>";
 
-        $intentFileName = self::addIntentFileExtension($outgoingIntent->name);
-        self::createIntentFile($intentFileName, $output);
+        $intentFileName = IntentImportExportHelper::addIntentFileExtension($outgoingIntent->name);
+        IntentImportExportHelper::createIntentFile($intentFileName, $output);
     }
 }

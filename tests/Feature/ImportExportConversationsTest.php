@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Console\Commands\Specification\BaseSpecificationCommand;
+use App\ImportExportHelpers\ConversationImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ConversationBuilder\Conversation;
 
@@ -50,7 +50,7 @@ class ImportExportConversationsTest extends BaseSpecificationTest
         );
 
         $conversationFileName = "$conversation->name.conv";
-        $filename = BaseSpecificationCommand::getConversationPath($conversationFileName);
+        $filename = ConversationImportExportHelper::getConversationPath($conversationFileName);
         $model = $this->disk->get($filename);
         $this->assertStringContainsString('intent.core.NoMatchResponse2', $model);
     }
@@ -70,7 +70,7 @@ class ImportExportConversationsTest extends BaseSpecificationTest
         $model = str_replace('intent.core.NoMatchResponse', 'intent.core.NoMatchResponse2', $conversation->model);
 
         $conversationFileName = "$conversation->name.conv";
-        $filename = BaseSpecificationCommand::getConversationPath($conversationFileName);
+        $filename = ConversationImportExportHelper::getConversationPath($conversationFileName);
         $this->disk->put($filename, $model);
 
         Artisan::call(

@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\IntentImportExportHelper;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ImportIntents extends BaseSpecificationCommand
+class ImportIntents extends Command
 {
     protected $signature = 'intents:import {outgoingIntent?} {--y|yes}';
 
@@ -25,11 +27,11 @@ class ImportIntents extends BaseSpecificationCommand
 
         if ($continue) {
             if ($outgoingIntentName) {
-                $intentFileNameWithExtension = $this->addIntentFileExtension($outgoingIntentName);
-                $filePath = $this->getIntentPath($intentFileNameWithExtension);
+                $intentFileNameWithExtension = IntentImportExportHelper::addIntentFileExtension($outgoingIntentName);
+                $filePath = IntentImportExportHelper::getIntentPath($intentFileNameWithExtension);
                 $this->importOutgoingIntent($filePath);
             } else {
-                $files = $this->getIntentFiles();
+                $files = IntentImportExportHelper::getIntentFiles();
 
                 foreach ($files as $messageName) {
                     $this->importOutgoingIntent($messageName);
@@ -45,7 +47,7 @@ class ImportIntents extends BaseSpecificationCommand
     protected function importOutgoingIntent($outgoingIntentFileName): void
     {
         try {
-            $data = $this->getIntentFileData($outgoingIntentFileName);
+            $data = IntentImportExportHelper::getIntentFileData($outgoingIntentFileName);
         } catch (FileNotFoundException $e) {
             $this->error(sprintf('Could not find intent at %s', $outgoingIntentFileName));
             return;

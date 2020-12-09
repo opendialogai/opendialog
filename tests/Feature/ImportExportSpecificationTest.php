@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Console\Commands\Specification\BaseSpecificationCommand;
+use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 
@@ -61,8 +62,8 @@ class ImportExportSpecificationTest extends BaseSpecificationTest
             ]
         );
 
-        $messageFileName = BaseSpecificationCommand::addMessageFileExtension($messageTemplate->name);
-        $filename = BaseSpecificationCommand::getMessagePath($messageFileName);
+        $messageFileName = MessageImportExportHelper::addMessageFileExtension($messageTemplate->name);
+        $filename = MessageImportExportHelper::getMessagePath($messageFileName);
         $message = $this->disk->get($filename);
         $this->assertStringContainsString($markup, $message);
     }

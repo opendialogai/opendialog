@@ -2,11 +2,12 @@
 
 namespace App\Console\Commands\Specification;
 
+use Illuminate\Console\Command;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ImportSpecification extends BaseSpecificationCommand
+class ImportSpecification extends Command
 {
     protected $signature = 'specification:import {--y|yes}';
 

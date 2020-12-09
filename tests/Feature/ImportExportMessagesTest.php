@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Console\Commands\Specification\BaseSpecificationCommand;
+use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
@@ -16,7 +16,7 @@ class ImportExportMessagesTest extends BaseSpecificationTest
 {
     public function testImportMessages()
     {
-        $messageData = $this->disk->get(BaseSpecificationCommand::getMessagePath('Did not understand.message.xml'));
+        $messageData = $this->disk->get(MessageImportExportHelper::getMessagePath('Did not understand.message.xml'));
         $messageXml = new \SimpleXMLElement($messageData);
         $intentName = (string) $messageXml->intent;
         $messageTemplateName = (string) $messageXml->name;
@@ -42,7 +42,7 @@ class ImportExportMessagesTest extends BaseSpecificationTest
 
     public function testImportSingleMessage()
     {
-        $messageData = $this->disk->get(BaseSpecificationCommand::getMessagePath('Did not understand.message.xml'));
+        $messageData = $this->disk->get(MessageImportExportHelper::getMessagePath('Did not understand.message.xml'));
         $messageXml = new \SimpleXMLElement($messageData);
         $intentName = (string) $messageXml->intent;
         $messageTemplateName = (string) $messageXml->name;
@@ -80,8 +80,8 @@ class ImportExportMessagesTest extends BaseSpecificationTest
     public function testImportSingleMessageContaingAttribute()
     {
         $messageTemplateName = 'Attribute';
-        $messageTemplateFileName = BaseSpecificationCommand::addMessageFileExtension($messageTemplateName);
-        $messageTemplateFilePath = BaseSpecificationCommand::getMessagePath($messageTemplateFileName);
+        $messageTemplateFileName = MessageImportExportHelper::addMessageFileExtension($messageTemplateName);
+        $messageTemplateFilePath = MessageImportExportHelper::getMessagePath($messageTemplateFileName);
         $messageData = $this->disk->get($messageTemplateFilePath);
         $messageXml = new \SimpleXMLElement($messageData);
         $markup = $messageXml->markup->message->asXML();
@@ -105,14 +105,14 @@ class ImportExportMessagesTest extends BaseSpecificationTest
 
     public function testExportMessages()
     {
-        $welcomeMessageFileName = BaseSpecificationCommand::addMessageFileExtension('Welcome');
-        $welcomeMessageFilePath = BaseSpecificationCommand::getMessagePath($welcomeMessageFileName);
+        $welcomeMessageFileName = MessageImportExportHelper::addMessageFileExtension('Welcome');
+        $welcomeMessageFilePath = MessageImportExportHelper::getMessagePath($welcomeMessageFileName);
         $welcomeMessageData = $this->disk->get($welcomeMessageFilePath);
         $welcomeMessageXml = new \SimpleXMLElement($welcomeMessageData);
         $welcomeMessageTemplateName = (string) $welcomeMessageXml->name;
 
-        $noMatchMessageFileName = BaseSpecificationCommand::addMessageFileExtension('Did not understand');
-        $noMatchMessageFilePath = BaseSpecificationCommand::getMessagePath($noMatchMessageFileName);
+        $noMatchMessageFileName = MessageImportExportHelper::addMessageFileExtension('Did not understand');
+        $noMatchMessageFilePath = MessageImportExportHelper::getMessagePath($noMatchMessageFileName);
         $noMatchMessageData = $this->disk->get($noMatchMessageFilePath);
         $noMatchMessageXml = new \SimpleXMLElement($noMatchMessageData);
         $noMatchMessageTemplateName = (string) $noMatchMessageXml->name;
@@ -154,7 +154,7 @@ class ImportExportMessagesTest extends BaseSpecificationTest
             ]
         );
 
-        $welcomeNewMessageFilePath = BaseSpecificationCommand::addMessageFileExtension(BaseSpecificationCommand::getMessagePath($welcomeNewMessageTemplate));
+        $welcomeNewMessageFilePath = MessageImportExportHelper::addMessageFileExtension(MessageImportExportHelper::getMessagePath($welcomeNewMessageTemplate));
 
         // This command is not destructive so the original should remain as well
         $this->disk->assertExists($welcomeNewMessageFilePath);
@@ -171,13 +171,13 @@ class ImportExportMessagesTest extends BaseSpecificationTest
 
     public function testExportSingleMessage()
     {
-        $welcomeMessageFileName = BaseSpecificationCommand::addMessageFileExtension('Welcome');
-        $welcomeMessageData = $this->disk->get(BaseSpecificationCommand::getMessagePath($welcomeMessageFileName));
+        $welcomeMessageFileName = MessageImportExportHelper::addMessageFileExtension('Welcome');
+        $welcomeMessageData = $this->disk->get(MessageImportExportHelper::getMessagePath($welcomeMessageFileName));
         $welcomeMessageXml = new \SimpleXMLElement($welcomeMessageData);
         $welcomeMessageTemplateName = (string) $welcomeMessageXml->name;
 
-        $noMatchMessageFileName = BaseSpecificationCommand::addMessageFileExtension('Did not understand');
-        $noMatchMessageData = $this->disk->get(BaseSpecificationCommand::getMessagePath($noMatchMessageFileName));
+        $noMatchMessageFileName = MessageImportExportHelper::addMessageFileExtension('Did not understand');
+        $noMatchMessageData = $this->disk->get(MessageImportExportHelper::getMessagePath($noMatchMessageFileName));
         $noMatchMessageXml = new \SimpleXMLElement($noMatchMessageData);
         $noMatchMessageTemplateName = (string) $noMatchMessageXml->name;
 
@@ -241,10 +241,10 @@ EOT;
             ]
         );
 
-        $welcomeFileName = BaseSpecificationCommand::getMessagePath($welcomeMessageFileName);
+        $welcomeFileName = MessageImportExportHelper::getMessagePath($welcomeMessageFileName);
         $welcomeMessage = $this->disk->get($welcomeFileName);
 
-        $noMatchFileName = BaseSpecificationCommand::getMessagePath($noMatchMessageFileName);
+        $noMatchFileName = MessageImportExportHelper::getMessagePath($noMatchMessageFileName);
         $noMatchMessage = $this->disk->get($noMatchFileName);
 
         // We didn't export the welcome message change so it should be as it was prior the the database change
@@ -259,8 +259,8 @@ EOT;
     public function testExportSingleMessageContainingAttribute()
     {
         $messageTemplateName = 'AttributeMessage';
-        $messageTemplateFileName = BaseSpecificationCommand::addMessageFileExtension($messageTemplateName);
-        $messageTemplateFilePath = BaseSpecificationCommand::getMessagePath($messageTemplateFileName);
+        $messageTemplateFileName = MessageImportExportHelper::addMessageFileExtension($messageTemplateName);
+        $messageTemplateFilePath = MessageImportExportHelper::getMessagePath($messageTemplateFileName);
 
         /** @var OutgoingIntent $outgoingIntent */
         $outgoingIntent = OutgoingIntent::create(['name' => 'intent.app.attributeResponse']);
@@ -297,7 +297,7 @@ EOT;
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
         $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
 
-        $filename = BaseSpecificationCommand::getMessagePath("Did not understand.message.xml");
+        $filename = MessageImportExportHelper::getMessagePath("Did not understand.message.xml");
 
         $message = $this->disk->get($filename);
         $message = str_replace('<text-message>', '<text-message>Export', $message);

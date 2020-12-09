@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\MessageImportExportHelper;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
-class ImportMessages extends BaseSpecificationCommand
+class ImportMessages extends Command
 {
     protected $signature = 'messages:import {message?} {--y|yes}';
 
@@ -33,11 +35,11 @@ class ImportMessages extends BaseSpecificationCommand
 
         if ($continue) {
             if ($messageName) {
-                $messageFileNameWithExtension = $this->addMessageFileExtension($messageName);
-                $filePath = $this->getMessagePath($messageFileNameWithExtension);
+                $messageFileNameWithExtension = MessageImportExportHelper::addMessageFileExtension($messageName);
+                $filePath = MessageImportExportHelper::getMessagePath($messageFileNameWithExtension);
                 $this->importMessage($filePath);
             } else {
-                $files = $this->getMessageFiles();
+                $files = MessageImportExportHelper::getMessageFiles();
 
                 foreach ($files as $messageName) {
                     $this->importMessage($messageName);
@@ -53,7 +55,7 @@ class ImportMessages extends BaseSpecificationCommand
     protected function importMessage($messageFileName): void
     {
         try {
-            $data = $this->getMessageFileData($messageFileName);
+            $data = MessageImportExportHelper::getMessageFileData($messageFileName);
         } catch (FileNotFoundException $e) {
             $this->error(sprintf('Could not find message at %s', $messageFileName));
             return;

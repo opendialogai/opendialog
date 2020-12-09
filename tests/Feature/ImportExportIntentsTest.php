@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Console\Commands\Specification\BaseSpecificationCommand;
+use App\ImportExportHelpers\IntentImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
@@ -73,20 +73,20 @@ class ImportExportIntentsTest extends BaseSpecificationTest
             ]
         );
 
-        $welcomeOriginalIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.opendialog.WelcomeResponse");
-        $welcomeIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.opendialog.WelcomeResponseExport");
-        $noMatchOriginalIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.core.NoMatchResponse");
-        $noMatchIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.core.NoMatchResponseExport");
+        $welcomeOriginalIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.opendialog.WelcomeResponse");
+        $welcomeIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.opendialog.WelcomeResponseExport");
+        $noMatchOriginalIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.core.NoMatchResponse");
+        $noMatchIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.core.NoMatchResponseExport");
 
         // This command is not destructive so the original should remain as well
-        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($welcomeOriginalIntentFileName));
-        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($welcomeIntentFileName));
-        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($noMatchOriginalIntentFileName));
-        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($noMatchIntentFileName));
+        $this->disk->assertExists(IntentImportExportHelper::getIntentPath($welcomeOriginalIntentFileName));
+        $this->disk->assertExists(IntentImportExportHelper::getIntentPath($welcomeIntentFileName));
+        $this->disk->assertExists(IntentImportExportHelper::getIntentPath($noMatchOriginalIntentFileName));
+        $this->disk->assertExists(IntentImportExportHelper::getIntentPath($noMatchIntentFileName));
 
-        $welcomeFilePath = BaseSpecificationCommand::getIntentPath($welcomeIntentFileName);
+        $welcomeFilePath = IntentImportExportHelper::getIntentPath($welcomeIntentFileName);
         $welcomeIntent = $this->disk->get($welcomeFilePath);
-        $noMatchFilePath = BaseSpecificationCommand::getIntentPath($noMatchIntentFileName);
+        $noMatchFilePath = IntentImportExportHelper::getIntentPath($noMatchIntentFileName);
         $noMatchIntent = $this->disk->get($noMatchFilePath);
         $this->assertStringContainsString('<intent>intent.opendialog.WelcomeResponseExport</intent>', $welcomeIntent);
         $this->assertStringContainsString('<intent>intent.core.NoMatchResponseExport</intent>', $noMatchIntent);
@@ -120,22 +120,22 @@ class ImportExportIntentsTest extends BaseSpecificationTest
             ]
         );
 
-        $welcomeOriginalIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.opendialog.WelcomeResponse");
-        $welcomeIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.opendialog.WelcomeResponseExport");
-        $noMatchOriginalIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.core.NoMatchResponse");
-        $noMatchIntentFileName = BaseSpecificationCommand::addIntentFileExtension("intent.core.NoMatchResponseExport");
+        $welcomeOriginalIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.opendialog.WelcomeResponse");
+        $welcomeIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.opendialog.WelcomeResponseExport");
+        $noMatchOriginalIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.core.NoMatchResponse");
+        $noMatchIntentFileName = IntentImportExportHelper::addIntentFileExtension("intent.core.NoMatchResponseExport");
 
         // This command is not destructive so the original should remain as well
-        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($welcomeOriginalIntentFileName));
-        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($noMatchOriginalIntentFileName));
-        $this->disk->assertExists(BaseSpecificationCommand::getIntentPath($noMatchIntentFileName));
+        $this->disk->assertExists(IntentImportExportHelper::getIntentPath($welcomeOriginalIntentFileName));
+        $this->disk->assertExists(IntentImportExportHelper::getIntentPath($noMatchOriginalIntentFileName));
+        $this->disk->assertExists(IntentImportExportHelper::getIntentPath($noMatchIntentFileName));
 
         // We didn't export the new welcome intent so it should be missing
-        $this->disk->assertMissing(BaseSpecificationCommand::getIntentPath($welcomeIntentFileName));
+        $this->disk->assertMissing(IntentImportExportHelper::getIntentPath($welcomeIntentFileName));
 
-        $welcomeFilePath = BaseSpecificationCommand::getIntentPath($welcomeOriginalIntentFileName);
+        $welcomeFilePath = IntentImportExportHelper::getIntentPath($welcomeOriginalIntentFileName);
         $welcomeIntent = $this->disk->get($welcomeFilePath);
-        $noMatchFilePath = BaseSpecificationCommand::getIntentPath($noMatchIntentFileName);
+        $noMatchFilePath = IntentImportExportHelper::getIntentPath($noMatchIntentFileName);
         $noMatchIntent = $this->disk->get($noMatchFilePath);
         $this->assertStringNotContainsString('<intent>intent.opendialog.WelcomeResponseExport.intent</intent>', $welcomeIntent);
         $this->assertStringContainsString('<intent>intent.core.NoMatchResponseExport</intent>', $noMatchIntent);
@@ -152,7 +152,7 @@ class ImportExportIntentsTest extends BaseSpecificationTest
 
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
 
-        $filename = BaseSpecificationCommand::getIntentPath("intent.core.NoMatchResponse.intent.xml");
+        $filename = IntentImportExportHelper::getIntentPath("intent.core.NoMatchResponse.intent.xml");
 
         $intent = $this->disk->get($filename);
         $xml = new \SimpleXMLElement(sprintf("<parent>%s</parent>", $intent));
