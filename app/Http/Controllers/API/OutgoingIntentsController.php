@@ -12,7 +12,6 @@ use App\ImportExportHelpers\IntentImportExportHelper;
 use App\ImportExportHelpers\MessageImportExportHelper;
 use Ds\Map;
 use Exception;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
@@ -376,7 +375,6 @@ class OutgoingIntentsController extends Controller
     /**
      * @param string $fileName
      * @param UploadedFile|null $file
-     * @throws FileNotFoundException
      */
     public function importMessageFile(string $fileName, ?UploadedFile $file): void
     {
@@ -388,7 +386,6 @@ class OutgoingIntentsController extends Controller
     /**
      * @param string $fileName
      * @param UploadedFile|null $file
-     * @throws FileNotFoundException
      */
     public function importIntentFile(string $fileName, ?UploadedFile $file): void
     {

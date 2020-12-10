@@ -79,4 +79,26 @@ class ConversationImportExportHelper extends BaseImportExportHelper
     {
         return $conversationFileName . self::CONVERSATION_FILE_EXTENSION;
     }
+
+    /**
+     * @param $conversationFileName
+     * @return string
+     */
+    public static function removeConversationFileExtension($conversationFileName): string
+    {
+        if (self::stringEndsWithFileExtension($conversationFileName)) {
+            return substr($conversationFileName, 0, -1 * strlen(self::CONVERSATION_FILE_EXTENSION));
+        } else {
+            return $conversationFileName;
+        }
+    }
+
+    /**
+     * @param string $str
+     * @return bool
+     */
+    public static function stringEndsWithFileExtension(string $str): bool
+    {
+        return substr($str, -1 * strlen(self::CONVERSATION_FILE_EXTENSION)) == self::CONVERSATION_FILE_EXTENSION;
+    }
 }

@@ -39,12 +39,12 @@
           <input ref="file" type="file" hidden @change="importConversation"/>
           <input ref="file2" type="file" hidden @change="importConversationAndActivate"/>
 
-          <b-btn class="ml-3 mr-1" variant="info" @click="downloadConversation">Export</b-btn>
-          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversation">Import</b-btn>
-          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversationAndActivate">Import and activate</b-btn>
+          <b-btn class="ml-3 mr-1" variant="info" @click="downloadConversation">Download</b-btn>
+          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversation">Upload</b-btn>
+          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversationAndActivate">Upload and activate</b-btn>
           <b-btn v-if="importingConversation" variant="primary">
             <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
-            Importing ...
+            Uploading ...
           </b-btn>
         </div>
       </div>
@@ -419,7 +419,7 @@ export default {
           const url = window.URL.createObjectURL(response.data);
           const link = document.createElement('a');
           link.href = url;
-          link.setAttribute('download', `${this.conversation.name}.conv`);
+          link.setAttribute('download', `${this.conversation.name}.zip`);
           document.body.appendChild(link);
           link.click();
         },
@@ -451,6 +451,16 @@ export default {
           this.fetchConversation();
         } else {
           this.errorMessage = 'Sorry, I wasn\'t able to update this conversation.';
+        }
+
+        this.$refs.file.value = null;
+        this.$refs.file2.value = null;
+        this.importingConversation = false;
+      }).catch(e => {
+        if (e.response.data) {
+          this.errorMessage = e.response.data.message;
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to import this conversation.';
         }
 
         this.$refs.file.value = null;

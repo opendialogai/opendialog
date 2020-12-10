@@ -25,12 +25,12 @@
           <input ref="file" type="file" hidden multiple @change="importConversations"/>
           <input ref="file2" type="file" hidden multiple @change="importConversationsAndActivate"/>
 
-          <b-btn class="ml-3 mr-1" variant="info" @click="downloadConversations">Export</b-btn>
-          <b-btn v-if="!importingConversations" variant="info" @click="uploadConversations">Import all</b-btn>
-          <b-btn v-if="!importingConversations" variant="info" @click="uploadConversationsAndActivate">Import all and activate</b-btn>
+          <b-btn class="ml-3 mr-1" variant="info" @click="downloadConversations">Download</b-btn>
+          <b-btn v-if="!importingConversations" variant="info" @click="uploadConversations">Upload all</b-btn>
+          <b-btn v-if="!importingConversations" variant="info" @click="uploadConversationsAndActivate">Upload all and activate</b-btn>
           <b-btn v-if="importingConversations" variant="primary">
             <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
-            Importing ...
+            Uploading ...
           </b-btn>
         </div>
       </div>
@@ -161,9 +161,9 @@
 </template>
 
 <script>
-    import Pager from '@/mixins/Pager';
+import Pager from '@/mixins/Pager';
 
-    export default {
+export default {
   name: 'conversations',
   mixins: [Pager],
   data() {
@@ -310,6 +310,16 @@
           this.fetchConversations();
         } else {
           this.errorMessage = 'Sorry, I wasn\'t able to update this conversations.';
+        }
+
+        this.$refs.file.value = null;
+        this.$refs.file2.value = null;
+        this.importingConversations = false;
+      }).catch(e => {
+        if (e.response.data) {
+          this.errorMessage = e.response.data.message;
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to import this conversation.';
         }
 
         this.$refs.file.value = null;
