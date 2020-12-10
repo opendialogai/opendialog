@@ -79,7 +79,7 @@ class IntentImportExportHelper extends BaseImportExportHelper
     public static function removeIntentFileExtension($intentFileName): string
     {
         if (self::stringEndsWithFileExtension($intentFileName)) {
-            return substr($intentFileName, 0, count(self::INTENT_FILE_EXTENSION));
+            return substr($intentFileName, 0, -1 * strlen(self::INTENT_FILE_EXTENSION));
         } else {
             return $intentFileName;
         }
@@ -91,6 +91,6 @@ class IntentImportExportHelper extends BaseImportExportHelper
      */
     public static function stringEndsWithFileExtension(string $str): bool
     {
-        return substr($str, -1 * count(self::INTENT_FILE_EXTENSION)) == self::INTENT_FILE_EXTENSION;
+        return substr($str, -1 * strlen(self::INTENT_FILE_EXTENSION)) == self::INTENT_FILE_EXTENSION;
     }
 }

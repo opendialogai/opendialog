@@ -91,14 +91,16 @@ class MessageFileGenerator implements \Stringable
         $xml->{'message-template'}->addChild('markup');
 
         $data = $xml->asXML();
-        $data = str_replace('<markup/>', sprintf('<markup>%s</markup>', $this->markup), $data);
 
         $dom = new DOMDocument();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($data);
 
-        return $dom->saveXML($dom->getElementsByTagName('message-template')[0]);
+        $markup = $dom->saveXML($dom->getElementsByTagName('message-template')[0]);
+        $markup = str_replace('<markup/>', sprintf('<markup>%s</markup>', $this->markup), $markup);
+
+        return $markup;
     }
 
     /**
