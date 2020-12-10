@@ -49,7 +49,7 @@ class ImportExportConversationsTest extends BaseSpecificationTest
             ]
         );
 
-        $conversationFileName = "$conversation->name.conv";
+        $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversation->name);
         $filename = ConversationImportExportHelper::getConversationPath($conversationFileName);
         $model = $this->disk->get($filename);
         $this->assertStringContainsString('intent.core.NoMatchResponse2', $model);
@@ -69,7 +69,7 @@ class ImportExportConversationsTest extends BaseSpecificationTest
         $conversation = Conversation::where('name', 'no_match_conversation')->first();
         $model = str_replace('intent.core.NoMatchResponse', 'intent.core.NoMatchResponse2', $conversation->model);
 
-        $conversationFileName = "$conversation->name.conv";
+        $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversation->name);
         $filename = ConversationImportExportHelper::getConversationPath($conversationFileName);
         $this->disk->put($filename, $model);
 

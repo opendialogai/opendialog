@@ -37,7 +37,9 @@ class ImportConversations extends Command
             $activate = ($this->option('activate')) ? true : false;
 
             if ($conversationName) {
-                $this->importConversation($conversationName . '.conv', $activate);
+                $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversationName);
+                $filePath = ConversationImportExportHelper::getConversationPath($conversationFileName);
+                $this->importConversation($filePath, $activate);
             } else {
                 $files = ConversationImportExportHelper::getConversationFiles();
 

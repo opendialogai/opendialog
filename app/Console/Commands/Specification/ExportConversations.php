@@ -61,7 +61,7 @@ class ExportConversations extends Command
     {
         $this->info(sprintf('Exporting conversation %s', $conversation->name));
 
-        $conversationFileName = "$conversation->name.conv";
+        $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversation->name);
         ConversationImportExportHelper::createConversationFile($conversationFileName, $conversation->model);
     }
 }
