@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 abstract class BaseImportExportHelper
 {
-    const SPECIFICATIONS_DISK_NAME = 'specifications';
+    const SPECIFICATION_DISK_NAME = 'specification';
 
     /**
      * @return Filesystem
      */
     public static function getDisk(): Filesystem
     {
-        return Storage::disk(self::SPECIFICATIONS_DISK_NAME);
+        return Storage::disk(self::SPECIFICATION_DISK_NAME);
     }
 }

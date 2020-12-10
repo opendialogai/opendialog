@@ -33,10 +33,10 @@ abstract class BaseSpecificationTest extends TestCase
             ]
         );
 
-        $this->disk = Storage::fake('specifications');
+        $this->disk = Storage::fake('specification');
 
         /** @var AbstractAdapter $diskAdapter */
         $diskAdapter = $this->disk->getAdapter();
-        File::copyDirectory(base_path('tests/specifications'), $diskAdapter->getPathPrefix());
+        File::copyDirectory(base_path('tests/specification'), $diskAdapter->getPathPrefix());
     }
 }
