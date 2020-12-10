@@ -71,4 +71,26 @@ class IntentImportExportHelper extends BaseImportExportHelper
     {
         return $intentFileName . self::INTENT_FILE_EXTENSION;
     }
+
+    /**
+     * @param $intentFileName
+     * @return string
+     */
+    public static function removeIntentFileExtension($intentFileName): string
+    {
+        if (self::stringEndsWithFileExtension($intentFileName)) {
+            return substr($intentFileName, 0, count(self::INTENT_FILE_EXTENSION));
+        } else {
+            return $intentFileName;
+        }
+    }
+
+    /**
+     * @param string $str
+     * @return bool
+     */
+    public static function stringEndsWithFileExtension(string $str): bool
+    {
+        return substr($str, -1 * count(self::INTENT_FILE_EXTENSION)) == self::INTENT_FILE_EXTENSION;
+    }
 }

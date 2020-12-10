@@ -45,7 +45,11 @@ class IntentFileGenerator implements \Stringable
 
     public function __toString()
     {
-        return "<intent><name>" . $this->name . "</name></intent>";
+        return <<<EOT
+<intent>
+    <name>$this->name</name>
+</intent>
+EOT;
     }
 
     /**

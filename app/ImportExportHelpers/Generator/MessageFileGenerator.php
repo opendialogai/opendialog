@@ -4,6 +4,7 @@
 namespace App\ImportExportHelpers\Generator;
 
 use App\ImportExportHelpers\MessageImportExportHelper;
+use DOMDocument;
 
 class MessageFileGenerator implements \Stringable
 {
@@ -89,10 +90,15 @@ class MessageFileGenerator implements \Stringable
 
         $xml->{'message-template'}->addChild('markup');
 
-        $data = $xml->{'message-template'}->asXML();
+        $data = $xml->asXML();
         $data = str_replace('<markup/>', sprintf('<markup>%s</markup>', $this->markup), $data);
 
-        return $data;
+        $dom = new DOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($data);
+
+        return $dom->saveXML($dom->getElementsByTagName('message-template')[0]);
     }
 
     /**

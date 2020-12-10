@@ -71,4 +71,26 @@ class MessageImportExportHelper extends BaseImportExportHelper
     {
         return $messageFileName . self::MESSAGE_FILE_EXTENSION;
     }
+
+    /**
+     * @param $messageFileName
+     * @return string
+     */
+    public static function removeMessageFileExtension($messageFileName): string
+    {
+        if (self::stringEndsWithFileExtension($messageFileName)) {
+            return substr($messageFileName, 0, count(self::MESSAGE_FILE_EXTENSION));
+        } else {
+            return $messageFileName;
+        }
+    }
+
+    /**
+     * @param string $str
+     * @return bool
+     */
+    public static function stringEndsWithFileExtension(string $str): bool
+    {
+        return substr($str, -1 * count(self::MESSAGE_FILE_EXTENSION)) == self::MESSAGE_FILE_EXTENSION;
+    }
 }

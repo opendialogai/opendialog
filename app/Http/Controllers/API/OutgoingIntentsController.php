@@ -5,10 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OutgoingIntentCollection;
 use App\Http\Resources\OutgoingIntentResource;
+use App\ImportExportHelpers\Generator\IntentFileGenerator;
+use App\ImportExportHelpers\Generator\MessageFileGenerator;
+use App\ImportExportHelpers\IntentImportExportHelper;
+use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use ZipStream\ZipStream;
 
@@ -131,20 +135,22 @@ class OutgoingIntentsController extends Controller
 
         $zip = new ZipStream($fileName);
 
-        $intent = "<intent>" . $outgoingIntent->name . "</intent>\n";
-
+        /** @var MessageTemplate $messageTemplate */
         foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
-            $output = $intent;
-            $output .= "<name>" . $messageTemplate->name . "</name>\n";
+            $messageFile = new MessageFileGenerator(
+                $outgoingIntent->name,
+                $messageTemplate->name,
+                $messageTemplate->message_markup
+            );
+
             if ($messageTemplate->conditions) {
-                $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
+                $messageFile->setConditions($messageTemplate->conditions);
             }
-            $output .= $messageTemplate->message_markup;
 
             $stream = fopen('php://memory', 'r+');
-            fwrite($stream, $output);
+            fwrite($stream, $messageFile);
             rewind($stream);
-            $zip->addFileFromStream($messageTemplate->name . '.message', $stream);
+            $zip->addFileFromStream(MessageImportExportHelper::addMessageFileExtension($messageTemplate->name), $stream);
             fclose($stream);
         }
 
@@ -165,10 +171,7 @@ class OutgoingIntentsController extends Controller
         while (true) {
             if ($file = $request->file('file' . $i)) {
                 $messageFileName = $file->getClientOriginalName();
-                $filename = base_path("resources/messages/$messageFileName");
-                File::delete($filename);
-                File::put($filename, $file->get());
-
+                $this->importMessageFile($messageFileName, $file);
                 $i++;
             } else {
                 break;
@@ -198,26 +201,37 @@ class OutgoingIntentsController extends Controller
         $outgoingIntents = OutgoingIntent::all();
 
         foreach ($outgoingIntents as $outgoingIntent) {
-            $intent = "<intent>" . $outgoingIntent->name . "</intent>\n";
+            $intentFile = (string) (new IntentFileGenerator($outgoingIntent->name));
 
             $stream = fopen('php://memory', 'r+');
-            fwrite($stream, $intent);
+            fwrite($stream, $intentFile);
             rewind($stream);
-            $zip->addFileFromStream('intents/' . $outgoingIntent->name . '.intent', $stream);
+
+            $intentFileName = IntentImportExportHelper::addIntentFileExtension($outgoingIntent->name);
+            $intentFilePath = IntentImportExportHelper::getIntentPath($intentFileName);
+
+            $zip->addFileFromStream($intentFilePath, $stream);
             fclose($stream);
 
+            /** @var MessageTemplate $messageTemplate */
             foreach ($outgoingIntent->messageTemplates as $messageTemplate) {
-                $output = $intent;
-                $output .= "<name>" . $messageTemplate->name . "</name>\n";
+                $messageFile = new MessageFileGenerator(
+                    $outgoingIntent->name,
+                    $messageTemplate->name,
+                    $messageTemplate->message_markup
+                );
+
                 if ($messageTemplate->conditions) {
-                    $output .= "<conditions>\n" . $messageTemplate->conditions . "\n</conditions>\n";
+                    $messageFile->setConditions($messageTemplate->conditions);
                 }
-                $output .= $messageTemplate->message_markup;
 
                 $stream = fopen('php://memory', 'r+');
-                fwrite($stream, $output);
+                fwrite($stream, $messageFile);
                 rewind($stream);
-                $zip->addFileFromStream('messages/' . $messageTemplate->name . '.message', $stream);
+
+                $messageFileName = MessageImportExportHelper::addMessageFileExtension($messageTemplate->name);
+                $messageFilePath = MessageImportExportHelper::getMessagePath($messageFileName);
+                $zip->addFileFromStream($messageFilePath, $stream);
                 fclose($stream);
             }
         }
@@ -236,12 +250,10 @@ class OutgoingIntentsController extends Controller
             if ($file = $request->file('file' . $i)) {
                 $fileName = $file->getClientOriginalName();
 
-                if (substr($fileName, -8) == '.message') {
-                    $messageFileName = base_path("resources/messages/$fileName");
-                    File::delete($messageFileName);
-                    File::put($messageFileName, $file->get());
+                if (MessageImportExportHelper::stringEndsWithFileExtension($fileName)) {
+                    $this->importMessageFile($fileName, $file);
 
-                    $messageName = substr($fileName, 0, -8);
+                    $messageName = MessageImportExportHelper::removeMessageFileExtension($fileName);
 
                     Artisan::call(
                         'messages:import',
@@ -250,12 +262,10 @@ class OutgoingIntentsController extends Controller
                             'message' => $messageName
                         ]
                     );
-                } elseif (substr($fileName, -7) == '.intent') {
-                    $intentFileName = base_path("resources/intents/$fileName");
-                    File::delete($intentFileName);
-                    File::put($intentFileName, $file->get());
+                } elseif (IntentImportExportHelper::stringEndsWithFileExtension($fileName)) {
+                    $this->importIntentFile($fileName, $file);
 
-                    $intentName = substr($fileName, 0, -7);
+                    $intentName = IntentImportExportHelper::removeIntentFileExtension($fileName);
 
                     Artisan::call(
                         'intents:import',
@@ -296,5 +306,29 @@ class OutgoingIntentsController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * @param string $fileName
+     * @param \Illuminate\Http\UploadedFile|null $file
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function importMessageFile(string $fileName, ?\Illuminate\Http\UploadedFile $file): void
+    {
+        $messageFileName = MessageImportExportHelper::getMessagePath($fileName);
+        MessageImportExportHelper::getDisk()->delete($messageFileName);
+        MessageImportExportHelper::getDisk()->put($messageFileName, $file->get());
+    }
+
+    /**
+     * @param string $fileName
+     * @param \Illuminate\Http\UploadedFile|null $file
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function importIntentFile(string $fileName, ?\Illuminate\Http\UploadedFile $file): void
+    {
+        $intentFileName = IntentImportExportHelper::getIntentPath($fileName);
+        IntentImportExportHelper::getDisk()->delete($intentFileName);
+        IntentImportExportHelper::getDisk()->put($intentFileName, $file->get());
     }
 }

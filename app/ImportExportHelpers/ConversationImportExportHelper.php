@@ -33,7 +33,7 @@ class ConversationImportExportHelper extends BaseImportExportHelper
      */
     public static function getConversationNameFromFileName(string $conversationFileName): ?string
     {
-        return preg_replace(['/.conv.yml$/', '/^conversations\//'], '', $conversationFileName);
+        return preg_replace(['/\.conv\.yml$/', '/^conversations\//'], '', $conversationFileName);
     }
 
     /**
