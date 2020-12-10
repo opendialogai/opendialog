@@ -1,8 +1,8 @@
 <template>
   <div v-if="outgoingIntent">
-    <div class="alert alert-danger" role="alert" v-if="errorMessage">
-      <span>{{ errorMessage }}</span>
-      <button type="button" class="close" @click="errorMessage = ''">
+    <div class="alert alert-danger" role="alert" v-if="error.message">
+      <span>{{ error.message }}</span>
+      <button type="button" class="close" @click="error.message = ''">
         <span>&times;</span>
       </button>
     </div>
@@ -25,11 +25,11 @@
 
           <input ref="file" type="file" hidden multiple @change="importOutgoingIntent"/>
 
-          <b-btn v-if="!importingOutgoingIntent" class="ml-3" variant="info" @click="downloadOutgoingIntent">Export</b-btn>
-          <b-btn v-if="!importingOutgoingIntent" variant="info" @click="uploadOutgoingIntent">Import</b-btn>
-          <b-btn v-if="importingOutgoingIntent" variant="primary">
+          <b-btn v-if="!importingOutgoingIntent" class="ml-3" variant="info" @click="downloadOutgoingIntent">Download</b-btn>
+          <b-btn v-if="!importingOutgoingIntent" :class="(error.field == 'import')" variant="info" @click="uploadOutgoingIntent">Upload</b-btn>
+          <b-btn v-if="importingOutgoingIntent" :class="(error.field == 'import')" variant="primary">
             <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
-            Importing ...
+            Uploading ...
           </b-btn>
         </div>
       </div>
@@ -169,7 +169,7 @@ export default {
   },
   data() {
     return {
-      errorMessage: '',
+      error: {},
       successMessage: '',
       outgoingIntent: null,
       messageTemplates: [],
@@ -258,10 +258,11 @@ export default {
       );
     },
     uploadOutgoingIntent() {
+      this.$refs.file.value = '';
       this.$refs.file.click();
     },
     importOutgoingIntent(event) {
-      this.errorMessage = '';
+      this.error = {};
       this.successMessage = '';
       this.importingOutgoingIntent = true;
 
@@ -278,11 +279,20 @@ export default {
       }).then((response) => {
         if (response.status == 200) {
           this.successMessage = 'Outgoing Intent updated.';
+          this.error = {};
           this.fetchOutgoingIntent();
-        } else {
-          this.errorMessage = 'Sorry, I wasn\'t able to update this outgoing intent.';
         }
 
+        this.importingOutgoingIntent = false;
+      }).catch(e => {
+        if (e.response.data) {
+          this.error = e.response.data;
+        } else {
+          this.error = {
+            field: 'import',
+            message: 'Sorry, I wasn\'t able to update this outgoing intent.'
+          };
+        }
         this.importingOutgoingIntent = false;
       });
     },

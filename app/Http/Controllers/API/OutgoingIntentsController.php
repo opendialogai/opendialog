@@ -6,11 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OutgoingIntentCollection;
 use App\Http\Resources\OutgoingIntentResource;
 use App\ImportExportHelpers\Generator\IntentFileGenerator;
+use App\ImportExportHelpers\Generator\InvalidFileFormatException;
 use App\ImportExportHelpers\Generator\MessageFileGenerator;
 use App\ImportExportHelpers\IntentImportExportHelper;
 use App\ImportExportHelpers\MessageImportExportHelper;
+use Ds\Map;
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
@@ -167,24 +172,52 @@ class OutgoingIntentsController extends Controller
         /** @var OutgoingIntent $outgoingIntent */
         $outgoingIntent = OutgoingIntent::find($id);
 
+        $errorMessage = null;
+        $files = new Map();
+
         $i = 1;
-        while (true) {
-            if ($file = $request->file('file' . $i)) {
-                $messageFileName = $file->getClientOriginalName();
-                $this->importMessageFile($messageFileName, $file);
-                $i++;
-            } else {
-                break;
+        try {
+            while (true) {
+                if ($file = $request->file('file' . $i)) {
+                    $messageFileName = $file->getClientOriginalName();
+
+                    if (!MessageImportExportHelper::stringEndsWithFileExtension($messageFileName)) {
+                        throw new Exception(sprintf(
+                            '%s is not a valid message file, message files must use \'%s\' extension.',
+                            $messageFileName,
+                            MessageImportExportHelper::MESSAGE_FILE_EXTENSION
+                        ));
+                    }
+
+                    $this->validateMessageFile($file, $messageFileName, $outgoingIntent);
+                    $files->put($messageFileName, $file);
+                    $i++;
+                } else {
+                    break;
+                }
             }
+        } catch (Exception $e) {
+            $errorMessage = $e->getMessage();
         }
 
-        Artisan::call(
-            'messages:import',
-            [
-                'outgoingIntent' => $outgoingIntent->name,
-                '--yes' => true
-            ]
-        );
+        if (!is_null($errorMessage)) {
+            return response([
+                'field' => 'import',
+                'message' => $errorMessage
+            ], 400);
+        }
+
+        foreach ($files as $fileName => $file) {
+            $this->importMessageFile($fileName, $file);
+
+            Artisan::call(
+                'messages:import',
+                [
+                    'message' => MessageImportExportHelper::removeMessageFileExtension($fileName),
+                    '--yes' => true
+                ]
+            );
+        }
 
         return response()->noContent(200);
     }
@@ -245,41 +278,73 @@ class OutgoingIntentsController extends Controller
      */
     public function importAll(Request $request)
     {
+        $errorMessage = null;
+        $messageFiles = new Map();
+        $intentFiles = new Map();
+
         $i = 1;
-        while (true) {
-            if ($file = $request->file('file' . $i)) {
-                $fileName = $file->getClientOriginalName();
 
-                if (MessageImportExportHelper::stringEndsWithFileExtension($fileName)) {
-                    $this->importMessageFile($fileName, $file);
+        try {
+            while (true) {
+                if ($file = $request->file('file' . $i)) {
+                    $fileName = $file->getClientOriginalName();
 
-                    $messageName = MessageImportExportHelper::removeMessageFileExtension($fileName);
+                    if (MessageImportExportHelper::stringEndsWithFileExtension($fileName)) {
+                        $this->validateMessageFile($file, $fileName);
+                        $messageFiles->put($fileName, $file);
+                    } elseif (IntentImportExportHelper::stringEndsWithFileExtension($fileName)) {
+                        $this->validateIntentFile($file, $fileName);
+                        $intentFiles->put($fileName, $file);
+                    } else {
+                        throw new Exception(sprintf(
+                            '%s is not a valid message or intent file, message files must use \'%s\' extension'
+                            . ' & intent files must use \'%s\' extension.',
+                            $fileName,
+                            MessageImportExportHelper::MESSAGE_FILE_EXTENSION,
+                            IntentImportExportHelper::INTENT_FILE_EXTENSION
+                        ));
+                    }
 
-                    Artisan::call(
-                        'messages:import',
-                        [
-                            '--yes' => true,
-                            'message' => $messageName
-                        ]
-                    );
-                } elseif (IntentImportExportHelper::stringEndsWithFileExtension($fileName)) {
-                    $this->importIntentFile($fileName, $file);
-
-                    $intentName = IntentImportExportHelper::removeIntentFileExtension($fileName);
-
-                    Artisan::call(
-                        'intents:import',
-                        [
-                            '--yes' => true,
-                            'outgoingIntent' => $intentName
-                        ]
-                    );
+                    $i++;
+                } else {
+                    break;
                 }
-
-                $i++;
-            } else {
-                break;
             }
+        } catch (Exception $e) {
+            $errorMessage = $e->getMessage();
+        }
+
+        if (!is_null($errorMessage)) {
+            return response([
+                'field' => 'import',
+                'message' => $errorMessage
+            ], 400);
+        }
+
+        foreach ($messageFiles as $fileName => $file) {
+            $this->importMessageFile($fileName, $file);
+            $messageName = MessageImportExportHelper::removeMessageFileExtension($fileName);
+
+            Artisan::call(
+                'messages:import',
+                [
+                    '--yes' => true,
+                    'message' => $messageName
+                ]
+            );
+        }
+
+        foreach ($intentFiles as $fileName => $file) {
+            $this->importIntentFile($fileName, $file);
+            $intentName = IntentImportExportHelper::removeIntentFileExtension($fileName);
+
+            Artisan::call(
+                'intents:import',
+                [
+                    '--yes' => true,
+                    'outgoingIntent' => $intentName
+                ]
+            );
         }
 
         return response()->noContent(200);
@@ -310,10 +375,10 @@ class OutgoingIntentsController extends Controller
 
     /**
      * @param string $fileName
-     * @param \Illuminate\Http\UploadedFile|null $file
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @param UploadedFile|null $file
+     * @throws FileNotFoundException
      */
-    public function importMessageFile(string $fileName, ?\Illuminate\Http\UploadedFile $file): void
+    public function importMessageFile(string $fileName, ?UploadedFile $file): void
     {
         $messageFileName = MessageImportExportHelper::getMessagePath($fileName);
         MessageImportExportHelper::getDisk()->delete($messageFileName);
@@ -322,13 +387,55 @@ class OutgoingIntentsController extends Controller
 
     /**
      * @param string $fileName
-     * @param \Illuminate\Http\UploadedFile|null $file
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @param UploadedFile|null $file
+     * @throws FileNotFoundException
      */
-    public function importIntentFile(string $fileName, ?\Illuminate\Http\UploadedFile $file): void
+    public function importIntentFile(string $fileName, ?UploadedFile $file): void
     {
         $intentFileName = IntentImportExportHelper::getIntentPath($fileName);
         IntentImportExportHelper::getDisk()->delete($intentFileName);
         IntentImportExportHelper::getDisk()->put($intentFileName, $file->get());
+    }
+
+    /**
+     * @param UploadedFile|null $file
+     * @param string $messageFileName
+     * @param ?OutgoingIntent $outgoingIntent
+     * @throws Exception
+     */
+    public function validateMessageFile(?UploadedFile $file, string $messageFileName, ?OutgoingIntent $outgoingIntent = null)
+    {
+        try {
+            $fileGenerator = MessageFileGenerator::fromString($file->get());
+        } catch (InvalidFileFormatException $e) {
+            throw new Exception(sprintf('Invalid file formatting (%s) in %s', $e->getMessage(), $messageFileName));
+        } catch (Exception $e) {
+            throw new Exception(sprintf('Invalid file (%s) in %s', $e->getMessage(), $messageFileName));
+        }
+
+        if (!is_null($outgoingIntent) && $fileGenerator->getIntent() != $outgoingIntent->name) {
+            throw new Exception(sprintf(
+                'File references a different intent: found \'%s\' but expected \'%s\' in %s',
+                $fileGenerator->getIntent(),
+                $outgoingIntent->name,
+                $messageFileName
+            ));
+        }
+    }
+
+    /**
+     * @param UploadedFile|null $file
+     * @param string $intentFileName
+     * @throws Exception
+     */
+    public function validateIntentFile(?UploadedFile $file, string $intentFileName)
+    {
+        try {
+            $fileGenerator = IntentFileGenerator::fromString($file->get());
+        } catch (InvalidFileFormatException $e) {
+            throw new Exception(sprintf('Invalid file formatting (%s) in %s', $e->getMessage(), $intentFileName));
+        } catch (Exception $e) {
+            throw new Exception(sprintf('Invalid file (%s) in %s', $e->getMessage(), $intentFileName));
+        }
     }
 }
