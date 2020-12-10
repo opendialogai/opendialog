@@ -243,7 +243,7 @@ export default {
 
       this.messageTemplates = this.messageTemplates.filter(obj => obj.id !== this.currentMessageTemplate);
 
-      axios.delete('/admin/api/outgoing-intent/' + this.id);
+      axios.delete('/admin/api/outgoing-intent/' + this.id + '/message-templates/' + this.currentMessageTemplate);
     },
     downloadOutgoingIntent() {
       axios.get('/admin/api/outgoing-intent/' + this.outgoingIntent.id + '/export', { responseType: 'blob' }).then(
