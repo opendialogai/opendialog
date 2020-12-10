@@ -1,5 +1,12 @@
 <template>
   <div class="animated fadeIn">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
     <div class="alert alert-success" role="alert" v-if="successMessage">
       <span>{{ successMessage }}</span>
       <button type="button" class="close" @click="successMessage = ''">
@@ -9,8 +16,14 @@
 
     <b-row class="mb-4">
       <b-col>
-        <b-btn variant="primary" class="mr-2" @click="specificationImport">Specification import</b-btn>
-        <b-btn variant="primary" @click="specificationExport">Specification export</b-btn>
+        <input ref="file" type="file" hidden multiple @change="specificationUpload"/>
+
+        <b-btn v-if="!importingSpecification" variant="primary" @click="specificationExport">Specification download</b-btn>
+        <b-btn v-if="!importingSpecification" variant="primary" class="mr-2" @click="specificationImport">Specification upload</b-btn>
+        <b-btn v-if="importingSpecification" variant="primary">
+          <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+          Uploading ...
+        </b-btn>
       </b-col>
     </b-row>
     <b-row class="mb-4">
@@ -83,6 +96,8 @@ export default {
       startDate: moment().subtract(6, 'days').format('YYYY-MM-DD'),
       endDate: moment().format('YYYY-MM-DD'),
       successMessage: '',
+      errorMessage: '',
+      importingSpecification: false,
     };
   },
   computed: {
@@ -109,14 +124,54 @@ export default {
       this.$cookies.set('filterDateRange', this.dateRange, 0);
     },
     specificationImport() {
-      axios.get('/admin/api/specification-import').then(() => {
-        this.successMessage = 'Specification import completed';
+      this.$refs.file.click();
+    },
+    specificationUpload(event) {
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.importingSpecification = true;
+
+      const formData = new FormData();
+
+      event.target.files.forEach((file, i) => {
+        formData.append('file' + (i + 1), file);
+      });
+
+      axios.post('/admin/api/specification-import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Specification updated.';
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update the specification.';
+        }
+
+        this.$refs.file.value = null;
+        this.importingSpecification = false;
+      }).catch(e => {
+        if (e.response.data) {
+          this.errorMessage = e.response.data.message;
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update the specification.';
+        }
+
+        this.$refs.file.value = null;
+        this.importingSpecification = false;
       });
     },
     specificationExport() {
-      axios.get('/admin/api/specification-export').then(() => {
-        this.successMessage = 'Specification export completed';
-      });
+      axios.get('/admin/api/specification-export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `specification.zip`);
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
     },
   }
 };

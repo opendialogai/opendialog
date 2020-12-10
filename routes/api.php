@@ -58,6 +58,6 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
     Route::get('outgoing-intents/export', 'OutgoingIntentsController@exportAll');
     Route::post('outgoing-intents/import', 'OutgoingIntentsController@importAll');
 
-    Route::get('specification-import', 'SpecificationController@import');
+    Route::post('specification-import', 'SpecificationController@import');
     Route::get('specification-export', 'SpecificationController@export');
 });
