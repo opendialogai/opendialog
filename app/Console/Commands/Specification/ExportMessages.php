@@ -59,8 +59,8 @@ class ExportMessages extends Command
         $this->info(sprintf('Exporting message %s', $messageTemplate->name));
 
         $messageFile = new MessageFileGenerator(
-            $messageTemplate->name,
             $messageTemplate->outgoingIntent->name,
+            $messageTemplate->name,
             $messageTemplate->message_markup
         );
 

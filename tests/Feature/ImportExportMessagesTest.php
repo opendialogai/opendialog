@@ -166,7 +166,12 @@ class ImportExportMessagesTest extends BaseSpecificationTest
         $noMatchMessage = $this->disk->get($noMatchMessageFilePath);
 
         $this->assertStringContainsString($welcomeNewMarkup, $welcomeMessage);
+        $this->assertStringContainsString("<intent>$welcomeMessageXml->intent</intent>", $welcomeMessage);
+        $this->assertStringContainsString("<name>$welcomeNewMessageTemplate</name>", $welcomeMessage);
+
         $this->assertStringContainsString($noMatchNewMarkup, $noMatchMessage);
+        $this->assertStringContainsString("<intent>$noMatchMessageXml->intent</intent>", $noMatchMessage);
+        $this->assertStringContainsString("<name>$noMatchMessageTemplateName</name>", $noMatchMessage);
     }
 
     public function testExportSingleMessage()
@@ -249,10 +254,14 @@ EOT;
 
         // We didn't export the welcome message change so it should be as it was prior the the database change
         $this->assertStringContainsString($welcomeOriginalMarkup, $welcomeMessage);
+        $this->assertStringContainsString("<intent>$welcomeMessageXml->intent</intent>", $welcomeMessage);
+        $this->assertStringContainsString("<name>$welcomeMessageTemplateName</name>", $welcomeMessage);
         $this->assertStringNotContainsString("<conditions", $welcomeMessage);
 
         $this->assertStringContainsString($noMatchNewMarkup, $noMatchMessage);
-        $this->assertStringNotContainsString("<conditions></conditions>", $welcomeMessage);
+        $this->assertStringContainsString("<intent>$noMatchMessageXml->intent</intent>", $noMatchMessage);
+        $this->assertStringContainsString("<name>$noMatchMessageTemplateName</name>", $noMatchMessage);
+        $this->assertStringNotContainsString("<conditions></conditions>", $noMatchMessage);
         $this->assertStringContainsString($noMatchNewConditions, $noMatchMessage);
     }
 
