@@ -2,12 +2,10 @@
 
 namespace App\Console\Commands\Specification;
 
-use App\ImportExportHelpers\Generator\IntentFileGenerator;
 use App\ImportExportHelpers\Generator\InvalidFileFormatException;
 use App\ImportExportHelpers\IntentImportExportHelper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ImportIntents extends Command
 {
@@ -31,12 +29,12 @@ class ImportIntents extends Command
             if ($outgoingIntentName) {
                 $intentFileNameWithExtension = IntentImportExportHelper::addIntentFileExtension($outgoingIntentName);
                 $filePath = IntentImportExportHelper::getIntentPath($intentFileNameWithExtension);
-                $this->importOutgoingIntent($filePath);
+                $this->importOutgoingIntentFromFile($filePath);
             } else {
                 $files = IntentImportExportHelper::getIntentFiles();
 
                 foreach ($files as $messageName) {
-                    $this->importOutgoingIntent($messageName);
+                    $this->importOutgoingIntentFromFile($messageName);
                 }
             }
 
@@ -46,7 +44,7 @@ class ImportIntents extends Command
         }
     }
 
-    protected function importOutgoingIntent($outgoingIntentFileName): void
+    protected function importOutgoingIntentFromFile($outgoingIntentFileName): void
     {
         try {
             $data = IntentImportExportHelper::getIntentFileData($outgoingIntentFileName);
@@ -56,15 +54,11 @@ class ImportIntents extends Command
         }
 
         try {
-            $fileGenerator = IntentFileGenerator::fromString($data);
+            $fileGenerator = IntentImportExportHelper::importIntentFileFromString($outgoingIntentFileName, $data);
+            $this->info(sprintf('Importing intent %s', $fileGenerator->getName()));
         } catch (InvalidFileFormatException $e) {
-            $this->error(sprintf('Invalid file formatting (%s) in %s', $e->getMessage(), $outgoingIntentFileName));
+            $this->error($e->getMessage());
             return;
         }
-
-        $this->info(sprintf('Importing intent %s', $fileGenerator->getName()));
-
-        $newIntent = OutgoingIntent::firstOrNew(['name' => $fileGenerator->getName()]);
-        $newIntent->save();
     }
 }

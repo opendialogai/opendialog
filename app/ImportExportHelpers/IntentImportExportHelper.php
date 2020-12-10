@@ -3,7 +3,10 @@
 
 namespace App\ImportExportHelpers;
 
+use App\ImportExportHelpers\Generator\IntentFileGenerator;
+use App\ImportExportHelpers\Generator\InvalidFileFormatException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class IntentImportExportHelper extends BaseImportExportHelper
 {
@@ -92,5 +95,25 @@ class IntentImportExportHelper extends BaseImportExportHelper
     public static function stringEndsWithFileExtension(string $str): bool
     {
         return substr($str, -1 * strlen(self::INTENT_FILE_EXTENSION)) == self::INTENT_FILE_EXTENSION;
+    }
+
+    /**
+     * @param string $fileName
+     * @param string $data
+     * @return IntentFileGenerator
+     * @throws InvalidFileFormatException
+     */
+    public static function importIntentFileFromString(string $fileName, string $data): IntentFileGenerator
+    {
+        try {
+            $fileGenerator = IntentFileGenerator::fromString($data);
+        } catch (InvalidFileFormatException $e) {
+            throw new InvalidFileFormatException(sprintf('Invalid file formatting (%s) in %s', $e->getMessage(), $fileName));
+        }
+
+        $newIntent = OutgoingIntent::firstOrNew(['name' => $fileGenerator->getName()]);
+        $newIntent->save();
+
+        return $fileGenerator;
     }
 }

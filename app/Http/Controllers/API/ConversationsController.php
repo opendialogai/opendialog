@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
@@ -335,27 +335,7 @@ class ConversationsController extends Controller
             return response($error, 400);
         }
 
-        $fileName = ConversationImportExportHelper::addConversationFileExtension($conversation->name);
-        $this->importConversationFile($fileName, $file);
-
-        if ($activate) {
-            Artisan::call(
-                'conversations:import',
-                [
-                    'conversation' => $conversation->name,
-                    '--yes' => true,
-                    '--activate' => true
-                ]
-            );
-        } else {
-            Artisan::call(
-                'conversations:import',
-                [
-                    'conversation' => $conversation->name,
-                    '--yes' => true
-                ]
-            );
-        }
+        $this->importConversationFile($conversation->name, $file, $activate);
 
         return response()->noContent(200);
     }
@@ -371,14 +351,7 @@ class ConversationsController extends Controller
 
         $conversations = Conversation::all();
 
-        foreach ($conversations as $conversation) {
-            $stream = fopen('php://memory', 'r+');
-            fwrite($stream, $conversation->model);
-            rewind($stream);
-            $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversation->name);
-            $zip->addFileFromStream($conversationFileName, $stream);
-            fclose($stream);
-        }
+        $this->addConversationsToZip($conversations, $zip);
 
         $zip->finish();
     }
@@ -435,27 +408,8 @@ class ConversationsController extends Controller
         }
 
         foreach ($conversationFiles as $fileName => $file) {
-            $this->importConversationFile($fileName, $file);
             $conversationName = ConversationImportExportHelper::removeConversationFileExtension($fileName);
-
-            if ($activate) {
-                Artisan::call(
-                    'conversations:import',
-                    [
-                        'conversation' => $conversationName,
-                        '--yes' => true,
-                        '--activate' => true
-                    ]
-                );
-            } else {
-                Artisan::call(
-                    'conversations:import',
-                    [
-                        'conversation' => $conversationName,
-                        '--yes' => true
-                    ]
-                );
-            }
+            $this->importConversationFile($conversationName, $file, $activate);
         }
 
         return response()->noContent(200);
@@ -465,7 +419,7 @@ class ConversationsController extends Controller
      * @param string $conversationModel
      * @return array
      */
-    private function validateValue(string $conversationModel): ?array
+    public function validateValue(string $conversationModel): ?array
     {
         $rule = new ConversationYAML();
 
@@ -533,13 +487,35 @@ class ConversationsController extends Controller
     }
 
     /**
-     * @param string $fileName
+     * @param string $conversationName
      * @param UploadedFile|null $file
+     * @param bool $activate
      */
-    public function importConversationFile(string $fileName, ?UploadedFile $file): void
+    public function importConversationFile(string $conversationName, ?UploadedFile $file, bool $activate): void
     {
-        $intentFileName = ConversationImportExportHelper::getConversationPath($fileName);
-        ConversationImportExportHelper::getDisk()->delete($intentFileName);
-        ConversationImportExportHelper::getDisk()->put($intentFileName, $file->get());
+        ConversationImportExportHelper::importConversationFromString($conversationName, $file->get(), $activate);
+    }
+
+    /**
+     * @param Collection|Conversation[] $conversations
+     * @param ZipStream $zip
+     * @param bool $withDirectory
+     */
+    public function addConversationsToZip(Collection $conversations, ZipStream $zip, $withDirectory = false): void
+    {
+        foreach ($conversations as $conversation) {
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $conversation->model);
+            rewind($stream);
+
+            $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversation->name);
+
+            if ($withDirectory) {
+                $conversationFileName = ConversationImportExportHelper::getConversationPath($conversationFileName);
+            }
+
+            $zip->addFileFromStream($conversationFileName, $stream);
+            fclose($stream);
+        }
     }
 }

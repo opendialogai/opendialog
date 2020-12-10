@@ -3,10 +3,9 @@
 namespace App\Console\Commands\Specification;
 
 use App\ImportExportHelpers\ConversationImportExportHelper;
+use App\ImportExportHelpers\Generator\InvalidFileFormatException;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use OpenDialogAi\ConversationBuilder\Conversation;
-use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 
 class ImportConversations extends Command
 {
@@ -39,12 +38,12 @@ class ImportConversations extends Command
             if ($conversationName) {
                 $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversationName);
                 $filePath = ConversationImportExportHelper::getConversationPath($conversationFileName);
-                $this->importConversation($filePath, $activate);
+                $this->importConversationFromFile($filePath, $activate);
             } else {
                 $files = ConversationImportExportHelper::getConversationFiles();
 
                 foreach ($files as $conversationFileName) {
-                    $this->importConversation($conversationFileName, $activate);
+                    $this->importConversationFromFile($conversationFileName, $activate);
                 }
             }
 
@@ -54,7 +53,7 @@ class ImportConversations extends Command
         }
     }
 
-    protected function importConversation($conversationFileName, $activate): void
+    protected function importConversationFromFile($conversationFileName, $activate): void
     {
         $conversationName = ConversationImportExportHelper::getConversationNameFromFileName($conversationFileName);
 
@@ -67,16 +66,11 @@ class ImportConversations extends Command
             return;
         }
 
-        $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
-        $newConversation->status = ConversationNode::SAVED;
-        $newConversation->version_number = 0;
-        $newConversation->graph_uid = null;
-        $newConversation->fill(['model' => $model]);
-        $newConversation->save();
-
-        if ($activate) {
-            $this->info(sprintf('Activating conversation with name %s', $newConversation->name));
-            $newConversation->activateConversation();
+        try {
+            ConversationImportExportHelper::importConversationFromString($conversationName, $model, $activate, $this);
+        } catch (InvalidFileFormatException $e) {
+            $this->error($e->getMessage());
+            return;
         }
     }
 }

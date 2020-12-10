@@ -3,7 +3,12 @@
 
 namespace App\ImportExportHelpers;
 
+use App\ImportExportHelpers\Generator\InvalidFileFormatException;
+use App\ImportExportHelpers\Generator\MessageFileGenerator;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class MessageImportExportHelper extends BaseImportExportHelper
 {
@@ -92,5 +97,41 @@ class MessageImportExportHelper extends BaseImportExportHelper
     public static function stringEndsWithFileExtension(string $str): bool
     {
         return substr($str, -1 * strlen(self::MESSAGE_FILE_EXTENSION)) == self::MESSAGE_FILE_EXTENSION;
+    }
+
+    /**
+     * @param string $messageFileName
+     * @param string $data
+     * @param Command|null $io
+     * @return MessageFileGenerator
+     * @throws InvalidFileFormatException
+     */
+    public static function importMessageFileFromString(
+        string $messageFileName,
+        string $data,
+        Command $io = null
+    ): MessageFileGenerator {
+        try {
+            $messageFileGenerator = MessageFileGenerator::fromString($data);
+        } catch (InvalidFileFormatException $e) {
+            throw new InvalidFileFormatException(sprintf(
+                'Invalid file formatting (%s) in %s',
+                $e->getMessage(),
+                $messageFileName
+            ));
+        }
+
+        is_null($io) ?: $io->info(sprintf('Adding/updating intent with name %s', $messageFileGenerator->getIntent()));
+        $newIntent = OutgoingIntent::firstOrNew(['name' => $messageFileGenerator->getIntent()]);
+        $newIntent->save();
+
+        is_null($io) ?: $io->info(sprintf('Adding/updating message template with name %s', $messageFileGenerator->getName()));
+        $message = MessageTemplate::firstOrNew(['name' => $messageFileGenerator->getName()]);
+        $message->conditions = trim($messageFileGenerator->getConditions());
+        $message->message_markup = trim($messageFileGenerator->getMarkup());
+        $message->outgoing_intent_id = $newIntent->id;
+        $message->save();
+
+        return $messageFileGenerator;
     }
 }

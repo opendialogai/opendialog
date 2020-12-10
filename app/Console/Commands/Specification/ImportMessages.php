@@ -3,12 +3,9 @@
 namespace App\Console\Commands\Specification;
 
 use App\ImportExportHelpers\Generator\InvalidFileFormatException;
-use App\ImportExportHelpers\Generator\MessageFileGenerator;
 use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use OpenDialogAi\ResponseEngine\MessageTemplate;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ImportMessages extends Command
 {
@@ -39,12 +36,12 @@ class ImportMessages extends Command
             if ($messageName) {
                 $messageFileNameWithExtension = MessageImportExportHelper::addMessageFileExtension($messageName);
                 $filePath = MessageImportExportHelper::getMessagePath($messageFileNameWithExtension);
-                $this->importMessage($filePath);
+                $this->importMessageFromFile($filePath);
             } else {
                 $files = MessageImportExportHelper::getMessageFiles();
 
                 foreach ($files as $messageName) {
-                    $this->importMessage($messageName);
+                    $this->importMessageFromFile($messageName);
                 }
             }
 
@@ -54,7 +51,7 @@ class ImportMessages extends Command
         }
     }
 
-    protected function importMessage($messageFileName): void
+    protected function importMessageFromFile($messageFileName): void
     {
         try {
             $data = MessageImportExportHelper::getMessageFileData($messageFileName);
@@ -64,23 +61,11 @@ class ImportMessages extends Command
         }
 
         try {
-            $messageFileGenerator = MessageFileGenerator::fromString($data);
+            $fileGenerator = MessageImportExportHelper::importMessageFileFromString($messageFileName, $data, $this);
+            $this->info(sprintf('Importing message %s', $fileGenerator->getName()));
         } catch (InvalidFileFormatException $e) {
-            $this->error(sprintf('Invalid file formatting (%s) in %s', $e->getMessage(), $messageFileName));
+            $this->error($e->getMessage());
             return;
         }
-
-        $this->info(sprintf('Importing message %s', $messageFileGenerator->getName()));
-
-        $this->info(sprintf('Adding/updating intent with name %s', $messageFileGenerator->getIntent()));
-        $newIntent = OutgoingIntent::firstOrNew(['name' => $messageFileGenerator->getIntent()]);
-        $newIntent->save();
-
-        $this->info(sprintf('Adding/updating message template with name %s', $messageFileGenerator->getName()));
-        $message = MessageTemplate::firstOrNew(['name' => $messageFileGenerator->getName()]);
-        $message->conditions = trim($messageFileGenerator->getConditions());
-        $message->message_markup = trim($messageFileGenerator->getMarkup());
-        $message->outgoing_intent_id = $newIntent->id;
-        $message->save();
     }
 }

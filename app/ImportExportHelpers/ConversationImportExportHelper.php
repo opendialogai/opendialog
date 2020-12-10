@@ -3,7 +3,12 @@
 
 namespace App\ImportExportHelpers;
 
+use App\Http\Controllers\API\ConversationsController;
+use App\ImportExportHelpers\Generator\InvalidFileFormatException;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 
 class ConversationImportExportHelper extends BaseImportExportHelper
 {
@@ -100,5 +105,42 @@ class ConversationImportExportHelper extends BaseImportExportHelper
     public static function stringEndsWithFileExtension(string $str): bool
     {
         return substr($str, -1 * strlen(self::CONVERSATION_FILE_EXTENSION)) == self::CONVERSATION_FILE_EXTENSION;
+    }
+
+    /**
+     * @param string $conversationName
+     * @param string $model
+     * @param bool $activate
+     * @param Command|null $io
+     * @return Conversation
+     * @throws InvalidFileFormatException
+     */
+    public static function importConversationFromString(
+        string $conversationName,
+        string $model,
+        bool $activate = false,
+        Command $io = null
+    ): Conversation {
+        if ($error = resolve(ConversationsController::class)->validateValue($model)) {
+            throw new InvalidFileFormatException(sprintf(
+                'Invalid file formatting (%s) in %s',
+                $error['message'],
+                $conversationName
+            ));
+        }
+
+        $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
+        $newConversation->status = ConversationNode::SAVED;
+        $newConversation->version_number = 0;
+        $newConversation->graph_uid = null;
+        $newConversation->fill(['model' => $model]);
+        $newConversation->save();
+
+        if ($activate) {
+            is_null($io) ?: $io->info(sprintf('Activating conversation with name %s', $newConversation->name));
+            $newConversation->activateConversation();
+        }
+
+        return $newConversation;
     }
 }
