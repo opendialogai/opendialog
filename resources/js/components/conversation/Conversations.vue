@@ -21,6 +21,17 @@
         <div class="float-right">
           <b-btn variant="secondary" @click="viewArchive">View archive</b-btn>
           <b-btn variant="primary" @click="createConversation">Create</b-btn>
+
+          <input ref="file" type="file" hidden multiple @change="importConversations"/>
+          <input ref="file2" type="file" hidden multiple @change="importConversationsAndActivate"/>
+
+          <b-btn class="ml-3 mr-1" variant="info" @click="downloadConversations">Download</b-btn>
+          <b-btn v-if="!importingConversations" variant="info" @click="uploadConversations">Upload all</b-btn>
+          <b-btn v-if="!importingConversations" variant="info" @click="uploadConversationsAndActivate">Upload all and activate</b-btn>
+          <b-btn v-if="importingConversations" variant="primary">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+            Uploading ...
+          </b-btn>
         </div>
       </div>
     </div>
@@ -150,9 +161,9 @@
 </template>
 
 <script>
-    import Pager from '@/mixins/Pager';
+import Pager from '@/mixins/Pager';
 
-    export default {
+export default {
   name: 'conversations',
   mixins: [Pager],
   data() {
@@ -161,6 +172,7 @@
       successMessage: '',
       conversations: [],
       currentConversation: null,
+      importingConversations: false,
     };
   },
   watch: {
@@ -257,6 +269,66 @@
                 this.errorMessage = 'Sorry, I wasn\'t able to archive this conversation from DGraph.';
             }
         );
+    },
+    downloadConversations() {
+      axios.get('/admin/api/conversations/export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'conversations.zip');
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadConversations() {
+      this.$refs.file.click();
+    },
+    uploadConversationsAndActivate() {
+      this.$refs.file2.click();
+    },
+    importConversations(event, activate = false) {
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.importingConversations = true;
+
+      const formData = new FormData();
+      formData.append('activate', activate);
+
+      event.target.files.forEach((file, i) => {
+        formData.append('file' + (i + 1), file);
+      });
+
+      axios.post('/admin/api/conversations/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Conversations updated.';
+          this.fetchConversations();
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update this conversations.';
+        }
+
+        this.$refs.file.value = null;
+        this.$refs.file2.value = null;
+        this.importingConversations = false;
+      }).catch(e => {
+        if (e.response.data) {
+          this.errorMessage = e.response.data.message;
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to import this conversation.';
+        }
+
+        this.$refs.file.value = null;
+        this.$refs.file2.value = null;
+        this.importingConversations = false;
+      });
+    },
+    importConversationsAndActivate(event) {
+      this.importConversations(event, true);
     },
   },
 };

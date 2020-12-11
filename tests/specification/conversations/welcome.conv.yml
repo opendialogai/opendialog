@@ -1,0 +1,10 @@
+conversation:
+  id: welcome
+  scenes:
+    opening_scene:
+      intents:
+        - u:
+            i: intent.core.welcome
+        - b:
+            i: intent.opendialog.WelcomeResponse
+            completes: true

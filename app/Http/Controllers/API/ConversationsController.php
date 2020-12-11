@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\MessageTemplateCollection;
+use App\ImportExportHelpers\ConversationImportExportHelper;
+use Ds\Map;
+use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationEngine\Rules\ConversationYAML;
@@ -17,6 +22,7 @@ use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\Yaml\Yaml;
+use ZipStream\ZipStream;
 
 class ConversationsController extends Controller
 {
@@ -65,13 +71,14 @@ class ConversationsController extends Controller
     {
         $yaml = Yaml::parse($request->model)['conversation'];
 
+        /** @var Conversation $conversation */
         $conversation = Conversation::make([
             'name' => $yaml['id'],
             'model' => $request->model,
             'notes' => $request->notes,
         ]);
 
-        if ($error = $this->validateValue($conversation)) {
+        if ($error = $this->validateValue($conversation->model)) {
             return response($error, 400);
         }
 
@@ -138,10 +145,11 @@ class ConversationsController extends Controller
      */
     public function update(Request $request, $id): Response
     {
+        /** @var Conversation $conversation */
         if ($conversation = Conversation::find($id)) {
             $conversation->fill($request->all());
 
-            if ($error = $this->validateValue($conversation)) {
+            if ($error = $this->validateValue($conversation->model)) {
                 return response($error, 400);
             }
 
@@ -287,30 +295,149 @@ class ConversationsController extends Controller
         return response()->noContent(200);
     }
 
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function export(int $id)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        $fileName = $conversation->name . '.zip';
+
+        $zip = new ZipStream($fileName);
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, $conversation->model);
+        rewind($stream);
+        $zip->addFileFromStream(ConversationImportExportHelper::addConversationFileExtension($conversation->name), $stream);
+        fclose($stream);
+
+        $zip->finish();
+    }
 
     /**
-     * @param Conversation $conversation
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function import(Request $request, int $id)
+    {
+        /** @var Conversation $conversation */
+        $conversation = Conversation::find($id);
+
+        $file = $request->file('file');
+        $activate = $request->post('activate') == 'true';
+
+        if ($error = $this->validateValue($file->get())) {
+            $error['field'] = 'import';
+            $error['message'] = sprintf('Invalid file formatting (%s) in %s', $error['message'], $file->getClientOriginalName());
+            return response($error, 400);
+        }
+
+        $this->importConversationFile($conversation->name, $file, $activate);
+
+        return response()->noContent(200);
+    }
+
+    /**
+     * @return Response
+     */
+    public function exportAll()
+    {
+        $fileName = 'conversations.zip';
+
+        $zip = new ZipStream($fileName);
+
+        $conversations = Conversation::all();
+
+        $this->addConversationsToZip($conversations, $zip);
+
+        $zip->finish();
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function importAll(Request $request)
+    {
+        $activate = $request->post('activate') == 'true';
+
+        $errorMessage = null;
+        $conversationFiles = new Map();
+
+        $i = 1;
+
+        try {
+            while (true) {
+                if ($file = $request->file('file' . $i)) {
+                    $conversationFileName = $file->getClientOriginalName();
+
+                    if (!ConversationImportExportHelper::stringEndsWithFileExtension($conversationFileName)) {
+                        throw new Exception(sprintf(
+                            '%s is not a valid conversation file, message files must use \'%s\' extension.',
+                            $conversationFileName,
+                            ConversationImportExportHelper::CONVERSATION_FILE_EXTENSION
+                        ));
+                    }
+
+                    if ($error = $this->validateValue($file->get())) {
+                        throw new Exception(sprintf(
+                            'Invalid file formatting (%s) in %s',
+                            $error['message'],
+                            $file->getClientOriginalName()
+                        ));
+                    }
+
+                    $conversationFiles->put($conversationFileName, $file);
+                    $i++;
+                } else {
+                    break;
+                }
+            }
+        } catch (Exception $e) {
+            $errorMessage = $e->getMessage();
+        }
+
+        if (!is_null($errorMessage)) {
+            return response([
+                'field' => 'import',
+                'message' => $errorMessage
+            ], 400);
+        }
+
+        foreach ($conversationFiles as $fileName => $file) {
+            $conversationName = ConversationImportExportHelper::removeConversationFileExtension($fileName);
+            $this->importConversationFile($conversationName, $file, $activate);
+        }
+
+        return response()->noContent(200);
+    }
+
+    /**
+     * @param string $conversationModel
      * @return array
      */
-    private function validateValue(Conversation $conversation): ?array
+    public function validateValue(string $conversationModel): ?array
     {
         $rule = new ConversationYAML();
 
-        if (!$conversation->model) {
+        if (!$conversationModel) {
             return [
                 'field' => 'model',
-                'message' => 'Conversation model field is required.',
+                'message' => 'Conversation model is required.',
             ];
         }
 
-        if (!$rule->passes(null, $conversation->model)) {
+        if (!$rule->passes(null, $conversationModel)) {
             return [
                 'field' => 'model',
                 'message' => $rule->message() . '.',
             ];
         }
 
-        $yaml = Yaml::parse($conversation->model)['conversation'];
+        $yaml = Yaml::parse($conversationModel)['conversation'];
 
         if (strlen($yaml['id']) > 512) {
             return [
@@ -357,5 +484,38 @@ class ConversationsController extends Controller
         $conversation->model = $version->properties->first()["model"];
         $conversation->graph_uid = null;
         $conversation->save();
+    }
+
+    /**
+     * @param string $conversationName
+     * @param UploadedFile|null $file
+     * @param bool $activate
+     */
+    public function importConversationFile(string $conversationName, ?UploadedFile $file, bool $activate): void
+    {
+        ConversationImportExportHelper::importConversationFromString($conversationName, $file->get(), $activate);
+    }
+
+    /**
+     * @param Collection|Conversation[] $conversations
+     * @param ZipStream $zip
+     * @param bool $withDirectory
+     */
+    public function addConversationsToZip(Collection $conversations, ZipStream $zip, $withDirectory = false): void
+    {
+        foreach ($conversations as $conversation) {
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $conversation->model);
+            rewind($stream);
+
+            $conversationFileName = ConversationImportExportHelper::addConversationFileExtension($conversation->name);
+
+            if ($withDirectory) {
+                $conversationFileName = ConversationImportExportHelper::getConversationPath($conversationFileName);
+            }
+
+            $zip->addFileFromStream($conversationFileName, $stream);
+            fclose($stream);
+        }
     }
 }

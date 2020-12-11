@@ -1,0 +1,11 @@
+conversation:
+  id: no_match_conversation
+  scenes:
+    opening_scene:
+      intents:
+        - u:
+            i: intent.core.NoMatch
+            interpreter: interpreter.core.callbackInterpreter
+        - b:
+            i: intent.core.NoMatchResponse2
+            completes: true

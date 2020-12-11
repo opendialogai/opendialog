@@ -119,7 +119,7 @@ export default {
     fetchMessageTemplates() {
       this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates?page=' + this.currentPage).then(
+      axios.get('/admin/api/outgoing-intent/' + this.outgoingIntent + '/message-templates?page=' + this.currentPage).then(
         (response) => {
           this.totalPages = parseInt(response.data.meta.last_page);
           this.messageTemplates = response.data.data;
@@ -144,7 +144,7 @@ export default {
 
       this.messageTemplates = this.messageTemplates.filter(obj => obj.id !== this.currentMessageTemplate);
 
-      axios.delete('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates/' + this.currentMessageTemplate);
+      axios.delete('/admin/api/outgoing-intent/' + this.outgoingIntent + '/message-templates/' + this.currentMessageTemplate);
     },
   },
 };

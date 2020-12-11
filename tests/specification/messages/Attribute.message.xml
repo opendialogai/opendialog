@@ -1,0 +1,10 @@
+<message-template>
+    <intent>intent.core.NoMatchResponse</intent>
+    <name>Attribute</name>
+    <markup>
+        <message>
+            <text-message>Testing...</text-message>
+            {session.my_attribute}
+        </message>
+    </markup>
+</message-template>

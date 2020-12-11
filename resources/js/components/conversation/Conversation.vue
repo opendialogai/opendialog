@@ -35,6 +35,17 @@
             <b-btn v-if="conversation.status == 'deactivated'" variant="danger mr-4" @click="showArchiveConversationModal">Archive</b-btn>
             <b-btn variant="success" @click="activateConversation">Activate</b-btn>
           </template>
+
+          <input ref="file" type="file" hidden @change="importConversation"/>
+          <input ref="file2" type="file" hidden @change="importConversationAndActivate"/>
+
+          <b-btn class="ml-3 mr-1" variant="info" @click="downloadConversation">Download</b-btn>
+          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversation">Upload</b-btn>
+          <b-btn v-if="!importingConversation" variant="info" @click="uploadConversationAndActivate">Upload and activate</b-btn>
+          <b-btn v-if="importingConversation" variant="primary">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+            Uploading ...
+          </b-btn>
         </div>
       </div>
     </div>
@@ -249,7 +260,8 @@ export default {
       errorMessage: '',
       successMessage: '',
       currentHistoryModel: null,
-      currentHistoryId: null
+      currentHistoryId: null,
+      importingConversation: false,
     };
   },
   watch: {
@@ -400,6 +412,64 @@ export default {
       if (status == 'activated' || status == 'validated') return 'green-status';
       if (status == 'deactivated' || status == 'invalid') return 'red-status';
       if (status == 'archived') return 'gray-status';
+    },
+    downloadConversation() {
+      axios.get('/admin/api/conversation/' + this.conversation.id + '/export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${this.conversation.name}.zip`);
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadConversation() {
+      this.$refs.file.click();
+    },
+    uploadConversationAndActivate() {
+      this.$refs.file2.click();
+    },
+    importConversation(event, activate = false) {
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.importingConversation = true;
+
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('activate', activate);
+
+      axios.post('/admin/api/conversation/' + this.conversation.id + '/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Conversation updated.';
+          this.fetchConversation();
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to update this conversation.';
+        }
+
+        this.$refs.file.value = null;
+        this.$refs.file2.value = null;
+        this.importingConversation = false;
+      }).catch(e => {
+        if (e.response.data) {
+          this.errorMessage = e.response.data.message;
+        } else {
+          this.errorMessage = 'Sorry, I wasn\'t able to import this conversation.';
+        }
+
+        this.$refs.file.value = null;
+        this.$refs.file2.value = null;
+        this.importingConversation = false;
+      });
+    },
+    importConversationAndActivate(event) {
+      this.importConversation(event, true);
     },
   },
 };

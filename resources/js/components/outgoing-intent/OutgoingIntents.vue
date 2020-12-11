@@ -2,10 +2,33 @@
   <div>
     <h2 class="mb-3">Outgoing Intents</h2>
 
+    <div class="alert alert-danger" role="alert" v-if="error.message">
+      <span>{{ error.message }}</span>
+      <button type="button" class="close" @click="error.message = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
           <b-btn variant="primary" @click="createOutgoingIntent">Create</b-btn>
+
+          <input ref="file" type="file" hidden multiple @change="importOutgoingIntents"/>
+
+          <b-btn v-if="!importingOutgoingIntents" class="ml-3" variant="info" @click="downloadOutgoingIntents">Download</b-btn>
+          <b-btn v-if="!importingOutgoingIntents" :class="(error.field == 'import')" variant="info" @click="uploadOutgoingIntents">Upload</b-btn>
+          <b-btn v-if="importingOutgoingIntents" :class="(error.field == 'import')" variant="primary">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+            Uploading ...
+          </b-btn>
         </div>
       </div>
     </div>
@@ -91,8 +114,11 @@ export default {
   mixins: [Pager],
   data() {
     return {
+      error: {},
+      successMessage: '',
       outgoingIntents: [],
       currentOutgoingIntent: null,
+      importingOutgoingIntents: false,
     };
   },
   watch: {
@@ -107,7 +133,7 @@ export default {
     fetchOutgoingIntents() {
       this.currentPage = parseInt(this.$route.query.page || 1);
 
-      axios.get('/admin/api/outgoing-intents?page=' + this.currentPage).then(
+      axios.get('/admin/api/outgoing-intent?page=' + this.currentPage).then(
         (response) => {
           this.totalPages = parseInt(response.data.meta.last_page);
           this.outgoingIntents = response.data.data;
@@ -132,7 +158,59 @@ export default {
 
       this.outgoingIntents = this.outgoingIntents.filter(obj => obj.id !== this.currentOutgoingIntent);
 
-      axios.delete('/admin/api/outgoing-intents/' + this.currentOutgoingIntent);
+      axios.delete('/admin/api/outgoing-intent/' + this.currentOutgoingIntent);
+    },
+    downloadOutgoingIntents() {
+      axios.get('/admin/api/outgoing-intents/export', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'outgoing-intents.zip');
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadOutgoingIntents() {
+      this.$refs.file.value = '';
+      this.$refs.file.click();
+    },
+    importOutgoingIntents(event) {
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.importingOutgoingIntents = true;
+
+      const formData = new FormData();
+
+      event.target.files.forEach((file, i) => {
+        formData.append('file' + (i + 1), file);
+      });
+
+      axios.post('/admin/api/outgoing-intents/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.status == 200) {
+          this.successMessage = 'Outgoing Intents updated.';
+          this.error = {};
+          this.fetchOutgoingIntents();
+        }
+
+        this.importingOutgoingIntents = false;
+      }).catch(e => {
+        if (e.response.data) {
+          this.error = e.response.data;
+        } else {
+          this.error = {
+            field: 'import',
+            message: 'Sorry, I wasn\'t able to update outgoing intents.'
+          };
+        }
+
+        this.importingOutgoingIntents = false;
+      });
     },
   },
 };
