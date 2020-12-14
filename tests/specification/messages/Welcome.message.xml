@@ -1,0 +1,7 @@
+<message-template>
+    <intent>intent.opendialog.WelcomeResponse</intent>
+    <name>Welcome</name>
+    <markup>
+        <message><text-message>Hi! This is my default welcome message. It pops up whenever webchat opens up. You can edit it via the bot's admin page.</text-message></message>
+    </markup>
+</message-template>

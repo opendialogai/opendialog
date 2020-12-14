@@ -1,0 +1,14 @@
+<message-template>
+    <intent>intent.core.NoMatchResponse</intent>
+    <name>Did not understand</name>
+    <conditions>conditions:
+          - condition:
+            operation: test_operation
+            attributes:
+              attribute: session.test_attribute
+            parameters:
+              value: true</conditions>
+    <markup>
+        <message><text-message>This is the default No Match response. It means I didn't find any other conversation that could answer what you just said.</text-message></message>
+    </markup>
+</message-template>

@@ -23,8 +23,10 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
     Route::apiResource('chatbot-user', 'ChatbotUsersController', ['except' => ['store', 'update', 'destroy']]);
     Route::apiResource('user', 'UsersController');
 
-    Route::apiResource('outgoing-intents', 'OutgoingIntentsController');
-    Route::apiResource('outgoing-intents/{id}/message-templates', 'MessageTemplatesController');
+    Route::apiResource('outgoing-intent', 'OutgoingIntentsController');
+    Route::get('outgoing-intent/{id}/export', 'OutgoingIntentsController@export');
+    Route::post('outgoing-intent/{id}/import', 'OutgoingIntentsController@import');
+    Route::apiResource('outgoing-intent/{id}/message-templates', 'MessageTemplatesController');
 
     Route::apiResource('global-context', 'GlobalContextsController');
 
@@ -34,6 +36,9 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
         Route::get('/deactivate', 'ConversationsController@deactivate');
         Route::get('/archive', 'ConversationsController@archive');
         Route::get('/message-templates', 'ConversationsController@messageTemplates');
+
+        Route::get('/export', 'ConversationsController@export');
+        Route::post('/import', 'ConversationsController@import');
 
         Route::get('/restore/{versionId}', 'ConversationsController@restore');
         Route::get('/reactivate/{versionId}', 'ConversationsController@reactivate');
@@ -46,4 +51,13 @@ Route::namespace('API')->middleware(['auth:api'])->prefix('admin/api')->group(fu
 
     Route::get('warnings', 'WarningsController@index');
     Route::get('warnings/{id}', 'WarningsController@show');
+
+    Route::get('conversations/export', 'ConversationsController@exportAll');
+    Route::post('conversations/import', 'ConversationsController@importAll');
+
+    Route::get('outgoing-intents/export', 'OutgoingIntentsController@exportAll');
+    Route::post('outgoing-intents/import', 'OutgoingIntentsController@importAll');
+
+    Route::post('specification-import', 'SpecificationController@import');
+    Route::get('specification-export', 'SpecificationController@export');
 });

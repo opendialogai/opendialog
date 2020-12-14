@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        '/webchat-config'
+        '/webchat-config',
+        '/incoming/webchat',
     ];
 }

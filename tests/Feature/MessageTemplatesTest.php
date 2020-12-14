@@ -7,6 +7,11 @@ use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
+/**
+ * Class MessageTemplatesTest
+ * @package Tests\Feature
+ * @group SpecificationTests
+ */
 class MessageTemplatesTest extends TestCase
 {
     protected $user;
@@ -32,11 +37,11 @@ class MessageTemplatesTest extends TestCase
     {
         $messageTemplate = MessageTemplate::first();
 
-        $this->get('/admin/api/outgoing-intents/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id)
+        $this->get('/admin/api/outgoing-intent/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id)
             ->assertStatus(302);
 
         $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/outgoing-intents/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id)
+            ->json('GET', '/admin/api/outgoing-intent/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id)
             ->assertStatus(200)
             ->assertJsonFragment(
                 [
@@ -53,11 +58,11 @@ class MessageTemplatesTest extends TestCase
 
         $messageTemplates = MessageTemplate::where('outgoing_intent_id', $outgoingIntent->id)->get();
 
-        $this->get('/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates')
+        $this->get('/admin/api/outgoing-intent/' . $outgoingIntent->id . '/message-templates')
             ->assertStatus(302);
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates?page=1')
+            ->json('GET', '/admin/api/outgoing-intent/' . $outgoingIntent->id . '/message-templates?page=1')
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
@@ -71,7 +76,7 @@ class MessageTemplatesTest extends TestCase
         $this->assertEquals(count($response->data), 50);
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates?page=2')
+            ->json('GET', '/admin/api/outgoing-intent/' . $outgoingIntent->id . '/message-templates?page=2')
             ->assertStatus(200)
             ->getData();
 
@@ -83,7 +88,7 @@ class MessageTemplatesTest extends TestCase
         $messageTemplate = MessageTemplate::latest()->first();
 
         $this->actingAs($this->user, 'api')
-            ->json('PATCH', '/admin/api/outgoing-intents/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id, [
+            ->json('PATCH', '/admin/api/outgoing-intent/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id, [
                 'name' => 'updated name',
             ])
             ->assertStatus(200);
@@ -98,7 +103,7 @@ class MessageTemplatesTest extends TestCase
         $outgoingIntent = OutgoingIntent::first();
 
         $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates', [
+            ->json('POST', '/admin/api/outgoing-intent/' . $outgoingIntent->id . '/message-templates', [
                 'name' => 'test',
                 'conditions' => "conditions:\n- condition:\n    attribute: user.name\n    operation: eq\n    value: test",
                 'message_markup' => '<message><text-message>Test</text-message></message>',
@@ -119,7 +124,7 @@ class MessageTemplatesTest extends TestCase
         $messageTemplate = MessageTemplate::first();
 
         $this->actingAs($this->user, 'api')
-            ->json('DELETE', '/admin/api/outgoing-intents/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id)
+            ->json('DELETE', '/admin/api/outgoing-intent/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id)
             ->assertStatus(200);
 
         $this->assertEquals(MessageTemplate::find($messageTemplate->id), null);
@@ -131,7 +136,7 @@ class MessageTemplatesTest extends TestCase
         $messageTemplate = MessageTemplate::first();
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates', [
+            ->json('POST', '/admin/api/outgoing-intent/' . $outgoingIntent->id . '/message-templates', [
                 'name' => 'test',
                 'conditions' => "conditions:\n- condition:\n    attribute: user.name\n    operation: eq\n    value: test",
                 'message_markup' => '<message><text-message></text-message></message>',
@@ -142,7 +147,7 @@ class MessageTemplatesTest extends TestCase
         $this->assertEquals($response->content(), '{"field":"message_markup","message":"Text messages must have \"text\"."}');
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates', [
+            ->json('POST', '/admin/api/outgoing-intent/' . $outgoingIntent->id . '/message-templates', [
                 'name' => 'test 2',
                 'conditions' => "conditions:\n- condition:\n    attribute: user.name\n    value: test",
                 'message_markup' => '<message><text-message>Test</text-message></message>',
@@ -153,7 +158,7 @@ class MessageTemplatesTest extends TestCase
         $this->assertEquals($response->content(), '{"field":"conditions","message":"Invalid condition found."}');
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/outgoing-intents/' . $outgoingIntent->id . '/message-templates', [
+            ->json('POST', '/admin/api/outgoing-intent/' . $outgoingIntent->id . '/message-templates', [
                 'name' => $messageTemplate->name,
                 'conditions' => "conditions:\n- condition:\n    attribute: user.name\n    operation: eq\n    value: test",
                 'message_markup' => '<message><text-message>Test</text-message></message>',
@@ -169,7 +174,7 @@ class MessageTemplatesTest extends TestCase
         $messageTemplate = MessageTemplate::latest()->first();
 
         $response = $this->actingAs($this->user, 'api')
-            ->json('PATCH', '/admin/api/outgoing-intents/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id, [
+            ->json('PATCH', '/admin/api/outgoing-intent/' . $messageTemplate->outgoing_intent_id . '/message-templates/' . $messageTemplate->id, [
                 'message_markup' => '<message><text-message></text-message></message>',
             ])
             ->assertStatus(400);

@@ -55,6 +55,11 @@ return [
             'visibility' => 'public',
         ],
 
+        'specification' => [
+            'driver' => 'local',
+            'root' => resource_path('specification')
+        ],
+
         'logs' => [
             'driver' => 'local',
             'root' => storage_path('logs')

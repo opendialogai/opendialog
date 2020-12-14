@@ -5,10 +5,13 @@
     "license": "Apache-2.0",
     "require": {
         "php": "^7.3.0",
+        "ext-dom": "*",
+        "ext-simplexml": "*",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.2",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
+        "maennchen/zipstream-php": "^2.0",
         "opendialogai/core": "0.7.x-dev",
         "opendialogai/webchat": "0.7.x-dev",
         "phalcongelist/php-diff": "^2.0",

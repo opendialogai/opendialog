@@ -38,7 +38,7 @@ class ClearLogs extends Command
         }
 
         $confirmPreparationText = sprintf("Are you sure you want to prepare logs older than %d days for deletion?", $days);
-        if (!$this->option("yes") && !$this->confirm($confirmPreparationText)) {
+        if (!$this->option('yes') && !$this->confirm($confirmPreparationText)) {
             return;
         }
 
@@ -73,7 +73,7 @@ class ClearLogs extends Command
             return;
         }
 
-        if ($this->option("yes")) {
+        if ($this->option('yes')) {
             $shouldDelete = true;
         } else {
             $shouldDelete = $this->confirm(sprintf("Are you sure you want to delete %d log files?", count($filesForDeletion)));

@@ -137,7 +137,7 @@ export default {
         message_markup: this.message_markup,
       };
 
-      axios.post('/admin/api/outgoing-intents/' + this.outgoingIntent + '/message-templates', data).then(
+      axios.post('/admin/api/outgoing-intent/' + this.outgoingIntent + '/message-templates', data).then(
         (response) => {
           this.$router.push({ name: 'view-message-template', params: { outgoingIntent: this.outgoingIntent, id: response.data.data.id } });
         },

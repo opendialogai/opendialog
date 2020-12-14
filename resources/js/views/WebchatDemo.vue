@@ -106,14 +106,14 @@ export default {
             triggerConversation: {
               callback_id: callbackId,
             },
-          });
+          }, '*');
         } else {
           document.querySelector('#opendialog-chatwindow').contentWindow.postMessage({
             triggerConversation: {
               callback_id: callbackId,
               value: triggerValue,
             },
-          });
+          }, '*');
         }
       }
     },
