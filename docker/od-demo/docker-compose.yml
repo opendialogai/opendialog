@@ -10,6 +10,14 @@ services:
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
+      FORCE_HTTPS: 'false'
+      DB_CONNECTION: 'mysql'
+      DB_HOST: 'db'
+      DB_PORT: '3306'
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_NAME: ${APP_NAME}
     working_dir: /var/www
     networks:
       - app-network
@@ -36,7 +44,7 @@ services:
     networks:
       - app-network
   dgraph-zero:
-    image: dgraph/dgraph:v1.1.0
+    image: dgraph/dgraph:v1.2.5
     volumes:
       - type: volume
         source: dgraph
@@ -53,7 +61,7 @@ services:
     links:
       - dgraph-server
   dgraph-server:
-    image: dgraph/dgraph:v1.1.0
+    image: dgraph/dgraph:v1.2.5
     volumes:
       - type: volume
         source: dgraph
@@ -68,7 +76,7 @@ services:
     networks:
       - app-network
   dgraph-ratel:
-    image: dgraph/dgraph:v1.1.0
+    image: dgraph/dgraph:v1.2.5
     ports:
       - 9001:8000
     volumes:

@@ -6,8 +6,9 @@ php artisan migrate
 echo "Populating default webchat settings..."
 php artisan webchat:setup
 
-echo "Creating example conversations..."
-php artisan conversations:setup
+echo "Setting up schema and creating example conversations..."
+php artisan schema:init --y
+php artisan specification:import --y
 
 echo "Creating admin user"
 php artisan admin_user:create
