@@ -1,15 +1,21 @@
 
 [![CircleCI](https://circleci.com/gh/opendialogai/opendialog/tree/master.svg?style=svg&circle-token=aefbfc509382266413d6667a1aef451c7bf82f22)](https://circleci.com/gh/opendialogai/opendialog/tree/master)
 
-# OpenDialog - open-source conversational application management system 
+# OpenDialog - open-source conversational application platform
 
-OpenDialog enables you to quickly build conversational applications. 
-
-It provides a web widget that can be styled to specific needs and can be embedded on any website. 
+OpenDialog enables you to quickly design, develop and deploy conversational applications. 
 
 You write conversational applications using OpenDialog's flexible conversational language, and define the messages that your bot will send the user through OpenDialog's message markup language. 
 
-For all the details of how OpenDialog helps you build sophisticated chatbots visit our [documentation site](https://docs.opendialog.ai).
+The OpenDialog webchat widget allows you to interact with the application - it supports both an in-page popup experience as well as a full-page experience and mobile. 
+
+<img src="https://www.opendialog.ai/uploads/od_popup.png " height="400px" alt="OpenDialog Webchat Widget">
+
+<img src="https://www.opendialog.ai/uploads/od_full_page.png " height="400px" alt="OpenDialog Webchat Widget">
+
+<img src="https://www.opendialog.ai/uploads/od_mobile2.png " height="400px" alt="OpenDialog Webchat Widget">
+
+For all the details of how OpenDialog helps you build sophisticated conversation applications visit our [documentation site](https://docs.opendialog.ai).
 
 # Trying out OpenDialog
 
@@ -21,7 +27,7 @@ As long as you have Docker installed on your local machine you can do:
 - `docker-compose up -d app`
 - `docker-compose exec app bash docker/od-demo/update-docker.sh`
 
-You can then visit http://localhost and login to OpenDialog with admin@example.com / opendialog
+You can then visit http://localhost and login to OpenDialog with admin@example.com / opendialog - you can also view the full page webchat experience on http://localhost/web-chat
 
 # Learning about OpenDialog
 
