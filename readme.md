@@ -9,7 +9,7 @@ You write conversational applications using OpenDialog's flexible conversational
 
 The OpenDialog webchat widget allows you to interact with the application - it supports both an in-page popup experience as well as a full-page experience and mobile. 
 
-<img src="https://opendialog.ai/uploads/od_popup.png" height="300 style="float:left"" alt="OpenDialog Webchat Widget">
+<img src="https://opendialog.ai/uploads/od_popup.png" height="300 style="float:left" alt="OpenDialog Webchat Widget">
 
 <img src="https://opendialog.ai/uploads/od_full_page.png" height="300" style="float:left" alt="OpenDialog Webchat Widget">
 
