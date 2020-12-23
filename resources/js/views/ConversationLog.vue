@@ -37,7 +37,7 @@
               </template>
             </div>
           </template>
-          <template v-if="message.type == 'rich' || v-if="message.type == 'fp-rich'">
+          <template v-if="message.type == 'rich' || message.type == 'fp-rich'">
             <div class="rich-message">
               <div class="rich-message--title mb-1" v-if="message.data.title">{{ message.data.title }}</div>
               <div class="rich-message--subtitle mb-2" v-if="message.data.subtitle">{{ message.data.subtitle }}</div>
@@ -109,9 +109,9 @@
 </template>
 
 <script>
-    import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 
-    export default {
+export default {
   name: 'conversation-log',
   props: ['id'],
   components: {
