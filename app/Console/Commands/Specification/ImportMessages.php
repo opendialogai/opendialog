@@ -11,7 +11,7 @@ class ImportMessages extends Command
 {
     protected $signature = 'messages:import {message?} {--y|yes}';
 
-    protected $description = 'Sets up all messages';
+    protected $description = 'Imports all messages.';
 
     public function handle()
     {

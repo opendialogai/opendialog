@@ -11,7 +11,7 @@ class ImportIntents extends Command
 {
     protected $signature = 'intents:import {outgoingIntent?} {--y|yes}';
 
-    protected $description = 'Sets up all intents';
+    protected $description = 'Imports all intents.';
 
     public function handle()
     {

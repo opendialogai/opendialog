@@ -11,7 +11,7 @@ class ExportIntents extends Command
 {
     protected $signature = 'intents:export {outgoingIntent?} {--y|yes}';
 
-    protected $description = 'Export all outgoing intents';
+    protected $description = 'Export all outgoing intents.';
 
     public function handle()
     {

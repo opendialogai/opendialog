@@ -8,15 +8,15 @@ use OpenDialogAi\ConversationBuilder\Conversation;
 
 class ExportConversations extends Command
 {
-    protected $signature = 'conversations:export {conversation?} {--y|yes} {--active|active}';
+    protected $signature = 'conversations:export {conversation?} {--y|yes} {--a|active}';
 
-    protected $description = 'Export all conversations';
+    protected $description = 'Exports all conversations.';
 
     public function handle()
     {
         $conversationName = $this->argument('conversation');
 
-        if ($this->option('yes')) {
+        if ($this->option('yes') || $this->option('y')) {
             $continue = true;
         } elseif ($conversationName) {
             $continue = $this->confirm(

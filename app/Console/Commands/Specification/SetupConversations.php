@@ -13,7 +13,7 @@ class SetupConversations extends Command
 {
     protected $signature = 'conversations:setup';
 
-    protected $description = 'Sets up some example conversations for the opendialog project';
+    protected $description = 'Sets up some example conversations for the OpenDialog project';
 
     public function handle()
     {
