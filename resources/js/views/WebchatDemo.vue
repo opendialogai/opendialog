@@ -125,7 +125,7 @@ export default {
         customUserSettings: {
           [attributeName]: attributeValue,
         },
-      });
+      }, '*');
     },
     updateWebchatSettings() {
       const userEmail = this.userEmail;
