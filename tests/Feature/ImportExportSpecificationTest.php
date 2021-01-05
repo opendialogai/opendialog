@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Console\Commands\Specification\BaseSpecificationCommand;
 use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
