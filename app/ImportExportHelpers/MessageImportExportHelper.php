@@ -134,4 +134,18 @@ class MessageImportExportHelper extends BaseImportExportHelper
 
         return $messageFileGenerator;
     }
+
+    /**
+     * @param Command|null $io
+     */
+    public static function deleteExistingMessages(Command $io = null): void
+    {
+        $messageTemplates = MessageTemplate::all();
+
+        foreach ($messageTemplates as $messageTemplate) {
+            $messageTemplate->delete();
+
+            is_null($io) ?: $io->info(sprintf('Deleted outgoing intent %s', $messageTemplate->name));
+        }
+    }
 }

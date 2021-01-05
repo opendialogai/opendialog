@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands\Specification;
 
+use App\ImportExportHelpers\ConversationImportExportHelper;
+use App\ImportExportHelpers\IntentImportExportHelper;
+use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Console\Command;
-use OpenDialogAi\ConversationBuilder\Conversation;
-use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ImportSpecification extends Command
 {
@@ -22,27 +22,9 @@ class ImportSpecification extends Command
         }
 
         if ($continue) {
-            $outgoingIntents = OutgoingIntent::all();
-            $conversations = Conversation::all();
-
-            foreach ($outgoingIntents as $outgoingIntent) {
-                $outgoingIntent->delete();
-
-                $this->info(sprintf('Deleted outgoing intent %s', $outgoingIntent->name));
-            }
-
-            foreach ($conversations as $conversation) {
-                if ($conversation->status == ConversationNode::ACTIVATED) {
-                    $conversation->deactivateConversation();
-                    $conversation->archiveConversation();
-                } elseif ($conversation->status == ConversationNode::DEACTIVATED) {
-                    $conversation->archiveConversation();
-                }
-
-                $conversation->delete();
-
-                $this->info(sprintf('Deleted conversation %s', $conversation->name));
-            }
+            MessageImportExportHelper::deleteExistingMessages($this);
+            IntentImportExportHelper::deleteExistingIntents($this);
+            ConversationImportExportHelper::deleteExistingConversations($this);
 
             $this->call(
                 'conversations:import',

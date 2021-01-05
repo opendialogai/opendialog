@@ -5,6 +5,7 @@ namespace App\ImportExportHelpers;
 
 use App\ImportExportHelpers\Generator\IntentFileGenerator;
 use App\ImportExportHelpers\Generator\InvalidFileFormatException;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
@@ -115,5 +116,19 @@ class IntentImportExportHelper extends BaseImportExportHelper
         $newIntent->save();
 
         return $fileGenerator;
+    }
+
+    /**
+     * @param Command|null $io
+     */
+    public static function deleteExistingIntents(Command $io = null): void
+    {
+        $outgoingIntents = OutgoingIntent::all();
+
+        foreach ($outgoingIntents as $outgoingIntent) {
+            $outgoingIntent->delete();
+
+            is_null($io) ?: $io->info(sprintf('Deleted outgoing intent %s', $outgoingIntent->name));
+        }
     }
 }

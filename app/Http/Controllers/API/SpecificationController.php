@@ -86,6 +86,10 @@ class SpecificationController extends Controller
             ], 400);
         }
 
+        MessageImportExportHelper::deleteExistingMessages();
+        IntentImportExportHelper::deleteExistingIntents();
+        ConversationImportExportHelper::deleteExistingConversations();
+
         foreach ($messageFiles as $fileName => $file) {
             resolve(OutgoingIntentsController::class)->importMessageFile($fileName, $file);
         }
