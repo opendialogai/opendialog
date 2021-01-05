@@ -3,9 +3,9 @@
     <AppHeader fixed>
       <SidebarToggler class="d-lg-none" display="md" mobile />
       <b-link class="navbar-brand" to="/admin">
-        <img class="navbar-brand-full" src="/images/logo.svg" width="89" height="25" alt="Opendialog Logo">
-        <span class="navbar-brand-full">Opendialog</span>
-        <img class="navbar-brand-minimized" src="/images/logo.svg" width="30" height="30" alt="Opendialog Logo">
+        <img class="navbar-brand-full" src="/images/logo.svg" width="89" height="25" alt="OpenDialog Logo">
+        <span class="navbar-brand-full">OpenDialog</span>
+        <img class="navbar-brand-minimized" src="/images/logo.svg" width="30" height="30" alt="OpenDialog Logo">
       </b-link>
       <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
       <b-navbar-nav class="d-md-down-none">

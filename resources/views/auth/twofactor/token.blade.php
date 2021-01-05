@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Two-factor Authentication') }}</div>
                 <div class="card-body">
 
-                    <p>Please enter your Opendialog Security Code</p>
+                    <p>Please enter your OpenDialog Security Code</p>
                     <form method="POST" action="{{url('auth/token')}}">
                         {!! csrf_field() !!}
 

@@ -11,7 +11,7 @@ class ExportMessages extends Command
 {
     protected $signature = 'messages:export {message?} {--y|yes}';
 
-    protected $description = 'Export all message templates';
+    protected $description = 'Exports all message templates.';
 
     public function handle()
     {

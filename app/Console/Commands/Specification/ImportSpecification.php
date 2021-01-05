@@ -9,9 +9,9 @@ use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ImportSpecification extends Command
 {
-    protected $signature = 'specification:import {--y|yes}';
+    protected $signature = 'specification:import {--y|yes} {--a|activate}';
 
-    protected $description = '';
+    protected $description = 'Imports an entire application specification, conversations, intents and messages.';
 
     public function handle()
     {
@@ -47,7 +47,8 @@ class ImportSpecification extends Command
             $this->call(
                 'conversations:import',
                 [
-                    '--yes' => true
+                    '--yes' => true,
+                    '--activate' => ($this->option('activate')) ? true : false,
                 ]
             );
 

@@ -9,9 +9,9 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ImportConversations extends Command
 {
-    protected $signature = 'conversations:import {conversation?} {--y|yes} {--activate|activate}';
+    protected $signature = 'conversations:import {conversation?} {--y|yes} {--a|activate}';
 
-    protected $description = 'Import all conversations';
+    protected $description = 'Imports all conversations.';
 
     public function handle()
     {

@@ -11,7 +11,7 @@ class ExportSpecification extends Command
 {
     protected $signature = 'specification:export {--y|yes}';
 
-    protected $description = '';
+    protected $description = 'Exports the entire specification, conversations, messages and intents.';
 
     public function handle()
     {
