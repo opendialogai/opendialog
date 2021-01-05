@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\ImportExportHelpers\MessageImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
+use OpenDialogAi\ConversationEngine\ConversationStore\DGraphConversationQueryFactory;
+use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 
 /**
@@ -19,16 +21,30 @@ class ImportExportSpecificationTest extends BaseSpecificationTest
         $this->assertDatabaseMissing('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
         $this->assertDatabaseMissing('message_templates', ['name' => 'Did not understand']);
 
+        $this->assertEmpty(
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getConversationTemplateIds())
+                ->getData()
+        );
+
         Artisan::call(
             'specification:import',
             [
-                '--yes' => true
+                '--yes' => true,
+                '--activate' => true,
             ]
         );
 
         $this->assertDatabaseHas('conversations', ['name' => 'no_match_conversation']);
         $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
         $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
+
+        $this->assertCount(
+            2,
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getConversationTemplateIds())
+                ->getData()
+        );
     }
 
     public function testExportSpecification()
