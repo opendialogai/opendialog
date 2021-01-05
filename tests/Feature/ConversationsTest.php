@@ -2,9 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\ImportExportHelpers\ConversationImportExportHelper;
 use App\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\ConversationEngine\ConversationStore\DGraphConversationQueryFactory;
+use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
@@ -89,9 +93,9 @@ class ConversationsTest extends TestCase
   scenes:
     opening_scene:
       intents:
-        - u: 
+        - u:
             i: intent.core.hello_bot
-        - b: 
+        - b:
             i: intent.core.hello_human
             completes: true',
             ])
@@ -112,9 +116,9 @@ class ConversationsTest extends TestCase
   scenes:
     opening_scene:
       intents:
-        - u: 
+        - u:
             i: intent.core.hello_bot
-        - b: 
+        - b:
             i: intent.core.hello_human
             completes: true',
             ])
@@ -127,9 +131,9 @@ class ConversationsTest extends TestCase
   scenes:
     opening_scene:
       intents:
-        - u: 
+        - u:
             i: intent.core.hello_bot
-        - b: 
+        - b:
             i: intent.core.hello_human
             completes: true',
                 ]
@@ -261,14 +265,64 @@ class ConversationsTest extends TestCase
   scenes:
     opening_scene:
       intents:
-        - u: 
+        - u:
             i: intent.core.hello_bot
-        - b: 
+        - b:
             i: intent.core.hello_human
             completes: true',
             ])
             ->assertStatus(400);
 
         $this->assertEquals($response->content(), '{"field":"name","message":"The maximum length for conversation id is 512."}');
+    }
+
+    public function testConversationImportEndpoint()
+    {
+        $this->assertDatabaseMissing('conversations', ['name' => 'no_match_conversation']);
+
+        $this->assertEmpty(
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
+                ->getData()
+        );
+
+        $conversationFileName = ConversationImportExportHelper::addConversationFileExtension('no_match_conversation');
+        $conversationFile = UploadedFile::fake()->createWithContent(
+            $conversationFileName,
+            ConversationImportExportHelper::getConversationFileData(
+                ConversationImportExportHelper::getConversationPath($conversationFileName)
+            )
+        );
+
+        $this->actingAs($this->user, 'api')
+            ->post('/admin/api/conversations/import', [
+                'activate' => true,
+                'file1' => $conversationFile,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('conversations', ['name' => 'no_match_conversation']);
+
+        $this->assertCount(
+            1,
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
+                ->getData()
+        );
+
+        // Ensure re-importing works as expected (eg. that existing conversation activation is handled correctly)
+        $this->actingAs($this->user, 'api')
+            ->post('/admin/api/conversations/import', [
+                'activate' => true,
+                'file1' => $conversationFile,
+            ])
+            ->assertStatus(200);
+
+        $this->assertCount(
+            1,
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
+                ->getData()
+        );
     }
 }
