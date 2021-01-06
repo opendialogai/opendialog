@@ -134,15 +134,14 @@ export default {
       const userLastName = this.userLastName;
 
       document.querySelector('#opendialog-chatwindow').contentWindow.postMessage({
-        openDialogSettings: {
-          user: {
+        customUserSettings: {
             first_name: userFirstName,
             last_name: userLastName,
             email: userEmail,
             external_id: userExternalId,
           },
-        },
-      });
+      },
+      '*');
     },
   },
   beforeDestroy() {
