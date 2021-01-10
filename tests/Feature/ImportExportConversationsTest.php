@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\ImportExportHelpers\ConversationImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ConversationBuilder\Conversation;
+use OpenDialogAi\ConversationEngine\ConversationStore\DGraphConversationQueryFactory;
+use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
 
 /**
  * Class ImportExportConversationsTest
@@ -17,14 +19,28 @@ class ImportExportConversationsTest extends BaseSpecificationTest
     {
         $this->assertDatabaseMissing('conversations', ['name' => 'no_match_conversation']);
 
+        $this->assertEmpty(
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getConversationTemplateIds())
+                ->getData()
+        );
+
         Artisan::call(
             'conversations:import',
             [
-                '--yes' => true
+                '--yes' => true,
+                '--activate' => true,
             ]
         );
 
         $this->assertDatabaseHas('conversations', ['name' => 'no_match_conversation']);
+
+        $this->assertCount(
+            2,
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getConversationTemplateIds())
+                ->getData()
+        );
     }
 
     public function testExportConversations()

@@ -131,8 +131,6 @@ class ConversationImportExportHelper extends BaseImportExportHelper
 
         $newConversation = Conversation::firstOrNew(['name' => $conversationName]);
         $newConversation->status = ConversationNode::SAVED;
-        $newConversation->version_number = 0;
-        $newConversation->graph_uid = null;
         $newConversation->fill(['model' => $model]);
         $newConversation->save();
 
@@ -142,5 +140,34 @@ class ConversationImportExportHelper extends BaseImportExportHelper
         }
 
         return $newConversation;
+    }
+
+    /**
+     * @param Command|null $io
+     */
+    public static function deleteExistingConversations(Command $io = null): void
+    {
+        $conversations = Conversation::all();
+
+        foreach ($conversations as $conversation) {
+            self::deleteExistingConversation($conversation);
+
+            is_null($io) ?: $io->info(sprintf('Deleted conversation %s', $conversation->name));
+        }
+    }
+
+    /**
+     * @param Conversation $conversation
+     */
+    public static function deleteExistingConversation(Conversation $conversation): void
+    {
+        if ($conversation->status == ConversationNode::ACTIVATED) {
+            $conversation->deactivateConversation();
+            $conversation->archiveConversation();
+        } elseif ($conversation->status == ConversationNode::DEACTIVATED) {
+            $conversation->archiveConversation();
+        }
+
+        $conversation->delete();
     }
 }
