@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c1c34ce41d56e7ee21bb41b7709896a",
+    "content-hash": "d7bce68445800f4354f57652f66700b1",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2090,16 +2090,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "0.7.x-dev",
+            "version": "dev-feature/default-string-attribute",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "fc47c5fea961574818f4a6a0bd7e64df66c83545"
+                "reference": "b0964a29b33cc19609b28b4c665719f8572d222b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/fc47c5fea961574818f4a6a0bd7e64df66c83545",
-                "reference": "fc47c5fea961574818f4a6a0bd7e64df66c83545",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/b0964a29b33cc19609b28b4c665719f8572d222b",
+                "reference": "b0964a29b33cc19609b28b4c665719f8572d222b",
                 "shasum": ""
             },
             "require": {
@@ -2129,6 +2129,7 @@
                 "laravel": {
                     "providers": [
                         "OpenDialogAi\\Core\\CoreServiceProvider",
+                        "OpenDialogAi\\Core\\Graph\\GraphServiceProvider",
                         "OpenDialogAi\\ConversationBuilder\\ConversationBuilderServiceProvider",
                         "OpenDialogAi\\ConversationEngine\\ConversationEngineServiceProvider",
                         "OpenDialogAi\\ConversationLog\\ConversationLogServiceProvider",
@@ -2168,7 +2169,11 @@
                 "Apache-2.0"
             ],
             "description": "The OpenDialog Core package",
-            "time": "2020-11-18T15:15:34+00:00"
+            "support": {
+                "issues": "https://github.com/opendialogai/core/issues",
+                "source": "https://github.com/opendialogai/core/tree/feature/default-string-attribute"
+            },
+            "time": "2021-01-04T18:05:23+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -8528,8 +8533,10 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3.0"
+        "php": "^7.3.0",
+        "ext-dom": "*",
+        "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
