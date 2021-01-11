@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e301cfa42df8af64a732358fcaf0dae2",
+    "content-hash": "0838db3f5134359965451ca7141f71a1",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2224,7 +2224,7 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "0.7.x-dev",
+            "version": "0.7.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
@@ -2258,7 +2258,6 @@
                 "phpunit/phpunit": "8.3.5",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2348,7 +2347,7 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "0.7.x-dev",
+            "version": "0.7.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
@@ -2370,7 +2369,6 @@
                 "phpunit/phpunit": "^8.3",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -9227,10 +9225,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "opendialogai/core": 20,
-        "opendialogai/webchat": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
