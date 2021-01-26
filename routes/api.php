@@ -50,6 +50,9 @@ Route::namespace('API')
 
         Route::apiResource('global-context', 'GlobalContextsController');
 
+        
+        Route::get('dynamic-attributes/download', 'DynamicAttributesController@download');
+        Route::post('dynamic-attributes/upload', 'DynamicAttributesController@upload');
         Route::apiResource('dynamic-attribute', 'DynamicAttributesController');
 
         Route::get(
