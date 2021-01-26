@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import Warning from '@/components/warning/Warning';
-import Warnings from '@/components/warning/Warnings';
+import { Warning, Warnings } from '@opendialogai/opendialog-design-system-pkg';
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 
 export default {
