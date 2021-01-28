@@ -21,13 +21,11 @@ import AddGlobalContext from '@/components/global-context/AddGlobalContext';
 import GlobalContext from '@/components/global-context/GlobalContext';
 import GlobalContexts from '@/components/global-context/GlobalContexts';
 import EditGlobalContext from '@/components/global-context/EditGlobalContext';
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 
 export default {
   name: 'global-context',
   props: ['id'],
   components: {
-    Breadcrumbs,
     AddGlobalContext,
     GlobalContext,
     GlobalContexts,

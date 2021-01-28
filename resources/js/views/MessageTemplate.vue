@@ -21,7 +21,6 @@ import AddMessageTemplate from '@/components/message-template/AddMessageTemplate
 import MessageTemplate from '@/components/message-template/MessageTemplate';
 import MessageTemplates from '@/components/message-template/MessageTemplates';
 import EditMessageTemplate from '@/components/message-template/EditMessageTemplate';
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 
 export default {
   name: 'message-template',
@@ -31,7 +30,6 @@ export default {
     MessageTemplate,
     MessageTemplates,
     EditMessageTemplate,
-    Breadcrumbs
   },
   computed: {
     currentRouteName() {

@@ -13,13 +13,11 @@
 <script>
 import Request from '@/components/request/Request';
 import Requests from '@/components/request/Requests';
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 
 export default {
   name: 'request',
   props: ['id'],
   components: {
-    Breadcrumbs,
     Request,
     Requests,
   },

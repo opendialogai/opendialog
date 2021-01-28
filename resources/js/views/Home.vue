@@ -48,7 +48,7 @@
             <line-chart-card :name="card.name" :start-date="startDate" :end-date="endDate" :endpoint="card.endpoint" :width="card.width"></line-chart-card>
           </template>
           <template v-else-if="card.type == 'single-number'">
-            <single-number-card :name="card.name" :start-date="startDate" :end-date="endDate" :endpoint="card.endpoint" :width="card.width"></single-number-card>
+            <SingleNumberCard :name="card.name" :start-date="startDate" :end-date="endDate" :endpoint="card.endpoint" :width="card.width"></SingleNumberCard>
           </template>
         </template>
       </b-row>
@@ -61,7 +61,6 @@ import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 
 import LineChartCard from '@/components/dashboard/LineChartCard';
-import SingleNumberCard from '@/components/dashboard/SingleNumberCard';
 
 const moment = require('moment');
 
@@ -70,7 +69,6 @@ export default {
   components: {
     DateRangePicker,
     LineChartCard,
-    SingleNumberCard,
   },
   filters: {
     date: (value) => {

@@ -109,14 +109,9 @@
 </template>
 
 <script>
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
-
 export default {
   name: 'conversation-log',
   props: ['id'],
-  components: {
-      Breadcrumbs
-  },
   data() {
     return {
       messages: [],

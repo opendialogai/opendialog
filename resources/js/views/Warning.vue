@@ -11,14 +11,9 @@
 </template>
 
 <script>
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
-
 export default {
   name: 'warnings',
   props: ['id'],
-  components: {
-    Breadcrumbs
-  },
   computed: {
     currentRouteName() {
       return this.$route.name;
