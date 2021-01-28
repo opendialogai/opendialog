@@ -76,37 +76,11 @@ import xmldoc from 'xmldoc';
 
 import Slider from 'vue-plain-slider';
 
-import AutocompleteMessage from './Messages/AutocompleteMessage';
-import ButtonMessage from './Messages/ButtonMessage';
-import CtaMessage from './Messages/CtaMessage';
-import EmptyMessage from './Messages/EmptyMessage';
-import FormMessage from './Messages/FormMessage';
-import HandToSystemMessage from './Messages/HandToSystemMessage';
-import ImageMessage from './Messages/ImageMessage';
-import LongTextMessage from './Messages/LongTextMessage';
-import MetaMessage from './Messages/MetaMessage';
-import RichMessage from './Messages/RichMessage';
-import TextMessage from './Messages/TextMessage';
 import MessageTypes from "@/mixins/MessageTypes";
-import Error from "./Messages/Error";
-import AttributeMessage from "./Messages/AttributeMessage";
 
 export default {
   name: 'message-builder',
   components: {
-    AttributeMessage,
-    AutocompleteMessage,
-    Error,
-    ButtonMessage,
-    CtaMessage,
-    EmptyMessage,
-    FormMessage,
-    HandToSystemMessage,
-    ImageMessage,
-    LongTextMessage,
-    MetaMessage,
-    RichMessage,
-    TextMessage,
     Slider,
   },
   props: ['message'],
