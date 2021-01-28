@@ -10,13 +10,15 @@ import 'core-js/features/array';
 
 import router from '@/router/index';
 
+import OpenDialogAdmin from '@opendialogai/opendialog-design-system-pkg/src/main'
+
 import App from '@/views/App';
 import BootstrapVue from 'bootstrap-vue';
 import VueCookies from 'vue-cookies';
 
 require('@/bootstrap');
 window.Vue = require('vue');
-
+window.Vue.use(OpenDialogAdmin);
 window.Vue.use(BootstrapVue);
 window.Vue.use(VueCookies);
 

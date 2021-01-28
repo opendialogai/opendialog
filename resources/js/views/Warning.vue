@@ -1,7 +1,7 @@
 <template>
     <div>
         <Breadcrumbs />
-        <template v-if="currentRouteName == 'view-warning'">
+        <template v-if="currentRouteName === 'view-warning'">
       <Warning :id="id" />
     </template>
     <template v-else>
@@ -11,16 +11,13 @@
 </template>
 
 <script>
-import { Warning, Warnings } from '@opendialogai/opendialog-design-system-pkg';
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 
 export default {
-  name: 'chatbot-users',
+  name: 'warnings',
   props: ['id'],
   components: {
-    Breadcrumbs,
-    Warning,
-    Warnings,
+    Breadcrumbs
   },
   computed: {
     currentRouteName() {
