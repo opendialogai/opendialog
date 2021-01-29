@@ -2,12 +2,9 @@
 
 namespace App\Bot\Contexts;
 
-use Illuminate\Support\Facades\Log;
+use OpenDialogAi\AttributeEngine\Attributes\AttributeInterface;
+use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
 use OpenDialogAi\ContextEngine\Contexts\Custom\AbstractCustomContext;
-use OpenDialogAi\ContextEngine\Exceptions\AttributeIsNotSupported;
-use OpenDialogAi\ContextEngine\Facades\AttributeResolver;
-use OpenDialogAi\Core\Attribute\AttributeInterface;
-use OpenDialogAi\Core\Attribute\StringAttribute;
 
 /**
  * Generic context
@@ -35,19 +32,6 @@ class GlobalContext extends AbstractCustomContext
      */
     private function createAttribute(\App\GlobalContext $context)
     {
-        try {
-            $attribute = AttributeResolver::getAttributeFor($context->name, $context->value);
-        } catch (AttributeIsNotSupported $e) {
-            Log::warning(
-                sprintf(
-                'Trying to create attribute %s from the global context, but it has not been bound to a type. Using a string',
-                    $context->name
-                )
-            );
-
-            $attribute = new StringAttribute($context->name, $context->value);
-        }
-
-        return $attribute;
+        return AttributeResolver::getAttributeFor($context->name, $context->value);
     }
 }

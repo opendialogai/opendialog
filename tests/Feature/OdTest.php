@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use OpenDialogAi\ActionEngine\Service\ActionEngineInterface;
-use OpenDialogAi\ContextEngine\AttributeResolver\AttributeResolver;
+use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
 use OpenDialogAi\ContextEngine\ContextManager\ContextService;
 use OpenDialogAi\ContextEngine\Contexts\User\UserService;
 use OpenDialogAi\ConversationEngine\ConversationStore\ConversationStoreInterface;
@@ -84,7 +84,7 @@ class OdTest extends TestCase
 
         $contextService = app('OpenDialogAi\ContextEngine\ContextManager\ContextService');
         $this->assertInstanceOf(ContextService::class, $contextService);
-        $attributeResolver = app('OpenDialogAi\ContextEngine\AttributeResolver\AttributeResolver');
+        $attributeResolver = app('OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver');
         $this->assertInstanceOf(AttributeResolver::class, $attributeResolver);
         $userService = app('OpenDialogAi\ContextEngine\Contexts\User\UserService');
         $this->assertInstanceOf(UserService::class, $userService);
