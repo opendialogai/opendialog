@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0cf75502f041d25280448291b14326c7",
+    "content-hash": "8eaeb7a8fcf6aa6712d211090a7f9196",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2160,16 +2160,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/attribute-engine",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "cf051ba8f182d73a3ff0009b741c3e1473212206"
+                "reference": "93638a4020aa8e261f555be12a2cf696db21d033"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/cf051ba8f182d73a3ff0009b741c3e1473212206",
-                "reference": "cf051ba8f182d73a3ff0009b741c3e1473212206",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/93638a4020aa8e261f555be12a2cf696db21d033",
+                "reference": "93638a4020aa8e261f555be12a2cf696db21d033",
                 "shasum": ""
             },
             "require": {
@@ -2241,7 +2241,7 @@
                 "Apache-2.0"
             ],
             "description": "The OpenDialog Core package",
-            "time": "2021-01-26T16:44:51+00:00"
+            "time": "2021-01-29T11:58:47+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -8963,12 +8963,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
