@@ -65,6 +65,13 @@ class DynamicAttributesController extends Controller
      */
     public static function validateImport(array $data): ?array
     {
+        if (empty($data)) {
+            return [
+                'message' => 'The provided JSON contains no properties. You must provide JSON object of the form:
+ { <attribute_id>: attribute.<component>.<attribute_type>, ... }'
+            ];
+        }
+
         foreach ($data as $attribute_id => $attribute_type) {
             if (!is_string($attribute_id) || !is_string($attribute_type)) {
                 return [
