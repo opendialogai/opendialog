@@ -57,7 +57,7 @@ class DynamicAttributesController extends Controller
     }
 
     /**
-     * Validate uploaded DynamicAttributes
+     * Validate uploaded/imported DynamicAttributes
      *
      * @param array $data
      *
@@ -65,43 +65,45 @@ class DynamicAttributesController extends Controller
      */
     public static function validateImport(array $data): ?array
     {
-        if (empty($data)) {
-            return [
-                'message' => 'No data in upload. Upload be a JSON object in of the form:
- { <attribute_id>: attribute.<component>.<attribute_type> }',
-            ];
+        foreach ($data as $attribute_id => $attribute_type) {
+            if (!is_string($attribute_id) || !is_string($attribute_type)) {
+                return [
+                    'message' => 'Must be a JSON object of the form:
+ { <attribute_id>: attribute.<component>.<attribute_type>, ... }',
+                ];
+            }
         }
 
         $invalidIds = array_filter(
             array_keys($data),
-            fn($id) => !DynamicAttribute::isValidId($id)
+            fn($attribute_id) => !DynamicAttribute::isValidId($attribute_id)
         );
         if (!empty($invalidIds)) {
             return [
                 'ids' => $invalidIds,
-                'message' => 'Invalid attribute ids in upload. All attribute Ids must be in snake_case',
+                'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
             ];
         }
 
         $invalidTypes = array_filter(
             array_values($data),
-            fn($type) => !DynamicAttribute::isValidType($type)
+            fn($attribute_type) => !DynamicAttribute::isValidType($attribute_type)
         );
         if (!empty($invalidTypes)) {
             return [
                 'types' => $invalidTypes,
-                'message' => 'Invalid attribute types in upload. All attribute types must be in the following format:
+                'message' => 'Invalid attribute types. All attribute types must be in the following format:
  attribute.<component>.<type>',
             ];
         }
 
-        $ids = array_keys($data);
-        $existing = DynamicAttribute::whereIn('attribute_id', $ids);
+        $attribute_ids = array_keys($data);
+        $existing = DynamicAttribute::whereIn('attribute_id', $attribute_ids);
         /* Todo: Check for existing attributes in config */
         if ($existing->count() > 0) {
             return [
-                'ids' => $existing->get()->map(fn($item) => $item->id),
-                'message' => 'Some ids in upload are already in use.',
+                'ids' => $existing->get()->map(fn($item) => $item->attribute_id),
+                'message' => 'Some ids are already in use.',
             ];
         }
 
