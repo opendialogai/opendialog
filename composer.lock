@@ -2228,12 +2228,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "b5db1e7e9591ed82ccde7e354cb7890b96de1bd5"
+                "reference": "4b09c222ad8dd8862a44e943cf3671612438b971"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/b5db1e7e9591ed82ccde7e354cb7890b96de1bd5",
-                "reference": "b5db1e7e9591ed82ccde7e354cb7890b96de1bd5",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/4b09c222ad8dd8862a44e943cf3671612438b971",
+                "reference": "4b09c222ad8dd8862a44e943cf3671612438b971",
                 "shasum": ""
             },
             "require": {
@@ -2307,7 +2307,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-330--dynamic-attributes-crud"
             },
-            "time": "2021-01-25T16:00:51+00:00"
+            "time": "2021-01-28T16:22:05+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
