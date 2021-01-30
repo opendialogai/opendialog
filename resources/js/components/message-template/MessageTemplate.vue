@@ -60,13 +60,10 @@
 import Prism from 'vue-prismjs';
 import 'prismjs/themes/prism.css';
 
-import MessageBuilder from './MessageBuilder';
-
 export default {
   name: 'message-template',
   props: ['outgoingIntent', 'id'],
   components: {
-    MessageBuilder,
     Prism,
   },
   data() {
