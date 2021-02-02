@@ -4,7 +4,7 @@ use App\Model;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use OpenDialogAi\ContextEngine\AttributeResolver\AttributeResolver;
-use OpenDialogAi\Core\DynamicAttribute;
+use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 /** @var Factory $factory */
 $factory->define(DynamicAttribute::class, function (Faker $faker) {

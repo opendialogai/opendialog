@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use OpenDialogAi\ContextEngine\AttributeResolver\AttributeResolver as AttributeResolverAlias;
-use OpenDialogAi\Core\DynamicAttribute;
+use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 class DynamicAttributesController extends Controller
 {

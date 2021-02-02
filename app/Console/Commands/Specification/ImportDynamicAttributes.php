@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use OpenDialogAi\Core\DynamicAttribute;
+use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 
 class ImportDynamicAttributes extends Command

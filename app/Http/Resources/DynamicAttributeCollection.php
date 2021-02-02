@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use OpenDialogAi\Core\DynamicAttribute;
+use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 class DynamicAttributeCollection extends ResourceCollection
 {

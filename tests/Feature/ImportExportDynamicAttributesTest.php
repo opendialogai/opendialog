@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\ImportExportHelpers\DynamicAttributeImportExportHelper;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use OpenDialogAi\Core\DynamicAttribute;
+use OpenDialogAi\AttributeEngine\DynamicAttribute;
 use Tests\TestCase;
 
 /**

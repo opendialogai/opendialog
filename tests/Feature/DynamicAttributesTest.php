@@ -5,8 +5,9 @@ namespace Tests\Feature;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use OpenDialogAi\Core\DynamicAttribute;
+use OpenDialogAi\AttributeEngine\DynamicAttribute;
 use Tests\TestCase;
+use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
 
 /**
  * Class DynamicAttributesTest
@@ -346,7 +347,8 @@ class DynamicAttributesTest extends TestCase
     public function testUploadInvalidTypeFormats()
     {
         $ids = array_map(fn(
-        ) => $this->faker->unique()->regexify(\OpenDialogAi\ContextEngine\AttributeResolver\AttributeResolver::$validIdPattern),
+        ) => $this->faker->unique()->regexify
+        (AttributeResolver::$validIdPattern),
             array_keys(self::invalidTypes));
         $data = array_combine($ids, self::invalidTypes);
 
