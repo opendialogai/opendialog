@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use OpenDialogAi\ContextEngine\AttributeResolver\AttributeResolver as AttributeResolverAlias;
+use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 class DynamicAttributesController extends Controller
@@ -84,7 +84,7 @@ class DynamicAttributesController extends Controller
 
         $invalidIds = array_filter(
             array_keys($data),
-            fn($attribute_id) => !AttributeResolverAlias::isValidId($attribute_id)
+            fn($attribute_id) => !AttributeResolver::isValidId($attribute_id)
         );
         if (!empty($invalidIds)) {
             return [
@@ -95,7 +95,7 @@ class DynamicAttributesController extends Controller
 
         $invalidTypes = array_filter(
             array_values($data),
-            fn($attribute_type) => !AttributeResolverAlias::isValidType($attribute_type)
+            fn($attribute_type) => !AttributeResolver::isValidType($attribute_type)
         );
         if (!empty($invalidTypes)) {
             return [
@@ -194,7 +194,7 @@ class DynamicAttributesController extends Controller
         }
 
         if ($dynamicAttribute->attribute_id) {
-            if (!AttributeResolverAlias::isValidId($dynamicAttribute->attribute_id)) {
+            if (!AttributeResolver::isValidId($dynamicAttribute->attribute_id)) {
                 return [
                     'field' => 'attribute_id',
                     'message' => 'attribute_id field must follow snake_case format.',
@@ -203,7 +203,7 @@ class DynamicAttributesController extends Controller
         }
 
         if ($dynamicAttribute->attribute_type) {
-            if (!AttributeResolverAlias::isValidType($dynamicAttribute->attribute_type)) {
+            if (!AttributeResolver::isValidType($dynamicAttribute->attribute_type)) {
                 return [
                     'field' => 'attribute_type',
                     'message' => "attribute_type field must follow the format: 'attribute.<component_name>.<type>'",

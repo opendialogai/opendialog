@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
 use Tests\TestCase;
-use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
+use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
 
 /**
  * Class DynamicAttributesTest
@@ -348,7 +348,7 @@ class DynamicAttributesTest extends TestCase
     {
         $ids = array_map(fn(
         ) => $this->faker->unique()->regexify
-        (AttributeResolver::$validIdPattern),
+        (AttributeResolver::getValidIdPattern()),
             array_keys(self::invalidTypes));
         $data = array_combine($ids, self::invalidTypes);
 
