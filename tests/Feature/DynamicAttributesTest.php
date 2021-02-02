@@ -90,15 +90,16 @@ class DynamicAttributesTest extends TestCase
 
     public function testUpdateIdOnly()
     {
-        $dynamicAttribute = factory(DynamicAttribute::class)->create();
-        $idOnly = [
+        $dynamicAttribute = DynamicAttribute::create(['attribute_id' => 'test_dynamic_attribute', 'attribute_type' =>
+            'attribute.core.int']);
+        $data = [
             'attribute_id' => 'updated_id',
         ];
         $this->actingAs($this->user, 'api')->json('PATCH', '/admin/api/dynamic-attribute/'.$dynamicAttribute->id,
-                $idOnly)->assertStatus(204);
+                $data)->assertStatus(204);
         $updatedDynamicAttribute = DynamicAttribute::find($dynamicAttribute->id);
 
-        $this->assertEquals($updatedDynamicAttribute->attribute_id, $idOnly['attribute_id']);
+        $this->assertEquals($updatedDynamicAttribute->attribute_id, $data['attribute_id']);
         $this->assertEquals($updatedDynamicAttribute->attribute_type, $dynamicAttribute->attribute_type);
 
 
@@ -118,10 +119,10 @@ class DynamicAttributesTest extends TestCase
         $this->assertEquals($updatedDynamicAttribute->attribute_type, $typeOnly['attribute_type']);
     }
 
-    public function testUpdateDuplicateId()
+    public function testUpdateDuplicateDynamicId()
     {
-        $a = factory(DynamicAttribute::class)->create();
-        $b = factory(DynamicAttribute::class)->create();
+        $a = DynamicAttribute::create(['attribute_id' => 'test_dynamic_attribute_a', 'attribute_type' => 'attribute.core.int']);
+        $b = DynamicAttribute::create(['attribute_id' => 'test_dynamic_attribute_b', 'attribute_type' => 'attribute.core.int']);
         $data = [
             'attribute_id' => $b->attribute_id
         ];
@@ -130,6 +131,33 @@ class DynamicAttributesTest extends TestCase
                 'field' => 'attribute_id',
                 'message' => sprintf("Attribute id '%s' is already in use.", $b->attribute_id)
             ]);
+    }
+
+    public function testUpdateDuplicateCoreId()
+    {
+        $dynamicAttribute = factory(DynamicAttribute::class)->create();
+        $data = [
+            'attribute_id' => 'name',
+            'attribute_type' => 'attribute.core.string'
+        ];
+
+        $this->actingAs($this->user, 'api')->json('PATCH', '/admin/api/dynamic-attribute/'.$dynamicAttribute->id,
+            $data)->assertStatus(400)->assertJson([
+            'field' => 'attribute_id',
+            'message' => sprintf("Attribute id '%s' is already in use.", $data['attribute_id'])
+        ]);
+    }
+
+    public function testUpdateSameId()
+    {
+        $data = [
+            'attribute_id' => 'test_dynamic_attribute',
+            'attribute_type' => 'attribute.core.string'
+        ];
+        $dynamicAttribute = DynamicAttribute::create($data);
+
+        $this->actingAs($this->user, 'api')->json('PATCH', '/admin/api/dynamic-attribute/'. $dynamicAttribute->id,
+            $data)->assertStatus(204);
     }
 
     public function testUpdateInvalidIdFormat()
@@ -161,18 +189,18 @@ class DynamicAttributesTest extends TestCase
         }
     }
 
-//    public function testUpdateUnregisteredType()
-//    {
-//        $dynamicAttribute = factory(DynamicAttribute::class)->create();
-//        $data = [
-//            'attribute_type' => 'attribute.core.unregistered_attribute_type'
-//        ];
-//        $this->actingAs($this->user, 'api')->json('PATCH', '/admin/api/dynamic-attribute/'.$dynamicAttribute->id,
-//                $data)->assertStatus(400)->assertJson([
-//                'field' => 'attribute_type',
-//                'message' => sprintf('attribute_type %s is not registered.', $data['attribute_type'])
-//            ]);
-//    }
+    public function testUpdateUnregisteredType()
+    {
+        $dynamicAttribute = factory(DynamicAttribute::class)->create();
+        $data = [
+            'attribute_type' => 'attribute.core.unregistered_attribute_type'
+        ];
+        $this->actingAs($this->user, 'api')->json('PATCH', '/admin/api/dynamic-attribute/'.$dynamicAttribute->id,
+                $data)->assertStatus(400)->assertJson([
+                'field' => 'attribute_type',
+                'message' => sprintf('attribute_type %s is not registered.', $data['attribute_type'])
+            ]);
+    }
 
 
     public function testStoreValidData()
@@ -183,6 +211,35 @@ class DynamicAttributesTest extends TestCase
         $this->actingAs($this->user, 'api')->json('POST', '/admin/api/dynamic-attribute',
                 $data)->assertStatus(201)->assertJsonFragment($data);
         $this->assertDatabaseHas('dynamic_attributes', $data);
+    }
+
+    public function testStoreDuplicateCoreId()
+    {
+        $data = [
+            'attribute_id' => 'name',
+            'attribute_type' => 'attribute.core.string'
+        ];
+
+        $this->actingAs($this->user, 'api')->json('POST', '/admin/api/dynamic-attribute/',
+            $data)->assertStatus(400)->assertJson([
+            'field' => 'attribute_id',
+            'message' => sprintf("Attribute id '%s' is already in use.", $data['attribute_id'])
+        ]);
+    }
+
+    public function testStoreDuplicateDynamicId()
+    {
+        $data = [
+            'attribute_id' => 'test_dynamic_attribute',
+            'attribute_type' => 'attribute.core.int'
+        ];
+        $dynamicAttribute = DynamicAttribute::create($data);
+
+        $this->actingAs($this->user, 'api')->json('POST', '/admin/api/dynamic-attribute/',
+            $data)->assertStatus(400)->assertJson([
+            'field' => 'attribute_id',
+            'message' => sprintf("Attribute id '%s' is already in use.", $data['attribute_id'] )
+        ]);
     }
 
     public function testStoreMissingAttributeId()
@@ -238,19 +295,19 @@ class DynamicAttributesTest extends TestCase
         }
     }
 
-//    public function testStoreUnregisteredType()
-//    {
-//        $dynamicAttribute = factory(DynamicAttribute::class)->create();
-//        $data = [
-//            'attribute_id' => 'test_dynamic_attribute', 'attribute_type' => 'attribute.core.unregistered_attribute_type'
-//        ];
-//        $this->actingAs($this->user, 'api')->json('PATCH', '/admin/api/dynamic-attribute/'.$dynamicAttribute->id,
-//                $data)->assertStatus(400)->assertJson([
-//                'field' => 'attribute_type',
-//                'message' => sprintf('attribute_type %s is not registered.', $data['attribute_type'])
-//            ]);
-//        $this->assertDatabaseMissing('dynamic_attributes', $data);
-//    }
+    public function testStoreUnregisteredType()
+    {
+        $dynamicAttribute = factory(DynamicAttribute::class)->create();
+        $data = [
+            'attribute_id' => 'test_dynamic_attribute', 'attribute_type' => 'attribute.core.unregistered_attribute_type'
+        ];
+        $this->actingAs($this->user, 'api')->json('PATCH', '/admin/api/dynamic-attribute/'.$dynamicAttribute->id,
+                $data)->assertStatus(400)->assertJson([
+                'field' => 'attribute_type',
+                'message' => sprintf('attribute_type %s is not registered.', $data['attribute_type'])
+            ]);
+        $this->assertDatabaseMissing('dynamic_attributes', $data);
+    }
 
     public function testDestroy()
     {
@@ -292,7 +349,7 @@ class DynamicAttributesTest extends TestCase
     {
         $data = [
             'dynamic_attributes_test_a' => 'attribute.core.string', 'dynamic_attributes_test_b' => 'attribute.core.int',
-            'dynamic_attributes_test_c' => 'attribute.core.err'
+            'dynamic_attributes_test_c' => 'attribute.core.int'
         ];
         $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload',
             $data)->assertStatus(201)->assertJson($data);
@@ -305,7 +362,7 @@ class DynamicAttributesTest extends TestCase
     {
         $data = [
             'dynamic_attributes_test_a' => 'attribute.core.string', 'dynamic_attributes_test_b' => 'attribute.core.int',
-            'dynamic_attributes_test_c' => 'attribute.core.err'
+            'dynamic_attributes_test_c' => 'attribute.core.int'
         ];
         foreach ($data as $attribute_id => $attribute_type) {
             DynamicAttribute::create(['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
@@ -363,33 +420,33 @@ class DynamicAttributesTest extends TestCase
         }
     }
 
-//    public function testUploadDuplicateCoreIds()
-//    {
-//
-//        $ids = array_slice(array_keys(AttributeResolver::getSupportedAttributes()), 0, 3);
-//
-//        $data = array_fill_keys($ids, 'attribute.core.int');
-//        $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload',
-//            $data)->assertStatus(400)->assertJson([
-//            'ids' => $ids, 'message' => 'Some ids are already in use.',
-//
-//        ]);
-//        foreach ($data as $attribute_id => $attribute_type) {
-//            $this->assertDatabaseMissing('dynamic_attributes',
-//                ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
-//        }
-//    }
+    public function testUploadDuplicateCoreIds()
+    {
 
-//    public function testUploadUnregisteredType()
-//    {
-//        $data = [
-//            'dynamic_attributes_test' => 'attribute.core.non_existant',
-//        ];
-//        $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload',
-//            $data)->assertStatus(400)->assertJson([
-//            'types' => ['attribute.core.non_existant'], 'message' => 'Some types are not registered'
-//        ]);
-//        $this->assertDatabaseMissing('dynamic_attributes',
-//            ['attribute_id' => 'dynamic_attributes_test', 'attribute_type' => 'attribute.core.non_existant']);
-//    }
+        $ids = array_slice(array_keys(AttributeResolver::getSupportedAttributes()), 0, 3);
+
+        $data = array_fill_keys($ids, 'attribute.core.int');
+        $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload',
+            $data)->assertStatus(400)->assertJson([
+            'ids' => $ids, 'message' => 'Some ids are already in use.',
+
+        ]);
+        foreach ($data as $attribute_id => $attribute_type) {
+            $this->assertDatabaseMissing('dynamic_attributes',
+                ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
+        }
+    }
+
+    public function testUploadUnregisteredType()
+    {
+        $data = [
+            'dynamic_attributes_test' => 'attribute.core.non_existant',
+        ];
+        $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload',
+            $data)->assertStatus(400)->assertJson([
+            'types' => ['attribute.core.non_existant'], 'message' => 'Some types are not registered.'
+        ]);
+        $this->assertDatabaseMissing('dynamic_attributes',
+            ['attribute_id' => 'dynamic_attributes_test', 'attribute_type' => 'attribute.core.non_existant']);
+    }
 }

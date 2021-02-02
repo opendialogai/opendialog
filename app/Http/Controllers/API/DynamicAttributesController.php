@@ -5,25 +5,35 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DynamicAttributeCollection;
 use App\Http\Resources\DynamicAttributeResource;
+use Barryvdh\LaravelIdeHelper\Tests\Console\ModelsCommand\DynamicRelations\Models\Dynamic;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
+use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
+use OpenDialogAi\AttributeEngine\AttributeTypeService\AttributeTypeServiceInterface;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 class DynamicAttributesController extends Controller
 {
 
+    private AttributeTypeServiceInterface $attributeTypeService;
+    private AttributeResolver $attributeResolver;
+
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param  AttributeResolver              $attributeResolver
+     * @param  AttributeTypeServiceInterface  $attributeTypeService
      */
-    public function __construct()
-    {
+    public function __construct(
+        AttributeResolver $attributeResolver,
+        AttributeTypeServiceInterface $attributeTypeService
+    ) {
+        $this->attributeResolver = $attributeResolver;
+        $this->attributeTypeService = $attributeTypeService;
         $this->middleware('auth');
     }
 
@@ -31,14 +41,14 @@ class DynamicAttributesController extends Controller
      * Upload a JSON object of { attribute_id: attribute_type } pairs
      * as DynamicAttributes.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return Response
      */
-    public static function upload(Request $request): Response
+    public function upload(Request $request): Response
     {
         $data = $request->all();
-        if ($error = self::validateImport($data)) {
+        if ($error = self::validateImport($data, $this->attributeResolver, $this->attributeTypeService)) {
             return response($error, 400);
         }
 
@@ -50,22 +60,24 @@ class DynamicAttributesController extends Controller
             });
             return response($data, 201);
         } catch (QueryException $e) {
-            return response(
-                "Unexpected occurred saving uploaded dynamic attributes.",
-                500
-            );
+            return response("Unexpected occurred saving uploaded dynamic attributes.", 500);
         }
     }
 
     /**
      * Validate uploaded/imported DynamicAttributes
      *
-     * @param array $data
+     * @param  array                          $data
+     * @param  AttributeResolver              $attributeResolver
+     * @param  AttributeTypeServiceInterface  $attributeTypeService
      *
      * @return array|null
      */
-    public static function validateImport(array $data): ?array
-    {
+    public static function validateImport(
+        array $data,
+        AttributeResolver $attributeResolver,
+        AttributeTypeServiceInterface $attributeTypeService
+    ): ?array {
         if (empty($data)) {
             return [
                 'message' => 'The provided JSON contains no properties. You must provide JSON object of the form:
@@ -82,21 +94,16 @@ class DynamicAttributesController extends Controller
             }
         }
 
-        $invalidIds = array_filter(
-            array_keys($data),
-            fn($attribute_id) => !AttributeResolver::isValidId($attribute_id)
-        );
+        $invalidIds = array_filter(array_keys($data),
+            fn($attribute_id) => !$attributeResolver->isValidId($attribute_id));
         if (!empty($invalidIds)) {
             return [
-                'ids' => $invalidIds,
-                'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
+                'ids' => $invalidIds, 'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
             ];
         }
 
-        $invalidTypes = array_filter(
-            array_values($data),
-            fn($attribute_type) => !AttributeResolver::isValidType($attribute_type)
-        );
+        $invalidTypes = array_filter(array_values($data),
+            fn($attribute_type) => !$attributeResolver->isValidType($attribute_type));
         if (!empty($invalidTypes)) {
             return [
                 'types' => $invalidTypes,
@@ -106,17 +113,22 @@ class DynamicAttributesController extends Controller
         }
 
         $attribute_ids = array_keys($data);
-        $existing = DynamicAttribute::whereIn('attribute_id', $attribute_ids);
-        /* Todo: Check for existing attributes in config */
-        if ($existing->count() > 0) {
+        $existingIds = array_filter($attribute_ids, fn($id) => $attributeResolver->isAttributeSupported($id));
+
+        if (count($existingIds) > 0) {
             return [
-                'ids' => $existing->get()->map(fn($item) => $item->attribute_id),
-                'message' => 'Some ids are already in use.',
+                'ids' => $existingIds, 'message' => 'Some ids are already in use.',
             ];
         }
 
-        $types = array_values($data);
-        // Todo: Check if the types exist.
+        $attribute_types = array_values($data);
+        $unsupportedTypes = array_filter($attribute_types,
+            fn($type) => !$attributeTypeService->isAttributeTypeAvailable($type));
+        if (count($unsupportedTypes) > 0) {
+            return [
+                'types' => $unsupportedTypes, 'message' => 'Some types are not registered.',
+            ];
+        }
 
         return null;
     }
@@ -134,7 +146,7 @@ class DynamicAttributesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return Response
      */
@@ -146,34 +158,27 @@ class DynamicAttributesController extends Controller
             return response($error, 400);
         }
 
-        if (DynamicAttribute::where('attribute_id', $dynamicAttribute->attribute_id)->exists()
-            || false /* TODO: Check for existing attributes from config */) {
+        if ($this->attributeResolver->isAttributeSupported($dynamicAttribute->attribute_id)) {
             return response([
                 'field' => 'attribute_id',
-                'message' => sprintf(
-                    "Attribute ID '%s' is already in use.",
-                    $dynamicAttribute->attribute_id
-                ),
+                'message' => sprintf("Attribute id '%s' is already in use.", $dynamicAttribute->attribute_id),
             ], 400);
         }
 
         try {
             $dynamicAttribute->save();
         } catch (QueryException $e) {
-            return response(
-                [
-                    'attribute' => $dynamicAttribute->toJson(),
-                    'message' => "Unexpected error occurred saving dynamic attribute",
-                ],
-                500
-            );
+            return response([
+                'attribute' => $dynamicAttribute->toJson(),
+                'message' => "Unexpected error occurred saving dynamic attribute",
+            ], 500);
         }
 
         return new DynamicAttributeResource($dynamicAttribute);
     }
 
     /**
-     * @param DynamicAttribute $dynamicAttribute
+     * @param  DynamicAttribute  $dynamicAttribute
      *
      * @return array|null
      */
@@ -181,23 +186,20 @@ class DynamicAttributesController extends Controller
     {
         if (empty($dynamicAttribute->attribute_id)) {
             return [
-                'field' => 'attribute_id',
-                'message' => 'attribute_id field is required.',
+                'field' => 'attribute_id', 'message' => 'attribute_id field is required.',
             ];
         }
 
         if (empty($dynamicAttribute->attribute_type)) {
             return [
-                'field' => 'attribute_type',
-                'message' => 'attribute_type field is required.',
+                'field' => 'attribute_type', 'message' => 'attribute_type field is required.',
             ];
         }
 
         if ($dynamicAttribute->attribute_id) {
             if (!AttributeResolver::isValidId($dynamicAttribute->attribute_id)) {
                 return [
-                    'field' => 'attribute_id',
-                    'message' => 'attribute_id field must follow snake_case format.',
+                    'field' => 'attribute_id', 'message' => 'attribute_id field must follow snake_case format.',
                 ];
             }
         }
@@ -211,8 +213,12 @@ class DynamicAttributesController extends Controller
             }
         }
 
-        if (false) {
-            /* TODO: Check if type provided is a registered type */
+
+        if (!$this->attributeTypeService->isAttributeTypeAvailable($dynamicAttribute->attribute_type)) {
+            return [
+                'field' => 'attribute_type',
+                'message' => sprintf('attribute_type %s is not registered.', $dynamicAttribute->attribute_type)
+            ];
         }
 
         return null;
@@ -221,7 +227,7 @@ class DynamicAttributesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return DynamicAttributeResource
      */
@@ -237,8 +243,8 @@ class DynamicAttributesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
+     * @param  Request  $request
+     * @param  int      $id
      *
      * @return Response
      */
@@ -247,17 +253,13 @@ class DynamicAttributesController extends Controller
         if ($dynamicAttribute = DynamicAttribute::find($id)) {
             $dynamicAttribute->fill($request->all());
 
-            $sameAttributeId = DynamicAttribute::where([
-                ['attribute_id', $dynamicAttribute->attribute_id],
-                ['id', '<>', $dynamicAttribute->id]
-            ])->get();
-            if ($sameAttributeId->count() > 0 || false /* TODO: Check for existing attributes from config */) {
+            $sameAttributeId = (DynamicAttribute::find($id))->attribute_id === $dynamicAttribute->attribute_id;
+
+            if (!$sameAttributeId && $this->attributeResolver->isAttributeSupported
+            ($dynamicAttribute->attribute_id)) {
                 return response([
                     'field' => 'attribute_id',
-                    'message' => sprintf(
-                        "Attribute id '%s' is already in use.",
-                        $dynamicAttribute->attribute_id
-                    ),
+                    'message' => sprintf("Attribute id '%s' is already in use.", $dynamicAttribute->attribute_id),
                 ], 400);
             }
 
@@ -269,10 +271,7 @@ class DynamicAttributesController extends Controller
                 $dynamicAttribute->save();
                 return response()->noContent();
             } catch (Exception $e) {
-                return response(sprintf(
-                    'Error saving updated DynamicAttribute %s',
-                    $dynamicAttribute->id
-                ), 500);
+                return response(sprintf('Error saving updated DynamicAttribute %s', $dynamicAttribute->id), 500);
             }
         }
 
@@ -282,7 +281,7 @@ class DynamicAttributesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Response
      */
@@ -293,10 +292,7 @@ class DynamicAttributesController extends Controller
                 $dynamicAttribute->delete();
                 return response()->noContent();
             } catch (Exception $e) {
-                return response(sprintf(
-                    'Error deleting DynamicAttribute %s',
-                    $dynamicAttribute->id
-                ), 500);
+                return response(sprintf('Error deleting DynamicAttribute %s', $dynamicAttribute->id), 500);
             }
         }
 
@@ -314,10 +310,6 @@ class DynamicAttributesController extends Controller
         foreach (DynamicAttribute::all() as $dynamicAttribute) {
             $map[$dynamicAttribute->attribute_id] = $dynamicAttribute->attribute_type;
         }
-        return new JsonResponse(
-            $map,
-            200,
-            ['Content-Disposition' => 'attachment; filename="custom-attributes.json"']
-        );
+        return new JsonResponse($map, 200, ['Content-Disposition' => 'attachment; filename="custom-attributes.json"']);
     }
 }
