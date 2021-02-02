@@ -60,13 +60,9 @@
 </template>
 
 <script>
-    import MessageBuilder from '../message-template/MessageBuilder';
-
     export default {
         name: 'conversation-message-templates',
-        components: {
-            MessageBuilder,
-        },
+        components: {},
         props: ['id'],
         data() {
             return {

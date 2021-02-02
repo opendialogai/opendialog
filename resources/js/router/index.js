@@ -3,20 +3,21 @@ import VueRouter from 'vue-router';
 // Containers
 import DefaultContainer from '@/containers/DefaultContainer';
 
-import Home from '@/views/Home';
-import WebchatSetting from '@/views/WebchatSetting';
+import Home from '@opendialogai/opendialog-design-system-pkg/src/components/Views/Home';
+import WebchatSettingView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatSettingView';
 import Conversation from '@/views/Conversation';
-import MessageTemplate from '@/views/MessageTemplate';
-import OutgoingIntent from '@/views/OutgoingIntent';
-import ChatbotUsers from '@/views/ChatbotUsers';
-import ConversationLog from '@/views/ConversationLog';
-import User from '@/views/User';
-import Request from '@/views/Request';
-import GlobalContext from '@/views/GlobalContext';
-import Warning from '@/views/Warning';
-import WebchatDemo from '@/views/WebchatDemo';
+import MessageTemplateView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageTemplateView';
+import OutgoingIntentView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/OutgoingIntentView';
+import ChatbotUsersView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ChatbotUsersView';
+import UserView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/UserView';
+import RequestView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/RequestView';
+import GlobalContextView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/GlobalContextView';
+import WarningView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WarningView';
+import WebchatDemo from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatDemo';
+import ConversationLog from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ConversationLog'
 
 Vue.use(VueRouter);
+
 
 const router = new VueRouter({
   mode: 'history',
@@ -33,17 +34,17 @@ const router = new VueRouter({
         {
           path: 'webchat-setting',
           name: 'webchat-setting',
-          component: WebchatSetting,
+          component: WebchatSettingView,
         },
         {
           path: 'webchat-setting/:id',
-          component: WebchatSetting,
+          component: WebchatSettingView,
           props: true,
         },
         {
           path: 'chatbot-users',
           name: 'chatbot-users',
-          component: ChatbotUsers,
+          component: ChatbotUsersView,
             meta: {
                 breadcrumbs: []
             }
@@ -51,7 +52,7 @@ const router = new VueRouter({
         {
           path: 'chatbot-users/:id',
           name: 'view-chatbot-user',
-          component: ChatbotUsers,
+          component: ChatbotUsersView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -141,12 +142,12 @@ const router = new VueRouter({
         {
           path: 'outgoing-intents/',
           name: 'outgoing-intents',
-          component: OutgoingIntent,
+          component: OutgoingIntentView,
         },
         {
           path: 'outgoing-intents/add',
           name: 'add-outgoing-intent',
-          component: OutgoingIntent,
+          component: OutgoingIntentView,
             meta: {
                 breadcrumbs: [{
                     name: "Back to outgoing intents",
@@ -157,7 +158,7 @@ const router = new VueRouter({
         {
           path: 'outgoing-intents/:id',
           name: 'view-outgoing-intent',
-          component: OutgoingIntent,
+          component: OutgoingIntentView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -169,7 +170,7 @@ const router = new VueRouter({
         {
             path: 'outgoing-intents/:id/edit',
             name: 'edit-outgoing-intent',
-            component: OutgoingIntent,
+            component: OutgoingIntentView,
             props: true,
             meta: {
                 breadcrumbs: [{
@@ -184,13 +185,13 @@ const router = new VueRouter({
           {
           path: 'outgoing-intents/:outgoingIntent/message-templates',
           name: 'message-templates',
-          component: MessageTemplate,
+          component: MessageTemplateView,
           props: true,
         },
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates/add',
           name: 'add-message-template',
-          component: MessageTemplate,
+          component: MessageTemplateView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -202,7 +203,7 @@ const router = new VueRouter({
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates/:id',
           name: 'view-message-template',
-          component: MessageTemplate,
+          component: MessageTemplateView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -214,7 +215,7 @@ const router = new VueRouter({
         {
           path: 'outgoing-intents/:outgoingIntent/message-templates/:id/edit',
           name: 'edit-message-template',
-          component: MessageTemplate,
+          component: MessageTemplateView,
             props: true,
             meta: {
                 breadcrumbs: [{
@@ -226,12 +227,12 @@ const router = new VueRouter({
         {
           path: 'users',
           name: 'users',
-          component: User,
+          component: UserView,
         },
         {
           path: 'users/add',
           name: 'add-user',
-          component: User,
+          component: UserView,
             meta: {
                 breadcrumbs: [{
                     name: "Back to users",
@@ -242,7 +243,7 @@ const router = new VueRouter({
         {
           path: 'users/:id',
           name: 'view-user',
-          component: User,
+          component: UserView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -254,7 +255,7 @@ const router = new VueRouter({
         {
           path: 'users/:id/edit',
           name: 'edit-user',
-          component: User,
+          component: UserView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -269,12 +270,12 @@ const router = new VueRouter({
         {
           path: 'requests',
           name: 'requests',
-          component: Request,
+          component: RequestView,
         },
         {
           path: 'requests/:id',
           name: 'view-request',
-          component: Request,
+          component: RequestView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -286,12 +287,12 @@ const router = new VueRouter({
         {
           path: 'global-contexts',
           name: 'global-contexts',
-          component: GlobalContext,
+          component: GlobalContextView,
         },
         {
           path: 'global-contexts/add',
           name: 'add-global-context',
-          component: GlobalContext,
+          component: GlobalContextView,
             meta: {
                 breadcrumbs: [{
                     name: "Back to global contexts",
@@ -302,7 +303,7 @@ const router = new VueRouter({
         {
           path: 'global-contexts/:id',
           name: 'view-global-context',
-          component: GlobalContext,
+          component: GlobalContextView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -314,7 +315,7 @@ const router = new VueRouter({
         {
           path: 'global-contexts/:id/edit',
           name: 'edit-global-context',
-          component: GlobalContext,
+          component: GlobalContextView,
           props: true,
             meta: {
                 breadcrumbs: [{
@@ -329,12 +330,12 @@ const router = new VueRouter({
         {
           path: 'warnings',
           name: 'warnings',
-          component: Warning,
+          component: WarningView,
         },
         {
           path: 'warnings/:id',
           name: 'view-warning',
-          component: Warning,
+          component: WarningView,
           props: true,
         },
         {
