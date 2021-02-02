@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8eaeb7a8fcf6aa6712d211090a7f9196",
+    "content-hash": "27f8e13f8c9dad080907f78a0230fcdc",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2160,16 +2160,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.0.x-dev",
+            "version": "dev-feature/OPNDLG-344--integrate-dynamic-attributes-with-attribute-engine",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "93638a4020aa8e261f555be12a2cf696db21d033"
+                "reference": "5638d6f83579d9f5db0e5f79f9602dc318cfaee1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/93638a4020aa8e261f555be12a2cf696db21d033",
-                "reference": "93638a4020aa8e261f555be12a2cf696db21d033",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/5638d6f83579d9f5db0e5f79f9602dc318cfaee1",
+                "reference": "5638d6f83579d9f5db0e5f79f9602dc318cfaee1",
                 "shasum": ""
             },
             "require": {
@@ -2209,6 +2209,7 @@
                         "OpenDialogAi\\AttributeEngine\\AttributeEngineServiceProvider",
                         "OpenDialogAi\\ContextEngine\\ContextEngineServiceProvider",
                         "OpenDialogAi\\ActionEngine\\ActionEngineServiceProvider",
+                        "OpenDialogAi\\AttributeEngine\\AttributeEngineServiceProvider",
                         "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider",
                         "OpenDialogAi\\NlpEngine\\NlpEngineServiceProvider"
                     ],
@@ -2241,7 +2242,11 @@
                 "Apache-2.0"
             ],
             "description": "The OpenDialog Core package",
-            "time": "2021-01-29T11:58:47+00:00"
+            "support": {
+                "issues": "https://github.com/opendialogai/core/issues",
+                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-344--integrate-dynamic-attributes-with-attribute-engine"
+            },
+            "time": "2021-02-02T18:26:29+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -9022,5 +9027,5 @@
         "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

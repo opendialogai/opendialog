@@ -12,7 +12,7 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "maennchen/zipstream-php": "^2.0",
-        "opendialogai/core": "1.0.x-dev",
+        "opendialogai/core": "dev-feature/OPNDLG-344--integrate-dynamic-attributes-with-attribute-engine",
         "opendialogai/webchat": "0.7.x-dev",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
