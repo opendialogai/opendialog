@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0cf75502f041d25280448291b14326c7",
+    "content-hash": "3f2f21a09809bbca084763b64d9334c1",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2160,16 +2160,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/attribute-engine",
+            "version": "dev-feature/reflection-api",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "cf051ba8f182d73a3ff0009b741c3e1473212206"
+                "reference": "d0a18a03e2e3593feff080fd727fb5a2629e6ece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/cf051ba8f182d73a3ff0009b741c3e1473212206",
-                "reference": "cf051ba8f182d73a3ff0009b741c3e1473212206",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/d0a18a03e2e3593feff080fd727fb5a2629e6ece",
+                "reference": "d0a18a03e2e3593feff080fd727fb5a2629e6ece",
                 "shasum": ""
             },
             "require": {
@@ -2200,6 +2200,7 @@
                     "providers": [
                         "OpenDialogAi\\Core\\CoreServiceProvider",
                         "OpenDialogAi\\Core\\Graph\\GraphServiceProvider",
+                        "OpenDialogAi\\Core\\Reflection\\ReflectionServiceProvider",
                         "OpenDialogAi\\ConversationBuilder\\ConversationBuilderServiceProvider",
                         "OpenDialogAi\\ConversationEngine\\ConversationEngineServiceProvider",
                         "OpenDialogAi\\ConversationLog\\ConversationLogServiceProvider",
@@ -2241,7 +2242,11 @@
                 "Apache-2.0"
             ],
             "description": "The OpenDialog Core package",
-            "time": "2021-01-26T16:44:51+00:00"
+            "support": {
+                "issues": "https://github.com/opendialogai/core/issues",
+                "source": "https://github.com/opendialogai/core/tree/feature/reflection-api"
+            },
+            "time": "2021-02-03T18:29:09+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -9022,5 +9027,5 @@
         "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
