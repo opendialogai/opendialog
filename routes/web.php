@@ -131,6 +131,13 @@ Route::prefix('stats')->middleware(['auth'])->group(function () {
     Route::get('message-templates', 'StatisticsController@messageTemplates');
 });
 
+/**
+ * Reflection Routes
+ */
+Route::prefix('reflection')->middleware(['auth'])->group(function () {
+    Route::get('all', 'ReflectionController');
+});
+
 Route::get('status', 'StatusController@handle');
 
 Route::group(['middleware' => 'auth'], function () {
