@@ -2,9 +2,31 @@
   <div>
     <h2 class="mb-3">Dynamic Attributes</h2>
 
+    <div class="alert alert-danger" role="alert" v-if="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="close" @click="errorMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success" role="alert" v-if="successMessage">
+      <span>{{ successMessage }}</span>
+      <button type="button" class="close" @click="successMessage = ''">
+        <span>&times;</span>
+      </button>
+    </div>
+
     <div class="row mb-4">
       <div class="col-12">
         <div class="float-right">
+          <input ref="file" type="file" hidden @change="importDynamicAttributes"/>
+
+          <b-btn class="ml-3 mr-1" variant="info" @click="downloadDynamicAttributes">Download</b-btn>
+          <b-btn v-if="!importingDynamicAttributes" variant="info" @click="uploadDynamicAttributes">Upload</b-btn>
+          <b-btn v-if="importingDynamicAttributes" variant="primary">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+            Uploading ...
+          </b-btn>
           <b-btn variant="primary" @click="createDynamicAttribute">Create</b-btn>
         </div>
       </div>
@@ -20,7 +42,7 @@
             <th scope="col">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="dynamicAttributes && availableAttributeTypes">
           <tr v-for="dynamicAttribute in dynamicAttributes">
             <td>
               {{ dynamicAttribute.id }}
@@ -29,7 +51,7 @@
               {{ dynamicAttribute.attribute_id }}
             </td>
             <td>
-              {{ dynamicAttribute.attribute_type }}
+              {{ attributeTypeName(dynamicAttribute.attribute_type) }}
             </td>
             <td class="actions">
               <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="View" @click.stop="viewDynamicAttribute(dynamicAttribute.id)">
@@ -100,8 +122,12 @@ export default {
   mixins: [Pager],
   data() {
     return {
-      dynamicAttributes: [],
+      dynamicAttributes: null,
+      availableAttributeTypes: null,
       currentDynamicAttribute: null,
+      importingDynamicAttributes: false,
+      successMessage: '',
+      errorMessage: ''
     };
   },
   computed: {
@@ -113,8 +139,18 @@ export default {
   },
   mounted() {
     this.fetchDynamicAttributes();
+    this.fetchDynamicAttributeTypes();
   },
   methods: {
+    attributeTypeName(attributeTypeId) {
+      const found = this.availableAttributeTypes.find(type => type.component_data.id === attributeTypeId);
+      return found.component_data.name || attributeTypeId;
+    },
+    fetchDynamicAttributeTypes() {
+      axios.get('/reflection/all').then(response => {
+        this.availableAttributeTypes =  Object.values(response.data.attribute_engine.available_attribute_types)
+      })
+    },
     fetchDynamicAttributes() {
       this.currentPage = parseInt(this.$route.query.page || 1);
 
@@ -143,6 +179,56 @@ export default {
 
       this.dynamicAttributes = this.dynamicAttributes.filter(attr => attr.id !== this.currentDynamicAttribute);
       axios.delete('/admin/api/dynamic-attribute/' + this.currentDynamicAttribute);
+    },
+    downloadDynamicAttributes() {
+      axios.get('/admin/api/dynamic-attributes/download', { responseType: 'blob' }).then(
+        (response) => {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'custom-attributes.json');
+          document.body.appendChild(link);
+          link.click();
+        },
+      );
+    },
+    uploadDynamicAttributes() {
+      this.$refs.file.click();
+    },
+    importDynamicAttributes(event) {
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.importingDynamicAttributes = true;
+
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = (ev) => {
+        axios.post('/admin/api/dynamic-attributes/upload', reader.result, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((response) => {
+          if (response.status === 201) {
+            this.successMessage = 'Dynamic Attributes updated.';
+            this.fetchDynamicAttributes();
+          } else {
+            this.errorMessage = 'Sorry, I wasn\'t able to update the dynamic attributes.';
+          }
+
+          this.$refs.file.value = null;
+          this.importingDynamicAttributes = false;
+        }).catch(e => {
+          if (e.response.data) {
+            this.errorMessage = e.response.data.message;
+          } else {
+            this.errorMessage = 'Sorry, I wasn\'t able to import the dynamic attributes file.';
+          }
+
+          this.$refs.file.value = null;
+          this.importingDynamicAttributes = false;
+        });
+      }
+      reader.readAsText(file);
     },
   },
 };

@@ -21,7 +21,7 @@
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Attribute type</b-col>
-        <b-col cols="10">{{ dynamicAttribute.attribute_type }}</b-col>
+        <b-col cols="10">{{ attributeTypeName(dynamicAttribute.attribute_type) }}</b-col>
       </b-row>
       <b-row class="border-bottom mb-2 pb-2">
         <b-col class="font-weight-bold" cols="2">Created at</b-col>
@@ -62,18 +62,22 @@ export default {
   data() {
     return {
       dynamicAttribute: null,
+      availableAttributeTypes: null
     };
   },
   computed: {
   },
   mounted() {
-    axios.get('/admin/api/dynamic-attribute/' + this.id).then(
-      (response) => {
-        this.dynamicAttribute = response.data.data;
-      },
-    );
+    axios.all([axios.get('/admin/api/dynamic-attribute/' + this.id), axios.get('/reflection/all')]).then(([dynamicAttributeResponse, reflectionResponse]) => {
+      this.dynamicAttribute = dynamicAttributeResponse.data.data;
+      this.availableAttributeTypes = Object.values(reflectionResponse.data.attribute_engine.available_attribute_types);
+    })
   },
   methods: {
+    attributeTypeName(attributeTypeId) {
+      const found = this.availableAttributeTypes.find(type => type.component_data.id === attributeTypeId);
+      return found.component_data.name || attributeTypeId;
+    },
     editDynamicAttribute() {
       this.$router.push({ name: 'edit-dynamic-attribute', params: { id: this.dynamicAttribute.id } });
     },

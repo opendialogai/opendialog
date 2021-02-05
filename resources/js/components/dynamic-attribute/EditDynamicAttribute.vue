@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dynamicAttribute">
+  <div v-if="dynamicAttribute && availableAttributeTypes">
     <h2 class="mb-3">Dynamic attribute</h2>
 
     <div class="alert alert-danger" role="alert" v-if="error.message">
@@ -17,7 +17,7 @@
 
       <b-form-group>
         <label>Attribute type</label>
-        <b-form-input type="email" v-model="dynamicAttribute.attribute_type" :class="(error.field == 'attribute_type') ? 'is-invalid' : ''" />
+        <b-form-select v-model="dynamicAttribute.attribute_type" :options="attributeTypeOptions(availableAttributeTypes)" :class="(error.field == 'attribute_type') ? 'is-invalid' : ''"></b-form-select>
       </b-form-group>
 
       <b-btn variant="primary" @click="saveDynamicAttribute">Save</b-btn>
@@ -32,19 +32,25 @@ export default {
   data() {
     return {
       dynamicAttribute: null,
+      availableAttributeTypes: null,
       error: {},
     };
   },
   computed: {
   },
   mounted() {
-    axios.get('/admin/api/dynamic-attribute/' + this.id).then(
-      (response) => {
-        this.dynamicAttribute = response.data.data;
-      },
-    );
+    axios.all([axios.get('/admin/api/dynamic-attribute/' + this.id), axios.get('/reflection/all')]).then(([dynamicAttributeResponse, reflectionResponse]) => {
+      this.dynamicAttribute = dynamicAttributeResponse.data.data;
+      this.availableAttributeTypes = Object.values(reflectionResponse.data.attribute_engine.available_attribute_types);
+    })
   },
   methods: {
+    attributeTypeOptions(attributeTypes) {
+    return attributeTypes.map(attributeType => ({
+        value: attributeType.component_data.id,
+        text: attributeType.component_data.name || attributeType.component_data.id
+      }))
+    },
     saveDynamicAttribute() {
       this.error = {};
 
