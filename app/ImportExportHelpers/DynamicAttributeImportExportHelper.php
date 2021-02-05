@@ -5,7 +5,7 @@ namespace App\ImportExportHelpers;
 
 class DynamicAttributeImportExportHelper extends BaseImportExportHelper
 {
-    const RESOURCE_DIRECTORY = 'custom-attributes';
+    const RESOURCE_DIRECTORY = 'attributes';
     const FILE_EXTENSION = ".json";
 
     public static function overwrite(array $attrs, string $path)

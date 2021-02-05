@@ -20,11 +20,11 @@ class DynamicAttributesTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    const invalidIds = [
+    const INVALID_IDS = [
         'testDynamicAttribute', 'test_Dynamic.Attribute', 'test_dynamic_attribute_1', 'test_Dynamic.Attribute_1',
         'testdynamicattribute1'
     ];
-    const invalidTypes = ['attributeCoreString', 'attribute.string', 'core.string', 'string', 'wrong.core.string'];
+    const INVALID_TYPES = ['attributeCoreString', 'attribute.string', 'core.string', 'string', 'wrong.core.string'];
     protected $user;
 
     public function setUp(): void
@@ -38,6 +38,7 @@ class DynamicAttributesTest extends TestCase
     public function testView()
     {
         /* @var $dynamicAttribute DynamicAttribute */
+
         $dynamicAttribute = factory(DynamicAttribute::class)->create();
 
         $this->get('/admin/api/dynamic-attribute/'.$dynamicAttribute->id)->assertStatus(302);
@@ -163,7 +164,7 @@ class DynamicAttributesTest extends TestCase
     public function testUpdateInvalidIdFormat()
     {
         $dynamicAttribute = factory(DynamicAttribute::class)->create();
-        foreach (self::invalidIds as $invalidId) {
+        foreach (self::INVALID_IDS as $invalidId) {
             $data = [
                 'attribute_id' => $invalidId
             ];
@@ -177,7 +178,7 @@ class DynamicAttributesTest extends TestCase
     public function testUpdateInvalidTypeFormat()
     {
         $dynamicAttribute = factory(DynamicAttribute::class)->create();
-        foreach (self::invalidTypes as $invalidType) {
+        foreach (self::INVALID_TYPES as $invalidType) {
             $data = [
                 'attribute_type' => $invalidType
             ];
@@ -268,7 +269,7 @@ class DynamicAttributesTest extends TestCase
 
     public function testStoreInvalidIdFormat()
     {
-        foreach (self::invalidIds as $id) {
+        foreach (self::INVALID_IDS as $id) {
             $data = [
                 'attribute_id' => $id, 'attribute_type' => 'attribute.core.string'
             ];
@@ -282,7 +283,7 @@ class DynamicAttributesTest extends TestCase
 
     public function testStoreInvalidTypeFormat()
     {
-        foreach (self::invalidTypes as $type) {
+        foreach (self::INVALID_TYPES as $type) {
             $data = [
                 'attribute_id' => 'test_dynamic_attribute', 'attribute_type' => $type
             ];
@@ -389,13 +390,13 @@ class DynamicAttributesTest extends TestCase
 
     public function testUploadInvalidIdFormats()
     {
-        $data = array_fill_keys(self::invalidIds, 'attribute.core.string');
+        $data = array_fill_keys(self::INVALID_IDS, 'attribute.core.string');
 
         $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload',
             $data)->assertStatus(400)->assertJson([
-            'ids' => self::invalidIds, 'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
+            'ids' => self::INVALID_IDS, 'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
         ]);
-        foreach (self::invalidIds as $id) {
+        foreach (self::INVALID_IDS as $id) {
             $this->assertDatabaseMissing('dynamic_attributes',
                 ['attribute_id' => $id, 'attribute_type' => 'attribute.core.string']);
         }
@@ -406,12 +407,12 @@ class DynamicAttributesTest extends TestCase
         $ids = array_map(fn(
         ) => $this->faker->unique()->regexify
         (AttributeResolver::getValidIdPattern()),
-            array_keys(self::invalidTypes));
-        $data = array_combine($ids, self::invalidTypes);
+            array_keys(self::INVALID_TYPES));
+        $data = array_combine($ids, self::INVALID_TYPES);
 
         $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload',
             $data)->assertStatus(400)->assertJson([
-            'types' => self::invalidTypes, 'message' => 'Invalid attribute types. All attribute types must be in the following format:
+            'types' => self::INVALID_TYPES, 'message' => 'Invalid attribute types. All attribute types must be in the following format:
  attribute.<component>.<type>',
         ]);
         foreach ($data as $attribute_id => $attribute_type) {

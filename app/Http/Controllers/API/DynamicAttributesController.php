@@ -5,35 +5,25 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DynamicAttributeCollection;
 use App\Http\Resources\DynamicAttributeResource;
-use Barryvdh\LaravelIdeHelper\Tests\Console\ModelsCommand\DynamicRelations\Models\Dynamic;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
+use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
 use OpenDialogAi\AttributeEngine\AttributeTypeService\AttributeTypeServiceInterface;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 class DynamicAttributesController extends Controller
 {
 
-    private AttributeTypeServiceInterface $attributeTypeService;
-    private AttributeResolver $attributeResolver;
-
     /**
      * Create a new controller instance.
      *
-     * @param  AttributeResolver              $attributeResolver
-     * @param  AttributeTypeServiceInterface  $attributeTypeService
      */
-    public function __construct(
-        AttributeResolver $attributeResolver,
-        AttributeTypeServiceInterface $attributeTypeService
-    ) {
-        $this->attributeResolver = $attributeResolver;
-        $this->attributeTypeService = $attributeTypeService;
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
@@ -48,7 +38,7 @@ class DynamicAttributesController extends Controller
     public function upload(Request $request): Response
     {
         $data = $request->all();
-        if ($error = self::validateImport($data, $this->attributeResolver, $this->attributeTypeService)) {
+        if ($error = self::validateImport($data)) {
             return response($error, 400);
         }
 
@@ -67,17 +57,14 @@ class DynamicAttributesController extends Controller
     /**
      * Validate uploaded/imported DynamicAttributes
      *
-     * @param  array                          $data
-     * @param  AttributeResolver              $attributeResolver
-     * @param  AttributeTypeServiceInterface  $attributeTypeService
+     * @param  array  $data
      *
      * @return array|null
      */
     public static function validateImport(
-        array $data,
-        AttributeResolver $attributeResolver,
-        AttributeTypeServiceInterface $attributeTypeService
+        array $data
     ): ?array {
+
         if (empty($data)) {
             return [
                 'message' => 'The provided JSON contains no properties. You must provide JSON object of the form:
@@ -95,15 +82,15 @@ class DynamicAttributesController extends Controller
         }
 
         $invalidIds = array_filter(array_keys($data),
-            fn($attribute_id) => !$attributeResolver->isValidId($attribute_id));
+            fn($attribute_id) => !\OpenDialogAi\AttributeEngine\Facades\AttributeResolver::isValidId($attribute_id));
         if (!empty($invalidIds)) {
             return [
                 'ids' => $invalidIds, 'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
             ];
         }
 
-        $invalidTypes = array_filter(array_values($data),
-            fn($attribute_type) => !$attributeResolver->isValidType($attribute_type));
+        $invalidTypes = array_filter(array_values($data), fn($attribute_type
+        ) => !\OpenDialogAi\AttributeEngine\Facades\AttributeResolver::isValidType($attribute_type));
         if (!empty($invalidTypes)) {
             return [
                 'types' => $invalidTypes,
@@ -113,13 +100,16 @@ class DynamicAttributesController extends Controller
         }
 
         $attribute_ids = array_keys($data);
-        $existingIds = array_filter($attribute_ids, fn($id) => $attributeResolver->isAttributeSupported($id));
+        $existingIds = array_filter($attribute_ids,
+            fn($id) => \OpenDialogAi\AttributeEngine\Facades\AttributeResolver::isAttributeSupported($id));
 
         if (count($existingIds) > 0) {
             return [
                 'ids' => $existingIds, 'message' => 'Some ids are already in use.',
             ];
         }
+
+        $attributeTypeService = resolve(AttributeTypeServiceInterface::class);
 
         $attribute_types = array_values($data);
         $unsupportedTypes = array_filter($attribute_types,
@@ -158,7 +148,7 @@ class DynamicAttributesController extends Controller
             return response($error, 400);
         }
 
-        if ($this->attributeResolver->isAttributeSupported($dynamicAttribute->attribute_id)) {
+        if (AttributeResolver::isAttributeSupported($dynamicAttribute->attribute_id)) {
             return response([
                 'field' => 'attribute_id',
                 'message' => sprintf("Attribute id '%s' is already in use.", $dynamicAttribute->attribute_id),
@@ -214,7 +204,8 @@ class DynamicAttributesController extends Controller
         }
 
 
-        if (!$this->attributeTypeService->isAttributeTypeAvailable($dynamicAttribute->attribute_type)) {
+        $attributeTypeService = resolve(AttributeTypeServiceInterface::class);
+        if (!$attributeTypeService->isAttributeTypeAvailable($dynamicAttribute->attribute_type)) {
             return [
                 'field' => 'attribute_type',
                 'message' => sprintf('attribute_type %s is not registered.', $dynamicAttribute->attribute_type)
@@ -255,8 +246,7 @@ class DynamicAttributesController extends Controller
 
             $sameAttributeId = (DynamicAttribute::find($id))->attribute_id === $dynamicAttribute->attribute_id;
 
-            if (!$sameAttributeId && $this->attributeResolver->isAttributeSupported
-            ($dynamicAttribute->attribute_id)) {
+            if (!$sameAttributeId && AttributeResolver::isAttributeSupported($dynamicAttribute->attribute_id)) {
                 return response([
                     'field' => 'attribute_id',
                     'message' => sprintf("Attribute id '%s' is already in use.", $dynamicAttribute->attribute_id),

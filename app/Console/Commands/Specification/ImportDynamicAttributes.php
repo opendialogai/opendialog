@@ -21,7 +21,7 @@ class ImportDynamicAttributes extends Command
      *
      * @var string
      */
-    protected $signature = 'dynamic-attributes:import {name=custom-attributes} {--delete-existing} {--y|yes}';
+    protected $signature = 'custom-attributes:import {name=custom-attributes} {--delete-existing} {--y|yes}';
 
     /**
      * The console command description.
@@ -42,40 +42,35 @@ class ImportDynamicAttributes extends Command
     /**
      * Execute the console command.
      *
-     * @param  AttributeResolver              $attributeResolver
-     * @param  AttributeTypeServiceInterface  $attributeTypeService
      *
      * @return mixed
      */
-    public function handle(AttributeResolver  $attributeResolver, AttributeTypeServiceInterface $attributeTypeService)
+    public function handle()
     {
         $name = $this->argument('name');
         $filePath = DynamicAttributeImportExportHelper::getFilePath($name);
 
-        $continue = $this->option('yes') ?
-            true :
-            $this->confirm(
-                sprintf('Do you want to import all dynamic attributes from %s (%s) ?', $name, $filePath)
-            );
+        $continue = $this->option('yes') ? true :
+            $this->confirm(sprintf('Do you want to import all dynamic attributes from %s (%s) ?', $name, $filePath));
 
         if ($continue) {
             $deleteExisting = $this->option('delete-existing');
-            $this->info('Importing dynamic attributes...');
+            if ($deleteExisting) {
+                $this->info("Deleting existing custom attributes...");
+                DynamicAttribute::truncate();
+            }
 
-            if ($collection = $this->importDynamicAttributes($name, $attributeResolver, $attributeTypeService)) {
+            $this->info('Importing custom attributes...');
+            if ($collection = $this->importDynamicAttributes($name)) {
                 try {
                     DB::transaction(function () use ($collection, $deleteExisting) {
-                        if ($deleteExisting) {
-                            $this->info("Deleting existing dynamic attributes...");
-                            DynamicAttribute::truncate();
-                        }
                         foreach ($collection as $attribute) {
                             $attribute->save();
                         }
                     });
-                    $this->info('Import of dynamic attributes finished.');
+                    $this->info('Import of custom attributes finished.');
                 } catch (QueryException $e) {
-                    $this->error("Unexpected error occurred saving dynamic attributes.");
+                    $this->error("Unexpected error occurred saving custom attributes.");
                 }
             } else {
                 $this->error("Failed to create collection. Bailing...");
@@ -87,28 +82,23 @@ class ImportDynamicAttributes extends Command
 
     /**
      * @param  string                         $name
-     * @param  AttributeResolver              $attributeResolver
-     * @param  AttributeTypeServiceInterface  $attributeTypeService
      *
      * @return DynamicAttributeCollection
      */
     protected function importDynamicAttributes(
-        string $name,
-        AttributeResolver $attributeResolver,
-        AttributeTypeServiceInterface $attributeTypeService
+        string $name
     ): ?DynamicAttributeCollection {
         $filePath = DynamicAttributeImportExportHelper::getFilePath($name);
         try {
             $data = DynamicAttributeImportExportHelper::getFileData($filePath);
             $dict = DynamicAttributeImportExportHelper::importFromString($data);
-            if ($error = DynamicAttributesController::validateImport($dict, $attributeResolver,
-                $attributeTypeService)) {
+            if ($error = DynamicAttributesController::validateImport($dict)) {
                 $this->error(json_encode($error, JSON_PRETTY_PRINT));
                 return null;
             }
             return DynamicAttributeCollection::fromDictionary($dict);
         } catch (FileNotFoundException $exception) {
-            $this->error(sprintf('Could not find dynamic attributes file at at %s', $filePath));
+            $this->error(sprintf('Could not find custom attributes file at at %s', $filePath));
             return null;
         } catch (\JsonException $e) {
             $this->error($e->getMessage());
