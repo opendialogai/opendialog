@@ -166,6 +166,10 @@ class ImportExportDynamicAttributesTest extends TestCase
             $this->assertDatabaseHas('dynamic_attributes',
                 ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
         }
+        foreach ($replacement as $attribute_id => $attribute_type) {
+            $this->assertDatabaseMissing('dynamic_attributes',
+                ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
+        }
     }
 
     public function testExportSuccess()

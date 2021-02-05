@@ -7,10 +7,7 @@ use App\Http\Resources\DynamicAttributeCollection;
 use App\ImportExportHelpers\DynamicAttributeImportExportHelper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
-use OpenDialogAi\AttributeEngine\AttributeTypeService\AttributeTypeServiceInterface;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 
@@ -55,26 +52,27 @@ class ImportDynamicAttributes extends Command
 
         if ($continue) {
             $deleteExisting = $this->option('delete-existing');
-            if ($deleteExisting) {
-                $this->info("Deleting existing custom attributes...");
-                DynamicAttribute::truncate();
-            }
 
-            $this->info('Importing custom attributes...');
-            if ($collection = $this->importDynamicAttributes($name)) {
-                try {
-                    DB::transaction(function () use ($collection, $deleteExisting) {
-                        foreach ($collection as $attribute) {
-                            $attribute->save();
-                        }
-                    });
-                    $this->info('Import of custom attributes finished.');
-                } catch (QueryException $e) {
-                    $this->error("Unexpected error occurred saving custom attributes.");
+            DB::beginTransaction();
+            try {
+                $this->info('Importing custom attributes...');
+                if ($deleteExisting) {
+                    $this->info("Deleting existing custom attributes...");
+                    DynamicAttribute::truncate();
                 }
-            } else {
-                $this->error("Failed to create collection. Bailing...");
-                return;
+                if ($collection = $this->importDynamicAttributes($name)) {
+                    foreach ($collection as $attribute) {
+                        $attribute->save();
+                    }
+                    $this->info('Import of custom attributes finished.');
+                    DB::commit();
+                } else {
+                    $this->error("Failed to create collection. Restoring database...");
+                    DB::rollBack();
+                }
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $this->error("Unexpected error occurred saving custom attributes.");
             }
         }
     }
