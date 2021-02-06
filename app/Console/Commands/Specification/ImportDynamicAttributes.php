@@ -91,7 +91,7 @@ class ImportDynamicAttributes extends Command
             $data = DynamicAttributeImportExportHelper::getFileData($filePath);
             $dict = DynamicAttributeImportExportHelper::importFromString($data);
             if ($error = DynamicAttributesController::validateImport($dict)) {
-                $this->error(json_encode($error, JSON_PRETTY_PRINT));
+                $this->error($this->formatError($error));
                 return null;
             }
             return DynamicAttributeCollection::fromDictionary($dict);
@@ -102,5 +102,27 @@ class ImportDynamicAttributes extends Command
             $this->error($e->getMessage());
             return null;
         }
+    }
+
+
+    /**
+     * @param  array  $error
+     *
+     * @return string
+     */
+    protected function formatError(array $error): string
+    {
+        $message = $error['message'];
+
+        if ($ids = $error['ids'] ?? null) {
+            $bullets = implode("\n", array_map(fn($item) => "* $item", $ids));
+            $message .= "\nIds:\n".$bullets;
+        }
+
+        if ($types = $error['types'] ?? null) {
+            $bullets = implode("\n", array_map(fn($item) => "* $item", $types));
+            $message .= "\nTypes:\n".$bullets;
+        }
+        return $message;
     }
 }

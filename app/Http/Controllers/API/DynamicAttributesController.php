@@ -82,7 +82,7 @@ class DynamicAttributesController extends Controller
         }
 
         $invalidIds = array_filter(array_keys($data),
-            fn($attribute_id) => !\OpenDialogAi\AttributeEngine\Facades\AttributeResolver::isValidId($attribute_id));
+            fn($attribute_id) => !AttributeResolver::isValidId($attribute_id));
         if (!empty($invalidIds)) {
             return [
                 'ids' => $invalidIds, 'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
@@ -90,7 +90,7 @@ class DynamicAttributesController extends Controller
         }
 
         $invalidTypes = array_filter(array_values($data), fn($attribute_type
-        ) => !\OpenDialogAi\AttributeEngine\Facades\AttributeResolver::isValidType($attribute_type));
+        ) => !AttributeResolver::isValidType($attribute_type));
         if (!empty($invalidTypes)) {
             return [
                 'types' => $invalidTypes,
@@ -101,7 +101,7 @@ class DynamicAttributesController extends Controller
 
         $attribute_ids = array_keys($data);
         $existingIds = array_filter($attribute_ids,
-            fn($id) => \OpenDialogAi\AttributeEngine\Facades\AttributeResolver::isAttributeSupported($id));
+            fn($id) => AttributeResolver::isAttributeSupported($id));
 
         if (count($existingIds) > 0) {
             return [

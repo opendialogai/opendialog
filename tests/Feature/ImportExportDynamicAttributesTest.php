@@ -158,10 +158,17 @@ class ImportExportDynamicAttributesTest extends TestCase
         $this->disk->put(DynamicAttributeImportExportHelper::getFilePath('custom-attributes'),
             json_encode($replacement));
 
+
+        $expectedOutput = "Importing custom attributes...\n"."Some ids are already in use.\n"."Ids:\n"
+            ."* test_dynamic_attribute_a\n"."* test_dynamic_attribute_b\nFailed to create collection. Restoring database...\n";
+
         Artisan::call('custom-attributes:import', [
             'name' => 'custom-attributes',
             '--yes' => true
         ]);
+
+        $this->assertEquals($expectedOutput, Artisan::output());
+
         foreach ($existing as $attribute_id => $attribute_type) {
             $this->assertDatabaseHas('dynamic_attributes',
                 ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
