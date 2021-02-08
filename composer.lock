@@ -2164,12 +2164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "5638d6f83579d9f5db0e5f79f9602dc318cfaee1"
+                "reference": "9c70d1f4056af06cefec048729f4ffa0ae33498d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/5638d6f83579d9f5db0e5f79f9602dc318cfaee1",
-                "reference": "5638d6f83579d9f5db0e5f79f9602dc318cfaee1",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/9c70d1f4056af06cefec048729f4ffa0ae33498d",
+                "reference": "9c70d1f4056af06cefec048729f4ffa0ae33498d",
                 "shasum": ""
             },
             "require": {
@@ -2247,7 +2247,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-344--integrate-dynamic-attributes-with-attribute-engine"
             },
-            "time": "2021-02-02T18:26:29+00:00"
+            "time": "2021-02-06T15:06:01+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",

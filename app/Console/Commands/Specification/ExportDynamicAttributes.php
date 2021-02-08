@@ -15,7 +15,7 @@ class ExportDynamicAttributes extends Command
      *
      * @var string
      */
-    protected $signature = 'dynamic-attributes:export {name=custom-attributes} {--overwrite} {--y|yes}';
+    protected $signature = 'custom-attributes:export {name=custom-attributes} {--overwrite} {--y|yes}';
 
     /**
      * The console command description.
@@ -43,7 +43,7 @@ class ExportDynamicAttributes extends Command
     {
         $name = $this->argument('name');
 
-        $continue = $this->option('yes') ? true : $this->confirm('Do you want to export all dynamic attributes?');
+        $continue = $this->option('yes') ? true : $this->confirm('Do you want to export all custom attributes?');
 
         if ($continue) {
             $overwrite = $this->option('overwrite');
@@ -52,18 +52,18 @@ class ExportDynamicAttributes extends Command
                     $continue = true;
                 }
                 if ($overwrite === false) {
-                    $this->info('A dynamic-attributes file already exists. Use the --overwrite flag to overwrite it.');
+                    $this->info('A custom-attributes file already exists. Use the --overwrite flag to overwrite it.');
                     $continue = false;
                 }
                 if ($overwrite === null) {
-                    $continue = $this->confirm('A dynamic-attributes file already exists. Do you want to overwrite it?');
+                    $continue = $this->confirm('A custom-attributes file already exists. Do you want to overwrite it?');
                 }
             }
         }
 
         if ($continue) {
             $this->exportDynamicAttributes(DynamicAttribute::all(), $name);
-            $this->info('Export of dynamic attributes finished.');
+            $this->info('Export of custom attributes finished.');
         } else {
             $this->info('Bye!');
         }
@@ -79,7 +79,7 @@ class ExportDynamicAttributes extends Command
     protected function exportDynamicAttributes(Collection $collection, string $name)
     {
         $filePath = DynamicAttributeImportExportHelper::getFilePath($name);
-        $this->info(sprintf("Exporting dynamic attributes to $filePath ..."));
+        $this->info(sprintf("Exporting custom attributes to $filePath ..."));
 
         DynamicAttributeImportExportHelper::overwrite(DynamicAttributeCollection::toDictionary($collection), $filePath);
     }

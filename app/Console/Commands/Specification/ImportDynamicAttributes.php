@@ -7,10 +7,7 @@ use App\Http\Resources\DynamicAttributeCollection;
 use App\ImportExportHelpers\DynamicAttributeImportExportHelper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
-use OpenDialogAi\AttributeEngine\AttributeTypeService\AttributeTypeServiceInterface;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
 
 
@@ -21,7 +18,7 @@ class ImportDynamicAttributes extends Command
      *
      * @var string
      */
-    protected $signature = 'dynamic-attributes:import {name=custom-attributes} {--delete-existing} {--y|yes}';
+    protected $signature = 'custom-attributes:import {name=custom-attributes} {--delete-existing} {--y|yes}';
 
     /**
      * The console command description.
@@ -42,44 +39,40 @@ class ImportDynamicAttributes extends Command
     /**
      * Execute the console command.
      *
-     * @param  AttributeResolver              $attributeResolver
-     * @param  AttributeTypeServiceInterface  $attributeTypeService
      *
      * @return mixed
      */
-    public function handle(AttributeResolver  $attributeResolver, AttributeTypeServiceInterface $attributeTypeService)
+    public function handle()
     {
         $name = $this->argument('name');
         $filePath = DynamicAttributeImportExportHelper::getFilePath($name);
 
-        $continue = $this->option('yes') ?
-            true :
-            $this->confirm(
-                sprintf('Do you want to import all dynamic attributes from %s (%s) ?', $name, $filePath)
-            );
+        $continue = $this->option('yes') ? true :
+            $this->confirm(sprintf('Do you want to import all dynamic attributes from %s (%s) ?', $name, $filePath));
 
         if ($continue) {
             $deleteExisting = $this->option('delete-existing');
-            $this->info('Importing dynamic attributes...');
 
-            if ($collection = $this->importDynamicAttributes($name, $attributeResolver, $attributeTypeService)) {
-                try {
-                    DB::transaction(function () use ($collection, $deleteExisting) {
-                        if ($deleteExisting) {
-                            $this->info("Deleting existing dynamic attributes...");
-                            DynamicAttribute::truncate();
-                        }
-                        foreach ($collection as $attribute) {
-                            $attribute->save();
-                        }
-                    });
-                    $this->info('Import of dynamic attributes finished.');
-                } catch (QueryException $e) {
-                    $this->error("Unexpected error occurred saving dynamic attributes.");
+            DB::beginTransaction();
+            try {
+                $this->info('Importing custom attributes...');
+                if ($deleteExisting) {
+                    $this->info("Deleting existing custom attributes...");
+                    DynamicAttribute::truncate();
                 }
-            } else {
-                $this->error("Failed to create collection. Bailing...");
-                return;
+                if ($collection = $this->importDynamicAttributes($name)) {
+                    foreach ($collection as $attribute) {
+                        $attribute->save();
+                    }
+                    $this->info('Import of custom attributes finished.');
+                    DB::commit();
+                } else {
+                    $this->error("Failed to create collection. Restoring database...");
+                    DB::rollBack();
+                }
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $this->error("Unexpected error occurred saving custom attributes.");
             }
         }
     }
@@ -87,32 +80,49 @@ class ImportDynamicAttributes extends Command
 
     /**
      * @param  string                         $name
-     * @param  AttributeResolver              $attributeResolver
-     * @param  AttributeTypeServiceInterface  $attributeTypeService
      *
      * @return DynamicAttributeCollection
      */
     protected function importDynamicAttributes(
-        string $name,
-        AttributeResolver $attributeResolver,
-        AttributeTypeServiceInterface $attributeTypeService
+        string $name
     ): ?DynamicAttributeCollection {
         $filePath = DynamicAttributeImportExportHelper::getFilePath($name);
         try {
             $data = DynamicAttributeImportExportHelper::getFileData($filePath);
             $dict = DynamicAttributeImportExportHelper::importFromString($data);
-            if ($error = DynamicAttributesController::validateImport($dict, $attributeResolver,
-                $attributeTypeService)) {
-                $this->error(json_encode($error, JSON_PRETTY_PRINT));
+            if ($error = DynamicAttributesController::validateImport($dict)) {
+                $this->error($this->formatError($error));
                 return null;
             }
             return DynamicAttributeCollection::fromDictionary($dict);
         } catch (FileNotFoundException $exception) {
-            $this->error(sprintf('Could not find dynamic attributes file at at %s', $filePath));
+            $this->error(sprintf('Could not find custom attributes file at at %s', $filePath));
             return null;
         } catch (\JsonException $e) {
             $this->error($e->getMessage());
             return null;
         }
+    }
+
+
+    /**
+     * @param  array  $error
+     *
+     * @return string
+     */
+    protected function formatError(array $error): string
+    {
+        $message = $error['message'];
+
+        if ($ids = $error['ids'] ?? null) {
+            $bullets = implode("\n", array_map(fn($item) => "* $item", $ids));
+            $message .= "\nIds:\n".$bullets;
+        }
+
+        if ($types = $error['types'] ?? null) {
+            $bullets = implode("\n", array_map(fn($item) => "* $item", $types));
+            $message .= "\nTypes:\n".$bullets;
+        }
+        return $message;
     }
 }

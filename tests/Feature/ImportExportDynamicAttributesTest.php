@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\ImportExportHelpers\DynamicAttributeImportExportHelper;
+use Barryvdh\LaravelIdeHelper\Tests\Console\ModelsCommand\DynamicRelations\Models\Dynamic;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
@@ -38,7 +39,7 @@ class ImportExportDynamicAttributesTest extends TestCase
 
         $this->disk->put(DynamicAttributeImportExportHelper::getFilePath('good-custom-attributes'), $notJSON);
 
-        Artisan::call('dynamic-attributes:import', [
+        Artisan::call('custom-attributes:import', [
                 '--yes' => true, 'name' => 'good-custom-attributes'
         ]);
 
@@ -52,12 +53,12 @@ class ImportExportDynamicAttributesTest extends TestCase
 
     public function testImportInvalidAttributeIds()
     {
-        foreach (DynamicAttributesTest::invalidIds as $id) {
+        foreach (DynamicAttributesTest::INVALID_IDS as $id) {
             $data = [$id => 'attribute.core.string'];
             $this->disk->put(DynamicAttributeImportExportHelper::getFilePath('invalid-ids-attributes'),
                 json_encode($data));
 
-            Artisan::call('dynamic-attributes:import', [
+            Artisan::call('custom-attributes:import', [
                     '--yes' => true, 'name' => 'invalid-ids-attributes'
                 ]);
 
@@ -71,12 +72,12 @@ class ImportExportDynamicAttributesTest extends TestCase
     public function testImportInvalidAttributeTypes()
     {
 
-        foreach (DynamicAttributesTest::invalidTypes as $type) {
+        foreach (DynamicAttributesTest::INVALID_TYPES as $type) {
             $data = ["dynamic_attribute_test" => $type];
             $this->disk->put(DynamicAttributeImportExportHelper::getFilePath('invalid-types-attributes'),
                 json_encode($data));
 
-            Artisan::call('dynamic-attributes:import', [
+            Artisan::call('custom-attributes:import', [
                     '--yes' => true, 'name' => 'invalid-types-attributes'
                 ]);
 
@@ -97,7 +98,7 @@ class ImportExportDynamicAttributesTest extends TestCase
         $this->disk->put(DynamicAttributeImportExportHelper::getFilePath('good-custom-attributes'),
             json_encode($goodData));
 
-        Artisan::call('dynamic-attributes:import', [
+        Artisan::call('custom-attributes:import', [
                 '--yes' => true, 'name' => 'good-custom-attributes'
             ]);
 
@@ -108,13 +109,83 @@ class ImportExportDynamicAttributesTest extends TestCase
 
     }
 
+    public function testImportDeleteExisting()
+    {
+        $existing = [
+            'test_dynamic_attribute_a' => 'attribute.core.string',
+            'test_dynamic_attribute_b' => 'attribute.core.string',
+            'test_dynamic_attribute_c' => 'attribute.core.string'
+        ];
+        foreach($existing as $attribute_id => $attribute_type) {
+            DynamicAttribute::create(['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
+        }
+
+        $replacement = [
+            'test_dynamic_attribute_a' => 'attribute.core.int',
+            'test_dynamic_attribute_b' => 'attribute.core.int',
+        ];
+        $this->disk->put(DynamicAttributeImportExportHelper::getFilePath('custom-attributes'),
+            json_encode($replacement));
+
+        Artisan::call('custom-attributes:import', [
+            'name' => 'custom-attributes',
+            '--delete-existing' => true,
+            '--yes' => true
+        ]);
+
+        $this->assertEquals(2, DynamicAttribute::all()->count());
+        foreach ($replacement as $attribute_id => $attribute_type) {
+            $this->assertDatabaseHas('dynamic_attributes',
+                ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
+        }
+    }
+
+    public function testImportDuplicateIds()
+    {
+        $existing = [
+            'test_dynamic_attribute_a' => 'attribute.core.string',
+            'test_dynamic_attribute_b' => 'attribute.core.string',
+            'test_dynamic_attribute_c' => 'attribute.core.string'
+        ];
+        foreach($existing as $attribute_id => $attribute_type) {
+            DynamicAttribute::create(['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
+        }
+
+        $replacement = [
+            'test_dynamic_attribute_a' => 'attribute.core.int',
+            'test_dynamic_attribute_b' => 'attribute.core.int',
+        ];
+        $this->disk->put(DynamicAttributeImportExportHelper::getFilePath('custom-attributes'),
+            json_encode($replacement));
+
+
+        $expectedOutput = "Importing custom attributes...\n"."Some ids are already in use.\n"."Ids:\n"
+            ."* test_dynamic_attribute_a\n"."* test_dynamic_attribute_b\nFailed to create collection. Restoring database...\n";
+
+        Artisan::call('custom-attributes:import', [
+            'name' => 'custom-attributes',
+            '--yes' => true
+        ]);
+
+        $this->assertEquals($expectedOutput, Artisan::output());
+
+        foreach ($existing as $attribute_id => $attribute_type) {
+            $this->assertDatabaseHas('dynamic_attributes',
+                ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
+        }
+        foreach ($replacement as $attribute_id => $attribute_type) {
+            $this->assertDatabaseMissing('dynamic_attributes',
+                ['attribute_id' => $attribute_id, 'attribute_type' => $attribute_type]);
+        }
+    }
+
     public function testExportSuccess()
     {
         for ($i = 0; $i < 3; $i++) {
             factory(DynamicAttribute::class)->create();
         }
 
-        Artisan::call('dynamic-attributes:export', [
+        Artisan::call('custom-attributes:export', [
                 '--yes' => true, 'name' => 'custom-attributes'
             ]);
 
@@ -141,7 +212,7 @@ class ImportExportDynamicAttributesTest extends TestCase
         $dummyData = "Dummy file data";
         $this->disk->put(DynamicAttributeImportExportHelper::getFilePath($name), $dummyData);
 
-        Artisan::call('dynamic-attributes:export', [
+        Artisan::call('custom-attributes:export', [
                 '--yes' => true, '--overwrite' => false, 'name' => $name
             ]);
 
@@ -153,7 +224,7 @@ class ImportExportDynamicAttributesTest extends TestCase
         for ($i = 0; $i < 3; $i++) {
             factory(DynamicAttribute::class)->create();
         }
-        Artisan::call('dynamic-attributes:export', [
+        Artisan::call('custom-attributes:export', [
                 '--yes' => true, '--overwrite' => true, 'name' => $name
             ]);
 
