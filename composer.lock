@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27f8e13f8c9dad080907f78a0230fcdc",
+    "content-hash": "b542da21818d60b1002287620e327f2d",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2164,12 +2164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "9c70d1f4056af06cefec048729f4ffa0ae33498d"
+                "reference": "33f40a0598767fcde96fcd8b9a5d58bd2be71e5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/9c70d1f4056af06cefec048729f4ffa0ae33498d",
-                "reference": "9c70d1f4056af06cefec048729f4ffa0ae33498d",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/33f40a0598767fcde96fcd8b9a5d58bd2be71e5b",
+                "reference": "33f40a0598767fcde96fcd8b9a5d58bd2be71e5b",
                 "shasum": ""
             },
             "require": {
@@ -2247,7 +2247,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-344--integrate-dynamic-attributes-with-attribute-engine"
             },
-            "time": "2021-02-06T15:06:01+00:00"
+            "time": "2021-02-08T18:35:17+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -9023,7 +9023,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3.0",
+        "php": "^7.4",
         "ext-dom": "*",
         "ext-simplexml": "*"
     },
