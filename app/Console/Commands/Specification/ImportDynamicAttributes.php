@@ -47,8 +47,8 @@ class ImportDynamicAttributes extends Command
         $name = $this->argument('name');
         $filePath = DynamicAttributeImportExportHelper::getFilePath($name);
 
-        $continue = $this->option('yes') ? true :
-            $this->confirm(sprintf('Do you want to import all dynamic attributes from %s (%s) ?', $name, $filePath));
+        $confirmationMessage = sprintf('Do you want to import all dynamic attributes from %s (%s) ?', $name, $filePath);
+        $continue = $this->option('yes') ?: $this->confirm($confirmationMessage);
 
         if ($continue) {
             $deleteExisting = $this->option('delete-existing');
@@ -79,7 +79,7 @@ class ImportDynamicAttributes extends Command
 
 
     /**
-     * @param  string                         $name
+     * @param string  $name
      *
      * @return DynamicAttributeCollection
      */
@@ -116,13 +116,14 @@ class ImportDynamicAttributes extends Command
 
         if ($ids = $error['ids'] ?? null) {
             $bullets = implode("\n", array_map(fn($item) => "* $item", $ids));
-            $message .= "\nIds:\n".$bullets;
+            $message .= "\nIDs:\n".$bullets;
         }
 
         if ($types = $error['types'] ?? null) {
             $bullets = implode("\n", array_map(fn($item) => "* $item", $types));
             $message .= "\nTypes:\n".$bullets;
         }
+
         return $message;
     }
 }

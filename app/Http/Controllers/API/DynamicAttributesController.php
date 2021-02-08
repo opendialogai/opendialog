@@ -11,9 +11,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
 use OpenDialogAi\AttributeEngine\AttributeTypeService\AttributeTypeServiceInterface;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
+use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
 
 class DynamicAttributesController extends Controller
 {
@@ -81,16 +81,22 @@ class DynamicAttributesController extends Controller
             }
         }
 
-        $invalidIds = array_filter(array_keys($data),
-            fn($attribute_id) => !AttributeResolver::isValidId($attribute_id));
+        $invalidIds = array_filter(
+            array_keys($data),
+            fn($attribute_id) => !AttributeResolver::isValidId($attribute_id)
+        );
+
         if (!empty($invalidIds)) {
             return [
-                'ids' => $invalidIds, 'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
+                'ids' => $invalidIds, 'message' => 'Invalid attribute IDs. All attribute IDs must be in snake_case.',
             ];
         }
 
-        $invalidTypes = array_filter(array_values($data), fn($attribute_type
-        ) => !AttributeResolver::isValidType($attribute_type));
+        $invalidTypes = array_filter(
+            array_values($data),
+            fn($attribute_type) => !AttributeResolver::isValidType($attribute_type)
+        );
+
         if (!empty($invalidTypes)) {
             return [
                 'types' => $invalidTypes,
