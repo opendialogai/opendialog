@@ -92,7 +92,7 @@
       </ul>
     </nav>
 
-    <div class="modal modal-danger fade" id="deleteDynamicAttributeModel" role="dialog" aria-hidden="true">
+    <div class="modal modal-danger fade" id="deleteDynamicAttributeModal" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -172,7 +172,7 @@ export default {
     },
     showDeleteDynamicAttributeModal(id) {
       this.currentDynamicAttribute = id;
-      $('#deleteDynamicAttributeModel').modal();
+      $('#deleteDynamicAttributeModal').modal();
     },
     deleteDynamicAttribute() {
       $('#deleteDynamicAttributeModal').modal('hide');
