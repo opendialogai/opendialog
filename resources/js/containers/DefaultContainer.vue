@@ -31,18 +31,18 @@
         </div>
       </main>
     </div>
-    <TheFooter>
+    <Footer>
       <!--footer-->
       <div>
         <a href="https://opendialog.ai">OpenDialog</a>
         <span class="ml-1">&copy; {{ new Date().getFullYear() }} Greenshoot Labs.</span>
       </div>
-    </TheFooter>
+    </Footer>
   </div>
 </template>
 
 <script>
-import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, Footer as TheFooter } from '@coreui/vue';
+import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside } from '@coreui/vue';
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt';
 
 export default {
@@ -51,7 +51,6 @@ export default {
     AppHeader,
     AppSidebar,
     AppAside,
-    TheFooter,
     DefaultHeaderDropdownAccnt,
     SidebarForm,
     SidebarFooter,
