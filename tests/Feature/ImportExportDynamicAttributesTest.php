@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\ImportExportHelpers\DynamicAttributeImportExportHelper;
-use Barryvdh\LaravelIdeHelper\Tests\Console\ModelsCommand\DynamicRelations\Models\Dynamic;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
@@ -159,7 +158,7 @@ class ImportExportDynamicAttributesTest extends TestCase
             json_encode($replacement));
 
 
-        $expectedOutput = "Importing custom attributes...\n"."Some ids are already in use.\n"."Ids:\n"
+        $expectedOutput = "Importing custom attributes...\n"."Some ids are already in use.\n"."IDs:\n"
             ."* test_dynamic_attribute_a\n"."* test_dynamic_attribute_b\nFailed to create collection. Restoring database...\n";
 
         Artisan::call('custom-attributes:import', [

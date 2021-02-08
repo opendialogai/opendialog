@@ -403,9 +403,10 @@ class DynamicAttributesTest extends TestCase
             $expected[$datum->attribute_id] = $datum->attribute_type;
         }
 
-        $this->actingAs($this->user, 'a
-        pi')->get('/admin/api/dynamic-attributes/download')->assertStatus(200)->assertJson
-        ($expected);
+        $this->actingAs($this->user, 'api')
+            ->get('/admin/api/dynamic-attributes/download')
+            ->assertStatus(200)
+            ->assertJson($expected);
     }
 
     public function testUploadNoAuth()
@@ -469,7 +470,7 @@ class DynamicAttributesTest extends TestCase
         $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload', $data)
             ->assertStatus(400)
             ->assertJson([
-            'ids' => self::INVALID_IDS, 'message' => 'Invalid attribute ids. All attribute Ids must be in snake_case',
+            'ids' => self::INVALID_IDS, 'message' => 'Invalid attribute IDs. All attribute IDs must be in snake_case.',
         ]);
         foreach (self::INVALID_IDS as $id) {
             $this->assertDatabaseMissing('dynamic_attributes',
