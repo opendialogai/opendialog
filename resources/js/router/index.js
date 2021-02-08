@@ -11,6 +11,7 @@ import OutgoingIntent from '@/views/OutgoingIntent';
 import ChatbotUsers from '@/views/ChatbotUsers';
 import ConversationLog from '@/views/ConversationLog';
 import User from '@/views/User';
+import DynamicAttribute from '@/views/DynamicAttribute'
 import Request from '@/views/Request';
 import GlobalContext from '@/views/GlobalContext';
 import Warning from '@/views/Warning';
@@ -223,6 +224,49 @@ const router = new VueRouter({
                 }]
             }
         },
+      {
+          path: 'dynamic-attributes',
+          name: 'dynamic-attributes',
+          component: DynamicAttribute
+      },
+      {
+          path: 'dynamic-attributes/add',
+          name: 'add-dynamic-attribute',
+          component: DynamicAttribute,
+          meta: {
+              breadcrumbs: [{
+                  name: "Back to Dynamic attributes",
+                  routename: "dynamic-attributes"
+              }]
+          }
+      },
+      {
+          path: 'dynamic-attributes/:id',
+          name: 'view-dynamic-attribute',
+          component: DynamicAttribute,
+          props: true,
+          meta: {
+              breadcrumbs: [{
+                  name: "Back to Dynamic attributes",
+                  routename: "dynamic-attributes"
+              }]
+          }
+      },
+      {
+          path: 'dynamic-attributes/:id/edit',
+          name: 'edit-dynamic-attribute',
+          component: DynamicAttribute,
+          props: true,
+          meta: {
+              breadcrumbs: [{
+                  name: "Back to dynamic attributes",
+                  routename: "dynamic-attributes"
+              },{
+                  name: "Back to dynamic attribute",
+                  routename: "view-dynamic-attribute"
+              }]
+          }
+      },
         {
           path: 'users',
           name: 'users',

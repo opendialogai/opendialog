@@ -19,6 +19,11 @@ return [
             'icon' => 'icon-people',
         ],
         [
+            'title' => 'Dynamic Attributes',
+            'url' => '/admin/dynamic-attributes',
+            'icon' => 'cui-list',
+        ],
+        [
             'title' => 'Webchat settings',
             'url' => '/admin/webchat-setting',
             'icon' => 'icon-settings',
