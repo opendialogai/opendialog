@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e301cfa42df8af64a732358fcaf0dae2",
+    "content-hash": "b349d641179843bbd82db761d2e66aec",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2102,16 +2102,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "0.7.x-dev",
+            "version": "dev-feature/dgraph-upgrade",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "17a22a9d7445463cf02bfbf5cc28a16a6d93bb34"
+                "reference": "e5ac147bb4c581b3705101e3b7ab87af17676eea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/17a22a9d7445463cf02bfbf5cc28a16a6d93bb34",
-                "reference": "17a22a9d7445463cf02bfbf5cc28a16a6d93bb34",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/e5ac147bb4c581b3705101e3b7ab87af17676eea",
+                "reference": "e5ac147bb4c581b3705101e3b7ab87af17676eea",
                 "shasum": ""
             },
             "require": {
@@ -2119,7 +2119,7 @@
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "~6.3",
                 "justinrainbow/json-schema": "^5.2",
-                "opendialogai/dgraph-docker": "1.2.5",
+                "opendialogai/dgraph-docker": "dev-feature/dgraph-v20.11.0",
                 "php": "^7.3.0",
                 "php-ds/php-ds": "~1.2.",
                 "spatie/laravel-activitylog": "^3.8",
@@ -2181,20 +2181,24 @@
                 "Apache-2.0"
             ],
             "description": "The OpenDialog Core package",
-            "time": "2021-01-07T09:16:15+00:00"
+            "support": {
+                "issues": "https://github.com/opendialogai/core/issues",
+                "source": "https://github.com/opendialogai/core/tree/feature/dgraph-upgrade"
+            },
+            "time": "2021-02-11T10:03:57+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
-            "version": "1.2.5",
+            "version": "dev-feature/dgraph-v20.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/dgraph-docker.git",
-                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2"
+                "reference": "30e53e670d49fdbc6e1ec4083ac69a2729595acd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/8d1984dd62268c6e95c964e57b9ad442fe385ae2",
-                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2",
+                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/30e53e670d49fdbc6e1ec4083ac69a2729595acd",
+                "reference": "30e53e670d49fdbc6e1ec4083ac69a2729595acd",
                 "shasum": ""
             },
             "type": "library",
@@ -2213,7 +2217,11 @@
                 }
             ],
             "description": "The OpenDialog DGraph Docker compose file",
-            "time": "2020-06-08T13:23:00+00:00"
+            "support": {
+                "issues": "https://github.com/opendialogai/dgraph-docker/issues",
+                "source": "https://github.com/opendialogai/dgraph-docker/tree/feature/dgraph-v20.11.0"
+            },
+            "time": "2021-02-11T09:31:39+00:00"
         },
         {
             "name": "opendialogai/webchat",
@@ -8732,5 +8740,5 @@
         "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
