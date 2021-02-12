@@ -303,10 +303,6 @@ class ConversationsTest extends TestCase
 
         $this->assertDatabaseHas('conversations', ['name' => 'no_match_conversation']);
 
-
-        $dgraphClient = resolve(DGraphClient::class);
-        $data = $dgraphClient->query(DGraphConversationQueryFactory::getAllOpeningIntents())
-            ->getData();
         $this->assertCount(
             1,
             resolve(DGraphClient::class)

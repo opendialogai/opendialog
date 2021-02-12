@@ -28,7 +28,7 @@ DGraph *v20.11.0*'s data storage format is incompatible with *v1.25*. You must e
     * Start dgraph-zero, dgraph-server and ratel:
       `docker-compose up -d dgraph-zero dgraph-server ratel`
 
-    * Copy export back to dgraph-zero:
+    * Copy export to dgraph-zero:
         * `docker cp export $(docker-compose ps -q dgraph-zero):/dgraph`
     * Connect to dgraph zero:
     * `docker-compose exec dgraph-zero bash`
