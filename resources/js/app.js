@@ -10,9 +10,8 @@ import 'core-js/features/array';
 
 import router from '@/router/index';
 
-import OpenDialogAdmin from '@opendialogai/opendialog-design-system-pkg/src/main'
+import OpenDialogAdmin from '@opendialogai/opendialog-design-system-pkg/src'
 
-import App from '../../../opendialog-design-system/src/components/Views/App';
 import BootstrapVue from 'bootstrap-vue';
 import VueCookies from 'vue-cookies';
 
@@ -30,6 +29,6 @@ window.Vue.use(VueCookies);
 
 const { app } = new window.Vue({
   el: '#app',
-  components: { App },
+  components: { OpenDialogAdmin },
   router,
 });

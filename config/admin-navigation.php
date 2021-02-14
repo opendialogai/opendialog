@@ -4,9 +4,14 @@ return [
 
     'items' => [
         [
-            'title' => 'Message Editor',
-            'url' => '/admin/outgoing-intents',
-            'icon' => 'icon-list',
+            'title' => 'Dashboard',
+            'url' => '/admin',
+            'icon' => 'od-icon-home',
+        ],
+        [
+            'title' => 'Conversations Builder',
+            'url' => '/admin/conversations',
+            'icon' => 'od-icon-conversation-builder',
         ],
         [
             'title' => 'Chatbot Users',
@@ -22,11 +27,6 @@ return [
             'title' => 'Webchat settings',
             'url' => '/admin/webchat-setting',
             'icon' => 'icon-settings',
-        ],
-        [
-            'title' => 'Conversations',
-            'url' => '/admin/conversations',
-            'icon' => 'icon-speech',
         ],
         [
             'title' => 'Requests',
