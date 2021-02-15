@@ -2670,12 +2670,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "11ee258afe20144dcac69851f16842ea0614d089"
+                "reference": "c7971dc3b94cc78c5e9e273a4be71312b4aac12a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/11ee258afe20144dcac69851f16842ea0614d089",
-                "reference": "11ee258afe20144dcac69851f16842ea0614d089",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/c7971dc3b94cc78c5e9e273a4be71312b4aac12a",
+                "reference": "c7971dc3b94cc78c5e9e273a4be71312b4aac12a",
                 "shasum": ""
             },
             "require": {
@@ -2749,7 +2749,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/laravel-8-upgrade"
             },
-            "time": "2021-02-14T10:24:28+00:00"
+            "time": "2021-02-15T09:20:13+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
