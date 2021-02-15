@@ -10,9 +10,10 @@
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
-        "laravel/framework": "^7.0",
+        "laravel/framework": "^8.0",
+        "laravel/legacy-factories": "^1.1",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0",
+        "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
         "opendialogai/core": "dev-feature/laravel-8-upgrade",
         "opendialogai/webchat": "dev-feature/laravel-8-upgrade",
@@ -31,7 +32,7 @@
         "mockery/mockery": "^1.2",
         "nunomaduro/collision": "^5.3",
         "phpro/grumphp": "^0.18.1",
-        "phpunit/phpunit": "^8.3",
+        "phpunit/phpunit": "^9.0",
         "squizlabs/php_codesniffer": "^3.4"
     },
     "config": {
