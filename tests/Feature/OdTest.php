@@ -50,7 +50,7 @@ class OdTest extends TestCase
         $response->assertSeeInOrder([
             '<opendialog-chat>',
             'vendor/webchat/js/app.js',
-        ]);
+        ], false);
     }
 
     /**
