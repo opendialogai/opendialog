@@ -16,7 +16,7 @@
         "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
         "opendialogai/core": "1.x-dev",
-        "opendialogai/webchat": "0.7.x-dev",
+        "opendialogai/webchat": "1.x-dev",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
         "propaganistas/laravel-phone": "^4.2",
