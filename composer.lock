@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd6c3d3bb1506b3eef7e13dec8734b85",
+    "content-hash": "02883729a069a0cac897064ee14e5182",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2519,16 +2519,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/laravel-8-upgrade",
+            "version": "0.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "e960b76711e6db3bc4d11ed65adaf6550d3cc1eb"
+                "reference": "418c052b442edf0b097a045b4f02ae4442e49f11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/e960b76711e6db3bc4d11ed65adaf6550d3cc1eb",
-                "reference": "e960b76711e6db3bc4d11ed65adaf6550d3cc1eb",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/418c052b442edf0b097a045b4f02ae4442e49f11",
+                "reference": "418c052b442edf0b097a045b4f02ae4442e49f11",
                 "shasum": ""
             },
             "require": {
@@ -2553,6 +2553,7 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2600,9 +2601,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/laravel-8-upgrade"
+                "source": "https://github.com/opendialogai/core/tree/0.7.6"
             },
-            "time": "2021-02-15T11:21:54+00:00"
+            "time": "2021-02-16T11:49:12+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -2642,16 +2643,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "dev-feature/laravel-8-upgrade",
+            "version": "0.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "8c141a12162f5bc37a439dcf750866fff652216f"
+                "reference": "d43526d1ddcc6d2dd634b202c2337f76f321474d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/8c141a12162f5bc37a439dcf750866fff652216f",
-                "reference": "8c141a12162f5bc37a439dcf750866fff652216f",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/d43526d1ddcc6d2dd634b202c2337f76f321474d",
+                "reference": "d43526d1ddcc6d2dd634b202c2337f76f321474d",
                 "shasum": ""
             },
             "require": {
@@ -2659,11 +2660,12 @@
                 "php": "^7.3.0"
             },
             "require-dev": {
-                "opendialogai/core": "dev-feature/laravel-8-upgrade",
+                "opendialogai/core": "0.7.6",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2693,9 +2695,9 @@
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
                 "issues": "https://github.com/opendialogai/webchat/issues",
-                "source": "https://github.com/opendialogai/webchat/tree/feature/laravel-8-upgrade"
+                "source": "https://github.com/opendialogai/webchat/tree/0.7.x"
             },
-            "time": "2021-02-15T11:41:13+00:00"
+            "time": "2021-02-16T13:37:21+00:00"
         },
         {
             "name": "opis/closure",
