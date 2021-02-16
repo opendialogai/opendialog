@@ -16,7 +16,7 @@ class ExportConversations extends Command
     {
         $conversationName = $this->argument('conversation');
 
-        if ($this->option('yes') || $this->option('y')) {
+        if ($this->option('yes')) {
             $continue = true;
         } elseif ($conversationName) {
             $continue = $this->confirm(
