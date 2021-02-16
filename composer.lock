@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8c612a9278fbc75d7f9305d25d9439a",
+    "content-hash": "1419c7782494ce45d774079728dbc9ae",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2630,6 +2630,42 @@
                 "source": "https://github.com/opendialogai/core/tree/1.x"
             },
             "time": "2021-02-16T18:47:31+00:00"
+        },
+        {
+            "name": "opendialogai/dgraph-docker",
+            "version": "1.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opendialogai/dgraph-docker.git",
+                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/8d1984dd62268c6e95c964e57b9ad442fe385ae2",
+                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stuart Haigh",
+                    "email": "stuarth@greenshootlabs.com"
+                },
+                {
+                    "name": "Ronald Ashri",
+                    "email": "ronalda@greenshootlabs.com"
+                }
+            ],
+            "description": "The OpenDialog DGraph Docker compose file",
+            "support": {
+                "issues": "https://github.com/opendialogai/dgraph-docker/issues",
+                "source": "https://github.com/opendialogai/dgraph-docker/tree/1.2.5"
+            },
+            "time": "2020-06-08T13:23:00+00:00"
         },
         {
             "name": "opendialogai/webchat",
