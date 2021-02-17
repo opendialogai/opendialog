@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\User;
 use OpenDialogAi\ActionEngine\Service\ActionEngineInterface;
 use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
-use OpenDialogAi\ContextEngine\ContextManager\ContextService;
-use OpenDialogAi\ContextEngine\Contexts\User\UserService;
-use OpenDialogAi\ConversationEngine\ConversationStore\ConversationStoreInterface;
+use OpenDialogAi\ContextEngine\Contracts\ContextService;
 use OpenDialogAi\InterpreterEngine\Service\InterpreterServiceInterface;
 use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 use OpenDialogAi\SensorEngine\Service\SensorService;
@@ -64,11 +62,7 @@ class OdTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson([
-            WebchatSetting::GENERAL => [
-                WebchatSetting::TEAM_NAME => 'OpenDialog',
-                WebchatSetting::USE_HUMAN_AVATAR => false,
-                WebchatSetting::USE_BOT_AVATAR => true,
-            ]
+            WebchatSetting::GENERAL => []
         ]);
     }
 
@@ -79,26 +73,22 @@ class OdTest extends TestCase
      */
     public function testOdCoreServiceProviders()
     {
-        $actionEngine = app('OpenDialogAi\ActionEngine\Service\ActionEngineInterface');
+        $actionEngine = resolve(ActionEngineInterface::class);
         $this->assertInstanceOf(ActionEngineInterface::class, $actionEngine);
 
-        $contextService = app('OpenDialogAi\ContextEngine\ContextManager\ContextService');
+        $contextService = resolve(ContextService::class);
         $this->assertInstanceOf(ContextService::class, $contextService);
-        $attributeResolver = app('OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver');
+
+        $attributeResolver = resolve(AttributeResolver::class);
         $this->assertInstanceOf(AttributeResolver::class, $attributeResolver);
-        $userService = app('OpenDialogAi\ContextEngine\Contexts\User\UserService');
-        $this->assertInstanceOf(UserService::class, $userService);
 
-        $conversationStore = app('OpenDialogAi\ConversationEngine\ConversationStore\ConversationStoreInterface');
-        $this->assertInstanceOf(ConversationStoreInterface::class, $conversationStore);
-
-        $interpreterService = app('OpenDialogAi\InterpreterEngine\Service\InterpreterServiceInterface');
+        $interpreterService = resolve(InterpreterServiceInterface::class);
         $this->assertInstanceOf(InterpreterServiceInterface::class, $interpreterService);
 
-        $responseEngineService = app('OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface');
+        $responseEngineService = resolve(ResponseEngineServiceInterface::class);
         $this->assertInstanceOf(ResponseEngineServiceInterface::class, $responseEngineService);
 
-        $sensorService = app('OpenDialogAi\SensorEngine\Service\SensorService');
+        $sensorService = resolve(SensorService::class);
         $this->assertInstanceOf(SensorService::class, $sensorService);
     }
 
