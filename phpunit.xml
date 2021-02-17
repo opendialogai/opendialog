@@ -33,6 +33,7 @@
         <env name="DB_DATABASE" value=":memory:"/>
         <env name="DGRAPH_URL" value="dgraph-server-test"/>
         <env name="DGRAPH_PORT" value="8082"/>
+        <env name="DGRAPH_AUTH_TOKEN" value="dgraphtestservertoken"/>
         <env name="STATS_CACHE_LENGTH" value="0"/>
     </php>
 </phpunit>
