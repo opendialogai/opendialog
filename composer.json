@@ -16,7 +16,7 @@
         "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
         "opendialogai/core": "dev-fix/laravel8-compatability-with-app",
-        "opendialogai/dgraph-docker": "1.2.5",
+        "opendialogai/dgraph-docker": "20.11.0",
         "opendialogai/webchat": "dev-fix/laravel8",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "502e0983df1e52d2caebc7ef1753aa2a",
+    "content-hash": "628d49a3776dec6f89157250a885f377",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2632,17 +2632,21 @@
         },
         {
             "name": "opendialogai/dgraph-docker",
-            "version": "1.2.5",
+            "version": "20.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/dgraph-docker.git",
-                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2"
+                "reference": "2997f8eb4de250260acff21404302c82066dda84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/8d1984dd62268c6e95c964e57b9ad442fe385ae2",
-                "reference": "8d1984dd62268c6e95c964e57b9ad442fe385ae2",
+                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/2997f8eb4de250260acff21404302c82066dda84",
+                "reference": "2997f8eb4de250260acff21404302c82066dda84",
                 "shasum": ""
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.3",
+                "phpunit/phpunit": "^8.3"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -2662,9 +2666,9 @@
             "description": "The OpenDialog DGraph Docker compose file",
             "support": {
                 "issues": "https://github.com/opendialogai/dgraph-docker/issues",
-                "source": "https://github.com/opendialogai/dgraph-docker/tree/1.2.5"
+                "source": "https://github.com/opendialogai/dgraph-docker/tree/20.11.0"
             },
-            "time": "2020-06-08T13:23:00+00:00"
+            "time": "2021-02-16T11:29:03+00:00"
         },
         {
             "name": "opendialogai/webchat",
