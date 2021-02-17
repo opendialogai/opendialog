@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 
 # Install dependencies
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
