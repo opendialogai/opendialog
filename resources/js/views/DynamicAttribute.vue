@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 import EditDynamicAttribute from "@/components/dynamic-attribute/EditDynamicAttribute";
 import AddDynamicAttribute from "@/components/dynamic-attribute/AddDynamicAttribute";
 import DynamicAttributes from "@/components/dynamic-attribute/DynamicAttributes";
@@ -30,8 +29,7 @@ export default {
     DynamicAttributes,
     AddDynamicAttribute,
     EditDynamicAttribute,
-    DynamicAttribute,
-    Breadcrumbs,
+    DynamicAttribute
   },
   computed: {
     currentRouteName() {
