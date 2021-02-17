@@ -94,6 +94,16 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     /**
+     * Users
+     */
+    Route::prefix('dynamic-attributes')->group(function () {
+        Route::get('/', 'AdminController@handle');
+        Route::get('/add', 'AdminController@handle');
+        Route::get('/{id}', 'AdminController@handle');
+        Route::get('/{id}/edit', 'AdminController@handle');
+    });
+
+    /**
      * Requests
      */
     Route::prefix('requests')->group(function () {
@@ -129,6 +139,13 @@ Route::prefix('stats')->middleware(['auth'])->group(function () {
     Route::get('conversations', 'StatisticsController@conversations');
     Route::get('incoming-intents', 'StatisticsController@incomingIntents');
     Route::get('message-templates', 'StatisticsController@messageTemplates');
+});
+
+/**
+ * Reflection Routes
+ */
+Route::prefix('reflection')->middleware(['auth'])->group(function () {
+    Route::get('all', 'ReflectionController');
 });
 
 Route::get('status', 'StatusController@handle');

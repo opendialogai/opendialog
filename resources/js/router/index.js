@@ -15,6 +15,7 @@ import GlobalContextView from '@opendialogai/opendialog-design-system-pkg/src/co
 import WarningView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WarningView';
 import WebchatDemo from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatDemo';
 import ConversationLog from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ConversationLog'
+import DynamicAttribute from '@/views/DynamicAttribute'
 
 Vue.use(VueRouter);
 
@@ -224,6 +225,49 @@ const router = new VueRouter({
                 }]
             }
         },
+      {
+          path: 'dynamic-attributes',
+          name: 'dynamic-attributes',
+          component: DynamicAttribute
+      },
+      {
+          path: 'dynamic-attributes/add',
+          name: 'add-dynamic-attribute',
+          component: DynamicAttribute,
+          meta: {
+              breadcrumbs: [{
+                  name: "Back to Dynamic attributes",
+                  routename: "dynamic-attributes"
+              }]
+          }
+      },
+      {
+          path: 'dynamic-attributes/:id',
+          name: 'view-dynamic-attribute',
+          component: DynamicAttribute,
+          props: true,
+          meta: {
+              breadcrumbs: [{
+                  name: "Back to Dynamic attributes",
+                  routename: "dynamic-attributes"
+              }]
+          }
+      },
+      {
+          path: 'dynamic-attributes/:id/edit',
+          name: 'edit-dynamic-attribute',
+          component: DynamicAttribute,
+          props: true,
+          meta: {
+              breadcrumbs: [{
+                  name: "Back to dynamic attributes",
+                  routename: "dynamic-attributes"
+              },{
+                  name: "Back to dynamic attribute",
+                  routename: "view-dynamic-attribute"
+              }]
+          }
+      },
         {
           path: 'users',
           name: 'users',

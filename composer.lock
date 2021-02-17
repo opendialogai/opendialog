@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "696737ccaebd7706058358e46afb8295",
+    "content-hash": "87407bbf2b0d8dbfa66eb0fbaac1af13",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2548,12 +2548,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "80251dee76c9773d26e8bd709c8851715fcac2cf"
+                "reference": "f7771ec62f3dbe2a2eca5059883ff5711f690ed6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/80251dee76c9773d26e8bd709c8851715fcac2cf",
-                "reference": "80251dee76c9773d26e8bd709c8851715fcac2cf",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/f7771ec62f3dbe2a2eca5059883ff5711f690ed6",
+                "reference": "f7771ec62f3dbe2a2eca5059883ff5711f690ed6",
                 "shasum": ""
             },
             "require": {
@@ -2628,7 +2628,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-02-17T15:50:15+00:00"
+            "time": "2021-02-17T17:55:56+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -10170,7 +10170,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3.0",
+        "php": "^7.4.0",
         "ext-dom": "*",
         "ext-simplexml": "*"
     },
