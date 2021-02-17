@@ -28,7 +28,6 @@ import Conversation from '@/components/conversation/Conversation';
 import Conversations from '@/components/conversation/Conversations';
 import EditConversation from '@/components/conversation/EditConversation';
 import ConversationArchive from '@/components/conversation/ConversationsArchive';
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 import ConversationMessageTemplates from "@/components/conversation/ConversationMessageTemplates";
 
 export default {
@@ -40,8 +39,7 @@ export default {
     Conversations,
     EditConversation,
     ConversationArchive,
-    ConversationMessageTemplates,
-    Breadcrumbs
+    ConversationMessageTemplates
   },
   computed: {
     currentRouteName() {
