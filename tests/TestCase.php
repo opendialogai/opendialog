@@ -33,13 +33,15 @@ abstract class TestCase extends BaseTestCase
 
     protected function initDDgraph(): void
     {
-        if (!$this->dgraphInitialised) {
-            /** @var DGraphClient $client */
-            $client = $this->app->make(DGraphClient::class);
-            $client->dropSchema();
-            $client->initSchema();
-            $this->dgraphInitialised = true;
-        }
+        $this->markTestSkipped();
+
+//        if (!$this->dgraphInitialised) {
+//            /** @var DGraphClient $client */
+//            $client = $this->app->make(DGraphClient::class);
+//            $client->dropSchema();
+//            $client->initSchema();
+//            $this->dgraphInitialised = true;
+//        }
     }
 
     protected function webchatSetup(): void
