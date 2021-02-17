@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use Ds\Map;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use OpenDialogAi\AttributeEngine\DynamicAttribute;
@@ -500,8 +501,10 @@ class DynamicAttributesTest extends TestCase
 
     public function testUploadDuplicateCoreIds()
     {
+        /** @var Map $attributes */
+        $attributes = AttributeResolver::getSupportedAttributes();
 
-        $ids = array_slice(array_keys(AttributeResolver::getSupportedAttributes()), 0, 3);
+        $ids = array_slice($attributes->keys()->toArray(), 0, 3);
 
         $data = array_fill_keys($ids, 'attribute.core.int');
         $this->actingAs($this->user, 'api')->post('/admin/api/dynamic-attributes/upload', $data)
