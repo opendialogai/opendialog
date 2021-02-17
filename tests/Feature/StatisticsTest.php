@@ -16,6 +16,8 @@ class StatisticsTest extends TestCase
 
     public function setup(): void
     {
+        $this->markTestSkipped();
+
         parent::setUp();
 
         $this->user = factory(User::class)->create();

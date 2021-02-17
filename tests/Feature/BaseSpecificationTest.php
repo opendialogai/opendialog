@@ -18,6 +18,8 @@ abstract class BaseSpecificationTest extends TestCase
 
     public function setUp(): void
     {
+        $this->markTestSkipped();
+
         parent::setUp();
 
         $this->setupFakeSpecificationDisk();
