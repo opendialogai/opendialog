@@ -2548,12 +2548,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "37c2a75db119a7443b01104be1fc7ceb958ac233"
+                "reference": "4d9031472289066564997df742af9f23b07a2474"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/37c2a75db119a7443b01104be1fc7ceb958ac233",
-                "reference": "37c2a75db119a7443b01104be1fc7ceb958ac233",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/4d9031472289066564997df742af9f23b07a2474",
+                "reference": "4d9031472289066564997df742af9f23b07a2474",
                 "shasum": ""
             },
             "require": {
@@ -2628,7 +2628,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/fix/laravel8-compatability-with-app"
             },
-            "time": "2021-02-17T11:38:38+00:00"
+            "time": "2021-02-17T13:20:42+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
