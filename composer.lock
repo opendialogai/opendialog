@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1419c7782494ce45d774079728dbc9ae",
+    "content-hash": "502e0983df1e52d2caebc7ef1753aa2a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2544,16 +2544,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-fix/laravel8-compatability-with-app",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "62f15e47570fdd20b98148eacf681e09ad61b51d"
+                "reference": "37c2a75db119a7443b01104be1fc7ceb958ac233"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/62f15e47570fdd20b98148eacf681e09ad61b51d",
-                "reference": "62f15e47570fdd20b98148eacf681e09ad61b51d",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/37c2a75db119a7443b01104be1fc7ceb958ac233",
+                "reference": "37c2a75db119a7443b01104be1fc7ceb958ac233",
                 "shasum": ""
             },
             "require": {
@@ -2563,7 +2563,7 @@
                 "justinrainbow/json-schema": "^5.2",
                 "laravel/framework": "^8.0",
                 "php": "^7.4.0",
-                "php-ds/php-ds": "~1.2.",
+                "php-ds/php-ds": "^1.2",
                 "spatie/laravel-activitylog": "^3.8",
                 "symfony/yaml": "^4.3"
             },
@@ -2592,7 +2592,6 @@
                         "OpenDialogAi\\AttributeEngine\\AttributeEngineServiceProvider",
                         "OpenDialogAi\\ContextEngine\\ContextEngineServiceProvider",
                         "OpenDialogAi\\ActionEngine\\ActionEngineServiceProvider",
-                        "OpenDialogAi\\AttributeEngine\\AttributeEngineServiceProvider",
                         "OpenDialogAi\\SensorEngine\\SensorEngineServiceProvider",
                         "OpenDialogAi\\NlpEngine\\NlpEngineServiceProvider"
                     ],
@@ -2627,9 +2626,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/fix/laravel8-compatability-with-app"
             },
-            "time": "2021-02-16T18:47:31+00:00"
+            "time": "2021-02-17T11:38:38+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -2669,16 +2668,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "1.x-dev",
+            "version": "dev-fix/laravel8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "98bc714b1e20fb27b34acf86c1121940f0c87726"
+                "reference": "12dd2f06e6f389dd38c2619d0bae11e4f91f5bd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/98bc714b1e20fb27b34acf86c1121940f0c87726",
-                "reference": "98bc714b1e20fb27b34acf86c1121940f0c87726",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/12dd2f06e6f389dd38c2619d0bae11e4f91f5bd9",
+                "reference": "12dd2f06e6f389dd38c2619d0bae11e4f91f5bd9",
                 "shasum": ""
             },
             "require": {
@@ -2686,7 +2685,7 @@
                 "php": "^7.3.0"
             },
             "require-dev": {
-                "opendialogai/core": "0.7.6",
+                "opendialogai/core": "dev-fix/laravel8-compatability-with-app",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
@@ -2720,9 +2719,9 @@
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
                 "issues": "https://github.com/opendialogai/webchat/issues",
-                "source": "https://github.com/opendialogai/webchat/tree/1.x"
+                "source": "https://github.com/opendialogai/webchat/tree/fix/laravel8"
             },
-            "time": "2021-02-16T14:40:24+00:00"
+            "time": "2021-02-17T13:09:02+00:00"
         },
         {
             "name": "opis/closure",
