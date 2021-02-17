@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "628d49a3776dec6f89157250a885f377",
+    "content-hash": "696737ccaebd7706058358e46afb8295",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2544,16 +2544,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-fix/laravel8-compatability-with-app",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "4d9031472289066564997df742af9f23b07a2474"
+                "reference": "80251dee76c9773d26e8bd709c8851715fcac2cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/4d9031472289066564997df742af9f23b07a2474",
-                "reference": "4d9031472289066564997df742af9f23b07a2474",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/80251dee76c9773d26e8bd709c8851715fcac2cf",
+                "reference": "80251dee76c9773d26e8bd709c8851715fcac2cf",
                 "shasum": ""
             },
             "require": {
@@ -2626,9 +2626,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/fix/laravel8-compatability-with-app"
+                "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-02-17T13:20:42+00:00"
+            "time": "2021-02-17T15:50:15+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -2672,16 +2672,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "dev-fix/laravel8",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "12dd2f06e6f389dd38c2619d0bae11e4f91f5bd9"
+                "reference": "08c0c08eefb0b1383ca1bc4b6f6e7f675f2b7842"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/12dd2f06e6f389dd38c2619d0bae11e4f91f5bd9",
-                "reference": "12dd2f06e6f389dd38c2619d0bae11e4f91f5bd9",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/08c0c08eefb0b1383ca1bc4b6f6e7f675f2b7842",
+                "reference": "08c0c08eefb0b1383ca1bc4b6f6e7f675f2b7842",
                 "shasum": ""
             },
             "require": {
@@ -2689,7 +2689,7 @@
                 "php": "^7.3.0"
             },
             "require-dev": {
-                "opendialogai/core": "dev-fix/laravel8-compatability-with-app",
+                "opendialogai/core": "1.x-dev",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
@@ -2723,9 +2723,9 @@
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
                 "issues": "https://github.com/opendialogai/webchat/issues",
-                "source": "https://github.com/opendialogai/webchat/tree/fix/laravel8"
+                "source": "https://github.com/opendialogai/webchat/tree/1.x"
             },
-            "time": "2021-02-17T13:09:02+00:00"
+            "time": "2021-02-17T16:01:51+00:00"
         },
         {
             "name": "opis/closure",
