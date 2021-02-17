@@ -4,7 +4,7 @@
     "description": "OpenDialog Demonstration App",
     "license": "Apache-2.0",
     "require": {
-        "php": "^7.3.0",
+        "php": "^7.4.0",
         "ext-dom": "*",
         "ext-simplexml": "*",
         "doctrine/dbal": "^2.9",
@@ -15,7 +15,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
-        "opendialogai/core": "dev-feature/dgraph-upgrade",
+        "opendialogai/core": "0.7.x-dev",
         "opendialogai/webchat": "0.7.x-dev",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
