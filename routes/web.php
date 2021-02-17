@@ -94,6 +94,16 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     /**
+     * Users
+     */
+    Route::prefix('dynamic-attributes')->group(function () {
+        Route::get('/', 'AdminController@handle');
+        Route::get('/add', 'AdminController@handle');
+        Route::get('/{id}', 'AdminController@handle');
+        Route::get('/{id}/edit', 'AdminController@handle');
+    });
+
+    /**
      * Requests
      */
     Route::prefix('requests')->group(function () {
