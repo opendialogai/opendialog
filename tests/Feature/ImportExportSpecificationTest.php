@@ -45,6 +45,40 @@ class ImportExportSpecificationTest extends BaseSpecificationTest
                 ->query(DGraphConversationQueryFactory::getConversationTemplateIds())
                 ->getData()
         );
+
+        $this->assertCount(
+            2,
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
+                ->getData()
+        );
+
+        Artisan::call(
+            'specification:import',
+            [
+                '--yes' => true,
+                '--activate' => true,
+            ]
+        );
+
+        $this->assertDatabaseHas('conversations', ['name' => 'no_match_conversation']);
+        $this->assertDatabaseHas('outgoing_intents', ['name' => 'intent.core.NoMatchResponse']);
+        $this->assertDatabaseHas('message_templates', ['name' => 'Did not understand']);
+
+        // The previously imported conversation should still be there, just deactivated
+        $this->assertCount(
+            4,
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getConversationTemplateIds())
+                ->getData()
+        );
+
+        $this->assertCount(
+            2,
+            resolve(DGraphClient::class)
+                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
+                ->getData()
+        );
     }
 
     public function testExportSpecification()
