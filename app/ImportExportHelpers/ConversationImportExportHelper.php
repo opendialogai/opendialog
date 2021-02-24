@@ -147,27 +147,19 @@ class ConversationImportExportHelper extends BaseImportExportHelper
      */
     public static function deleteExistingConversations(Command $io = null): void
     {
-        $conversations = Conversation::all();
+        Conversation::all()->each(function (Conversation $conversation) use ($io) {
+            // If the conversation is activated, deactivate it so that current users can still finish their conversations
+            if ($conversation->status == ConversationNode::ACTIVATED) {
+                $conversation->deactivateConversation();
+            }
 
-        foreach ($conversations as $conversation) {
-            self::deleteExistingConversation($conversation);
+            // Remove the graph UID so that deletion doesn't remove it from the graph and detach users mid-conversation
+            $conversation->graph_uid = null;
+            $conversation->save();
+
+            $conversation->delete();
 
             is_null($io) ?: $io->info(sprintf('Deleted conversation %s', $conversation->name));
-        }
-    }
-
-    /**
-     * @param Conversation $conversation
-     */
-    public static function deleteExistingConversation(Conversation $conversation): void
-    {
-        if ($conversation->status == ConversationNode::ACTIVATED) {
-            $conversation->deactivateConversation();
-            $conversation->archiveConversation();
-        } elseif ($conversation->status == ConversationNode::DEACTIVATED) {
-            $conversation->archiveConversation();
-        }
-
-        $conversation->delete();
+        });
     }
 }

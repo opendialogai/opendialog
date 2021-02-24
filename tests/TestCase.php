@@ -29,6 +29,10 @@ abstract class TestCase extends BaseTestCase
         if ($overwriteDgraphPort = getenv("OVERWRITE_DGRAPH_PORT")) {
             $this->app['config']->set('opendialog.core.DGRAPH_PORT', $overwriteDgraphPort);
         }
+
+        if ($overwriteDgraphAuthToken = getenv("OVERWRITE_DGRAPH_AUTH_TOKEN")) {
+            $this->app['config']->set('opendialog.core.DGRAPH_AUTH_TOKEN', $overwriteDgraphAuthToken);
+        }
     }
 
     protected function initDDgraph(): void

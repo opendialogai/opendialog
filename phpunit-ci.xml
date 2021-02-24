@@ -32,6 +32,7 @@
         <env name="DB_CONNECTION" value="testbench"/>
         <env name="DB_DATABASE" value=":memory:"/>
         <env name="DGRAPH_URL" value="http://localhost"/>
+        <env name="DGRAPH_AUTH_TOKEN" value="circlecidgraphauthtoken"/>
         <env name="DGRAPH_PORT" value="8080"/>
         <env name="STATS_CACHE_LENGTH" value="0"/>
     </php>
