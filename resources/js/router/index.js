@@ -16,6 +16,7 @@ import WarningView from '@opendialogai/opendialog-design-system-pkg/src/componen
 import WebchatDemo from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatDemo';
 import ConversationLog from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ConversationLog'
 import DynamicAttribute from '@/views/DynamicAttribute'
+import Scenarios from '@opendialogai/opendialog-design-system-pkg/src/components/ConversationBuilder/Scenarios/Scenarios'
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,11 @@ const router = new VueRouter({
           path: '/',
           name: 'home',
           component: Home,
+        },
+        {
+          path: 'conversation-builder/scenarios',
+          name: 'scenarios',
+          component: Scenarios
         },
         {
           path: 'webchat-setting',
