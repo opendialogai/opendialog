@@ -1,6 +1,7 @@
 <template>
   <div>
-      <Breadcrumbs/>
+    <TopMenu :back-button="{url: '/admin', label: 'Dashboard'}"/>
+
     <template v-if="currentRouteName == 'view-dynamic-attribute'">
       <DynamicAttribute :id="id" />
     </template>
