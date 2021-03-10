@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,12 +111,7 @@ Route::namespace('API')
         Route::post('specification-import', 'SpecificationController@import');
         Route::get('specification-export', 'SpecificationController@export');
 
-
         Route::prefix('conversation-builder')->group(function () {
-            Route::get('scenarios', 'ScenariosController@index');
-            Route::get('scenarios/{id}', 'ScenariosController@show');
-            Route::post('scenarios', 'ScenariosController@store');
-            Route::put('scenarios/{id}', 'ScenariosController@update');
-            Route::delete('scenarios/{id}', 'ScenariosController@destroy');
+            Route::apiResource('scenarios', 'ScenariosController');
         });
     });

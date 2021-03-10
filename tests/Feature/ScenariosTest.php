@@ -3,12 +3,11 @@
 
 namespace Tests\Feature;
 
+use App\Http\Facades\Serializer;
 use App\User;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
-use App\Http\Facades\Serializer;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
-
 use Tests\TestCase;
 
 class ScenariosTest extends TestCase
@@ -94,12 +93,21 @@ class ScenariosTest extends TestCase
                 ]]);
     }
 
+    public function testGetScenarioNotFound()
+    {
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with('test', false)
+            ->andReturn(null);
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation-builder/scenarios/test')
+            ->assertStatus(404);
+    }
+
     public function testGetScenarioByUid()
     {
-        $fakeScenario = new Scenario();
-        $fakeScenario->setName("Example scenario");
-        $fakeScenario->setUid('0x0001');
-        $fakeScenario->setODId('example_scenario');
+        $fakeScenario = $this->getFakeScenario();
 
         Serializer::shouldReceive('serialize')
             ->once()
@@ -131,6 +139,15 @@ class ScenariosTest extends TestCase
                 'odId' => 'example_scenario',
                 'description' =>  'An example scenario'
             ]);
+    }
+
+    public function testCreateInvalidScenario()
+    {
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/scenarios/', [
+                'status' => 'not valid',
+            ])
+            ->assertStatus(422);
     }
 
     public function testCreateNewScenario()
@@ -180,9 +197,26 @@ class ScenariosTest extends TestCase
             ]);
     }
 
+    public function testUpdateScenarioNotFound()
+    {
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with('test', false)
+            ->andReturn(null);
+
+        $this->actingAs($this->user, 'api')
+            ->json('PUT', '/admin/api/conversation-builder/scenarios/test')
+            ->assertStatus(404);
+    }
 
     public function testUpdateScenario()
     {
+        $fakeScenario = $this->getFakeScenario();
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with($fakeScenario->getUid(), false)
+            ->andReturn($fakeScenario);
+
         $fakeScenarioUpdated = new Scenario();
         $fakeScenarioUpdated->setName("Example scenario updated");
         $fakeScenarioUpdated->setUid("0x0001");
@@ -224,12 +258,21 @@ class ScenariosTest extends TestCase
             ]);
     }
 
+    public function deleteScenarioNotFound()
+    {
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with('test', false)
+            ->andReturn(null);
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/scenarios/test')
+            ->assertStatus(404);
+    }
+
     public function testDeleteScenario()
     {
-        $fakeScenario = new Scenario();
-        $fakeScenario->setName("Example scenario");
-        $fakeScenario->setUid('0x0001');
-        $fakeScenario->setODId('example_scenario');
+        $fakeScenario = $this->getFakeScenario();
 
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
@@ -244,5 +287,17 @@ class ScenariosTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/scenarios/' . $fakeScenario->getUid())
             ->assertStatus(200);
+    }
+
+    /**
+     * @return Scenario
+     */
+    public function getFakeScenario(): Scenario
+    {
+        $fakeScenario = new Scenario();
+        $fakeScenario->setName("Example scenario");
+        $fakeScenario->setUid('0x0001');
+        $fakeScenario->setODId('example_scenario');
+        return $fakeScenario;
     }
 }
