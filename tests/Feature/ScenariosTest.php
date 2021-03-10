@@ -120,7 +120,7 @@ class ScenariosTest extends TestCase
 
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
-            ->with($fakeScenario->getUid())
+            ->with($fakeScenario->getUid(), false)
             ->andReturn($fakeScenario);
 
         $this->actingAs($this->user, 'api')
@@ -215,7 +215,7 @@ class ScenariosTest extends TestCase
                 'odId' => $fakeScenarioUpdated->getODId(),
                 'description' =>  $fakeScenarioUpdated->getDescription()
             ])
-            //->assertStatus(201)
+            ->assertStatus(200)
             ->assertJson([
                 'name' => 'Example scenario updated',
                 'uid'=> '0x0001',
@@ -233,7 +233,7 @@ class ScenariosTest extends TestCase
 
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
-            ->with($fakeScenario->getUid())
+            ->with($fakeScenario->getUid(), false)
             ->andReturn($fakeScenario);
 
         ConversationDataClient::shouldReceive('deleteScenarioByUid')

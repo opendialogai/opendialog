@@ -90,7 +90,7 @@ class ScenariosController extends Controller
      */
     public function destroy(string $id): Response
     {
-        if ($scenario = ConversationDataClient::getScenarioByUid($id)) {
+        if ($scenario = ConversationDataClient::getScenarioByUid($id, false)) {
             if (ConversationDataClient::deleteScenarioByUid($id)) {
                 return response()->noContent(200);
             } else {
