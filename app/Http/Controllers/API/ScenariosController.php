@@ -29,7 +29,7 @@ class ScenariosController extends Controller
      */
     public function index(): Response
     {
-        $scenarios = ConversationDataClient::getAllScenarios();
+        $scenarios = ConversationDataClient::getAllScenarios(false);
         $responseBody = Serializer::serialize($scenarios, 'json');
 
         return response($responseBody, 200);
@@ -43,7 +43,7 @@ class ScenariosController extends Controller
      */
     public function show(string $id): Response
     {
-        if ($scenario = ConversationDataClient::getScenarioByUid($id)) {
+        if ($scenario = ConversationDataClient::getScenarioByUid($id, false)) {
             $responseBody = Serializer::serialize($scenario, 'json');
             return response($responseBody, 200);
         }

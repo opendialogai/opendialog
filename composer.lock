@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe3c77b1387348bb288ff8b87d2e2757",
+    "content-hash": "f90539df9c4c8ba7374224abc9741ada",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2544,16 +2544,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-feature/Serializers",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "f7771ec62f3dbe2a2eca5059883ff5711f690ed6"
+                "reference": "909c27ab1b295a9cfb1577a8a76654dc3980343a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/f7771ec62f3dbe2a2eca5059883ff5711f690ed6",
-                "reference": "f7771ec62f3dbe2a2eca5059883ff5711f690ed6",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/909c27ab1b295a9cfb1577a8a76654dc3980343a",
+                "reference": "909c27ab1b295a9cfb1577a8a76654dc3980343a",
                 "shasum": ""
             },
             "require": {
@@ -2565,6 +2565,8 @@
                 "php": "^7.4.0",
                 "php-ds/php-ds": "^1.2",
                 "spatie/laravel-activitylog": "^3.8",
+                "symfony/property-access": "^5.2",
+                "symfony/serializer": "^5.2",
                 "symfony/yaml": "^4.3"
             },
             "require-dev": {
@@ -2573,6 +2575,7 @@
                 "friendsofphp/php-cs-fixer": "^2.15",
                 "matthewbdaly/artisan-standalone": "^0.0.8",
                 "mockery/mockery": "^1.2",
+                "opendialogai/dgraph-docker": "^20.11.0",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
@@ -2582,6 +2585,7 @@
                 "laravel": {
                     "providers": [
                         "OpenDialogAi\\Core\\CoreServiceProvider",
+                        "OpenDialogAi\\GraphQLClient\\GraphQLClientServiceProvider",
                         "OpenDialogAi\\Core\\Reflection\\ReflectionServiceProvider",
                         "OpenDialogAi\\ConversationBuilder\\ConversationBuilderServiceProvider",
                         "OpenDialogAi\\ConversationEngine\\ConversationEngineServiceProvider",
@@ -2603,6 +2607,7 @@
             "autoload": {
                 "psr-4": {
                     "OpenDialogAi\\Core\\": "src/",
+                    "OpenDialogAi\\GraphQLClient\\": "src/GraphQLClient",
                     "OpenDialogAi\\ActionEngine\\": "src/ActionEngine",
                     "OpenDialogAi\\AttributeEngine\\": "src/AttributeEngine",
                     "OpenDialogAi\\ContextEngine\\": "src/ContextEngine",
@@ -2626,9 +2631,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/feature/Serializers"
             },
-            "time": "2021-02-17T17:55:56+00:00"
+            "time": "2021-03-09T20:14:42+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",

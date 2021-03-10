@@ -3,7 +3,7 @@
 
 namespace App\Http\Facades;
 
-use App\Http\Serializers\OpenDialogSerializer;
+use App\Http\Serializers\ConversationSerializer;
 use Illuminate\Support\Facades\Facade;
 
 class Serializer extends Facade
@@ -16,6 +16,6 @@ class Serializer extends Facade
      **/
     protected static function getFacadeAccessor()
     {
-        return OpenDialogSerializer::class;
+        return ConversationSerializer::class;
     }
 }
