@@ -2548,12 +2548,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "5cf69b423f79db4aef2fc18d72d996e629d788da"
+                "reference": "08044366a6adb202c0a66834e7c34f0352fef9bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/5cf69b423f79db4aef2fc18d72d996e629d788da",
-                "reference": "5cf69b423f79db4aef2fc18d72d996e629d788da",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/08044366a6adb202c0a66834e7c34f0352fef9bb",
+                "reference": "08044366a6adb202c0a66834e7c34f0352fef9bb",
                 "shasum": ""
             },
             "require": {
@@ -2633,7 +2633,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/Serializers"
             },
-            "time": "2021-03-10T17:27:11+00:00"
+            "time": "2021-03-11T10:03:08+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
