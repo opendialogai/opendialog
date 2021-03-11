@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
-use Illuminate\Http\Request;
+use App\Http\Requests\ScenarioRequest;
+use App\Http\Resources\ScenarioResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
@@ -25,78 +27,65 @@ class ScenariosController extends Controller
     /**
      * Returns a collection of scenarios.
      *
-     * @return Response
+     * @return ScenarioResource
      */
-    public function index(): Response
+    public function index(): ScenarioResource
     {
         $scenarios = ConversationDataClient::getAllScenarios(false);
-        $responseBody = Serializer::serialize($scenarios, 'json');
-
-        return response($responseBody, 200);
+        return new ScenarioResource($scenarios);
     }
 
     /**
      * Display the specified scenario.
      *
-     * @param string $id
-     * @return Response
+     * @param Scenario $scenario
+     * @return ScenarioResource
      */
-    public function show(string $id): Response
+    public function show(Scenario $scenario): ScenarioResource
     {
-        if ($scenario = ConversationDataClient::getScenarioByUid($id, false)) {
-            $responseBody = Serializer::serialize($scenario, 'json');
-            return response($responseBody, 200);
-        }
-        return response()->noContent(404);
+        return new ScenarioResource($scenario);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return Response
+     * @param ScenarioRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(ScenarioRequest $request): JsonResponse
     {
         if ($newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json')) {
             $createdScenario = ConversationDataClient::addScenario($newScenario);
-            $responseBody = Serializer::serialize($createdScenario, 'json');
-            return response($responseBody, 201);
+            return (new ScenarioResource($createdScenario))->response()->setStatusCode(201);
         }
     }
 
     /**
      * Update the specified scenario.
      *
-     * @param Request $request
-     * @param string $id
-     * @return Response
+     * @param ScenarioRequest $request
+     * @param Scenario $scenario
+     * @return ScenarioResource
      */
-    public function update(Request $request, string $id): Response
+    public function update(ScenarioRequest $request, Scenario $scenario): ScenarioResource
     {
-        if ($scenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json')) {
-            $updatedScenario = ConversationDataClient::updateScenario($scenario);
-            $responseBody = Serializer::serialize($updatedScenario, 'json');
-            return response($responseBody, 200);
-        }
-        return response()->noContent(404);
+        $scenarioUpdate = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
+        $updatedScenario = ConversationDataClient::updateScenario($scenarioUpdate);
+        return new ScenarioResource($updatedScenario);
     }
 
     /**
      * Destroy the specified scenario.
      *
-     * @param string $id
+     * @param Scenario $scenario
      * @return Response $response
      */
-    public function destroy(string $id): Response
+    public function destroy(Scenario $scenario): Response
     {
-        if ($scenario = ConversationDataClient::getScenarioByUid($id, false)) {
-            if (ConversationDataClient::deleteScenarioByUid($id)) {
-                return response()->noContent(200);
-            } else {
-                return response('Error deleting scenario, check the logs', 500);
-            }
+        if (ConversationDataClient::deleteScenarioByUid($scenario->getUid())) {
+            return response()->noContent(200);
+        } else {
+            return response('Error deleting scenario, check the logs', 500);
         }
-        return response()->noContent(404);
     }
 }
