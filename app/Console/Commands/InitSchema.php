@@ -3,7 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
+use OpenDialogAi\GraphQLClient\DGraphGraphQLClient;
+use OpenDialogAi\GraphQLClient\GraphQLClientInterface;
 
 class InitSchema extends Command
 {
@@ -22,14 +23,11 @@ class InitSchema extends Command
         }
 
         if ($continue) {
-            $client = app()->make(DGraphClient::class);
-
-            $this->info('Dropping Schema');
-            $client->dropSchema();
+            /** @var DGraphGraphQLClient $client */
+            $client = resolve(GraphQLClientInterface::class);
 
             $this->info('Init Schema');
-            $client->initSchema();
-
+            $client->setSchema(config('opendialog.graphql.schema'));
             $this->info('Schema initialized');
         } else {
             $this->info('OK, not running');
