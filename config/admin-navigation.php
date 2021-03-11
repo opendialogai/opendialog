@@ -9,8 +9,8 @@ return [
             'icon' => 'od-icon-home',
         ],
         [
-            'title' => 'Conversations Builder',
-            'url' => '/admin/conversations',
+            'title' => 'Scenarios',
+            'url' => '/admin/conversation-builder/scenarios',
             'icon' => 'od-icon-conversation-builder',
         ],
         [

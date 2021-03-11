@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumbs />
+    <TopMenu :back-button="{url: '/admin', label: 'Dashboard'}"/>
     <template v-if="currentRouteName == 'view-conversation'">
       <Conversation :id="id" />
     </template>
