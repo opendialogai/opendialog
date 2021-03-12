@@ -6,6 +6,7 @@ namespace Tests\Feature;
 use App\Http\Facades\Serializer;
 use App\Http\Resources\ScenarioResource;
 use App\User;
+use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
@@ -164,6 +165,14 @@ class ScenariosTest extends TestCase
         $fakeScenarioCreated->setODId("example_scenario");
         $fakeScenarioCreated->setDescription('An example scenario');
 
+        $fakeConversation = new Conversation($fakeScenarioCreated);
+        $fakeConversation->setName('Welcome Conversation');
+        $fakeConversation->setOdId('welcome_conversation');
+        $fakeConversation->setDescription('Automatically generated');
+
+        $fakeConversationCreated = clone($fakeConversation);
+        $fakeConversationCreated->setUid("0x0001");
+
         Serializer::shouldReceive('deserialize')
             ->once()
             ->andReturn($fakeScenario);
@@ -175,13 +184,19 @@ class ScenariosTest extends TestCase
             "uid": "0x0001",
             "odId": "example_scenario",
             "name": "Example scenario",
-            "description": "An example scenario"
+            "description": "An example scenario",
+            "conversations": [{"id": "0x0001"}]
         }', true));
 
         ConversationDataClient::shouldReceive('addScenario')
             ->once()
             ->with($fakeScenario)
             ->andReturn($fakeScenarioCreated);
+
+        ConversationDataClient::shouldReceive('addConversation')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($fakeConversationCreated);
 
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation-builder/scenarios/', [
@@ -194,7 +209,8 @@ class ScenariosTest extends TestCase
                 'name' => 'Example scenario',
                 'uid'=> '0x0001',
                 'odId' => 'example_scenario',
-                'description' =>  'An example scenario'
+                'description' =>  'An example scenario',
+                'conversations' => [['id' => $fakeConversationCreated->getUid()]]
             ]);
     }
 
