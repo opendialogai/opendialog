@@ -5,7 +5,18 @@ namespace App\Http\Serializers;
 
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorsCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConditionCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConditionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -16,7 +27,22 @@ class ConversationSerializer
 
     public function __construct()
     {
-        $normalizers = [new ScenarioNormalizer(), new BehaviorsCollectionNormalizer(), new BehaviorNormalizer()];
+        $normalizers = [
+            new ScenarioCollectionNormalizer(),
+            new ScenarioNormalizer(),
+            new ConversationCollectionNormalizer(),
+            new ConversationNormalizer(),
+            new SceneCollectionNormalizer(),
+            new SceneNormalizer(),
+            new TurnCollectionNormalizer(),
+            new TurnNormalizer(),
+            new IntentCollectionNormalizer(),
+            new IntentNormalizer(),
+            new ConditionCollectionNormalizer(),
+            new ConditionNormalizer(),
+            new BehaviorsCollectionNormalizer(),
+            new BehaviorNormalizer()
+        ];
         $encoders = [new JsonEncoder()];
         $this->serializer = new Serializer($normalizers, $encoders);
     }
