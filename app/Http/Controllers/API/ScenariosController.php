@@ -9,6 +9,7 @@ use App\Http\Requests\ScenarioRequest;
 use App\Http\Resources\ScenarioResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
 
@@ -55,8 +56,26 @@ class ScenariosController extends Controller
     public function store(ScenarioRequest $request): JsonResponse
     {
         $newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
+        /** @var Scenario $createdScenario */
         $createdScenario = ConversationDataClient::addScenario($newScenario);
+
+        $welcomeConversation = $this->createWelcomeConversation($createdScenario);
+        $createdScenario->addConversation($welcomeConversation);
+
         return (new ScenarioResource($createdScenario))->response()->setStatusCode(201);
+    }
+
+    /**
+     * @param Scenario $scenario
+     * @return Conversation
+     */
+    private function createWelcomeConversation(Scenario $scenario): Conversation
+    {
+        $conversation = new Conversation($scenario);
+        $conversation->setName('Welcome Conversation');
+        $conversation->setOdId('welcome_conversation');
+        $conversation->setDescription('Automatically generated');
+        return ConversationDataClient::addConversation($conversation);
     }
 
     /**
