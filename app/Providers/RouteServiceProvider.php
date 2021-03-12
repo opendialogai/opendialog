@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 
 class RouteServiceProvider extends ServiceProvider
@@ -27,10 +28,19 @@ class RouteServiceProvider extends ServiceProvider
     {
         // Sets up custom route binding for user in routes files
         Route::bind('scenario', function ($value) {
-            if ($scenario = ConversationDataClient::getScenarioByUid($value, false)) {
-                return $scenario;
+            try {
+                return ConversationDataClient::getScenarioByUid($value, false);
+            } catch (ConversationObjectNotFoundException $exception) {
+                throw new ModelNotFoundException(sprintf('Scenario with ID %s not found', $value));
             }
-            throw new ModelNotFoundException(sprintf('Scenario with ID %s not found', $value));
+        });
+
+        Route::bind('conversation', function ($value) {
+            try {
+                return ConversationDataClient::getConversationByUid($value, false);
+            } catch (ConversationObjectNotFoundException $exception) {
+                throw new ModelNotFoundException(sprintf('Conversation with ID %s not found', $value));
+            }
         });
 
         parent::boot();

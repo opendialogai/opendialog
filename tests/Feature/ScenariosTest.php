@@ -6,7 +6,9 @@ namespace Tests\Feature;
 use App\Http\Facades\Serializer;
 use App\Http\Resources\ScenarioResource;
 use App\User;
+
 use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
@@ -100,7 +102,7 @@ class ScenariosTest extends TestCase
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
             ->with('test', false)
-            ->andReturn(null);
+            ->andThrow(new ConversationObjectNotFoundException());
 
         $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/conversation-builder/scenarios/test')
@@ -219,7 +221,7 @@ class ScenariosTest extends TestCase
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
             ->with('test', false)
-            ->andReturn(null);
+            ->andThrow(new ConversationObjectNotFoundException());
 
         $this->actingAs($this->user, 'api')
             ->json('PUT', '/admin/api/conversation-builder/scenarios/test')
