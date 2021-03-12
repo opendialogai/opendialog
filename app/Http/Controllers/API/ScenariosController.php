@@ -54,10 +54,9 @@ class ScenariosController extends Controller
      */
     public function store(ScenarioRequest $request): JsonResponse
     {
-        if ($newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json')) {
-            $createdScenario = ConversationDataClient::addScenario($newScenario);
-            return (new ScenarioResource($createdScenario))->response()->setStatusCode(201);
-        }
+        $newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
+        $createdScenario = ConversationDataClient::addScenario($newScenario);
+        return (new ScenarioResource($createdScenario))->response()->setStatusCode(201);
     }
 
     /**
