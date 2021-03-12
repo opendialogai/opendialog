@@ -6,11 +6,11 @@ use Illuminate\Console\Command;
 use OpenDialogAi\GraphQLClient\DGraphGraphQLClient;
 use OpenDialogAi\GraphQLClient\GraphQLClientInterface;
 
-class InitSchema extends Command
+class ClearDgraph extends Command
 {
-    protected $signature = 'schema:init {--y|yes}';
+    protected $signature = 'dgraph:clear {--y|yes}';
 
-    protected $description = 'Init local dgraph schema';
+    protected $description = 'Clears down all DGraph data leaving schema in tact';
 
     public function handle()
     {
@@ -18,19 +18,20 @@ class InitSchema extends Command
             $continue = true;
         } else {
             $continue = $this->confirm(
-                'This will clear your local dgraph schema. Are you sure you want to continue?'
+                'This will clear your local dgraph data. Are you sure you want to continue?'
             );
         }
 
         if ($continue) {
             /** @var DGraphGraphQLClient $client */
             $client = resolve(GraphQLClientInterface::class);
-
-            $this->info('Init Schema');
-            $client->setSchema(config('opendialog.graphql.schema'));
-            $this->info('Schema initialized');
+            $this->info('Clearing down DGraph data');
+            $client->dropData();
+            $this->info('Cleared');
         } else {
             $this->info('OK, not running');
         }
+
+        return 0;
     }
 }

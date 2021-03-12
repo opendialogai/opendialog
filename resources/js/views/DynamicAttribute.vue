@@ -1,6 +1,7 @@
 <template>
   <div>
-      <Breadcrumbs/>
+    <TopMenu :back-button="{url: '/admin', label: 'Dashboard'}"/>
+
     <template v-if="currentRouteName == 'view-dynamic-attribute'">
       <DynamicAttribute :id="id" />
     </template>
@@ -17,10 +18,11 @@
 </template>
 
 <script>
-import EditDynamicAttribute from "@/components/dynamic-attribute/EditDynamicAttribute";
-import AddDynamicAttribute from "@/components/dynamic-attribute/AddDynamicAttribute";
-import DynamicAttributes from "@/components/dynamic-attribute/DynamicAttributes";
-import DynamicAttribute from "@/components/dynamic-attribute/DynamicAttribute";
+import EditDynamicAttribute from '@/components/dynamic-attribute/EditDynamicAttribute'
+import AddDynamicAttribute from '@/components/dynamic-attribute/AddDynamicAttribute'
+import DynamicAttributes from '@/components/dynamic-attribute/DynamicAttributes'
+import DynamicAttribute from '@/components/dynamic-attribute/DynamicAttribute'
+import TopMenu from '@opendialogai/opendialog-design-system-pkg/src/components/ConversationBuilder/Components/TopMenu'
 
 export default {
   name: 'dynamic-attribute',
@@ -29,7 +31,8 @@ export default {
     DynamicAttributes,
     AddDynamicAttribute,
     EditDynamicAttribute,
-    DynamicAttribute
+    DynamicAttribute,
+    TopMenu
   },
   computed: {
     currentRouteName() {
