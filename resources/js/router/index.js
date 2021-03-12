@@ -1,22 +1,25 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 // Containers
-import DefaultContainer from '@/containers/DefaultContainer';
+import DefaultContainer from '@/containers/DefaultContainer'
 
-import Home from '@opendialogai/opendialog-design-system-pkg/src/components/Views/Home';
-import WebchatSettingView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatSettingView';
-import Conversation from '@/views/Conversation';
-import MessageTemplateView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageTemplateView';
-import OutgoingIntentView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/OutgoingIntentView';
-import ChatbotUsersView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ChatbotUsersView';
-import UserView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/UserView';
-import RequestView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/RequestView';
-import GlobalContextView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/GlobalContextView';
-import WarningView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WarningView';
-import WebchatDemo from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatDemo';
+import Home from '@opendialogai/opendialog-design-system-pkg/src/components/Views/Home'
+import WebchatSettingView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatSettingView'
+import Conversation from '@/views/Conversation'
+import MessageTemplateView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageTemplateView'
+import OutgoingIntentView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/OutgoingIntentView'
+import ChatbotUsersView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ChatbotUsersView'
+import UserView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/UserView'
+import RequestView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/RequestView'
+import GlobalContextView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/GlobalContextView'
+import WarningView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WarningView'
+import WebchatDemo from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatDemo'
 import ConversationLog from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ConversationLog'
 import DynamicAttribute from '@/views/DynamicAttribute'
-import Scenarios from '@opendialogai/opendialog-design-system-pkg/src/components/ConversationBuilder/Scenarios/Scenarios'
+import Scenarios
+  from '@opendialogai/opendialog-design-system-pkg/src/components/ConversationBuilder/Scenarios/Scenarios'
+import ConversationBuilder
+  from '@opendialogai/opendialog-design-system-pkg/src/components/ConversationBuilder/Wrapper/ConversationBuilder'
 
 Vue.use(VueRouter);
 
@@ -37,6 +40,11 @@ const router = new VueRouter({
           path: 'conversation-builder/scenarios',
           name: 'scenarios',
           component: Scenarios
+        },
+        {
+          path: 'conversation-builder/*',
+          name: 'conversation-builder',
+          component: ConversationBuilder
         },
         {
           path: 'webchat-setting',

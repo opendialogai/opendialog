@@ -49,3 +49,6 @@ composer-dev.lock
 /public/images/scenarioeditor.svg
 /public/fonts/sofiapro-light.otf
 /public/images/top-bar-back-button.svg
+/public/images/plus.svg
+/public/images/tick.svg
+/public/images/tick-light.svg
