@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +51,7 @@ Route::namespace('API')
 
         Route::apiResource('global-context', 'GlobalContextsController');
 
-        
+
         Route::get('dynamic-attributes/download', 'DynamicAttributesController@download');
         Route::post('dynamic-attributes/upload', 'DynamicAttributesController@upload');
         Route::apiResource('dynamic-attribute', 'DynamicAttributesController');
@@ -109,4 +110,8 @@ Route::namespace('API')
 
         Route::post('specification-import', 'SpecificationController@import');
         Route::get('specification-export', 'SpecificationController@export');
+
+        Route::prefix('conversation-builder')->group(function () {
+            Route::apiResource('scenarios', 'ScenariosController');
+        });
     });

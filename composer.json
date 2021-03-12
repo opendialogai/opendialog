@@ -15,7 +15,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
-        "opendialogai/core": "1.x-dev",
+        "opendialogai/core": "dev-feature/Serializers",
         "opendialogai/dgraph-docker": "20.11.0",
         "opendialogai/webchat": "1.x-dev",
         "phalcongelist/php-diff": "^2.0",
@@ -23,7 +23,9 @@
         "propaganistas/laravel-phone": "^4.2",
         "spatie/commonmark-highlighter": "^2.0",
         "spatie/laravel-flash": "^1.3",
-        "srmklive/authy": "^0.7.0"
+        "srmklive/authy": "^0.7.0",
+        "symfony/property-access": "^5.2",
+        "symfony/serializer": "^5.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.7",

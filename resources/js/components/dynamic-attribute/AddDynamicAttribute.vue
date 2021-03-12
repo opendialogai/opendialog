@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <h2 class="mb-3">Dynamic Attribute</h2>
 
     <div class="alert alert-danger" role="alert" v-if="error.message">
