@@ -3,12 +3,11 @@
 
 namespace App\Http\Serializers;
 
-use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorsCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class ConversationSerializer
@@ -31,6 +30,18 @@ class ConversationSerializer
     public function serialize($data, string $format, array $context = []): string
     {
         return $this->getSerializer()->serialize($data, $format, $context);
+    }
+
+    /**
+     * @param $data
+     * @param string $format
+     * @param array $context
+     * @return array
+     * @throws ExceptionInterface
+     */
+    public function normalize($data, string $format, array $context = []): array
+    {
+        return $this->getSerializer()->normalize($data, $format, $context);
     }
 
     /**

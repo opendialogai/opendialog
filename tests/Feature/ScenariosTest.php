@@ -4,6 +4,7 @@
 namespace Tests\Feature;
 
 use App\Http\Facades\Serializer;
+use App\Http\Resources\ScenarioResource;
 use App\User;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
@@ -46,10 +47,10 @@ class ScenariosTest extends TestCase
             ->once()
             ->andReturn($fakeScenarioCollection);
 
-        Serializer::shouldReceive('serialize')
+        Serializer::shouldReceive('normalize')
             ->once()
-            ->with($fakeScenarioCollection, 'json')
-            ->andReturn('[
+            ->with($fakeScenarioCollection, 'json', ScenarioResource::$fields)
+            ->andReturn(json_decode('[
             {
             "uid": "0x0001",
             "odId": "example_scenario1",
@@ -75,7 +76,7 @@ class ScenariosTest extends TestCase
             "conditions": [],
             "status": "PUBLISHED",
             "conversations": ["0x0002"]
-        }]');
+        }]'));
 
 
         $this->actingAs($this->user, 'api')
@@ -109,10 +110,10 @@ class ScenariosTest extends TestCase
     {
         $fakeScenario = $this->getFakeScenario();
 
-        Serializer::shouldReceive('serialize')
+        Serializer::shouldReceive('normalize')
             ->once()
-            ->with($fakeScenario, 'json')
-            ->andReturn('{
+            ->with($fakeScenario, 'json', ScenarioResource::$fields)
+            ->andReturn(json_decode('{
             "uid": "0x0001",
             "odId": "example_scenario",
             "name": "Example scenario",
@@ -124,7 +125,7 @@ class ScenariosTest extends TestCase
             "conditions": [],
             "status": "PUBLISHED",
             "conversations": ["0x0002"]
-        }');
+        }', true));
 
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
@@ -167,15 +168,15 @@ class ScenariosTest extends TestCase
             ->once()
             ->andReturn($fakeScenario);
 
-        Serializer::shouldReceive('serialize')
+        Serializer::shouldReceive('normalize')
             ->once()
-            ->with($fakeScenarioCreated, 'json')
-            ->andReturn('{
+            ->with($fakeScenarioCreated, 'json', ScenarioResource::$fields)
+            ->andReturn(json_decode('{
             "uid": "0x0001",
             "odId": "example_scenario",
             "name": "Example scenario",
             "description": "An example scenario"
-        }');
+        }', true));
 
         ConversationDataClient::shouldReceive('addScenario')
             ->once()
@@ -227,15 +228,15 @@ class ScenariosTest extends TestCase
             ->once()
             ->andReturn($fakeScenarioUpdated);
 
-        Serializer::shouldReceive('serialize')
+        Serializer::shouldReceive('normalize')
             ->once()
-            ->with($fakeScenarioUpdated, 'json')
-            ->andReturn('{
+            ->with($fakeScenarioUpdated, 'json', ScenarioResource::$fields)
+            ->andReturn(json_decode('{
             "uid": "0x0001",
             "odId": "example_scenario",
             "name": "Example scenario updated",
             "description": "An example scenario updated"
-        }');
+        }', true));
 
         ConversationDataClient::shouldReceive('updateScenario')
             ->once()
