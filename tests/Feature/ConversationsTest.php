@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\ImportExportHelpers\ConversationImportExportHelper;
 use App\User;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
-use OpenDialogAi\ConversationBuilder\Conversation;
-use OpenDialogAi\ConversationEngine\ConversationStore\DGraphConversationQueryFactory;
-use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
-use OpenDialogAi\ResponseEngine\MessageTemplate;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use Carbon\Carbon;
+use OpenDialogAi\Core\Conversation\BehaviorsCollection;
+use OpenDialogAi\Core\Conversation\ConditionCollection;
+use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\ConversationCollection;
+use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
+use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Scenario;
 use Tests\TestCase;
 
 class ConversationsTest extends TestCase
@@ -20,309 +20,247 @@ class ConversationsTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->initDDgraph();
-
         $this->user = factory(User::class)->create();
-
-        for ($i = 0; $i < 52; $i++) {
-            factory(Conversation::class)->create();
-        }
     }
 
-    public function testConversationsViewEndpoint()
+    public function testGetConversationsRequiresAuthentication()
     {
-        $conversation = Conversation::first();
-
-        $this->get('/admin/api/conversation/' . $conversation->id)
+        $this->get('/admin/api/conversation-builder/conversations/trigger302')
             ->assertStatus(302);
+    }
+
+    public function testGetConversationNotFound()
+    {
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->with('test', false)
+            ->andThrow(new ConversationObjectNotFoundException());
 
         $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation->id)
-            ->assertStatus(200)
-            ->assertJsonFragment(
-                [
-                    'name' => $conversation->name,
-                    'model' => $conversation->model,
-                    'scenes_validation_status' => 'validated',
-                    'yaml_schema_validation_status' => 'validated',
-                    'yaml_validation_status' => 'validated',
-                    'model_validation_status' => 'validated',
-                ]
-            );
+            ->json('GET', '/admin/api/conversation-builder/conversations/test')
+            ->assertStatus(404);
     }
 
-    public function testConversationsViewAllEndpoint()
+    public function testGetAllConversationsByScenario()
     {
-        $conversations = Conversation::all();
+        $fakeScenario = new Scenario();
+        $fakeScenario->setUid('0x0001');
 
-        $this->get('/admin/api/conversation')
-            ->assertStatus(302);
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0002');
+        $fakeConversation->setName('New Example conversation 1');
+        $fakeConversation->setOdId('new_example_conversation_1');
+        $fakeConversation->setDescription("An new example conversation 1");
+        $fakeConversation->setInterpreter('interpreter.core.nlp');
+        $fakeConversation->setBehaviors(new BehaviorsCollection());
+        $fakeConversation->setConditions(new ConditionCollection());
+        $fakeConversation->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+        $fakeConversation->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
 
-        $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation?page=1')
+        $fakeConversation1 = new Conversation();
+        $fakeConversation1->setUid('0x0003');
+        $fakeConversation1->setName('New Example conversation 2');
+        $fakeConversation1->setOdId('new_example_conversation_2');
+        $fakeConversation1->setDescription("An new example conversation 2");
+        $fakeConversation1->setInterpreter('interpreter.core.nlp');
+        $fakeConversation1->setBehaviors(new BehaviorsCollection());
+        $fakeConversation1->setConditions(new ConditionCollection());
+        $fakeConversation1->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+        $fakeConversation1->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+
+        $fakeConversationCollection = new ConversationCollection();
+        $fakeConversationCollection->addObject($fakeConversation);
+        $fakeConversationCollection->addObject($fakeConversation1);
+
+
+
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with($fakeScenario->getUid(), false)
+            ->andReturn($fakeScenario);
+
+        ConversationDataClient::shouldReceive('getAllConversationsByScenario')
+            ->once()
+            ->andReturn($fakeConversationCollection);
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation-builder/scenarios/' . $fakeScenario->getUid() . '/conversations')
+            ->assertStatus(200)
+            ->assertJson([[
+                "id" => "0x0002",
+                "od_id"=> "new_example_conversation_1",
+                "name"=> "New Example conversation 1",
+                "description"=> "An new example conversation 1"
+            ], [
+                "id"=> "0x0003",
+                "od_id"=> "new_example_conversation_2",
+                "name"=> "New Example conversation 2",
+                "description"=> "An new example conversation 2"
+            ]]);
+    }
+
+    public function testAddConversationToScenario()
+    {
+        $fakeScenario = new Scenario();
+        $fakeScenario->setUid('0x0001');
+        $fakeScenario->setName("Example scenario");
+        $fakeScenario->setOdId('example_scenario');
+        $fakeScenario->setDescription('An example scenario');
+
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0002');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setDescription("An new example conversation");
+        $fakeConversation->setInterpreter('interpreter.core.nlp');
+        $fakeConversation->setBehaviors(new BehaviorsCollection());
+        $fakeConversation->setConditions(new ConditionCollection());
+        $fakeConversation->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+        $fakeConversation->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+
+
+        ConversationDataClient::shouldReceive('addConversation')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($fakeConversation);
+
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with($fakeScenario->getUid(), false)
+            ->andReturn($fakeScenario);
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/scenarios/' . $fakeScenario->getUid() . '/conversations', [
+                "od_id" => "new_example_conversation",
+                "name" => "New Example conversaation",
+                "description" =>  "An new example conversation",
+                "default_interpreter" =>  "interpreter.core.nlp",
+                "conditions" =>  [],
+                "behaviors" =>  []
+            ])
             ->assertStatus(200)
             ->assertJson([
-                'data' => [
-                    $conversations[0]->toArray(),
-                    $conversations[1]->toArray(),
-                    $conversations[2]->toArray(),
-                ],
-            ])
-            ->getData();
-
-        $this->assertEquals(count($response->data), 50);
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation?page=2')
-            ->assertStatus(200)
-            ->getData();
-
-        $this->assertEquals(count($response->data), 2);
+                "id"=> "0x0002",
+                "od_id"=> "new_example_conversation",
+                "name"=> "New Example conversation",
+                "description"=> "An new example conversation",
+                "interpreter"=> "interpreter.core.nlp",
+                "created_at"=> "2021-03-12T11:57:23+0000",
+                "updated_at"=> "2021-03-12T11:57:23+0000",
+                "conditions"=> [],
+                "behaviors"=> []
+            ]);
     }
 
-    public function testConversationsUpdateEndpoint()
+    public function testGetConversationByUid()
     {
-        $conversation = Conversation::first();
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0001');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setDescription('An new example conversation');
+        $fakeConversation->setInterpreter('interpreter.core.nlp');
+        $fakeConversation->setBehaviors(new BehaviorsCollection());
+        $fakeConversation->setConditions(new ConditionCollection());
+        $fakeConversation->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeConversation->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->with($fakeConversation->getUid(), false)
+            ->andReturn($fakeConversation);
 
         $this->actingAs($this->user, 'api')
-            ->json('PATCH', '/admin/api/conversation/' . $conversation->id, [
-                'name' => 'updated_name',
-                'model' => 'conversation:
-  id: updated_name
-  scenes:
-    opening_scene:
-      intents:
-        - u:
-            i: intent.core.hello_bot
-        - b:
-            i: intent.core.hello_human
-            completes: true',
-            ])
-            ->assertStatus(200);
-
-        $updatedConversation = Conversation::first();
-
-        $this->assertEquals($updatedConversation->name, 'updated_name');
+            ->json('GET', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid())
+            ->assertExactJson([
+                "id" => "0x0001",
+                "name" => "New Example conversation",
+                "od_id" => "new_example_conversation",
+                "description" => "An new example conversation",
+                "interpreter" => "interpreter.core.nlp",
+                "behaviors" => [],
+                "conditions" => [],
+                "created_at" => "2021-02-24T09:30:00+0000",
+                "updated_at" => "2021-02-24T09:30:00+0000"
+            ]);
     }
 
-    public function testConversationsStoreEndpoint()
+    public function testUpdateConversationByUid()
     {
-        $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/conversation', [
-                'name' => 'test_conversation',
-                'model' => 'conversation:
-  id: test_conversation
-  scenes:
-    opening_scene:
-      intents:
-        - u:
-            i: intent.core.hello_bot
-        - b:
-            i: intent.core.hello_human
-            completes: true',
-            ])
-            ->assertStatus(201)
-            ->assertJsonFragment(
-                [
-                    'name' => 'test_conversation',
-                    'model' => 'conversation:
-  id: test_conversation
-  scenes:
-    opening_scene:
-      intents:
-        - u:
-            i: intent.core.hello_bot
-        - b:
-            i: intent.core.hello_human
-            completes: true',
-                ]
-            );
-    }
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0001');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setDescription('An new example conversation');
+        $fakeConversation->setInterpreter('interpreter.core.nlp');
+        $fakeConversation->setBehaviors(new BehaviorsCollection());
+        $fakeConversation->setConditions(new ConditionCollection());
+        $fakeConversation->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeConversation->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
 
-    public function testConversationsDestroyEndpoint()
-    {
-        /** @var Conversation $firstConversation */
-        $conversation = Conversation::first();
-        $conversation->activateConversation();
-        $conversation->deactivateConversation();
-        $conversation->archiveConversation();
+        $fakeConversationUpdated = new Conversation();
+        $fakeConversationUpdated->setUid('0x0001');
+        $fakeConversationUpdated->setOdId('new_example_conversation');
+        $fakeConversationUpdated->setName('New Example conversation updated');
+        $fakeConversationUpdated->setDescription('An new example conversation updated');
+        $fakeConversationUpdated->setInterpreter('interpreter.core.nlp');
+        $fakeConversationUpdated->setBehaviors(new BehaviorsCollection());
+        $fakeConversationUpdated->setConditions(new ConditionCollection());
+        $fakeConversationUpdated->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeConversationUpdated->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+
+
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->with($fakeConversation->getUid(), false)
+            ->andReturn($fakeConversation);
+
+        ConversationDataClient::shouldReceive('updateConversation')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($fakeConversationUpdated);
 
         $this->actingAs($this->user, 'api')
-            ->json('DELETE', '/admin/api/conversation/' . $conversation->id)
-            ->assertStatus(200);
-
-        $this->assertEquals(Conversation::find($conversation->id), null);
+            ->json('PATCH', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid(), [
+                'name' => $fakeConversationUpdated->getName(),
+                'id' => $fakeConversationUpdated->getUid(),
+                'od_id' => $fakeConversationUpdated->getODId(),
+                'description' =>  $fakeConversationUpdated->getDescription()
+            ])
+            //->assertStatus(200)
+            ->assertJson([
+                "id" => "0x0001",
+                "od_id" => "new_example_conversation",
+                "name" => "New Example conversation updated",
+                "description" => "An new example conversation updated",
+                "interpreter" => "interpreter.core.nlp",
+                "created_at" => "2021-02-24T09:30:00+0000",
+                "updated_at" => "2021-02-24T09:30:00+0000",
+                "conditions" => [],
+                "behaviors" => []
+            ]);
     }
 
-    public function testConversationsActivateEndpoint()
+    public function testDeleteConversationByUid()
     {
-        $conversation = Conversation::first();
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0001');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setDescription('An new example conversation');
 
-        $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/activate')
-            ->assertStatus(200);
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->with($fakeConversation->getUid(), false)
+            ->andReturn($fakeConversation);
 
-        $this->assertEquals($response->content(), 'true');
-    }
-
-    public function testConversationsDeactivateEndpoint()
-    {
-        $conversation = Conversation::first();
-
-        $conversation->activateConversation();
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/deactivate')
-            ->assertStatus(200);
-
-        $this->assertEquals($response->content(), 'true');
-    }
-
-    public function testConversationsArchiveEndpoint()
-    {
-        $conversation = Conversation::first();
-
-        $conversation->activateConversation();
-        $conversation->deactivateConversation();
+        ConversationDataClient::shouldReceive('deleteConversationByUid')
+            ->once()
+            ->with($fakeConversation->getUid())
+            ->andReturn(true);
 
         $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation->id . '/archive')
+            ->json('DELETE', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid())
             ->assertStatus(200);
-    }
-
-    public function testConversationsMessageTemplatesEndpoint()
-    {
-        $conversation1 = Conversation::all()->get(1);
-        $conversation2 = Conversation::all()->get(2);
-
-        $intent1 = $conversation1->outgoing_intents[0]['name'];
-        $intent2 = $conversation2->outgoing_intents[0]['name'];
-
-        $outgoingIntent1 = OutgoingIntent::create([
-            'name' => $intent1,
-        ]);
-        $outgoingIntent2 = OutgoingIntent::create([
-            'name' => $intent2,
-        ]);
-
-        for ($j = 0; $j < 5; $j++) {
-            $messageTemplate = factory(MessageTemplate::class)->make();
-            $messageTemplate->outgoing_intent_id = $outgoingIntent1->id;
-            $messageTemplate->save();
-        }
-
-        for ($j = 0; $j < 3; $j++) {
-            $messageTemplate = factory(MessageTemplate::class)->make();
-            $messageTemplate->outgoing_intent_id = $outgoingIntent2->id;
-            $messageTemplate->save();
-        }
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation1->id . '/message-templates')
-            ->assertStatus(200);
-        $content = json_decode($response->content());
-        $data = $content->data;
-
-        $this->assertEquals(count($data), 5);
-        foreach ($data as $message) {
-            $this->assertEquals(!empty($message->id), true);
-            $this->assertEquals(!empty($message->outgoing_intent), true);
-            $this->assertEquals($message->outgoing_intent_id, $outgoingIntent1->id);
-            $this->assertEquals($message->outgoing_intent->name, $intent1);
-        }
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('GET', '/admin/api/conversation/' . $conversation2->id . '/message-templates')
-            ->assertStatus(200);
-        $content = json_decode($response->content());
-        $data = $content->data;
-
-        $this->assertEquals(count($data), 3);
-        foreach ($data as $message) {
-            $this->assertEquals(!empty($message->id), true);
-            $this->assertEquals(!empty($message->outgoing_intent), true);
-            $this->assertEquals($message->outgoing_intent_id, $outgoingIntent2->id);
-            $this->assertEquals($message->outgoing_intent->name, $intent2);
-        }
-    }
-
-    public function testConversationsInvalidStoreEndpoint()
-    {
-        $response = $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/conversation', [
-                'model' => 'conversation:
-  id: test_conversation',
-            ])
-            ->assertStatus(400);
-
-        $this->assertEquals($response->content(), '{"field":"model","message":"Conversation must have at least 1 scene."}');
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/conversation', [
-                'model' => 'conversation:
-  id: ' . Str::random(1000) . '
-  scenes:
-    opening_scene:
-      intents:
-        - u:
-            i: intent.core.hello_bot
-        - b:
-            i: intent.core.hello_human
-            completes: true',
-            ])
-            ->assertStatus(400);
-
-        $this->assertEquals($response->content(), '{"field":"name","message":"The maximum length for conversation id is 512."}');
-    }
-
-    public function testConversationImportEndpoint()
-    {
-        $this->assertDatabaseMissing('conversations', ['name' => 'no_match_conversation']);
-
-        $this->assertEmpty(
-            resolve(DGraphClient::class)
-                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
-                ->getData()
-        );
-
-        $conversationFileName = ConversationImportExportHelper::addConversationFileExtension('no_match_conversation');
-        $conversationFile = UploadedFile::fake()->createWithContent(
-            $conversationFileName,
-            ConversationImportExportHelper::getConversationFileData(
-                ConversationImportExportHelper::getConversationPath($conversationFileName)
-            )
-        );
-
-        $this->actingAs($this->user, 'api')
-            ->post('/admin/api/conversations/import', [
-                'activate' => true,
-                'file1' => $conversationFile,
-            ])
-            ->assertStatus(200);
-
-        $this->assertDatabaseHas('conversations', ['name' => 'no_match_conversation']);
-
-        $this->assertCount(
-            1,
-            resolve(DGraphClient::class)
-                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
-                ->getData()
-        );
-
-        // Ensure re-importing works as expected (eg. that existing conversation activation is handled correctly)
-        $this->actingAs($this->user, 'api')
-            ->post('/admin/api/conversations/import', [
-                'activate' => true,
-                'file1' => $conversationFile,
-            ])
-            ->assertStatus(200);
-
-        $this->assertCount(
-            1,
-            resolve(DGraphClient::class)
-                ->query(DGraphConversationQueryFactory::getAllOpeningIntents())
-                ->getData()
-        );
     }
 }

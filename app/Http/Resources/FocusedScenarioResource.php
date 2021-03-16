@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Resources;
 
 use App\Http\Facades\Serializer;
@@ -10,26 +11,25 @@ use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Scenario;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-class ConversationResource extends JsonResource
+class FocusedScenarioResource extends JsonResource
 {
     public static $wrap = null;
 
     public static array $fields = [
         AbstractNormalizer::ATTRIBUTES => [
-            Conversation::UID,
-            Conversation::OD_ID,
-            Conversation::NAME,
-            Conversation::DESCRIPTION,
-            Conversation::INTERPRETER,
-            Conversation::CREATED_AT,
-            Conversation::UPDATED_AT,
-            Conversation::CONDITIONS => [
-              Condition::OPERATION,
-              Condition::OPERATION_ATTRIBUTES,
-              Condition::PARAMETERS
-            ],
-            Conversation::BEHAVIORS =>[
-                Behavior::COMPLETING
+            Scenario::UID,
+            Scenario::OD_ID,
+            Scenario::NAME,
+            Scenario::DESCRIPTION,
+            Scenario::INTERPRETER,
+            Scenario::CREATED_AT,
+            Scenario::UPDATED_AT,
+            Scenario::ACTIVE,
+            Scenario::STATUS,
+            Scenario::BEHAVIORS => Behavior::FIELDS,
+            Scenario::CONDITIONS => Condition::FIELDS,
+            Scenario::CONVERSATIONS => [
+                Conversation::UID
             ]
         ]
     ];
@@ -42,6 +42,7 @@ class ConversationResource extends JsonResource
      */
     public function toArray($request)
     {
-        return Serializer::normalize($this->resource, 'json', self::$fields);
+        $normalizedScenario = Serializer::normalize($this->resource, 'json', self::$fields);
+        return ['focusedScenario' => $normalizedScenario];
     }
 }
