@@ -5,12 +5,16 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\ConversationRequest;
+use App\Http\Requests\SceneRequest;
 use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
+use App\Http\Resources\SceneResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Scenario;
+use OpenDialogAi\Core\Conversation\Scene;
 
 class ConversationsController extends Controller
 {
@@ -22,6 +26,35 @@ class ConversationsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+
+    /**
+     * Returns a collection of conversations for a particular scenario.
+     *
+     * @param Conversation $conversation
+     * @return SceneResource
+     */
+    public function showScenesByConversation(Conversation $conversation): SceneResource
+    {
+        $scenes = ConversationDataClient::getAllScenesByConversation($conversation, false);
+        return new SceneResource($scenes);
+    }
+
+    /**
+     * Store a newly created conversation against a particular scenario.
+     *
+     * @param Conversation $conversation
+     * @param SceneRequest $request
+     * @return SceneResource
+     */
+    public function storeSceneAgainstConversation(Conversation $conversation, SceneRequest $request): SceneResource
+    {
+        $newScene = Serializer::deserialize($request->getContent(), Scene::class, 'json');
+        $newScene->setConversation($conversation);
+        $scene = ConversationDataClient::addScene($newScene);
+
+        return new SceneResource($scene);
     }
 
     /**

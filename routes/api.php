@@ -121,6 +121,9 @@ Route::namespace('API')
             Route::patch('conversations/{conversation}', 'ConversationsController@update');
             Route::delete('conversations/{conversation}', 'ConversationsController@destroy');
 
+            Route::get('conversations/{conversation}/scenes', 'ConversationsController@showScenesByConversation');
+            Route::post('conversations/{conversation}/scenes', 'ConversationsController@storeSceneAgainstConversation');
+
             Route::get('scenes/{scene}', 'ScenesController@show');
             Route::patch('scenes/{scene}', 'ScenesController@update');
             Route::delete('scenes/{scene}', 'ScenesController@destroy');
