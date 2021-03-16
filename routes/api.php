@@ -113,5 +113,9 @@ Route::namespace('API')
 
         Route::prefix('conversation-builder')->group(function () {
             Route::apiResource('scenarios', 'ScenariosController');
+
+            Route::get('scenes/{scene}', 'ScenesController@show');
+            Route::patch('scenes/{scene}', 'ScenesController@update');
+            Route::delete('scenes/{scene}', 'ScenesController@destroy');
         });
     });

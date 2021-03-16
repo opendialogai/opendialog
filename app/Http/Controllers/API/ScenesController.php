@@ -36,19 +36,6 @@ class ScenesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param SceneRequest $request
-     * @return JsonResponse
-     */
-    public function store(SceneRequest $request): JsonResponse
-    {
-        $newScene = Serializer::deserialize($request->getContent(), Scene::class, 'json');
-        $createdScene = ConversationDataClient::addScene($newScene);
-        return (new SceneResource($createdScene))->response()->setStatusCode(201);
-    }
-
-    /**
      * Update the specified scenario.
      *
      * @param SceneRequest $request
