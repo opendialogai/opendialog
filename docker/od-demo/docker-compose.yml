@@ -44,7 +44,7 @@ services:
     networks:
       - app-network
   dgraph-zero:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     volumes:
       - type: volume
         source: dgraph
@@ -61,7 +61,7 @@ services:
     links:
       - dgraph-server
   dgraph-server:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     volumes:
       - type: volume
         source: dgraph
@@ -76,7 +76,7 @@ services:
     networks:
       - app-network
   dgraph-ratel:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     ports:
       - 9001:8000
     volumes:
