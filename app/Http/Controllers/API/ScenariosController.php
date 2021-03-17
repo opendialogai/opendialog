@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\ScenarioRequest;
+use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ScenarioResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -45,6 +47,35 @@ class ScenariosController extends Controller
     public function show(Scenario $scenario): ScenarioResource
     {
         return new ScenarioResource($scenario);
+    }
+
+
+    /**
+     * Returns a collection of conversations for a particular scenario.
+     *
+     * @param Scenario $scenario
+     * @return ConversationResource
+     */
+    public function showConversationsByScenario(Scenario $scenario): ConversationResource
+    {
+        $conversations = ConversationDataClient::getAllConversationsByScenario($scenario, false);
+        return new ConversationResource($conversations);
+    }
+
+    /**
+     * Store a newly created conversation against a particular scenario.
+     *
+     * @param Scenario $scenario
+     * @param ConversationRequest $request
+     * @return ConversationResource
+     */
+    public function storeConversationsAgainstScenario(Scenario $scenario, ConversationRequest $request): ConversationResource
+    {
+        $newConversation = Serializer::deserialize($request->getContent(), Conversation::class, 'json');
+        $newConversation->setScenario($scenario);
+        $conversation = ConversationDataClient::addConversation($newConversation);
+
+        return new ConversationResource($conversation);
     }
 
     /**
