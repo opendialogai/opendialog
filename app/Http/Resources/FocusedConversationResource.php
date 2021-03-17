@@ -39,12 +39,12 @@ class FocusedConversationResource extends JsonResource
                 Condition::OPERATION_ATTRIBUTES,
                 Condition::PARAMETERS
             ],
-//            Conversation::SCENES => [
-//                Scene::UID,
-//                Scene::OD_ID,
-//                Scene::NAME,
-//                Scene::DESCRIPTION,
-//            ]
+            Conversation::SCENES => [
+                Scene::UID,
+                Scene::OD_ID,
+                Scene::NAME,
+                Scene::DESCRIPTION,
+            ]
         ]
     ];
 
@@ -80,8 +80,8 @@ class FocusedConversationResource extends JsonResource
             $normalizedConversation['behaviors'];
         $normalizedFocussedConversation['scenario']['focusedConversation']['conditions'] =
             $normalizedConversation['conditions'];
-        //$normalizedFocussedConversation['scenario']['focusedConversation']['scenes'] =
-        // $normalizedConversation['scenes'];
+        $normalizedFocussedConversation['scenario']['focusedConversation']['scenes'] =
+         $normalizedConversation['scenes'];
         return $normalizedFocussedConversation;
     }
 }

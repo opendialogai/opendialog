@@ -129,5 +129,6 @@ Route::namespace('API')
             Route::delete('scenes/{scene}', 'ScenesController@destroy');
 
             Route::get('ui-state/focused/conversation/{conversation}', 'UIStateController@showFocusedConversation');
+            Route::get('ui-state/focused/scene/{scene}', 'UIStateController@showFocusedScene');
         });
     });
