@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "621aeb121ca1d919cf8756cdc6f6bc5c",
+    "content-hash": "d17d1b80e8b1976b4980594254de88b3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2548,12 +2548,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "af8bfc9"
+                "reference": "57957f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/af8bfc9",
-                "reference": "af8bfc9",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/57957f7",
+                "reference": "57957f7",
                 "shasum": ""
             },
             "require": {
@@ -2633,7 +2633,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/Serializers"
             },
-            "time": "2021-03-16T16:12:16+00:00"
+            "time": "2021-03-16T20:13:43+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
