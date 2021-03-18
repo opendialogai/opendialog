@@ -5,17 +5,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\TurnIntentRequest;
 use App\Http\Requests\TurnRequest;
 use App\Http\Resources\IntentResource;
 use App\Http\Resources\TurnIntentResource;
 use App\Http\Resources\TurnIntentResourceCollection;
 use App\Http\Resources\TurnResource;
-use Google\Cloud\Dialogflow\V2\Intent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
+use OpenDialogAi\Core\Conversation\Intent;
 
 class TurnsController extends Controller
 {
@@ -54,17 +55,23 @@ class TurnsController extends Controller
     /**
      * Store a newly created conversation against a particular scenario.
      *
-     * @param  Scene        $scene
-     * @param  TurnRequest  $request
+     * @param  Turn               $turn
+     * @param  TurnIntentRequest  $request
      *
-     * @return TurnResource
+     * @return TurnIntentResource
      */
-    public function storeTurnIntentAgainstTurn(Scene $scene, TurnRequest $request): TurnResource
+    public function storeTurnIntentAgainstTurn(Turn $turn, TurnIntentRequest $request): TurnIntentResource
     {
-        $newTurn = Serializer::deserialize($request->getContent(), Turn::class, 'json');
-        $newTurn->setScene($scene);
-        $turn = ConversationDataClient::addTurn($newTurn);
-        return new TurnResource($turn);
+        $content = $request->json()->all();
+        $newIntent = Serializer::denormalize($content['intent'], Intent::class, 'json');
+        $newIntent->setTurn($turn);
+        if($content['order'] === 'REQUEST') {
+            $savedIntent = ConversationDataClient::addRequestIntent($newIntent);
+            return new TurnIntentResource($savedIntent, 'REQUEST');
+        } else if($content['order'] === 'RESPONSE') {
+            $savedIntent = ConversationDataClient::addResponseIntent($newIntent);
+            return new TurnIntentResource($savedIntent, 'RESPONSE');
+        }
     }
 
     /**

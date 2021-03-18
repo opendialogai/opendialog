@@ -61,7 +61,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('intent', function ($value) {
             try {
-                return ConversationDataClient::getTurnByUid($value, false);
+                return ConversationDataClient::getIntentByUid($value, false);
             } catch (ConversationObjectNotFoundException $exception) {
                 throw new ModelNotFoundException(sprintf('Intent with ID %s not found', $value));
             }
