@@ -5,12 +5,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FocusedConversationResource;
+use App\Http\Resources\FocusedIntentResource;
 use App\Http\Resources\FocusedScenarioResource;
 use App\Http\Resources\FocusedSceneResource;
+use App\Http\Resources\FocusedTurnResource;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class UIStateController extends Controller
 {
@@ -26,19 +30,19 @@ class UIStateController extends Controller
 
 
     /**
-     * Display the focussed conversation.
+     * Display the focused conversation.
      *
      * @param Scenario $scenario
      * @return FocusedScenarioResource
      */
     public function showFocusedScenario(Scenario $scenario): FocusedScenarioResource
     {
-        $focusedConversation = ConversationDataClient::getScenarioByUid($scenario->getUid(), false);
-        return new FocusedScenarioResource($focusedConversation);
+        $focusedScenario = ConversationDataClient::getScenarioByUid($scenario->getUid(), false);
+        return new FocusedScenarioResource($focusedScenario);
     }
 
     /**
-     * Display the focussed conversation.
+     * Display the focused conversation.
      *
      * @param Conversation $conversation
      * @return FocusedConversationResource
@@ -50,14 +54,38 @@ class UIStateController extends Controller
     }
 
     /**
-     * Display the focussed scene.
+     * Display the focused scene.
      *
      * @param Scene $scene
      * @return FocusedSceneResource
      */
     public function showFocusedScene(Scene $scene): FocusedSceneResource
     {
-        $focusedConversation = ConversationDataClient::getScenarioWithFocusedScene($scene->getUid());
-        return new FocusedSceneResource($focusedConversation);
+        $focusedScene = ConversationDataClient::getScenarioWithFocusedScene($scene->getUid());
+        return new FocusedSceneResource($focusedScene);
+    }
+
+    /**
+     * Display the focused turn.
+     *
+     * @param Turn $turn
+     * @return FocusedTurnResource
+     */
+    public function showFocusedTurn(Turn $turn): FocusedTurnResource
+    {
+        $focusedTurn = ConversationDataClient::getScenarioWithFocusedTurn($turn->getUid());
+        return new FocusedTurnResource($focusedTurn);
+    }
+
+    /**
+     * Display the focused intent.
+     *
+     * @param Intent $intent
+     * @return FocusedIntentResource
+     */
+    public function showFocusedIntent(Intent $intent): FocusedIntentResource
+    {
+        $focusedIntent = ConversationDataClient::getScenarioWithFocusedIntent($intent->getUid());
+        return new FocusedIntentResource($focusedIntent);
     }
 }
