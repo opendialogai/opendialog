@@ -16,7 +16,7 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnCollectionNormalizer;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ApiTurnNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -35,7 +35,7 @@ class ConversationSerializer
             new SceneCollectionNormalizer(),
             new SceneNormalizer(),
             new TurnCollectionNormalizer(),
-            new TurnNormalizer(),
+            new ApiTurnNormalizer(),
             new IntentCollectionNormalizer(),
             new IntentNormalizer(),
             new ConditionCollectionNormalizer(),
