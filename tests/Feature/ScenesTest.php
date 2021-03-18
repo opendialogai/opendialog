@@ -152,12 +152,12 @@ class ScenesTest extends TestCase
                 "od_id" => "welcome_scene",
                 "name" => "Welcome scene",
                 "description" => "A welcome scene",
-                "default_interpreter" => "interpreter.core.nlp",
+                "interpreter" => "interpreter.core.nlp",
                 "conditions" => [],
                 "behaviors" => [],
                 "turns" => []
             ])
-            //->assertStatus(200)
+            ->assertStatus(200)
             ->assertJson([
                 "id" => "0x0003",
                 "od_id" => "welcome_scene",
