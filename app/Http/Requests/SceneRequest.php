@@ -25,11 +25,11 @@ class SceneRequest extends FormRequest
     public function rules()
     {
         return [
-            'uid' => 'string',
-            'odID' => 'string',
+            'id' => 'string',
+            'od_id' => 'string',
             'name' => 'string',
             'description' => 'string',
-            'defaultInterpreter' => 'string',
+            'interpreter' => 'string',
             'behaviours' => 'array',
             'conditions' => 'array',
             'turns' => 'array'

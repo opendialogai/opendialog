@@ -24,6 +24,19 @@ class UIStateController extends Controller
         $this->middleware('auth');
     }
 
+
+    /**
+     * Display the focussed conversation.
+     *
+     * @param Scenario $scenario
+     * @return FocusedScenarioResource
+     */
+    public function showFocusedScenario(Scenario $scenario): FocusedScenarioResource
+    {
+        $focusedConversation = ConversationDataClient::getScenarioByUid($scenario->getUid(), false);
+        return new FocusedScenarioResource($focusedConversation);
+    }
+
     /**
      * Display the focussed conversation.
      *

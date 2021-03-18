@@ -128,6 +128,7 @@ Route::namespace('API')
             Route::patch('scenes/{scene}', 'ScenesController@update');
             Route::delete('scenes/{scene}', 'ScenesController@destroy');
 
+            Route::get('ui-state/focused/scenario/{scenario}', 'UIStateController@showFocusedScenario');
             Route::get('ui-state/focused/conversation/{conversation}', 'UIStateController@showFocusedConversation');
             Route::get('ui-state/focused/scene/{scene}', 'UIStateController@showFocusedScene');
         });
