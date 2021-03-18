@@ -43,6 +43,14 @@ class RouteServiceProvider extends ServiceProvider
             }
         });
 
+        Route::bind('scene', function ($value) {
+            try {
+                return ConversationDataClient::getSceneByUid($value, false);
+            } catch (ConversationObjectNotFoundException $exception) {
+                throw new ModelNotFoundException(sprintf('Scene with ID %s not found', $value));
+            }
+        });
+
         parent::boot();
     }
 
