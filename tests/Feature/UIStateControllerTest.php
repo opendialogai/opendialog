@@ -15,6 +15,7 @@ use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundExceptio
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use Tests\TestCase;
 
@@ -169,6 +170,96 @@ class UIStateControllerTest extends TestCase
                              "behaviors" => [],
                              "conditions" => [],
                              "turns" => []
+                        ]
+                    ]
+                ]
+            ]);
+    }
+
+    public function testGetFocusedTurn()
+    {
+        $fakeScenario = new Scenario();
+        $fakeScenario->setUid('0x0001');
+        $fakeScenario->setName("Example scenario");
+        $fakeScenario->setOdId('example_scenario');
+        $fakeScenario->setDescription('An example scenario');
+
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0002');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setDescription("An new example conversation");
+
+        $fakeConversation->setScenario($fakeScenario);
+
+        $fakeScene = new Scene();
+        $fakeScene->setUid('0x0003');
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->setDescription('A welcome scene');
+        $fakeScene->setInterpreter('interpreter.core.nlp');
+
+        $fakeScene->setConversation($fakeConversation);
+
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0004');
+        $fakeTurn->setOdId('first_turn');
+        $fakeTurn->setName('First turn');
+        $fakeTurn->setDescription('The first turn');
+        $fakeTurn->setInterpreter('interpreter.core.nlp');
+        $fakeTurn->setBehaviors(new BehaviorsCollection());
+        $fakeTurn->setConditions(new ConditionCollection());
+        $fakeTurn->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeTurn->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+
+        $fakeTurn->setScene($fakeScene);
+
+
+
+
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+
+        ConversationDataClient::shouldReceive('getScenarioWithFocusedTurn')
+            ->once()
+            ->with($fakeTurn->getUid())
+            ->andReturn($fakeTurn);
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation-builder/ui-state/focused/turn/' . $fakeTurn->getUid())
+            ->assertJson([
+                'scenario' => [
+                    'id'=> '0x0001',
+                    'od_id'=> 'example_scenario',
+                    'name'=> 'Example scenario',
+                    'description'=> 'An example scenario',
+                    'conversation' => [
+                        "id" => "0x0002",
+                        "od_id" => "new_example_conversation",
+                        "name" => "New Example conversation",
+                        "description" => "An new example conversation",
+                        "scene" => [
+                            "id" => "0x0003",
+                            "od_id"=> "welcome_scene",
+                            "name"=> "Welcome scene",
+                            "description"=> "A welcome scene",
+                            "interpreter" => 'interpreter.core.nlp',
+                            "focusedTurn" => [
+                                "id" => "0x0004",
+                                "od_id" => "first_turn",
+                                "name" => "First turn",
+                                "description" => "The first turn",
+                                "updated_at"=> "2021-02-24T09:30:00+0000",
+                                "created_at"=> "2021-02-24T09:30:00+0000",
+                                "behaviors" => [],
+                                "conditions" => [],
+                                "intents" => []
+                            ]
+
                         ]
                     ]
                 ]
