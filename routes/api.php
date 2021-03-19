@@ -136,9 +136,10 @@ Route::namespace('API')
             Route::patch('turns/{turn}', 'TurnsController@update');
             Route::delete('turns/{turn}', 'TurnsController@destroy');
 
-            /** Todo */
             Route::get('turns/{turn}/intents', 'TurnsController@showTurnIntentsByTurn');
             Route::post('turns/{turn}/intents', 'TurnsController@storeTurnIntentAgainstTurn');
+
+            /** Todo */
             Route::get('turns/{turn}/turn-intents/{intent}', 'TurnsController@getTurnIntentByTurnAndIntent');
             Route::patch('turns/{turn}/turn-intents/{intent}', 'TurnsController@updateTurnIntent');
             /** End Todo */

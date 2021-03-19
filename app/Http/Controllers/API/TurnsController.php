@@ -113,4 +113,33 @@ class TurnsController extends Controller
             return response('Error deleting conversation, check the logs', 500);
         }
     }
+
+    public function getTurnIntentByTurnAndIntent(Turn $turn, Intent $intent) : TurnIntentResource
+    {
+        $turnWithIntent = ConversationDataClient::getTurnWithIntent($turn->getUid(), $intent->getUid());
+        if($turnWithIntent->getRequestIntents()->count() > 0) {
+            return new TurnIntentResource($turnWithIntent->getRequestIntents()->first(), 'REQUEST');
+        } else if($turnWithIntent->getRequestIntents()->count() > 0) {
+            return new TurnIntentResource($turnWithIntent->getResponseIntents()->first(), 'RESPONSE');
+        }
+    }
+
+    public function updateTurnIntent(TurnIntentRequest $request, Turn $turn, Intent $intent) :
+    TurnIntentResource
+    {
+        $content = $request->json()->all();
+        $order = $content['order'];
+        $patchIntent = Serializer::denormalize($content['intent'], Intent::class, 'json');
+        $patchIntent->setUid($intent->getUid());
+        // First update the intent data
+        $updatedIntent = ConversationDataClient::updateIntent($patchIntent);
+        $updatedTurnWithIntent = ConversationDataClient::updateTurnIntentRelation($turn->getUid(), $intent->getUid(), $content['order']);
+
+        if($updatedTurnWithIntent->getRequestIntents()->count() > 0) {
+            return new TurnIntentResource($updatedTurnWithIntent->getRequestIntents()->first(), 'REQUEST');
+        } else if($updatedTurnWithIntent->getResponseIntents()->count() > 0) {
+            return new TurnIntentResource($updatedTurnWithIntent->getResponseIntents()->first(), 'RESPONSE');
+        }
+    }
+
 }

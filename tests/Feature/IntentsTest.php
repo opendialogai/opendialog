@@ -37,7 +37,7 @@ class IntentsTest extends TestCase
 
     public function testGetIntentNotFound()
     {
-        ConversationDataClient::shouldReceive('getTurnByUid')
+        ConversationDataClient::shouldReceive('getIntentByUid')
             ->once()
             ->with('test', false)
             ->andThrow(new ConversationObjectNotFoundException());
@@ -302,11 +302,175 @@ class IntentsTest extends TestCase
     }
 
     public function testGetTurnIntentByTurnAndIntentUid() {
-        //TODO: tests the GET /turns/{turn}/intent/{intent} endpoint
+
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0004');
+        $fakeTurn->setName('New Example turn 1');
+        $fakeTurn->setOdId('new_example_turn_1');
+        $fakeTurn->setDescription("An new example turn 1");
+
+        $fakeRequestIntent = new Intent($fakeTurn);
+        $fakeRequestIntent->setUid('0x0005');
+        $fakeRequestIntent->setOdId('welcome_intent_1');
+        $fakeRequestIntent->setName('Welcome intent 1');
+        $fakeRequestIntent->setDescription('A welcome intent 1');
+        $fakeRequestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeRequestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeRequestIntent->setInterpreter('interpreter.core.nlp');
+        $fakeRequestIntent->setConditions(new ConditionCollection());
+        $fakeRequestIntent->setBehaviors(new BehaviorsCollection());
+        $fakeRequestIntent->setSpeaker(Intent::USER);
+        $fakeRequestIntent->setConfidence(1.0);
+        $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
+        $fakeRequestIntent->setTransition(new Transition(null,null, null));
+        $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeRequestIntent->setSampleUtterance('Hello!');
+
+
+        $fakeTurnWithFakeRequestIntent = $fakeTurn;
+        $fakeTurnWithFakeRequestIntent->addRequestIntent($fakeRequestIntent);
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        ConversationDataClient::shouldReceive('getIntentByUid')
+            ->once()
+            ->with($fakeRequestIntent->getUid(), false)
+            ->andReturn($fakeRequestIntent);
+
+        ConversationDataClient::shouldReceive('getTurnWithIntent')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($fakeTurnWithFakeRequestIntent);
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid() . '/turn-intents/' .
+$fakeRequestIntent->getUid())
+            //            ->assertStatus(200)
+            ->assertJson([
+                'order' => 'REQUEST',
+                'intent' => [
+                    "id" => "0x0005",
+                    "od_id" => "welcome_intent_1",
+                    "name" => "Welcome intent 1",
+                    "description" => "A welcome intent 1",
+                    "interpreter" => 'interpreter.core.nlp',
+                    "created_at" => "2021-02-24T09:30:00+0000",
+                    "updated_at" => "2021-02-24T09:30:00+0000",
+                    "conditions" => [],
+                    "behaviors" => [],
+                    "speaker" => 'USER',
+                    "confidence" => 1,
+                    "listens_for" => ['intent_a', 'intent_b'],
+                    "transition" => [],
+                    "virtual_intents" => [],
+                    "sample_utterance" => "Hello!"
+                ],
+            ]);
+
     }
 
     public function testUpdateTurnIntentByTurnAndIntentUid() {
-        //TODO: tests the PATCH /turns/{turn}/intent/{intent} endpoint
+
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0004');
+        $fakeTurn->setName('New Example turn 1');
+        $fakeTurn->setOdId('new_example_turn_1');
+        $fakeTurn->setDescription("An new example turn 1");
+
+        $fakeRequestIntent = new Intent($fakeTurn);
+        $fakeRequestIntent->setUid('0x0005');
+        $fakeRequestIntent->setOdId('welcome_intent_1');
+        $fakeRequestIntent->setName('Welcome intent 1');
+        $fakeRequestIntent->setDescription('A welcome intent 1');
+        $fakeRequestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeRequestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeRequestIntent->setInterpreter('interpreter.core.nlp');
+        $fakeRequestIntent->setConditions(new ConditionCollection());
+        $fakeRequestIntent->setBehaviors(new BehaviorsCollection());
+        $fakeRequestIntent->setSpeaker(Intent::USER);
+        $fakeRequestIntent->setConfidence(1.0);
+        $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
+        $fakeRequestIntent->setTransition(new Transition(null,null, null));
+        $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeRequestIntent->setSampleUtterance('Hello!');
+
+        $fakeUpdatedResponseIntent = new Intent($fakeTurn);
+        $fakeUpdatedResponseIntent->setUid('0x0005');
+        $fakeUpdatedResponseIntent->setOdId('welcome_intent_updated');
+        $fakeUpdatedResponseIntent->setName('Welcome intent 1 Updated');
+        $fakeUpdatedResponseIntent->setDescription('A welcome intent updated');
+        $fakeUpdatedResponseIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeUpdatedResponseIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeUpdatedResponseIntent->setInterpreter('interpreter.core.nlp');
+        $fakeUpdatedResponseIntent->setConditions(new ConditionCollection());
+        $fakeUpdatedResponseIntent->setBehaviors(new BehaviorsCollection());
+        $fakeUpdatedResponseIntent->setSpeaker(Intent::USER);
+        $fakeUpdatedResponseIntent->setConfidence(1.0);
+        $fakeUpdatedResponseIntent->setListensFor(['intent_a_updated', 'intent_b']);
+        $fakeUpdatedResponseIntent->setTransition(new Transition(null,null, null));
+        $fakeUpdatedResponseIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeUpdatedResponseIntent->setSampleUtterance('Hello Updated!');
+
+        $fakeUpdatedTurn = $fakeTurn;
+        $fakeUpdatedTurn->setRequestIntents(new IntentCollection());
+        $fakeUpdatedTurn->addResponseIntent($fakeUpdatedResponseIntent);
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        ConversationDataClient::shouldReceive('getIntentByUid')
+            ->once()
+            ->with($fakeRequestIntent->getUid(), false)
+            ->andReturn($fakeRequestIntent);
+
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($fakeUpdatedResponseIntent);
+
+        ConversationDataClient::shouldReceive('updateTurnIntentRelation')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn($fakeUpdatedTurn);
+
+        $this->actingAs($this->user, 'api')
+            ->json('PATCH', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid() . '/turn-intents/' .
+                $fakeRequestIntent->getUid(), [
+                    'order' => 'RESPONSE',
+                    'intent' => [
+                        'name' => $fakeUpdatedResponseIntent->getName(),
+                        'id' => $fakeUpdatedResponseIntent->getUid(),
+                        'od_id' => $fakeUpdatedResponseIntent->getOdId(),
+                        'description' =>  $fakeUpdatedResponseIntent->getDescription(),
+                        'listens_for' => $fakeUpdatedResponseIntent->getListensFor(),
+                        'sample_utterance' => $fakeUpdatedResponseIntent->getSampleUtterance()
+                    ]
+            ])
+            ->assertJson([
+                'order' => 'RESPONSE',
+                'intent' => [
+                    "id" => "0x0005",
+                    "od_id" => "welcome_intent_updated",
+                    "name" => "Welcome intent 1 Updated",
+                    "description" => "A welcome intent updated",
+                    "interpreter" => "interpreter.core.nlp",
+                    "created_at" => "2021-02-24T09:30:00+0000",
+                    "updated_at" => "2021-02-24T09:30:00+0000",
+                    "speaker" => "USER",
+                    "confidence" => 1,
+                    "conditions" => [],
+                    "behaviors" => [],
+                    "sample_utterance" => "Hello Updated!",
+                    "listens_for" => ["intent_a_updated", "intent_b"],
+                    "transition" => [],
+                    "virtual_intents" => [],
+                ]
+            ]);
     }
 
     public function testGetIntentByUid()

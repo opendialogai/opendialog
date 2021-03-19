@@ -27,8 +27,6 @@ class IntentsController extends Controller
         $this->middleware('auth');
     }
 
-
-
     /**
      * Display the specified Intent.
      *
