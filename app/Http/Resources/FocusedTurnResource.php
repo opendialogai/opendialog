@@ -109,7 +109,8 @@ class FocusedTurnResource extends JsonResource
 
         // TODO dependants
 
-        $normalizedTurnToReturn['scenario']['conversation']['scene']['focusedTurn']['intents'] = [];
+        $normalizedTurnToReturn['scenario']['conversation']['scene']['focusedTurn']['intents'] =
+            $normalizedTurn['intents'];
 
         return $normalizedTurnToReturn;
     }
