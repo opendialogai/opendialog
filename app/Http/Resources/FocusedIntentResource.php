@@ -109,7 +109,18 @@ class FocusedIntentResource extends JsonResource
             $normalizedIntent['description'];
         $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['sample_utterance'] =
             $normalizedIntent['sample_utterance'];
-        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['order'] = 'REQUEST';
+
+        $intentsArray = $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['intents'];
+
+        $order = "";
+        foreach ($intentsArray as $intent) {
+            if ($intent['intent']['id'] === $normalizedIntent['id']) {
+                $order = $intent['order'];
+                break;
+            }
+        }
+
+        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['order'] = $order;
         $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['speaker'] =
             $normalizedIntent['speaker'];
         return $normalizedIntentToReturn;
