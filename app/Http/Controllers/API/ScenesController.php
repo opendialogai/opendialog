@@ -35,7 +35,7 @@ class ScenesController extends Controller
      *
      * @return TurnResource
      */
-    public function showTurnByScene(Scene $scene): TurnResource
+    public function showTurnsByScene(Scene $scene): TurnResource
     {
         $turns = ConversationDataClient::getAllTurnsByScene($scene, false);
         return new TurnResource($turns);
