@@ -110,7 +110,8 @@ class FocusedIntentResource extends JsonResource
         $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['sample_utterance'] =
             $normalizedIntent['sample_utterance'];
         $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['order'] = 'REQUEST';
-
+        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['speaker'] =
+            $normalizedIntent['speaker'];
         return $normalizedIntentToReturn;
     }
 }
