@@ -28,7 +28,7 @@ class FocusedTurnResource extends JsonResource
             Turn::CREATED_AT,
             Turn::UPDATED_AT,
             Turn::BEHAVIORS =>[
-                Behavior::COMPLETING
+                Behavior::COMPLETING_BEHAVIOR
             ],
             Turn::CONDITIONS => [
                 Condition::OPERATION,
