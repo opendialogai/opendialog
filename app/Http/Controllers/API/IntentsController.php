@@ -30,12 +30,12 @@ class IntentsController extends Controller
     /**
      * Display the specified Intent.
      *
-     * @param Intent $Intent
+     * @param Intent $intent
      * @reIntent IntentResource
      */
-    public function show(Intent $Intent): IntentResource
+    public function show(Intent $intent): IntentResource
     {
-        return new IntentResource($Intent);
+        return new IntentResource($intent);
     }
 
     /**

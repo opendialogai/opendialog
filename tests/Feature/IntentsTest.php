@@ -69,7 +69,7 @@ class IntentsTest extends TestCase
         $fakeRequestIntent->setSpeaker(Intent::USER);
         $fakeRequestIntent->setConfidence(1.0);
         $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null,null, null));
+        $fakeRequestIntent->setTransition(new Transition(null, null, null));
         $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeRequestIntent->setSampleUtterance('Hello!');
 
@@ -86,7 +86,7 @@ class IntentsTest extends TestCase
         $fakeResponseIntent->setSpeaker(Intent::APP);
         $fakeResponseIntent->setConfidence(1.0);
         $fakeResponseIntent->setListensFor(['intent_c']);
-        $fakeResponseIntent->setTransition(new Transition(null,null, null));
+        $fakeResponseIntent->setTransition(new Transition(null, null, null));
         $fakeResponseIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeResponseIntent->setSampleUtterance('Welcome user!');
 
@@ -111,7 +111,7 @@ class IntentsTest extends TestCase
 
         $this->actingAs($this->user, 'api')
             ->json('GET', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid() . '/intents')
-//            ->assertStatus(200)
+            ->assertStatus(200)
             ->assertJson([[
                 'order' => 'REQUEST',
                 'intent' => [
@@ -153,7 +153,8 @@ class IntentsTest extends TestCase
 ]]);
     }
 
-    public function testAddRequestIntentToTurn() {
+    public function testAddRequestIntentToTurn()
+    {
         $fakeTurn = new Turn();
         $fakeTurn->setUid('0x0004');
         $fakeTurn->setName('New Example turn 1');
@@ -173,7 +174,7 @@ class IntentsTest extends TestCase
         $fakeRequestIntent->setSpeaker(Intent::USER);
         $fakeRequestIntent->setConfidence(1.0);
         $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null,null,null));
+        $fakeRequestIntent->setTransition(new Transition(null, null, null));
         $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeRequestIntent->setSampleUtterance('Hello!');
 
@@ -224,10 +225,10 @@ class IntentsTest extends TestCase
                     "sample_utterance" => "Hello!"
                 ]
             ]);
-
     }
 
-    public function testAddResponseIntentToTurn() {
+    public function testAddResponseIntentToTurn()
+    {
         $fakeTurn = new Turn();
         $fakeTurn->setUid('0x0004');
         $fakeTurn->setName('New Example turn 1');
@@ -247,7 +248,7 @@ class IntentsTest extends TestCase
         $fakeResponseIntent->setSpeaker(Intent::APP);
         $fakeResponseIntent->setConfidence(1.0);
         $fakeResponseIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeResponseIntent->setTransition(new Transition(null,null,null));
+        $fakeResponseIntent->setTransition(new Transition(null, null, null));
         $fakeResponseIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeResponseIntent->setSampleUtterance('Bye!');
 
@@ -298,11 +299,10 @@ class IntentsTest extends TestCase
                     "sample_utterance" => "Bye!"
                 ]
             ]);
-
     }
 
-    public function testGetTurnIntentByTurnAndIntentUid() {
-
+    public function testGetTurnIntentByTurnAndIntentUid()
+    {
         $fakeTurn = new Turn();
         $fakeTurn->setUid('0x0004');
         $fakeTurn->setName('New Example turn 1');
@@ -322,7 +322,7 @@ class IntentsTest extends TestCase
         $fakeRequestIntent->setSpeaker(Intent::USER);
         $fakeRequestIntent->setConfidence(1.0);
         $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null,null, null));
+        $fakeRequestIntent->setTransition(new Transition(null, null, null));
         $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeRequestIntent->setSampleUtterance('Hello!');
 
@@ -369,11 +369,10 @@ $fakeRequestIntent->getUid())
                     "sample_utterance" => "Hello!"
                 ],
             ]);
-
     }
 
-    public function testUpdateTurnIntentByTurnAndIntentUid() {
-
+    public function testUpdateTurnIntentByTurnAndIntentUid()
+    {
         $fakeTurn = new Turn();
         $fakeTurn->setUid('0x0004');
         $fakeTurn->setName('New Example turn 1');
@@ -393,7 +392,7 @@ $fakeRequestIntent->getUid())
         $fakeRequestIntent->setSpeaker(Intent::USER);
         $fakeRequestIntent->setConfidence(1.0);
         $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null,null, null));
+        $fakeRequestIntent->setTransition(new Transition(null, null, null));
         $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeRequestIntent->setSampleUtterance('Hello!');
 
@@ -410,7 +409,7 @@ $fakeRequestIntent->getUid())
         $fakeUpdatedResponseIntent->setSpeaker(Intent::USER);
         $fakeUpdatedResponseIntent->setConfidence(1.0);
         $fakeUpdatedResponseIntent->setListensFor(['intent_a_updated', 'intent_b']);
-        $fakeUpdatedResponseIntent->setTransition(new Transition(null,null, null));
+        $fakeUpdatedResponseIntent->setTransition(new Transition(null, null, null));
         $fakeUpdatedResponseIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeUpdatedResponseIntent->setSampleUtterance('Hello Updated!');
 
@@ -488,7 +487,7 @@ $fakeRequestIntent->getUid())
         $fakeIntent->setSpeaker(Intent::USER);
         $fakeIntent->setConfidence(1.0);
         $fakeIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeIntent->setTransition(new Transition(null,null, null));
+        $fakeIntent->setTransition(new Transition(null, null, null));
         $fakeIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeIntent->setSampleUtterance('Hello!');
 
@@ -533,7 +532,7 @@ $fakeRequestIntent->getUid())
         $fakeIntent->setSpeaker(Intent::USER);
         $fakeIntent->setConfidence(1.0);
         $fakeIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeIntent->setTransition(new Transition(null,null, null));
+        $fakeIntent->setTransition(new Transition(null, null, null));
         $fakeIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeIntent->setSampleUtterance('Hello!');
 
@@ -550,7 +549,7 @@ $fakeRequestIntent->getUid())
         $fakeIntentUpdated->setSpeaker(Intent::USER);
         $fakeIntentUpdated->setConfidence(1.0);
         $fakeIntentUpdated->setListensFor(['intent_a_updated', 'intent_b']);
-        $fakeIntentUpdated->setTransition(new Transition(null,null, null));
+        $fakeIntentUpdated->setTransition(new Transition(null, null, null));
         $fakeIntentUpdated->setVirtualIntents(new VirtualIntentCollection());
         $fakeIntentUpdated->setSampleUtterance('Hello updated!');
 
@@ -595,7 +594,6 @@ $fakeRequestIntent->getUid())
 
     public function testDeleteIntentByUid()
     {
-
         $fakeIntent = new Intent();
         $fakeIntent->setUid('0x0005');
         $fakeIntent->setOdId('welcome_intent');
@@ -609,7 +607,7 @@ $fakeRequestIntent->getUid())
         $fakeIntent->setSpeaker(Intent::USER);
         $fakeIntent->setConfidence(1.0);
         $fakeIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeIntent->setTransition(new Transition(null,null, null));
+        $fakeIntent->setTransition(new Transition(null, null, null));
         $fakeIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeIntent->setSampleUtterance('Hello!');
 
