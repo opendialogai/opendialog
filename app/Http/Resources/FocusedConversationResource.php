@@ -32,7 +32,7 @@ class FocusedConversationResource extends JsonResource
                 Scenario::DESCRIPTION
             ],
             Conversation::BEHAVIORS =>[
-                Behavior::COMPLETING
+                Behavior::COMPLETING_BEHAVIOR
             ],
             Conversation::CONDITIONS => [
                 Condition::OPERATION,
