@@ -29,7 +29,7 @@ class ConversationResource extends JsonResource
               Condition::PARAMETERS
             ],
             Conversation::BEHAVIORS =>[
-                Behavior::COMPLETING
+                Behavior::COMPLETING_BEHAVIOR
             ]
         ]
     ];
