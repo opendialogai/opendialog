@@ -13,6 +13,7 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
@@ -211,6 +212,9 @@ class UIStateControllerTest extends TestCase
         $fakeTurn->setConditions(new ConditionCollection());
         $fakeTurn->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
         $fakeTurn->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+
+        $fakeTurn->setRequestIntents(new IntentCollection());
+        $fakeTurn->setResponseIntents(new IntentCollection());
 
         $fakeTurn->setScene($fakeScene);
 

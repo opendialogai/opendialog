@@ -43,10 +43,10 @@ class TurnsController extends Controller
         $responseIntents = ConversationDataClient::getAllResponseIntentsByTurn($turn, false);
 
         $turnIntents = [];
-        foreach($requestIntents as $intent) {
+        foreach ($requestIntents as $intent) {
             $turnIntents[] = new TurnIntentResource($intent, 'REQUEST');
         }
-        foreach($responseIntents as $intent) {
+        foreach ($responseIntents as $intent) {
             $turnIntents[] = new TurnIntentResource($intent, 'RESPONSE');
         }
         return response()->json(new TurnIntentResourceCollection($turnIntents));
@@ -65,10 +65,10 @@ class TurnsController extends Controller
         $content = $request->json()->all();
         $newIntent = Serializer::denormalize($content['intent'], Intent::class, 'json');
         $newIntent->setTurn($turn);
-        if($content['order'] === 'REQUEST') {
+        if ($content['order'] === 'REQUEST') {
             $savedIntent = ConversationDataClient::addRequestIntent($newIntent);
             return new TurnIntentResource($savedIntent, 'REQUEST');
-        } else if($content['order'] === 'RESPONSE') {
+        } elseif ($content['order'] === 'RESPONSE') {
             $savedIntent = ConversationDataClient::addResponseIntent($newIntent);
             return new TurnIntentResource($savedIntent, 'RESPONSE');
         }
@@ -117,9 +117,9 @@ class TurnsController extends Controller
     public function getTurnIntentByTurnAndIntent(Turn $turn, Intent $intent) : TurnIntentResource
     {
         $turnWithIntent = ConversationDataClient::getTurnWithIntent($turn->getUid(), $intent->getUid());
-        if($turnWithIntent->getRequestIntents()->count() > 0) {
+        if ($turnWithIntent->getRequestIntents()->count() > 0) {
             return new TurnIntentResource($turnWithIntent->getRequestIntents()->first(), 'REQUEST');
-        } else if($turnWithIntent->getRequestIntents()->count() > 0) {
+        } elseif ($turnWithIntent->getRequestIntents()->count() > 0) {
             return new TurnIntentResource($turnWithIntent->getResponseIntents()->first(), 'RESPONSE');
         }
     }
@@ -133,13 +133,13 @@ class TurnsController extends Controller
         $patchIntent->setUid($intent->getUid());
         // First update the intent data
         $updatedIntent = ConversationDataClient::updateIntent($patchIntent);
-        $updatedTurnWithIntent = ConversationDataClient::updateTurnIntentRelation($turn->getUid(), $intent->getUid(), $content['order']);
+        $updatedTurnWithIntent =
+            ConversationDataClient::updateTurnIntentRelation($turn->getUid(), $intent->getUid(), $content['order']);
 
-        if($updatedTurnWithIntent->getRequestIntents()->count() > 0) {
+        if ($updatedTurnWithIntent->getRequestIntents()->count() > 0) {
             return new TurnIntentResource($updatedTurnWithIntent->getRequestIntents()->first(), 'REQUEST');
-        } else if($updatedTurnWithIntent->getResponseIntents()->count() > 0) {
+        } elseif ($updatedTurnWithIntent->getResponseIntents()->count() > 0) {
             return new TurnIntentResource($updatedTurnWithIntent->getResponseIntents()->first(), 'RESPONSE');
         }
     }
-
 }
