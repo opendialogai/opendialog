@@ -44,7 +44,7 @@ services:
     networks:
       - app-network
   dgraph-zero:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     volumes:
       - type: volume
         source: dgraph
@@ -61,7 +61,7 @@ services:
     links:
       - dgraph-server
   dgraph-server:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     volumes:
       - type: volume
         source: dgraph
@@ -72,11 +72,11 @@ services:
       - 8080:8080
       - 9080:9080
     restart: on-failure
-    command: dgraph alpha --my=dgraph-server:7080 --lru_mb=2048 --zero=dgraph-zero:5080
+    command: dgraph alpha --auth_token=${DGRAPH_AUTH_TOKEN} --whitelist 0.0.0.0/0 --my=dgraph-server:7080 --lru_mb=2048 --zero=dgraph-zero:5080
     networks:
       - app-network
   dgraph-ratel:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     ports:
       - 9001:8000
     volumes:
