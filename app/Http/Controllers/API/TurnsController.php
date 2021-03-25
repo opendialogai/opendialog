@@ -7,16 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\TurnIntentRequest;
 use App\Http\Requests\TurnRequest;
-use App\Http\Resources\IntentResource;
 use App\Http\Resources\TurnIntentResource;
 use App\Http\Resources\TurnIntentResourceCollection;
 use App\Http\Resources\TurnResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
-use OpenDialogAi\Core\Conversation\Scene;
-use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class TurnsController extends Controller
 {
@@ -122,9 +120,9 @@ class TurnsController extends Controller
         $turnWithIntent = ConversationDataClient::getTurnWithIntent($turn->getUid(), $intent->getUid());
         if ($turnWithIntent->getRequestIntents()->count() > 0) {
             return new TurnIntentResource($turnWithIntent->getRequestIntents()->first(), 'REQUEST');
-        } elseif ($turnWithIntent->getResponseIntents()->count() > 0) {
-            return new TurnIntentResource($turnWithIntent->getResponseIntents()->first(), 'RESPONSE');
         }
+
+        return new TurnIntentResource($turnWithIntent->getResponseIntents()->first(), 'RESPONSE');
     }
 
 
