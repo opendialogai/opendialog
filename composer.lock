@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b29ddf2448485a828f286d4c29b6f204",
+    "content-hash": "c67e1d68807c304294b241ad984cc6c1",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2544,16 +2544,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/Serializers",
+            "version": "dev-feature/scenarios-import-export",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "c53a35f"
+                "reference": "d19d9af47fdb26b6b0ddbe8e0584c5319d1507ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/c53a35f",
-                "reference": "c53a35f",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/d19d9af47fdb26b6b0ddbe8e0584c5319d1507ea",
+                "reference": "d19d9af47fdb26b6b0ddbe8e0584c5319d1507ea",
                 "shasum": ""
             },
             "require": {
@@ -2631,9 +2631,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/Serializers"
+                "source": "https://github.com/opendialogai/core/tree/feature/scenarios-import-export"
             },
-            "time": "2021-03-23T10:23:33+00:00"
+            "time": "2021-03-29T14:42:16+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
