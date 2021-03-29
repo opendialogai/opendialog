@@ -29,7 +29,10 @@ class FocusedScenarioResource extends JsonResource
             Scenario::BEHAVIORS => Behavior::FIELDS,
             Scenario::CONDITIONS => Condition::FIELDS,
             Scenario::CONVERSATIONS => [
-                Conversation::UID
+                Conversation::UID,
+                Conversation::OD_ID,
+                Conversation::NAME,
+                Conversation::DESCRIPTION,
             ]
         ]
     ];
