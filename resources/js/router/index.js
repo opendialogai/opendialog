@@ -44,7 +44,8 @@ const router = new VueRouter({
         {
           path: 'conversation-builder/*',
           name: 'conversation-builder',
-          component: ConversationBuilder
+          component: ConversationBuilder,
+          props: route => ({ newScenario: route.query.newScenario })
         },
         {
           path: 'webchat-setting',
