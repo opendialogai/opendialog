@@ -522,7 +522,6 @@ class ImportExportSerializerTest extends TestCase
                                             'speaker' => 'USER',
                                             'listens_for' => [],
                                             'expected_attributes' => [],
-                                            'transition' => null,
                                             'virtual_intents' => [],
                                             'actions' => []
                                         ]
@@ -601,7 +600,7 @@ class ImportExportSerializerTest extends TestCase
                                             "virtual_intents" => [
                                                 [
                                                     "speaker" => "USER",
-                                                    "intentId" => "test_intent_b"
+                                                    "intent_id" => "test_intent_b"
                                                 ]
                                             ],
                                             "actions" => []
@@ -620,7 +619,6 @@ class ImportExportSerializerTest extends TestCase
                                             "sample_utterance" => "(B) Test intent sample utterance",
                                             "listens_for" => [],
                                             "expected_attributes" => [],
-                                            "transition" => null,
                                             "virtual_intents" => [],
                                             "actions" => []
                                         ]
@@ -647,7 +645,6 @@ class ImportExportSerializerTest extends TestCase
                                             "sample_utterance" => "(C) Test intent sample utterance",
                                             "listens_for" => [],
                                             "expected_attributes" => [],
-                                            "transition" => null,
                                             "virtual_intents" => [],
                                             "actions" => []
                                         ]
@@ -686,7 +683,6 @@ class ImportExportSerializerTest extends TestCase
                                             "sample_utterance" => "(D) Test intent sample utterance",
                                             "listens_for" => [],
                                             "expected_attributes" => [],
-                                            "transition" => null,
                                             "virtual_intents" => [],
                                             "actions" => []
                                         ]

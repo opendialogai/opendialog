@@ -106,9 +106,9 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
 
         $duplicateScenarios = $existingScenarios->filter(fn($scenario) => $scenario->getOdId() === $importingScenario->getOdId());
         if ($duplicateScenarios->count() > 0) {
-            throw new DuplicateConversationObjectOdIdException(
+            throw new DuplicateConversationObjectOdIdException( $importingScenario->getOdId(),
                 sprintf("Cannot import scenario with odId %s. A scenario with that odId already exists!",
-                $importingScenario->getOdId()), $importingScenario->getOdId());
+                $importingScenario->getOdId()));
         }
         return ConversationDataClient::addFullScenarioGraph($importingScenario);
     }
