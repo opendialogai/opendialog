@@ -28,9 +28,14 @@ class ExportScenarios extends Command
 
     public function exportScenario(Scenario $fullScenarioGraph)
     {
-        $fileName = ScenarioImportExportHelper::fileName($fullScenarioGraph->getOdId());
-        $this->info(sprintf('Exporting scenario \'%s\' to %s.', $fullScenarioGraph->getName(), $fileName));
+        $filePath = ScenarioImportExportHelper::getScenarioFilePath($fullScenarioGraph->getOdId());
         $serialized = ImportExportSerializer::serialize($fullScenarioGraph, 'json');
-        ScenarioImportExportHelper::createScenarioFile($fileName, $serialized);
+
+        if (ScenarioImportExportHelper::scenarioFileExists($filePath)) {
+            $this->info(sprintf("Scenario file at %s already exists. Deleting...", $filePath));
+            ScenarioImportExportHelper::deleteScenarioFile($filePath);
+        }
+        $this->info(sprintf('Exporting scenario \'%s\' to %s.', $fullScenarioGraph->getOdId(), $filePath));
+        ScenarioImportExportHelper::createScenarioFile($filePath, $serialized);
     }
 }

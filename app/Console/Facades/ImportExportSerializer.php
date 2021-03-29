@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static deserialize($data, string $type, string $format, array $context = [])
  * @method static denormalize($data, string $type, string $format, array $context = [])
  * @method static getSerializer(): Serializer
+ * @method static decode($data, string $format, array $context = [])
  **/
 class ImportExportSerializer extends Facade
 {

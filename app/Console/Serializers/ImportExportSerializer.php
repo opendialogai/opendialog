@@ -15,7 +15,6 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationNormalize
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioCollectionNormalizer;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TransitionNormalizer;
@@ -42,7 +41,7 @@ class ImportExportSerializer
     {
         $normalizers = [
             new ScenarioCollectionNormalizer(),
-            new ScenarioNormalizer(),
+            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer(),
             new ConversationCollectionNormalizer(),
             new ConversationNormalizer(),
             new SceneCollectionNormalizer(),
@@ -117,6 +116,18 @@ class ImportExportSerializer
     }
 
     /**
+     * @param          $data
+     * @param  string  $format
+     * @param  array   $context
+     *
+     * @return mixed
+     */
+    public function decode($data, string $format, array $context = [])
+    {
+        return $this->getSerializer()->decode($data, 'json', $context);
+    }
+
+    /**
      * @return Serializer
      */
     public function getSerializer(): Serializer
@@ -130,6 +141,10 @@ class ImportExportSerializer
      */
     public static function getSerializationTree()
     {
+
+        /**
+         * Omits UIDs, CREATED_UP, UPDATED_AT and Scenario::STATUS, Scenario::ACTIVE
+         */
         return [
             Scenario::OD_ID,
             Scenario::NAME,

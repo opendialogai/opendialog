@@ -4,6 +4,11 @@
 namespace App\ImportExportHelpers;
 
 
+use App\Console\Facades\ImportExportSerializer;
+use OpenDialogAi\Core\Conversation\Exceptions\DuplicateConversationObjectOdIdException;
+use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Scenario;
+
 class ScenarioImportExportHelper extends BaseImportExportHelper
 {
     const SCENARIO_RESOURCE_DIRECTORY = 'scenarios';
@@ -18,22 +23,45 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
     }
 
     /**
-     * @param  string  $scenarioFileName
+     * @param  string  $name
      *
      * @return string
      */
-    public static function getScenarioPath(string $scenarioFileName): string
+    public static function suffixScenarioFileName(string $name): string
     {
-        return self::getScenariosPath()."/$scenarioFileName";
+        return $name.self::SCENARIO_FILE_EXTENSION;
     }
 
     /**
-     * @param  string  $scenarioFileName
+     * @param  string  $fileName
+     *
+     * @return string
+     */
+    public static function prefixScenariosPath(string $fileName): string
+    {
+        return self::getScenariosPath()."/$fileName";
+    }
+
+    public static function getScenarioFilePath(string $odId): string
+    {
+        return self::prefixScenariosPath(self::suffixScenarioFileName($odId));
+    }
+
+    /**
+     * @param  string  $filePath
      * @param  string  $data
      */
-    public static function createScenarioFile(string $scenarioFileName, string $data): void
+    public static function createScenarioFile(string $filePath, string $data): void
     {
-        self::getDisk()->put(sprintf("/%s/%s", self::SCENARIO_RESOURCE_DIRECTORY, $scenarioFileName), $data);
+        self::getDisk()->put($filePath, $data);
+    }
+
+    /**
+     * @param  string  $filePath
+     */
+    public static function deleteScenarioFile(string $filePath): void
+    {
+        self::getDisk()->delete($filePath);
     }
 
     /**
@@ -47,18 +75,42 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
 
 
     /**
-     * @param  string  $name
+     * Read a scenario file
+     *
+     * @param  string  $filePath
      *
      * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public static function fileName(string $name): string
+    public static function getScenarioFileData(string $filePath)
     {
-        return $name.self::SCENARIO_FILE_EXTENSION;
+        return self::getDisk()->get($filePath);
     }
 
-    public static function getFilePath(string $name): string
+    public static function scenarioFileExists(string $filePath)
     {
-        return self::getScenarioPath(self::fileName($name));
+        return self::getDisk()->exists($filePath);
+    }
+
+    /**
+     * @param  string  $data
+     *
+     * @return Scenario
+     */
+    public static function importScenarioFromString(string $data): Scenario
+    {
+        /* @var $importingScenario Scenario */
+        $importingScenario = ImportExportSerializer::deserialize($data, Scenario::class, 'json');
+
+        $existingScenarios = ConversationDataClient::getAllScenarios(false);
+
+        $duplicateScenarios = $existingScenarios->filter(fn($scenario) => $scenario->getOdId() === $importingScenario->getOdId());
+        if ($duplicateScenarios->count() > 0) {
+            throw new DuplicateConversationObjectOdIdException(
+                sprintf("Cannot import scenario with odId %s. A scenario with that odId already exists!",
+                $importingScenario->getOdId()), $importingScenario->getOdId());
+        }
+        return ConversationDataClient::addFullScenarioGraph($importingScenario);
     }
 }
 
