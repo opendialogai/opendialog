@@ -43,7 +43,6 @@
                                     "speaker" : "USER",
                                     "listens_for" : ["other_example_intent_id"],
                                     "expected_attributes" : [],
-                                    "transition" : null,
                                     "virtual_intents" : [],
                                     "actions" : []
                                 }
@@ -61,7 +60,6 @@
                                     "speaker" : "APP",
                                     "listens_for" : [],
                                     "expected_attributes" : [],
-                                    "transition" : null,
                                     "virtual_intents" : [],
                                     "actions" : []
                                 }
