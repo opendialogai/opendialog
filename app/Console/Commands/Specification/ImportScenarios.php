@@ -21,6 +21,7 @@ class ImportScenarios extends Command
         foreach ($fileNames as $fileName) {
             $this->importScenarioFromFile($fileName);
         }
+        $this->info('Import complete!');
     }
 
     protected function importScenarioFromFile(string $filePath): void
