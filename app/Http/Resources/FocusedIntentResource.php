@@ -5,9 +5,6 @@ namespace App\Http\Resources;
 
 use App\Http\Facades\Serializer;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Validation\Rules\In;
-use OpenDialogAi\Core\Conversation\Behavior;
-use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
@@ -47,13 +44,17 @@ class FocusedIntentResource extends JsonResource
                     Intent::UID,
                     Intent::OD_ID,
                     Intent::NAME,
-                    Intent::DESCRIPTION
+                    Intent::DESCRIPTION,
+                    Intent::SAMPLE_UTTERANCE,
+                    Intent::SPEAKER
                 ],
                 Turn::RESPONSE_INTENTS =>[
                     Intent::UID,
                     Intent::OD_ID,
                     Intent::NAME,
-                    Intent::DESCRIPTION
+                    Intent::DESCRIPTION,
+                    Intent::SAMPLE_UTTERANCE,
+                    Intent::SPEAKER
                 ],
                 Turn::SCENE => [
                     Scene::UID,

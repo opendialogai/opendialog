@@ -40,13 +40,17 @@ class FocusedTurnResource extends JsonResource
                 Intent::UID,
                 Intent::OD_ID,
                 Intent::NAME,
-                Intent::DESCRIPTION
+                Intent::DESCRIPTION,
+                Intent::SAMPLE_UTTERANCE,
+                Intent::SPEAKER
             ],
             Turn::RESPONSE_INTENTS => [
                 Intent::UID,
                 Intent::OD_ID,
                 Intent::NAME,
-                Intent::DESCRIPTION
+                Intent::DESCRIPTION,
+                Intent::SAMPLE_UTTERANCE,
+                Intent::SPEAKER
             ],
             Turn::SCENE => [
                 Scene::UID,
