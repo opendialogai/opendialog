@@ -12,10 +12,11 @@ use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
-use OpenDialogAi\Core\Conversation\DataClients\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
+use OpenDialogAi\Core\Conversation\ScenarioCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
 use OpenDialogAi\Core\Conversation\Transition;
@@ -23,7 +24,6 @@ use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use OpenDialogAi\Core\Conversation\VirtualIntent;
 use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
-use OpenDialogAi\GraphQLClient\GraphQLClientInterface;
 use Tests\TestCase;
 
 /**
@@ -43,27 +43,17 @@ class ImportExportScenariosTest extends TestCase
      */
     protected $client;
 
-    public function resetGraphQL()
-    {
-        $client = resolve(GraphQLClientInterface::class);
-        $client->dropAll();
-        $client->setSchema(config('opendialog.graphql.schema'));
-    }
-
     public function setUp(): void
     {
         parent::setUp();
         $this->setupFakeSpecificationDisk();
-        $this->resetGraphQL();
-
-        $this->client = resolve(ConversationDataClient::class);
     }
 
     protected function setupFakeSpecificationDisk(): void
     {
         Artisan::call('schema:init', [
-                '--yes' => true
-            ]);
+            '--yes' => true
+        ]);
 
         $this->disk = Storage::fake('specification');
 
@@ -72,6 +62,43 @@ class ImportExportScenariosTest extends TestCase
         File::copyDirectory(base_path('tests/specification'), $diskAdapter->getPathPrefix());
     }
 
+    /**
+     * Adds Uid values to the provided Scenario and all its conversation objects.
+     *
+     * @param  Scenario  $scenario
+     *
+     * @return Scenario
+     */
+    public function addFakeUids(Scenario $scenario)
+    {
+        static $currentUid = 0;
+
+        $getUid = fn(int $count) => "0x".(1000 + $count);
+        $scenario->setUid($getUid($currentUid++));
+        $conversations = $scenario->getConversations();
+        foreach ($conversations as $conversation) {
+            $conversation->setUid($getUid($currentUid++));
+            foreach ($conversation->getScenes() as $scene) {
+                $scene->setUid($getUid($currentUid++));
+                foreach ($scene->getTurns() as $turn) {
+                    $turn->setUid($getUid($currentUid++));
+                    foreach ($turn->getRequestIntents() as $intent) {
+                        $intent->setUid($getUid($currentUid++));
+                    }
+                    foreach ($turn->getResponseIntents() as $intent) {
+                        $intent->setUid($getUid($currentUid++));
+                    }
+                }
+            }
+        }
+        return $scenario;
+    }
+
+    /**
+     * Returns a test scenario with conversations,scenes,turns and intents
+     *
+     * @return Scenario
+     */
     public function getFullTestScenario()
     {
         /**
@@ -231,15 +258,124 @@ class ImportExportScenariosTest extends TestCase
         return $scenario;
     }
 
+    /**
+     * Returns a test scenario containing only scenario data, (no conversations)
+     *
+     * @return Scenario
+     */
+    public function getSimpleTestScenario()
+    {
+        $scenario = new Scenario();
+        $scenario->setOdId("simple_scenario");
+        $scenario->setName("Test scenario (Simple)");
+        $scenario->setDescription("Test scenario description.");
+        $scenario->setInterpreter("interpreter.core.nlp");
+        $scenario->setActive(true);
+        $scenario->setStatus(Scenario::LIVE_STATUS);
+        return $scenario;
+    }
+
+
+    /**
+     * Returns a Scenario matching the exported scenario specification/scenarios/example_scenario.scenario.json
+     *
+     * @return Scenario
+     */
+    public function getMatchingExampleScenario(): Scenario
+    {
+        $scenario = new Scenario();
+        $scenario->setOdId("example_scenario");
+        $scenario->setName("Example scenario");
+        $scenario->setDescription("An example scenario");
+
+        $conversation = new Conversation($scenario);
+        $conversation->setOdId("example_conversation");
+        $conversation->setName("Example conversation");
+        $conversation->setDescription("An example conversation");
+        $conversation->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+
+        $scenario->addConversation($conversation);
+
+        $scene = new Scene($conversation);
+        $scene->setOdId("example_scene");
+        $scene->setName("Example scene");
+        $scene->setDescription("An example scene");
+        $scene->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+
+        $conversation->addScene($scene);
+
+        $turn = new Turn($scene);
+        $turn->setOdId("example_turn");
+        $turn->setName("Example turn");
+        $turn->setDescription("An example turn");
+        $turn->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+        $turn->setValidOrigins(["example_origin"]);
+
+        $scene->addTurn($turn);
+
+        $requestIntent = new Intent($turn);
+        $requestIntent->setOdId("example_request_intent");
+        $requestIntent->setName("Example request intent");
+        $requestIntent->setDescription("An example request intent");
+        $requestIntent->setInterpreter("interpreter.core.example");
+        $requestIntent->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+        $requestIntent->setSampleUtterance("Example sample utterance");
+        $requestIntent->setConfidence(1.0);
+        $requestIntent->setSpeaker(Intent::USER);
+        $requestIntent->setListensFor(["other_example_intent_id"]);
+
+        $turn->addRequestIntent($requestIntent);
+
+        $responseIntent = new Intent($turn);
+        $responseIntent->setOdId("example_response_intent");
+        $responseIntent->setName("Example response intent");
+        $responseIntent->setDescription("An example response intent");
+        $responseIntent->setInterpreter("interpreter.core.example");
+        $responseIntent->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::COMPLETING_BEHAVIOR)]));
+        $responseIntent->setSampleUtterance("Example sample utterance");
+        $responseIntent->setConfidence(1);
+        $responseIntent->setSpeaker(Intent::APP);
+
+        $turn->addResponseIntent($responseIntent);
+
+        return $this->addFakeUids($scenario);
+    }
+
+    /**
+     * Returns a Scenario matching the exported scenario specification/scenarios/minimal_scenario.scenario.json
+     *
+     * @return Scenario
+     */
+    public function getMatchingMinimalScenario(): Scenario
+    {
+        $scenario = new Scenario();
+        $scenario->setOdId("minimal_scenario");
+        $scenario->setName("Minimal scenario");
+        $scenario->setDescription("A minimal scenario");
+
+        return $this->addFakeUids($scenario);
+    }
+
     public function testExportSingleScenario()
     {
         $scenario = $this->getFullTestScenario();
-        $storedScenario = $this->client->addFullScenarioGraph($scenario);
+
+        // Mock storing the scenario in DGraph
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenario)
+            ->andReturn($this->addFakeUids($this->getFullTestScenario()));
+        $storedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
 
         $expectedFilePath = ScenarioImportExportHelper::getScenarioFilePath($storedScenario->getOdId());
-        $this->artisan('scenarios:export');
-        $this->disk->assertExists($expectedFilePath);
 
+        // Mocks for pulling data from DGraph
+        ConversationDataClient::shouldReceive('getAllScenarios')->andReturn(new ScenarioCollection([$storedScenario]));
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')->with($storedScenario->getUid())
+            ->andReturn($storedScenario);
+
+        // Do the export
+        $this->artisan('scenarios:export');
+
+        $this->disk->assertExists($expectedFilePath);
         $data = $this->disk->get($expectedFilePath);
         $decodedData = json_decode($data, JSON_THROW_ON_ERROR);
         $this->assertIsArray($decodedData);
@@ -247,21 +383,39 @@ class ImportExportScenariosTest extends TestCase
 
     public function testExportMultipleScenarios()
     {
-        $scenarioA = $this->getFullTestScenario();
+        // Store Scenario A (Storage mocked)
+        $scenarioA = $this->getSimpleTestScenario();
         $scenarioA->setOdId("test_scenario_a");
         $scenarioA->setName("Test scenario (A)");
-        $storedScenarioA = $this->client->addFullScenarioGraph($scenarioA);
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioA)
+            ->andReturn($this->addFakeUids($scenarioA));
+        $storedScenarioA = ConversationDataClient::addFullScenarioGraph($scenarioA);
 
-        $scenarioB = $this->getFullTestScenario();
+        // Store Scenario B (Storage mocked)
+
+        $scenarioB = $this->getSimpleTestScenario();
         $scenarioB->setOdId("test_scenario_b");
         $scenarioB->setName("Test scenario (B)");
-        $storedScenarioB = $this->client->addFullScenarioGraph($scenarioB);
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioB)
+            ->andReturn($this->addFakeUids($scenarioB));
+        $storedScenarioB = ConversationDataClient::addFullScenarioGraph($scenarioB);
 
-        $scenarioC = $this->getFullTestScenario();
+        // Store Scenario C (Storage mocked)
+        $scenarioC = $this->getSimpleTestScenario();
         $scenarioC->setOdId("test_scenario_c");
         $scenarioC->setName("Test scenario (C)");
-        $storedScenarioC = $this->client->addFullScenarioGraph($scenarioC);
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioC)
+            ->andReturn($this->addFakeUids($scenarioC));
+        $storedScenarioC = ConversationDataClient::addFullScenarioGraph($scenarioC);
 
+        // Run the export (Storage mocked)
+        ConversationDataClient::shouldReceive('getAllScenarios')->andReturn(new ScenarioCollection([
+            $storedScenarioA,
+            $storedScenarioB,
+            $storedScenarioC
+        ]));
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')->withAnyArgs()
+            ->andReturn($storedScenarioA, $storedScenarioB, $storedScenarioC);
         $this->artisan('scenarios:export');
 
         foreach ([
@@ -283,8 +437,12 @@ class ImportExportScenariosTest extends TestCase
         $testScenario = new Scenario();
         $testScenario->setOdId("example_scenario");
         $testScenario->setName("Other example scenario");
-        $storedTestScenario = $this->client->addFullScenarioGraph($testScenario);
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($testScenario)
+            ->andReturn($this->addFakeUids($testScenario));
+        $storedTestScenario = ConversationDataClient::addFullScenarioGraph($testScenario);
 
+        ConversationDataClient::shouldReceive('getAllScenarios')->andReturn(new ScenarioCollection([$storedTestScenario]));
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')->withAnyArgs()->andReturn($storedTestScenario);
         $this->artisan('scenarios:export')->expectsOutput(sprintf("Scenario file at %s already exists. Deleting...",
             $existingExportFilePath));
 
@@ -294,19 +452,30 @@ class ImportExportScenariosTest extends TestCase
 
     public function testImportAllScenarios()
     {
-        $existingScenarios = $this->client->getAllScenarios(false);
-        $this->assertCount(0, $existingScenarios);
-
         $exportedScenarios = ScenarioImportExportHelper::getScenarioFiles();
         $this->assertCount(2, $exportedScenarios);
 
         $exampleScenarioFilePath = ScenarioImportExportHelper::getScenarioFilePath("example_scenario");
         $minimalScenarioFilePath = ScenarioImportExportHelper::getScenarioFilePath("minimal_scenario");
 
+        // Run the Import (Storage mocked)
+        $storedExampleScenario = $this->addFakeUids($this->getMatchingExampleScenario());
+        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
+        ScenarioCollection([$storedExampleScenario]));
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
+            ->andReturn($storedExampleScenario, $storedMinimalScenario);
         $this->artisan('scenarios:import')->expectsOutput(sprintf("Importing scenario from file %s...", $exampleScenarioFilePath))
             ->expectsOutput(sprintf("Importing scenario from file %s...", $minimalScenarioFilePath));
 
-        $storedScenarios = $this->client->getAllScenarios(false);
+
+        // Check stored scenarios (Storage mocked)
+        $allStoredScenarios = new ScenarioCollection([
+            $storedExampleScenario,
+            $storedMinimalScenario
+        ]);
+        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn($allStoredScenarios);
+        $storedScenarios = ConversationDataClient::getAllScenarios(false);
         $this->assertCount(2, $storedScenarios);
 
         $storedExampleScenario = $storedScenarios->filter(fn($scenario) => $scenario->getOdId() === "example_scenario");
@@ -337,37 +506,65 @@ class ImportExportScenariosTest extends TestCase
         $existingExampleScenario->setOdId("example_scenario");
         $existingExampleScenario->setName("Existing scenario");
         $existingExampleScenario->setDescription("An existing scenario");
-        $storedExistingExampleScenario = $this->client->addFullScenarioGraph($existingExampleScenario);
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->once()
+            ->andReturn($this->addFakeUids($existingExampleScenario));
+        $storedExistingExampleScenario = ConversationDataClient::addFullScenarioGraph($existingExampleScenario);
         // We've added one scenario, expect one to exist.
-        $previousScenarios = $this->client->getAllScenarios(false);
+        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection
+        ([$storedExistingExampleScenario]));
+        $previousScenarios = ConversationDataClient::getAllScenarios(false);
         $this->assertCount(1, $previousScenarios);
 
+        // Run the Import (Storage mocked)
+        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        ConversationDataClient::shouldReceive('getAllScenarios')->twice()
+            ->andReturn(new ScenarioCollection([$storedExistingExampleScenario]));
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->once()->andReturn($storedMinimalScenario);
         $this->artisan('scenarios:import')
             ->expectsOutput(sprintf("An existing Scenario with odId %s already exists!. Skipping %s!", "example_scenario",
                 ScenarioImportExportHelper::getScenarioFilePath("example_scenario")));
 
         // We should have added a second scenario.
-        $currentScenarios = $this->client->getAllScenarios(false);
+        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection
+        ([
+            $storedExistingExampleScenario,
+            $storedMinimalScenario
+        ]));
+        $currentScenarios = ConversationDataClient::getAllScenarios(false);
         $this->assertCount(2, $currentScenarios);
 
         // The example scenario import was skipped, so it should be unchanged.
         $currentExampleScenarioUid =
             $currentScenarios->filter(fn($scenario) => $scenario->getOdId() === "example_scenario")->first()->getUid();
-        $currentStoredExampleScenario = $this->client->getFullScenarioGraph($currentExampleScenarioUid);
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')->once()->andReturn($storedExistingExampleScenario);
+        $currentStoredExampleScenario = ConversationDataClient::getFullScenarioGraph($currentExampleScenarioUid);
         $this->assertEquals($storedExistingExampleScenario, $currentStoredExampleScenario);
 
     }
 
     public function testImportExportRoundTrip()
     {
-
         // Get data for existing scenario files.
         $previousScenarioFiles = ScenarioImportExportHelper::getScenarioFiles();
         $previousScenarioFileData = array_combine($previousScenarioFiles,
             array_map(fn($path) => ScenarioImportExportHelper::getScenarioFileData($path), $previousScenarioFiles));
 
         // Round trip
+        $storedExampleScenario = $this->addFakeUids($this->getMatchingExampleScenario());
+        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
+        ScenarioCollection([$storedExampleScenario]));
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
+            ->andReturn($storedExampleScenario, $storedMinimalScenario);
         $this->artisan('scenarios:import');
+
+        ConversationDataclient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection
+        ([
+            $storedExampleScenario,
+            $storedMinimalScenario
+        ]));
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')->twice()
+            ->andReturn($storedExampleScenario, $storedMinimalScenario);
         $this->artisan('scenarios:export');
 
         // Get data for current scenario files.
