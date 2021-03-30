@@ -51,10 +51,6 @@ class ImportExportScenariosTest extends TestCase
 
     protected function setupFakeSpecificationDisk(): void
     {
-        Artisan::call('schema:init', [
-            '--yes' => true
-        ]);
-
         $this->disk = Storage::fake('specification');
 
         /** @var AbstractAdapter $diskAdapter */
