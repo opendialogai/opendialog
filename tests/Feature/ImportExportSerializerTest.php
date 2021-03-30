@@ -139,11 +139,6 @@ class ImportExportSerializerTest extends TestCase
         $this->assertNull($object->getCreatedAt());
     }
 
-    public function assertNullFields(Scenario $scenario)
-    {
-
-    }
-
     public function assertEqualFields(ConversationObject $expected, ConversationObject $actual, array $fields)
     {
         foreach ($fields as $field) {
