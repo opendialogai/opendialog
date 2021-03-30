@@ -6,11 +6,15 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\SceneRequest;
+use App\Http\Requests\TurnRequest;
 use App\Http\Resources\SceneResource;
+use App\Http\Resources\TurnResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class ScenesController extends Controller
 {
@@ -22,6 +26,35 @@ class ScenesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    /**
+     * Returns a collection of conversations for a particular scenario.
+     *
+     * @param  Scene  $scene
+     *
+     * @return TurnResource
+     */
+    public function showTurnsByScene(Scene $scene): TurnResource
+    {
+        $turns = ConversationDataClient::getAllTurnsByScene($scene, false);
+        return new TurnResource($turns);
+    }
+
+    /**
+     * Store a newly created conversation against a particular scenario.
+     *
+     * @param  Scene        $scene
+     * @param  TurnRequest  $request
+     *
+     * @return TurnResource
+     */
+    public function storeTurnAgainstScene(Scene $scene, TurnRequest $request): TurnResource
+    {
+        $newTurn = Serializer::deserialize($request->getContent(), Turn::class, 'json');
+        $newTurn->setScene($scene);
+        $turn = ConversationDataClient::addTurn($newTurn);
+        return new TurnResource($turn);
     }
 
     /**

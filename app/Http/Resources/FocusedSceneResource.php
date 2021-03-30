@@ -39,7 +39,7 @@ class FocusedSceneResource extends JsonResource
                 ]
             ],
             Scene::BEHAVIORS =>[
-                Behavior::COMPLETING
+                Behavior::COMPLETING_BEHAVIOR
             ],
             Scene::CONDITIONS => [
                 Condition::OPERATION,

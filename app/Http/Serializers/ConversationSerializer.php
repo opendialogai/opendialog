@@ -15,8 +15,11 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioCollectionNor
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\TransitionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnCollectionNormalizer;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ApiTurnNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\VirtualIntentCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\VirtualIntentNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -35,13 +38,16 @@ class ConversationSerializer
             new SceneCollectionNormalizer(),
             new SceneNormalizer(),
             new TurnCollectionNormalizer(),
-            new TurnNormalizer(),
+            new ApiTurnNormalizer(),
             new IntentCollectionNormalizer(),
             new IntentNormalizer(),
             new ConditionCollectionNormalizer(),
             new ConditionNormalizer(),
             new BehaviorsCollectionNormalizer(),
-            new BehaviorNormalizer()
+            new BehaviorNormalizer(),
+            new VirtualIntentCollectionNormalizer(),
+            new VirtualIntentNormalizer(),
+            new TransitionNormalizer()
         ];
         $encoders = [new JsonEncoder()];
         $this->serializer = new Serializer($normalizers, $encoders);
@@ -82,6 +88,17 @@ class ConversationSerializer
         return $this->getSerializer()->deserialize($data, $type, $format, $context);
     }
 
+    /**
+     * @param array $data
+     * @param string $type
+     * @param string $format
+     * @param array $context
+     * @return object representation of $data in the form of a $type object
+     */
+    public function denormalize($data, string $type, string $format, array $context = [])
+    {
+        return $this->getSerializer()->denormalize($data, $type, $format, $context);
+    }
     /**
      * @return Serializer
      */

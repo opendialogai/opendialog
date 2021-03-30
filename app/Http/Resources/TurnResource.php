@@ -1,36 +1,34 @@
 <?php
 
+
 namespace App\Http\Resources;
 
 use App\Http\Facades\Serializer;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\Condition;
-use OpenDialogAi\Core\Conversation\Conversation;
-use OpenDialogAi\Core\Conversation\Scenario;
+use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\Turn;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-class ConversationResource extends JsonResource
+class TurnResource extends JsonResource
 {
     public static $wrap = null;
 
     public static array $fields = [
         AbstractNormalizer::ATTRIBUTES => [
-            Conversation::UID,
-            Conversation::OD_ID,
-            Conversation::NAME,
-            Conversation::DESCRIPTION,
-            Conversation::INTERPRETER,
-            Conversation::CREATED_AT,
-            Conversation::UPDATED_AT,
-            Conversation::CONDITIONS => [
-              Condition::OPERATION,
-              Condition::OPERATION_ATTRIBUTES,
-              Condition::PARAMETERS
-            ],
-            Conversation::BEHAVIORS =>[
-                Behavior::COMPLETING_BEHAVIOR
-            ]
+            Turn::UID,
+            Turn::OD_ID,
+            Turn::NAME,
+            Turn::DESCRIPTION,
+            Turn::INTERPRETER,
+            Turn::CREATED_AT,
+            Turn::UPDATED_AT,
+            Turn::VALID_ORIGINS,
+            Turn::BEHAVIORS => Behavior::FIELDS,
+            Turn::CONDITIONS => Condition::FIELDS,
+            Turn::REQUEST_INTENTS => [Intent::UID],
+            Turn::RESPONSE_INTENTS => [Intent::UID],
         ]
     ];
 

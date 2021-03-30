@@ -28,7 +28,7 @@ class FocusedTurnResource extends JsonResource
             Turn::CREATED_AT,
             Turn::UPDATED_AT,
             Turn::BEHAVIORS =>[
-                Behavior::COMPLETING
+                Behavior::COMPLETING_BEHAVIOR
             ],
             Turn::CONDITIONS => [
                 Condition::OPERATION,
@@ -109,7 +109,8 @@ class FocusedTurnResource extends JsonResource
 
         // TODO dependants
 
-        $normalizedTurnToReturn['scenario']['conversation']['scene']['focusedTurn']['intents'] = [];
+        $normalizedTurnToReturn['scenario']['conversation']['scene']['focusedTurn']['intents'] =
+            $normalizedTurn['intents'];
 
         return $normalizedTurnToReturn;
     }
