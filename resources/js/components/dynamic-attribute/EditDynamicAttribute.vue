@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dynamicAttribute && availableAttributeTypes" class="container-fluid">
+  <div v-if="dynamicAttribute && availableAttributeTypes">
     <h2 class="mb-3">Dynamic attribute</h2>
 
     <div class="alert alert-danger" role="alert" v-if="error.message">
