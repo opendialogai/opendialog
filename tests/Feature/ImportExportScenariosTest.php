@@ -491,6 +491,13 @@ class ImportExportScenariosTest extends TestCase
         $filePath = ScenarioImportExportHelper::getScenarioFilePath("invalid_json");
         $this->disk->put($filePath, $invalidScenarioJson);
 
+        // Run import, mocking data for example_scenario.scenario.json and minimal_scenario.scenario.json
+        $storedExampleScenario = $this->addFakeUids($this->getMatchingExampleScenario());
+        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
+        ScenarioCollection([$storedExampleScenario]));
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
+            ->andReturn($storedExampleScenario, $storedMinimalScenario);
         $this->artisan('scenarios:import')->expectsOutput(sprintf("Import of %s failed. Unable to decode file as json",
             $filePath));
     }
