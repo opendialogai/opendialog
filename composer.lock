@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "515494f26e2f634645894be3ea4f93f2",
+    "content-hash": "3f1d4a7c883b7a3a936c072713723a4f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2583,16 +2583,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/get_full_focused_intents",
+            "version": "dev-feature/simulation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "b2d5edc6d71fd1af381b44167c45cf714571edbd"
+                "reference": "64b4ec10e2ca32c9110a34f0734cd2d62da839a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/b2d5edc6d71fd1af381b44167c45cf714571edbd",
-                "reference": "b2d5edc6d71fd1af381b44167c45cf714571edbd",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/64b4ec10e2ca32c9110a34f0734cd2d62da839a2",
+                "reference": "64b4ec10e2ca32c9110a34f0734cd2d62da839a2",
                 "shasum": ""
             },
             "require": {
@@ -2670,9 +2670,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/get_full_focused_intents"
+                "source": "https://github.com/opendialogai/core/tree/feature/simulation"
             },
-            "time": "2021-03-30T14:33:24+00:00"
+            "time": "2021-03-30T17:01:25+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
