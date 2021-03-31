@@ -29,7 +29,7 @@ class IntentRequest extends FormRequest
             'od_id' => 'string',
             'name' => 'string',
             'description' => 'string',
-            'interpreter' => 'string',
+            'interpreter' => 'nullable|string',
             'confidence' => 'string',
             'sample_utterance' => 'string',
             'speaker' => 'string',
