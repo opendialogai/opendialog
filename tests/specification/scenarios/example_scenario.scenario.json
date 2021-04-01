@@ -1,0 +1,74 @@
+{
+    "od_id": "example_scenario",
+    "name": "Example scenario",
+    "description": "An example scenario",
+    "interpreter": "",
+    "behaviors": [],
+    "conditions": [],
+    "conversations": [
+        {
+            "od_id": "example_conversation",
+            "name": "Example conversation",
+            "description": "An example conversation",
+            "interpreter": "",
+            "behaviors": ["STARTING"],
+            "conditions": [],
+            "scenes": [
+                {
+                    "od_id": "example_scene",
+                    "name": "Example scene",
+                    "description": "An example scene",
+                    "interpreter": "",
+                    "behaviors": ["STARTING"],
+                    "conditions": [],
+                    "turns": [
+                        {
+                            "od_id": "example_turn",
+                            "name": "Example turn",
+                            "description": "An example turn",
+                            "interpreter": "",
+                            "behaviors": ["STARTING"],
+                            "conditions": [],
+                            "valid_origins": ["example_origin"],
+                            "request_intents": [
+                                {
+                                    "od_id": "example_request_intent",
+                                    "name": "Example request intent",
+                                    "description": "An example request intent",
+                                    "interpreter": "interpreter.core.example",
+                                    "behaviors": ["STARTING"],
+                                    "conditions": [],
+                                    "sample_utterance" : "Example sample utterance",
+                                    "confidence" : 1,
+                                    "speaker" : "USER",
+                                    "listens_for" : ["other_example_intent_id"],
+                                    "expected_attributes" : [],
+                                    "virtual_intents" : [],
+                                    "actions" : []
+                                }
+                            ],
+                            "response_intents": [
+                                {
+                                    "od_id": "example_response_intent",
+                                    "name": "Example response intent",
+                                    "description": "An example response intent",
+                                    "interpreter": "interpreter.core.example",
+                                    "behaviors": ["COMPLETING"],
+                                    "conditions": [],
+                                    "sample_utterance" : "Example sample utterance",
+                                    "confidence" : 1,
+                                    "speaker" : "APP",
+                                    "listens_for" : [],
+                                    "expected_attributes" : [],
+                                    "virtual_intents" : [],
+                                    "actions" : []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+
+        }
+    ]
+}

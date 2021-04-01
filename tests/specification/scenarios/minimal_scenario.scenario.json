@@ -1,0 +1,9 @@
+{
+    "od_id": "minimal_scenario",
+    "name": "Minimal scenario",
+    "description": "A minimal scenario",
+    "interpreter": "",
+    "behaviors": [],
+    "conditions": [],
+    "conversations": []
+}
