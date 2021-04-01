@@ -30,37 +30,37 @@ class IntentsController extends Controller
     /**
      * Display the specified Intent.
      *
-     * @param Intent $Intent
+     * @param Intent $intent
      * @reIntent IntentResource
      */
-    public function show(Intent $Intent): IntentResource
+    public function show(Intent $intent): IntentResource
     {
-        return new IntentResource($Intent);
+        return new IntentResource($intent);
     }
 
     /**
      * Update the specified scenario.
      *
      * @param IntentRequest $request
-     * @param Intent $Intent
+     * @param Intent $intent
      * @reIntent IntentResource
      */
-    public function update(IntentRequest $request, Intent $Intent): IntentResource
+    public function update(IntentRequest $request, Intent $intent): IntentResource
     {
-        $IntentUpdate = Serializer::deserialize($request->getContent(), Intent::class, 'json');
-        $updatedIntent = ConversationDataClient::updateIntent($IntentUpdate);
+        $intentUpdate = Serializer::deserialize($request->getContent(), Intent::class, 'json');
+        $updatedIntent = ConversationDataClient::updateIntent($intentUpdate);
         return new IntentResource($updatedIntent);
     }
 
     /**
      * Destroy the specified scenario.
      *
-     * @param Intent $Intent
+     * @param Intent $intent
      * @reIntent Response $response
      */
-    public function destroy(Intent $Intent): Response
+    public function destroy(Intent $intent): Response
     {
-        if (ConversationDataClient::deleteIntentByUid($Intent->getUid())) {
+        if (ConversationDataClient::deleteIntentByUid($intent->getUid())) {
             return response()->noContent(200);
         } else {
             return response('Error deleting conversation, check the logs', 500);

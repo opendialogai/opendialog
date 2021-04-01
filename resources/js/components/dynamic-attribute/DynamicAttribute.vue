@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dynamicAttribute" class="container-fluid">
+  <div v-if="dynamicAttribute">
     <h2 class="mb-3">Dynamic attribute</h2>
 
     <div class="row mb-4">

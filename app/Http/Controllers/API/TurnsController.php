@@ -7,16 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\TurnIntentRequest;
 use App\Http\Requests\TurnRequest;
-use App\Http\Resources\IntentResource;
 use App\Http\Resources\TurnIntentResource;
 use App\Http\Resources\TurnIntentResourceCollection;
 use App\Http\Resources\TurnResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
-use OpenDialogAi\Core\Conversation\Scene;
-use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class TurnsController extends Controller
 {
@@ -33,9 +31,8 @@ class TurnsController extends Controller
     /**
      * Returns a collection of conversations for a particular scenario.
      *
-     * @param  Turn  $turn
-     *
-     * @return TurnResource
+     * @param Turn $turn
+     * @return JsonResponse
      */
     public function showTurnIntentsByTurn(Turn $turn): JsonResponse
     {
@@ -53,7 +50,7 @@ class TurnsController extends Controller
     }
 
     /**
-     * Store a newly created conversation against a particular scenario.
+     * Store a newly created TurnIntent against a particular Turn.
      *
      * @param  Turn               $turn
      * @param  TurnIntentRequest  $request
@@ -62,13 +59,12 @@ class TurnsController extends Controller
      */
     public function storeTurnIntentAgainstTurn(Turn $turn, TurnIntentRequest $request): TurnIntentResource
     {
-        $content = $request->json()->all();
-        $newIntent = Serializer::denormalize($content['intent'], Intent::class, 'json');
+        $newIntent = Serializer::denormalize($request->get('intent'), Intent::class, 'json');
         $newIntent->setTurn($turn);
-        if ($content['order'] === 'REQUEST') {
+        if ($request->get('order') === 'REQUEST') {
             $savedIntent = ConversationDataClient::addRequestIntent($newIntent);
             return new TurnIntentResource($savedIntent, 'REQUEST');
-        } elseif ($content['order'] === 'RESPONSE') {
+        } elseif ($request->get('order') === 'RESPONSE') {
             $savedIntent = ConversationDataClient::addResponseIntent($newIntent);
             return new TurnIntentResource($savedIntent, 'RESPONSE');
         }
@@ -77,7 +73,7 @@ class TurnsController extends Controller
     /**
      * Display the specified Turn.
      *
-     * @param Turn $Turn
+     * @param Turn $turn
      * @return TurnResource
      */
     public function show(Turn $turn): TurnResource
@@ -86,7 +82,7 @@ class TurnsController extends Controller
     }
 
     /**
-     * Update the specified scenario.
+     * Update the specified TurnRequest.
      *
      * @param TurnRequest $request
      * @param Turn $turn
@@ -100,7 +96,6 @@ class TurnsController extends Controller
     }
 
     /**
-     * Destroy the specified scenario.
      *
      * @param Turn $Turn
      * @return Response $response
@@ -114,27 +109,37 @@ class TurnsController extends Controller
         }
     }
 
+    /**
+     *
+     * @param Turn $turn
+     * @param Intent $intent
+     * @return TurnIntentResource $response
+     */
     public function getTurnIntentByTurnAndIntent(Turn $turn, Intent $intent) : TurnIntentResource
     {
         $turnWithIntent = ConversationDataClient::getTurnWithIntent($turn->getUid(), $intent->getUid());
         if ($turnWithIntent->getRequestIntents()->count() > 0) {
             return new TurnIntentResource($turnWithIntent->getRequestIntents()->first(), 'REQUEST');
-        } elseif ($turnWithIntent->getRequestIntents()->count() > 0) {
-            return new TurnIntentResource($turnWithIntent->getResponseIntents()->first(), 'RESPONSE');
         }
+
+        return new TurnIntentResource($turnWithIntent->getResponseIntents()->first(), 'RESPONSE');
     }
 
-    public function updateTurnIntent(TurnIntentRequest $request, Turn $turn, Intent $intent) :
-    TurnIntentResource
+
+    /**
+     * @param TurnIntentRequest $request
+     * @param Turn $turn
+     * @param Intent $intent
+     * @return TurnIntentResource
+     */
+    public function updateTurnIntent(TurnIntentRequest $request, Turn $turn, Intent $intent) : TurnIntentResource
     {
-        $content = $request->json()->all();
-        $order = $content['order'];
-        $patchIntent = Serializer::denormalize($content['intent'], Intent::class, 'json');
+        $patchIntent = Serializer::denormalize($request->get('intent'), Intent::class, 'json');
         $patchIntent->setUid($intent->getUid());
         // First update the intent data
         $updatedIntent = ConversationDataClient::updateIntent($patchIntent);
         $updatedTurnWithIntent =
-            ConversationDataClient::updateTurnIntentRelation($turn->getUid(), $intent->getUid(), $content['order']);
+            ConversationDataClient::updateTurnIntentRelation($turn->getUid(), $intent->getUid(), $request->get('order'));
 
         if ($updatedTurnWithIntent->getRequestIntents()->count() > 0) {
             return new TurnIntentResource($updatedTurnWithIntent->getRequestIntents()->first(), 'REQUEST');

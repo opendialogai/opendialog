@@ -128,7 +128,6 @@ Route::namespace('API')
             Route::patch('scenes/{scene}', 'ScenesController@update');
             Route::delete('scenes/{scene}', 'ScenesController@destroy');
 
-            /** New */
             Route::get('scenes/{scene}/turns', 'ScenesController@showTurnsByScene');
             Route::post('scenes/{scene}/turns', 'ScenesController@storeTurnAgainstScene');
 
@@ -139,21 +138,13 @@ Route::namespace('API')
             Route::get('turns/{turn}/intents', 'TurnsController@showTurnIntentsByTurn');
             Route::post('turns/{turn}/intents', 'TurnsController@storeTurnIntentAgainstTurn');
 
-            /** Todo */
             Route::get('turns/{turn}/turn-intents/{intent}', 'TurnsController@getTurnIntentByTurnAndIntent');
             Route::patch('turns/{turn}/turn-intents/{intent}', 'TurnsController@updateTurnIntent');
-            /** End Todo */
 
             Route::get('intents/{intent}', 'IntentsController@show');
             Route::patch('intents/{intent}', 'IntentsController@update');
             Route::delete('intents/{intent}', 'IntentsController@destroy');
 
-            /** Todo */
-            Route::get('ui-state/focused/turn/{turn}', 'UIStateController@showFocusedTurn');
-            Route::get('ui-state/focused/intent/{intent}', 'UIStateController@showFocusedIntent');
-            /** End Todo */
-
-            /** End new */
 
             Route::get('ui-state/focused/scenario/{scenario}', 'UIStateController@showFocusedScenario');
             Route::get('ui-state/focused/conversation/{conversation}', 'UIStateController@showFocusedConversation');
@@ -161,4 +152,6 @@ Route::namespace('API')
             Route::get('ui-state/focused/turn/{turn}', 'UIStateController@showFocusedTurn');
             Route::get('ui-state/focused/intent/{intent}', 'UIStateController@showFocusedIntent');
         });
+
+        Route::post('conversation-simulation', 'ConversationSimulationController@simulate');
     });
