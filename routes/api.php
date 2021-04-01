@@ -152,4 +152,6 @@ Route::namespace('API')
             Route::get('ui-state/focused/turn/{turn}', 'UIStateController@showFocusedTurn');
             Route::get('ui-state/focused/intent/{intent}', 'UIStateController@showFocusedIntent');
         });
+
+        Route::post('conversation-simulation', 'ConversationSimulationController@simulate');
     });

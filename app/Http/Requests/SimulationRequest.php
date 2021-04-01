@@ -3,9 +3,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Status;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SceneRequest extends FormRequest
+class SimulationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +26,13 @@ class SceneRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'string',
-            'od_id' => 'string',
-            'name' => 'string',
-            'description' => 'string',
-            'interpreter' => 'nullable|string',
-            'behaviours' => 'array',
-            'conditions' => 'array',
-            'turns' => 'array'
+            "scenario" => "string|nullable",
+            "conversation" => "string|nullable",
+            "scene" => "string|nullable",
+            "turn" => "string|nullable",
+            "intent" => "string|nullable",
+            "speaker" => "required|string",
+            "intent_is_request" => "required|boolean",
         ];
     }
 }

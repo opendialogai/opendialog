@@ -12,13 +12,14 @@ import router from '@/router/index';
 
 import OpenDialogAdmin from '@opendialogai/opendialog-design-system-pkg/src'
 
-import BootstrapVue from 'bootstrap-vue';
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import VueCookies from 'vue-cookies';
 
 require('@/bootstrap');
 window.Vue = require('vue');
 window.Vue.use(OpenDialogAdmin);
 window.Vue.use(BootstrapVue);
+window.Vue.use(BootstrapVueIcons);
 window.Vue.use(VueCookies);
 
 /**

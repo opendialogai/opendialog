@@ -129,8 +129,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/{id}', 'AdminController@handle');
     });
 
-    Route::get('conversation-builder/{anything}', 'AdminController@handle');
-    Route::get('conversation-builder/{object}/{id}', 'AdminController@handle');
+    Route::get('conversation-builder/{anything}', 'AdminController@handle')->where('anything', '.*');
 });
 
 /**

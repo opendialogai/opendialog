@@ -4,9 +4,7 @@
     <div class="app-body">
       <Sidebar :navigationItems="navigationItems" :user="user" :minimized="false"/>
       <main class="main">
-        <div>
           <router-view></router-view>
-        </div>
       </main>
     </div>
   </div>

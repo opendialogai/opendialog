@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div>
     <h2 class="mb-3">Dynamic Attributes</h2>
 
     <div class="alert alert-danger" role="alert" v-if="errorMessage">
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import Pager from '@/mixins/Pager';
+import Pager from '@/mixins/Pager'
 
 export default {
   name: 'dynamic-attributes',

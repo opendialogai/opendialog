@@ -5,7 +5,6 @@ import DefaultContainer from '@/containers/DefaultContainer'
 
 import Home from '@opendialogai/opendialog-design-system-pkg/src/components/Views/Home'
 import WebchatSettingView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatSettingView'
-import Conversation from '@/views/Conversation'
 import MessageTemplateView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageTemplateView'
 import OutgoingIntentView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/OutgoingIntentView'
 import ChatbotUsersView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ChatbotUsersView'
@@ -44,7 +43,8 @@ const router = new VueRouter({
         {
           path: 'conversation-builder/*',
           name: 'conversation-builder',
-          component: ConversationBuilder
+          component: ConversationBuilder,
+          props: route => ({ newScenario: route.query.newScenario })
         },
         {
           path: 'webchat-setting',
@@ -72,39 +72,6 @@ const router = new VueRouter({
           name: 'conversation-log',
           component: ConversationLog,
           props: true,
-        },
-        {
-          path: 'conversations',
-          name: 'conversations',
-          component: Conversation,
-        },
-        {
-            path: 'conversations/archive',
-            name: 'conversations-archive',
-            component: Conversation,
-        },
-        {
-          path: 'conversations/add',
-          name: 'add-conversation',
-          component: Conversation,
-        },
-        {
-          path: 'conversations/:id',
-          name: 'view-conversation',
-          component: Conversation,
-          props: true,
-        },
-        {
-          path: 'conversations/:id/edit',
-          name: 'edit-conversation',
-          component: Conversation,
-          props: true,
-        },
-        {
-            path: 'conversations/:id/message-templates',
-            name: 'conversation-message-templates',
-            props: true,
-            component: Conversation,
         },
         {
           path: 'outgoing-intents/',
