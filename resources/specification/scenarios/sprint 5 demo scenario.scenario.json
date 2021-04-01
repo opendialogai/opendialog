@@ -1,0 +1,159 @@
+{
+    "od_id": "sprint 5 demo scenario",
+    "name": "Sprint 5 Demo Scenario",
+    "description": "Sprint 5 Demo",
+    "interpreter": "dummy",
+    "conditions": [],
+    "behaviors": [],
+    "conversations": [
+        {
+            "od_id": "welcome_conversation",
+            "name": "Welcome Conversation",
+            "description": "Automatically generated",
+            "interpreter": "dummy",
+            "conditions": [],
+            "behaviors": [
+                "STARTING"
+            ],
+            "scenes": [
+                {
+                    "od_id": "welcome_scene",
+                    "name": "Welcome scene",
+                    "description": "An new scene example description",
+                    "conditions": [],
+                    "behaviors": [
+                        "STARTING"
+                    ],
+                    "turns": [
+                        {
+                            "od_id": "welcome_turn",
+                            "name": "Welcome turn",
+                            "description": "A new example turn description",
+                            "conditions": [],
+                            "behaviors": [
+                                "STARTING"
+                            ],
+                            "valid_origins": [],
+                            "request_intents": [
+                                {
+                                    "od_id": "intent.core.welcome",
+                                    "name": "intent.core.welcome",
+                                    "description": "An example intent description",
+                                    "conditions": [],
+                                    "behaviors": [],
+                                    "speaker": "USER",
+                                    "confidence": 1,
+                                    "sample_utterance": "Hi",
+                                    "listens_for": [],
+                                    "expected_attributes": [],
+                                    "virtual_intents": [],
+                                    "actions": []
+                                }
+                            ],
+                            "response_intents": [
+                                {
+                                    "od_id": "intent.app.welcomeResponse",
+                                    "name": "intent.app.welcomeResponse",
+                                    "description": "An example intent description",
+                                    "conditions": [],
+                                    "behaviors": [],
+                                    "speaker": "APP",
+                                    "confidence": 1,
+                                    "sample_utterance": "Hello, is it me you're looking for?",
+                                    "listens_for": [],
+                                    "expected_attributes": [],
+                                    "virtual_intents": [],
+                                    "actions": []
+                                }
+                            ]
+                        },
+                        {
+                            "od_id": "faq_turn",
+                            "name": "FAQ turn",
+                            "description": "A new example turn description",
+                            "conditions": [],
+                            "behaviors": [
+                                "OPEN"
+                            ],
+                            "valid_origins": [],
+                            "request_intents": [
+                                {
+                                    "od_id": "intent.app.faq",
+                                    "name": "intent.app.faq",
+                                    "description": "An example intent description",
+                                    "conditions": [],
+                                    "behaviors": [],
+                                    "speaker": "USER",
+                                    "confidence": 1,
+                                    "sample_utterance": "I have a question...",
+                                    "listens_for": [],
+                                    "expected_attributes": [],
+                                    "virtual_intents": [],
+                                    "actions": []
+                                }
+                            ],
+                            "response_intents": [
+                                {
+                                    "od_id": "intent.app.faqResponse",
+                                    "name": "intent.app.faqResponse",
+                                    "description": "An example intent description",
+                                    "conditions": [],
+                                    "behaviors": [],
+                                    "speaker": "APP",
+                                    "confidence": 1,
+                                    "sample_utterance": "And I have the answer to your question",
+                                    "listens_for": [],
+                                    "expected_attributes": [],
+                                    "virtual_intents": [],
+                                    "actions": []
+                                }
+                            ]
+                        },
+                        {
+                            "od_id": "help_turn",
+                            "name": "Help turn",
+                            "description": "A new example turn description",
+                            "conditions": [],
+                            "behaviors": [
+                                "OPEN"
+                            ],
+                            "valid_origins": [],
+                            "request_intents": [
+                                {
+                                    "od_id": "intent.app.help",
+                                    "name": "intent.app.help",
+                                    "description": "An example intent description",
+                                    "conditions": [],
+                                    "behaviors": [],
+                                    "speaker": "USER",
+                                    "confidence": 1,
+                                    "sample_utterance": "Help, I need somebody, help",
+                                    "listens_for": [],
+                                    "expected_attributes": [],
+                                    "virtual_intents": [],
+                                    "actions": []
+                                }
+                            ],
+                            "response_intents": [
+                                {
+                                    "od_id": "intent.app.helpResponse",
+                                    "name": "intent.app.helpResponse",
+                                    "description": "An example intent description",
+                                    "conditions": [],
+                                    "behaviors": [],
+                                    "speaker": "APP",
+                                    "confidence": 1,
+                                    "sample_utterance": "Not just anybody, help",
+                                    "listens_for": [],
+                                    "expected_attributes": [],
+                                    "virtual_intents": [],
+                                    "actions": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
