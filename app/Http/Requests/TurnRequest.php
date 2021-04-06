@@ -30,7 +30,7 @@ class TurnRequest extends FormRequest
             'name' => 'string',
             'description' => 'string',
             'interpreter' => 'nullable|string',
-            'behaviours' => 'array',
+            'behaviors' => 'array',
             'conditions' => 'array',
             'valid_origins' => 'array',
             'intents' => 'array'
