@@ -151,6 +151,8 @@ Route::namespace('API')
             Route::get('ui-state/focused/scene/{scene}', 'UIStateController@showFocusedScene');
             Route::get('ui-state/focused/turn/{turn}', 'UIStateController@showFocusedTurn');
             Route::get('ui-state/focused/intent/{intent}', 'UIStateController@showFocusedIntent');
+
+            Route::get('ui-state/scenarios/{scenario}/tree', 'UIStateController@showConversationTree');
         });
 
         Route::post('conversation-simulation', 'ConversationSimulationController@simulate');

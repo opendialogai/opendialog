@@ -4,11 +4,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ConversationTreeResource;
 use App\Http\Resources\FocusedConversationResource;
 use App\Http\Resources\FocusedIntentResource;
 use App\Http\Resources\FocusedScenarioResource;
 use App\Http\Resources\FocusedSceneResource;
 use App\Http\Resources\FocusedTurnResource;
+use App\Http\Resources\ScenarioResource;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
@@ -87,5 +89,17 @@ class UIStateController extends Controller
     {
         $focusedIntent = ConversationDataClient::getScenarioWithFocusedIntent($intent->getUid());
         return new FocusedIntentResource($focusedIntent);
+    }
+
+    /**
+     * Returns a tree of all
+     *
+     * @param Scenario $scenario
+     * @return ConversationTreeResource
+     */
+    public function showConversationTree(Scenario $scenario): ConversationTreeResource
+    {
+        $conversationTree = ConversationDataClient::getConversationTreeByScenarioUid($scenario->getUid());
+        return new ConversationTreeResource($conversationTree);
     }
 }
