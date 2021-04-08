@@ -20,6 +20,7 @@
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
         "resolve-url-loader": "^3.1.0",
+        "@opendialogai/opendialog-design-system-pkg": "^0.2.16",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "vue": "^2.6.10",
