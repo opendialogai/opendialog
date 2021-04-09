@@ -30,7 +30,7 @@ class ScenarioRequest extends FormRequest
             'name' => 'string',
             'description' => 'string',
             'defaultInterpreter' => 'string',
-            'behaviours' => 'array',
+            'behaviors' => 'array',
             'conditions' => 'array',
             'status' => ['string', new Status],
             'conversations' => 'array'

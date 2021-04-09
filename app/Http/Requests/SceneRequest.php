@@ -30,7 +30,7 @@ class SceneRequest extends FormRequest
             'name' => 'string',
             'description' => 'string',
             'interpreter' => 'nullable|string',
-            'behaviours' => 'array',
+            'behaviors' => 'array',
             'conditions' => 'array',
             'turns' => 'array'
         ];

@@ -33,7 +33,7 @@ class IntentRequest extends FormRequest
             'confidence' => 'string',
             'sample_utterance' => 'string',
             'speaker' => 'string',
-            'behaviours' => 'array',
+            'behaviors' => 'array',
             'conditions' => 'array',
             'transitions' => 'array',
             'expected_attributes' => 'array',
