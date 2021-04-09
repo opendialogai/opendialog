@@ -11,11 +11,13 @@ use Carbon\Carbon;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\SceneCollection;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use Tests\TestCase;
@@ -264,6 +266,68 @@ class UIStateControllerTest extends TestCase
                                 "intents" => []
                             ]
 
+                        ]
+                    ]
+                ]
+            ]);
+    }
+
+    public function testGetConversationTreeByScenario()
+    {
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0004');
+        $fakeTurn->setOdId('first_turn');
+        $fakeTurn->setName('First turn');
+
+        $fakeScene = new Scene();
+        $fakeScene->setUid('0x0003');
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->addTurn($fakeTurn);
+
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0002');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setScenes(new SceneCollection([$fakeScene]));
+
+        $fakeScenario = new Scenario();
+        $fakeScenario->setUid('0x0001');
+        $fakeScenario->setConversations(new ConversationCollection([$fakeConversation]));
+
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with($fakeScenario->getUid(), false)
+            ->andReturn($fakeScenario);
+
+        ConversationDataClient::shouldReceive('getConversationTreeByScenarioUid')
+            ->once()
+            ->with($fakeScenario->getUid())
+            ->andReturn($fakeScenario);
+
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation-builder/ui-state/scenarios/' . $fakeScenario->getUid() . '/tree')
+            ->assertExactJson([
+                "id" => "0x0001",
+                "conversations" => [
+                    [
+                        "id" => "0x0002",
+                        "od_id" => "new_example_conversation",
+                        "name" => "New Example conversation",
+                        "scenes" => [
+                            [
+                                "id" => "0x0003",
+                                "od_id" => "welcome_scene",
+                                "name" => "Welcome scene",
+                                "turns" => [
+                                    [
+                                        "id" => "0x0004",
+                                        "od_id" => "first_turn",
+                                        "name" => "First turn"
+                                    ]
+                                ]
+                            ]
                         ]
                     ]
                 ]
