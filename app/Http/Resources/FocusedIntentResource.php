@@ -48,6 +48,7 @@ class FocusedIntentResource extends JsonResource
                     Intent::SAMPLE_UTTERANCE,
                     Intent::SPEAKER,
                     Intent::TRANSITION,
+                    Intent::BEHAVIORS => [],
                 ],
                 Turn::RESPONSE_INTENTS =>[
                     Intent::UID,
@@ -57,6 +58,7 @@ class FocusedIntentResource extends JsonResource
                     Intent::SAMPLE_UTTERANCE,
                     Intent::SPEAKER,
                     Intent::TRANSITION,
+                    Intent::BEHAVIORS => [],
                 ],
                 Turn::SCENE => [
                     Scene::UID,
