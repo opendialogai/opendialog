@@ -2587,12 +2587,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "9b53e02227224aa9f666a6e59ccfb054721cd34b"
+                "reference": "1936dff18797cb320dd3f44fc8df2739dc76dc3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/9b53e02227224aa9f666a6e59ccfb054721cd34b",
-                "reference": "9b53e02227224aa9f666a6e59ccfb054721cd34b",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/1936dff18797cb320dd3f44fc8df2739dc76dc3d",
+                "reference": "1936dff18797cb320dd3f44fc8df2739dc76dc3d",
                 "shasum": ""
             },
             "require": {
@@ -2672,7 +2672,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-529--transitions-api"
             },
-            "time": "2021-04-09T17:25:45+00:00"
+            "time": "2021-04-12T13:10:49+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
