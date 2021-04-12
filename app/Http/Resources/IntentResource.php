@@ -34,6 +34,7 @@ class IntentResource extends JsonResource
             Intent::ACTIONS,
             Intent::BEHAVIORS => Behavior::FIELDS,
             Intent::CONDITIONS => Condition::FIELDS,
+            Intent::TRANSITION
         ]
     ];
 
