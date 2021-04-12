@@ -9,7 +9,7 @@ return [
             'icon' => 'od-icon-home',
         ],
         [
-            'title' => 'Scenarios',
+            'title' => 'Conversation Builder',
             'url' => '/admin/conversation-builder/scenarios',
             'icon' => 'od-icon-conversation-builder',
         ],
@@ -47,12 +47,7 @@ return [
             'title' => 'Global Contexts',
             'url' => '/admin/global-contexts',
             'icon' => 'cui-info',
-        ],
-        [
-            'title' => 'Test Bot',
-            'url' => '/admin/demo',
-            'icon' => 'icon-control-play',
-        ],
+        ]
     ],
 
 ];
