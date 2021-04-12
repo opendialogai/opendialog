@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa2dab730ed067c52ddb8a4fff6d478b",
+    "content-hash": "fe3c77b1387348bb288ff8b87d2e2757",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2583,16 +2583,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/OPNDLG-529--transitions-api",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "1936dff18797cb320dd3f44fc8df2739dc76dc3d"
+                "reference": "a239526e99cf9e351618b02b15e5991ce6ac7551"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/1936dff18797cb320dd3f44fc8df2739dc76dc3d",
-                "reference": "1936dff18797cb320dd3f44fc8df2739dc76dc3d",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/a239526e99cf9e351618b02b15e5991ce6ac7551",
+                "reference": "a239526e99cf9e351618b02b15e5991ce6ac7551",
                 "shasum": ""
             },
             "require": {
@@ -2670,9 +2670,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-529--transitions-api"
+                "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-04-12T13:10:49+00:00"
+            "time": "2021-04-12T13:25:55+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
