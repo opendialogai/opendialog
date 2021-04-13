@@ -49,6 +49,7 @@ class FocusedIntentResource extends JsonResource
                     Intent::SPEAKER,
                     Intent::TRANSITION,
                     Intent::BEHAVIORS => [],
+                    Intent::CONFIDENCE
                 ],
                 Turn::RESPONSE_INTENTS =>[
                     Intent::UID,
@@ -59,6 +60,7 @@ class FocusedIntentResource extends JsonResource
                     Intent::SPEAKER,
                     Intent::TRANSITION,
                     Intent::BEHAVIORS => [],
+                    Intent::CONFIDENCE
                 ],
                 Turn::SCENE => [
                     Scene::UID,
