@@ -9,11 +9,20 @@ use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\ScenarioRequest;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ScenarioResource;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use OpenDialogAi\Core\Conversation\Behavior;
+use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
+use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Turn;
+use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 
 class ScenariosController extends Controller
 {
@@ -86,27 +95,53 @@ class ScenariosController extends Controller
      */
     public function store(ScenarioRequest $request): JsonResponse
     {
+        /** @var Scenario $newScenario */
         $newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
-        /** @var Scenario $createdScenario */
-        $createdScenario = ConversationDataClient::addScenario($newScenario);
 
-        $welcomeConversation = $this->createWelcomeConversation($createdScenario);
-        $createdScenario->addConversation($welcomeConversation);
+        $updatedScenario = $this->createDefaultConversations($newScenario);
 
-        return (new ScenarioResource($createdScenario))->response()->setStatusCode(201);
+        return (new ScenarioResource($updatedScenario))->response()->setStatusCode(201);
     }
 
     /**
      * @param Scenario $scenario
-     * @return Conversation
+     * @return Scenario
      */
-    private function createWelcomeConversation(Scenario $scenario): Conversation
+    private function createDefaultConversations(Scenario $scenario): Scenario
     {
-        $conversation = new Conversation($scenario);
-        $conversation->setName('Welcome Conversation');
-        $conversation->setOdId('welcome_conversation');
-        $conversation->setDescription('Automatically generated');
-        return ConversationDataClient::addConversation($conversation);
+        $welcomeConversation = $this->createAtomicCallbackConversation(
+            $scenario,
+            'Welcome',
+            'intent.core.welcome',
+            'Hello from user',
+            'intent.app.welcomeResponse',
+            'Hello from bot'
+        );
+
+        $noMatchConversation = $this->createAtomicCallbackConversation(
+            $scenario,
+            'No Match',
+            'intent.core.NoMatch',
+            '[no match]',
+            'intent.app.noMatchResponse',
+            'Sorry, I didn\'t understand that'
+        );
+
+        $scenario->addConversation($welcomeConversation);
+        $scenario->addConversation($noMatchConversation);
+
+        $persistedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
+
+        $this->createMessageForOutgoingIntent(
+            'intent.app.welcomeResponse',
+            "Hi! This is the default welcome message for the Welcome Scenario."
+        );
+        $this->createMessageForOutgoingIntent(
+            'intent.app.noMatchResponse',
+            "Sorry, I didn't understand that."
+        );
+
+        return $persistedScenario;
     }
 
     /**
@@ -135,6 +170,98 @@ class ScenariosController extends Controller
             return response()->noContent(200);
         } else {
             return response('Error deleting scenario, check the logs', 500);
+        }
+    }
+
+    /**
+     * @param Scenario $scenario
+     * @param string $name
+     * @param string $incomingIntentId
+     * @param string $incomingSampleUtterance
+     * @param string $outgoingIntentId
+     * @param string $outgoingSampleUtterance
+     * @return Conversation
+     */
+    private function createAtomicCallbackConversation(
+        Scenario $scenario,
+        string $name,
+        string $incomingIntentId,
+        string $incomingSampleUtterance,
+        string $outgoingIntentId,
+        string $outgoingSampleUtterance
+    ): Conversation {
+        $nameAsId = preg_replace('/\s/', '_', strtolower($name));
+
+        $conversation = new Conversation($scenario);
+        $conversation->setName("$name Conversation");
+        $conversation->setOdId(sprintf('%s_conversation', $nameAsId));
+        $conversation->setDescription('Automatically generated');
+        $conversation->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+        $conversation->setCreatedAt(Carbon::now());
+        $conversation->setUpdatedAt(Carbon::now());
+
+        $scene = new Scene($conversation);
+        $scene->setName("$name Scene");
+        $scene->setOdId(sprintf('%s_scene', $nameAsId));
+        $scene->setDescription('Automatically generated');
+        $scene->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+        $scene->setCreatedAt(Carbon::now());
+        $scene->setUpdatedAt(Carbon::now());
+
+        $turn = new Turn($scene);
+        $turn->setName("$name Turn");
+        $turn->setOdId(sprintf('%s_turn', $nameAsId));
+        $turn->setDescription('Automatically generated');
+        $turn->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+        $turn->setCreatedAt(Carbon::now());
+        $turn->setUpdatedAt(Carbon::now());
+
+        $requestIntent = new Intent($turn, Intent::USER);
+        $requestIntent->setIsRequestIntent(true);
+        $requestIntent->setName($incomingIntentId);
+        $requestIntent->setOdId($incomingIntentId);
+        $requestIntent->setDescription('Automatically generated');
+        $requestIntent->setSampleUtterance($incomingSampleUtterance);
+        $requestIntent->setInterpreter('interpreter.core.callbackInterpreter');
+        $requestIntent->setConfidence(1);
+        $requestIntent->setCreatedAt(Carbon::now());
+        $requestIntent->setUpdatedAt(Carbon::now());
+
+        $responseIntent = new Intent($turn, Intent::APP);
+        $responseIntent->setIsRequestIntent(false);
+        $responseIntent->setName($outgoingIntentId);
+        $responseIntent->setOdId($outgoingIntentId);
+        $responseIntent->setDescription('Automatically generated');
+        $responseIntent->setSampleUtterance($outgoingSampleUtterance);
+        $responseIntent->setConfidence(1);
+        $responseIntent->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::COMPLETING_BEHAVIOR)]));
+        $responseIntent->setCreatedAt(Carbon::now());
+        $responseIntent->setUpdatedAt(Carbon::now());
+
+        $turn->addRequestIntent($requestIntent);
+        $turn->addResponseIntent($responseIntent);
+        $scene->addTurn($turn);
+        $conversation->addScene($scene);
+
+        return $conversation;
+    }
+
+    /**
+     * @param string $outgoingIntentId
+     * @param string $text
+     */
+    private function createMessageForOutgoingIntent(string $outgoingIntentId, string $text): void
+    {
+        /** @var OutgoingIntent $outgoingIntent */
+        $outgoingIntent = OutgoingIntent::firstOrCreate(['name' => $outgoingIntentId]);
+
+        if ($outgoingIntent->messageTemplates()->get()->isEmpty()) {
+            MessageTemplate::firstOrCreate([
+                'name' => $outgoingIntentId,
+            ], [
+                'message_markup' => (new MessageMarkUpGenerator())->addTextMessage($text)->getMarkUp(),
+                'outgoing_intent_id' => $outgoingIntent->id
+            ]);
         }
     }
 }
