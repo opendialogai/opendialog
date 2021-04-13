@@ -9,7 +9,7 @@ return [
             'icon' => 'od-icon-home',
         ],
         [
-            'title' => 'Conversation Builder',
+            'title' => 'Conversation Designer',
             'url' => '/admin/conversation-builder/scenarios',
             'icon' => 'od-icon-conversation-builder',
         ],
