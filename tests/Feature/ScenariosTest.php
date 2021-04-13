@@ -12,6 +12,8 @@ use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundExceptio
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
 class ScenariosTest extends TestCase
@@ -190,15 +192,10 @@ class ScenariosTest extends TestCase
             "conversations": [{"id": "0x0001"}]
         }', true));
 
-        ConversationDataClient::shouldReceive('addScenario')
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')
             ->once()
             ->with($fakeScenario)
             ->andReturn($fakeScenarioCreated);
-
-        ConversationDataClient::shouldReceive('addConversation')
-            ->once()
-            ->withAnyArgs()
-            ->andReturn($fakeConversationCreated);
 
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation-builder/scenarios/', [
@@ -214,6 +211,9 @@ class ScenariosTest extends TestCase
                 'description' =>  'An example scenario',
                 'conversations' => [['id' => $fakeConversationCreated->getUid()]]
             ]);
+
+        $this->assertCount(2, OutgoingIntent::all());
+        $this->assertCount(2, MessageTemplate::all());
     }
 
     public function testUpdateScenarioNotFound()
