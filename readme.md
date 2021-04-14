@@ -14,7 +14,7 @@ Behind the scenes this all gets translated into the OpenDialog Conversation Desc
 
 For all the details of how OpenDialog helps you build sophisticated conversation applications visit our [documentation site](https://docs.opendialog.ai).
 
-<img src="https://www.opendialog.ai/wp-content/uploads/2021/04/od_intro2-1.gif" alt="OpenDialog Designer Intro">
+<img src="https://www.opendialog.ai/wp-content/uploads/2021/04/od_intro2-1.gif" width="585px" alt="OpenDialog Designer Intro">
 
 
 # Trying out OpenDialog
