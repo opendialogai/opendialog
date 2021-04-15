@@ -127,7 +127,7 @@ jobs:
       - run: |
           if [ "${DOCKER_BUILD}" = "true" ]; then
               echo "Building Docker Image"
-              bash scripts/docker-build.sh
+              bash docker/scripts/docker-build.sh
           fi
 
   deploy:

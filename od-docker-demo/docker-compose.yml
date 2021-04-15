@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   app:
-    image: opendialogai/opendialog:${TAG}
+    image: opendialogai/opendialog:1.x
     restart: on-failure
     tty: true
     ports:
@@ -10,14 +10,6 @@ services:
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
-      FORCE_HTTPS: 'false'
-      DB_CONNECTION: 'mysql'
-      DB_HOST: 'db'
-      DB_PORT: '3306'
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      APP_NAME: ${APP_NAME}
     working_dir: /var/www
     networks:
       - app-network
@@ -26,17 +18,17 @@ services:
       - dgraph-server
       - dgraph-ratel
       - dgraph-zero
-  db:
+  mysql:
     image: mysql:5.7.27
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_DATABASE: opendialog
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: opendialog
+      MYSQL_PASSWORD: opendialog
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:

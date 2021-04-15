@@ -22,12 +22,13 @@ For all the details of how OpenDialog helps you build sophisticated conversation
 If you want to see OpenDialog in action you can try out the latest version through our automatically produced Docker image. 
 
 As long as you have Docker installed on your local machine you can do:
-- `cd docker/od-demo`
-- `cp .env.example .env`
+- `cd od-docker-demo`
 - `docker-compose up -d app`
-- `docker-compose exec app bash scripts/update-docker.sh`
+- `docker-compose exec app bash docker/scripts/update-docker.sh`
 
 You can then visit http://localhost and login to OpenDialog with admin@example.com / opendialog - you can also view the full page webchat experience on http://localhost/web-chat
+
+There are more detailed instructions in readme the `od-docker-demo` directory
 
 # Learning about OpenDialog
 
