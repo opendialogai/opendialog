@@ -45,11 +45,12 @@ class FocusedIntentResource extends JsonResource
                     Intent::OD_ID,
                     Intent::NAME,
                     Intent::DESCRIPTION,
+                    Intent::INTERPRETER,
+                    Intent::CONFIDENCE,
                     Intent::SAMPLE_UTTERANCE,
                     Intent::SPEAKER,
                     Intent::TRANSITION,
                     Intent::BEHAVIORS => [],
-                    Intent::CONFIDENCE
                 ],
                 Turn::RESPONSE_INTENTS =>[
                     Intent::UID,
