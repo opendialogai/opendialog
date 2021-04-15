@@ -14,7 +14,7 @@ Once you've created a `.env` file, to get the application up and running use:
 
 After first run, or to update a running application, the `docker-update.sh` script needs to be run. To run this within in the app container, run the following:
 
-    `docker-compose exec app bash docker/od-demo/update-docker.sh`
+    `docker-compose exec app bash scripts/update-docker.sh`
     
 This will run all database migration files, set up the webchat settings, optionally load all conversations and create the default admin user (if not already created).
 

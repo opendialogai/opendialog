@@ -25,7 +25,7 @@ As long as you have Docker installed on your local machine you can do:
 - `cd docker/od-demo`
 - `cp .env.example .env`
 - `docker-compose up -d app`
-- `docker-compose exec app bash docker/od-demo/update-docker.sh`
+- `docker-compose exec app bash scripts/update-docker.sh`
 
 You can then visit http://localhost and login to OpenDialog with admin@example.com / opendialog - you can also view the full page webchat experience on http://localhost/web-chat
 
