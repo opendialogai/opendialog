@@ -14,7 +14,7 @@ services:
     networks:
       - app-network
     depends_on:
-      - db
+      - mysql
       - dgraph-server
       - dgraph-ratel
       - dgraph-zero
