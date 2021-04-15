@@ -3,9 +3,6 @@
 
 namespace Tests\Feature;
 
-use App\Http\Facades\Serializer;
-use App\Http\Resources\ConversationResource;
-use App\Http\Resources\ScenarioResource;
 use App\User;
 use Carbon\Carbon;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
@@ -14,12 +11,15 @@ use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
+use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
+use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
 use Tests\TestCase;
 
 class UIStateControllerTest extends TestCase
@@ -332,5 +332,90 @@ class UIStateControllerTest extends TestCase
                     ]
                 ]
             ]);
+    }
+
+    public function testMassUpdateNoRequestResponse()
+    {
+        $this->actingAs($this->user, 'api')
+            ->patch('/admin/api/conversation-builder/turns/0x0001/turn-intents/neither/mass', [])
+            ->assertStatus(404);
+    }
+
+    public function testMassUpdateNonValidParticipant()
+    {
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0001');
+        $fakeTurn->setOdId('welcome_turn');
+        $fakeTurn->setName('Welcome Turn');
+        $fakeTurn->setDescription('A welcome turn');
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        $body = ['participant' => 'INVALID'];
+
+        $this->actingAs($this->user, 'api')
+            ->json('PATCH', '/admin/api/conversation-builder/turns/0x0001/turn-intents/response/mass', $body)
+            ->assertStatus(422);
+    }
+
+    public function testMassIntentUpdate()
+    {
+        $turn = new Turn();
+        $turn->setUid('0x0001');
+        $turn->setOdId('welcome_turn');
+        $turn->setName('Welcome Turn');
+        $turn->setDescription('A welcome turn');
+
+        $requestIntent = new Intent($turn);
+        $requestIntent->setUid('0x0005');
+        $requestIntent->setOdId('welcome_intent_1');
+        $requestIntent->setName('Welcome intent 1');
+        $requestIntent->setDescription('A welcome intent 1');
+        $requestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $requestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $requestIntent->setInterpreter('interpreter.core.nlp');
+        $requestIntent->setConditions(new ConditionCollection());
+        $requestIntent->setBehaviors(new BehaviorsCollection());
+        $requestIntent->setSpeaker(Intent::USER);
+        $requestIntent->setConfidence(1.0);
+        $requestIntent->setListensFor(['intent_a', 'intent_b']);
+        $requestIntent->setTransition(new Transition(null, null, null));
+        $requestIntent->setVirtualIntents(new VirtualIntentCollection());
+        $requestIntent->setSampleUtterance('Hello!');
+
+        $responseIntent = new Intent($turn);
+        $responseIntent->setUid('0x0006');
+        $responseIntent->setOdId('goodbye_intent_1');
+        $responseIntent->setName('Goodbye intent 1');
+        $responseIntent->setDescription('A goodbye intent 1');
+        $responseIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $responseIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $responseIntent->setInterpreter('interpreter.core.nlp');
+        $responseIntent->setConditions(new ConditionCollection());
+        $responseIntent->setBehaviors(new BehaviorsCollection());
+        $responseIntent->setSpeaker(Intent::APP);
+        $responseIntent->setConfidence(1.0);
+        $responseIntent->setListensFor(['intent_c']);
+        $responseIntent->setTransition(new Transition(null, null, null));
+        $responseIntent->setVirtualIntents(new VirtualIntentCollection());
+        $responseIntent->setSampleUtterance('Welcome user!');
+
+        $turn->addRequestIntent($requestIntent);
+        $turn->addResponseIntent($responseIntent);
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($turn->getUid(), false)
+            ->andReturn($turn);
+
+
+        $body = ['participant' => 'APP'];
+
+        $this->actingAs($this->user, 'api')
+            ->json('PATCH', '/admin/api/conversation-builder/turns/0x0001/turn-intents/request/mass', $body)
+            ->assertStatus(200);
     }
 }
