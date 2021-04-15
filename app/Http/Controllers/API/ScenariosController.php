@@ -196,6 +196,7 @@ class ScenariosController extends Controller
         $conversation->setName("$name Conversation");
         $conversation->setOdId(sprintf('%s_conversation', $nameAsId));
         $conversation->setDescription('Automatically generated');
+        $conversation->setInterpreter('');
         $conversation->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
         $conversation->setCreatedAt(Carbon::now());
         $conversation->setUpdatedAt(Carbon::now());
@@ -204,6 +205,7 @@ class ScenariosController extends Controller
         $scene->setName("$name Scene");
         $scene->setOdId(sprintf('%s_scene', $nameAsId));
         $scene->setDescription('Automatically generated');
+        $scene->setInterpreter('');
         $scene->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
         $scene->setCreatedAt(Carbon::now());
         $scene->setUpdatedAt(Carbon::now());
@@ -212,6 +214,7 @@ class ScenariosController extends Controller
         $turn->setName("$name Turn");
         $turn->setOdId(sprintf('%s_turn', $nameAsId));
         $turn->setDescription('Automatically generated');
+        $turn->setInterpreter('');
         $turn->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
         $turn->setCreatedAt(Carbon::now());
         $turn->setUpdatedAt(Carbon::now());
