@@ -1,6 +1,6 @@
 # OpenDialog Prebuilt Docker Image
 
-The OpenDialog CI process builds a docker image for every feature branch. This docker-compose configuration helps you to quickly get started with the latest build of OpenDialog from the opendialogai Docker hub [registry](https://hub.docker.com/repository/docker/opendialogai/opendialog).
+The OpenDialog CI process builds a Docker image for releases and main feature branches. This docker-compose configuration helps you to quickly get started with the latest build of OpenDialog from the Opendialog Docker hub [registry](https://hub.docker.com/repository/docker/opendialogai/opendialog).
 
 ## Running Docker locally
 
