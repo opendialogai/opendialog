@@ -38,7 +38,7 @@ const router = new VueRouter({
         {
           path: 'conversation-builder/scenarios',
           name: 'scenarios',
-          component: Scenarios,
+          component: Scenarios
         },
         {
           path: 'conversation-builder/*',
