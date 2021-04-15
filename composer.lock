@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7a874dda0a6a0b15492a3c1bcc5c8a2",
+    "content-hash": "71d93911b4988ca18d9fa55527bb527a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2583,16 +2583,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-fix/remove-conversation-array-before-set",
+            "version": "dev-feature/OPNDLG-534--interpreter-defaults",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "eb9cd1e64d72fe75cbcd0d0c9f1a8868b93f2cae"
+                "reference": "9267008b22d06cf394cfef4fef5f0b769dfa08e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/eb9cd1e64d72fe75cbcd0d0c9f1a8868b93f2cae",
-                "reference": "eb9cd1e64d72fe75cbcd0d0c9f1a8868b93f2cae",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/9267008b22d06cf394cfef4fef5f0b769dfa08e1",
+                "reference": "9267008b22d06cf394cfef4fef5f0b769dfa08e1",
                 "shasum": ""
             },
             "require": {
@@ -2670,9 +2670,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/fix/remove-conversation-array-before-set"
+                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-534--interpreter-defaults"
             },
-            "time": "2021-04-13T16:44:07+00:00"
+            "time": "2021-04-15T13:15:23+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
