@@ -3,9 +3,6 @@
 
 namespace Tests\Feature;
 
-use App\Http\Facades\Serializer;
-use App\Http\Resources\ConversationResource;
-use App\Http\Resources\ScenarioResource;
 use App\User;
 use Carbon\Carbon;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
@@ -14,6 +11,7 @@ use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
@@ -181,48 +179,7 @@ class UIStateControllerTest extends TestCase
 
     public function testGetFocusedTurn()
     {
-        $fakeScenario = new Scenario();
-        $fakeScenario->setUid('0x0001');
-        $fakeScenario->setName("Example scenario");
-        $fakeScenario->setOdId('example_scenario');
-        $fakeScenario->setDescription('An example scenario');
-
-        $fakeConversation = new Conversation();
-        $fakeConversation->setUid('0x0002');
-        $fakeConversation->setName('New Example conversation');
-        $fakeConversation->setOdId('new_example_conversation');
-        $fakeConversation->setDescription("An new example conversation");
-
-        $fakeConversation->setScenario($fakeScenario);
-
-        $fakeScene = new Scene();
-        $fakeScene->setUid('0x0003');
-        $fakeScene->setOdId('welcome_scene');
-        $fakeScene->setName('Welcome scene');
-        $fakeScene->setDescription('A welcome scene');
-        $fakeScene->setInterpreter('interpreter.core.nlp');
-
-        $fakeScene->setConversation($fakeConversation);
-
-        $fakeTurn = new Turn();
-        $fakeTurn->setUid('0x0004');
-        $fakeTurn->setOdId('first_turn');
-        $fakeTurn->setName('First turn');
-        $fakeTurn->setDescription('The first turn');
-        $fakeTurn->setInterpreter('interpreter.core.nlp');
-        $fakeTurn->setBehaviors(new BehaviorsCollection());
-        $fakeTurn->setConditions(new ConditionCollection());
-        $fakeTurn->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeTurn->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-
-        $fakeTurn->setRequestIntents(new IntentCollection());
-        $fakeTurn->setResponseIntents(new IntentCollection());
-
-        $fakeTurn->setScene($fakeScene);
-
-
-
-
+        $fakeTurn = $this->createFakeConversation('0x0001', '0x0002', '0x0003', '0x0004');
 
         ConversationDataClient::shouldReceive('getTurnByUid')
             ->once()
@@ -332,5 +289,170 @@ class UIStateControllerTest extends TestCase
                     ]
                 ]
             ]);
+    }
+
+    public function testMassUpdateNoRequestResponse()
+    {
+        ConversationDataClient::shouldReceive('getTurnByUid')->never();
+
+        $this->actingAs($this->user, 'api')
+            ->patch('/admin/api/conversation-builder/ui-state/turns/0x0001/intents/neither', [])
+            ->assertStatus(404);
+    }
+
+    public function testMassUpdateNonValidParticipant()
+    {
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0001');
+        $fakeTurn->setOdId('welcome_turn');
+        $fakeTurn->setName('Welcome Turn');
+        $fakeTurn->setDescription('A welcome turn');
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        $body = ['participant' => 'INVALID'];
+
+        $this->actingAs($this->user, 'api')
+            ->json('PATCH', '/admin/api/conversation-builder/ui-state/turns/0x0001/intents/request', $body)
+            ->assertStatus(422);
+    }
+
+    public function testMassIntentUpdate()
+    {
+        $turnUid = '0x0004';
+
+        $turn = $this->createFakeConversation('0x0001', '0x0002', '0x0003', $turnUid);
+
+        $requestIntent = new Intent($turn);
+        $requestIntent->setUid('0x0005');
+        $requestIntent->setOdId('welcome_intent_1');
+        $requestIntent->setName('Welcome intent 1');
+        $requestIntent->setDescription('A welcome intent 1');
+        $requestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $requestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $requestIntent->setSpeaker(Intent::USER);
+        $requestIntent->setSampleUtterance('Hello!');
+        $turn->addRequestIntent($requestIntent);
+
+        $responseIntent = new Intent($turn);
+        $responseIntent->setUid('0x0006');
+        $responseIntent->setOdId('goodbye_intent_1');
+        $responseIntent->setName('Goodbye intent 1');
+        $responseIntent->setDescription('A goodbye intent 1');
+        $responseIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $responseIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $responseIntent->setSpeaker(Intent::APP);
+        $responseIntent->setSampleUtterance('Welcome user!');
+        $turn->addResponseIntent($responseIntent);
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($turn->getUid(), false)
+            ->andReturn($turn);
+
+        $responseIntent->setSpeaker(Intent::USER);
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once()
+            ->with($responseIntent);
+
+        $requestIntent->setSpeaker(Intent::APP);
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once()
+            ->with($requestIntent);
+
+
+        $turn->setRequestIntents(new IntentCollection());
+        $turn->addRequestIntent($requestIntent);
+
+        $turn->setResponseIntents(new IntentCollection());
+        $turn->addResponseIntent($responseIntent);
+        ConversationDataClient::shouldReceive('getScenarioWithFocusedTurn')
+            ->once()
+            ->andReturn($turn);
+
+        $body = ['participant' => 'APP'];
+
+        $this->actingAs($this->user, 'api')
+            ->json('PATCH', "/admin/api/conversation-builder/ui-state/turns/$turnUid/intents/request", $body)
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                "intents" => [
+                    [
+                        "intent" => [
+                            "description" => "A goodbye intent 1",
+                            "id" => "0x0006",
+                            "name" => "Goodbye intent 1",
+                            "od_id" => "goodbye_intent_1",
+                            "sample_utterance" => "Welcome user!",
+                            "speaker" => "USER"
+                        ],
+                        "order" => "RESPONSE"
+                    ],
+                    [
+                        "intent" => [
+                            "description" => "A welcome intent 1",
+                            "id" => "0x0005",
+                            "name" => "Welcome intent 1",
+                            "od_id" => "welcome_intent_1",
+                            "sample_utterance" => "Hello!",
+                            "speaker" => "APP"
+                        ],
+                        "order" => "REQUEST"
+                    ]
+                ]
+            ]);
+    }
+
+    /**
+     * @param $scenarioUid
+     * @param $conversationUid
+     * @param $sceneUid
+     * @param $turnUid
+     * @return Turn
+     */
+    public function createFakeConversation($scenarioUid, $conversationUid, $sceneUid, $turnUid): Turn
+    {
+        $fakeScenario = new Scenario();
+        $fakeScenario->setUid($scenarioUid);
+        $fakeScenario->setName("Example scenario");
+        $fakeScenario->setOdId('example_scenario');
+        $fakeScenario->setDescription('An example scenario');
+
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid($conversationUid);
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setDescription("An new example conversation");
+
+        $fakeConversation->setScenario($fakeScenario);
+
+        $fakeScene = new Scene();
+        $fakeScene->setUid($sceneUid);
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->setDescription('A welcome scene');
+        $fakeScene->setInterpreter('interpreter.core.nlp');
+
+        $fakeScene->setConversation($fakeConversation);
+
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid($turnUid);
+        $fakeTurn->setOdId('first_turn');
+        $fakeTurn->setName('First turn');
+        $fakeTurn->setDescription('The first turn');
+        $fakeTurn->setInterpreter('interpreter.core.nlp');
+        $fakeTurn->setBehaviors(new BehaviorsCollection());
+        $fakeTurn->setConditions(new ConditionCollection());
+        $fakeTurn->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeTurn->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+
+        $fakeTurn->setRequestIntents(new IntentCollection());
+        $fakeTurn->setResponseIntents(new IntentCollection());
+
+        $fakeTurn->setScene($fakeScene);
+        return $fakeTurn;
     }
 }
