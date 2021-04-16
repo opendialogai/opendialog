@@ -45,6 +45,7 @@ class FocusedIntentResource extends JsonResource
                     Intent::OD_ID,
                     Intent::NAME,
                     Intent::DESCRIPTION,
+                    Intent::INTERPRETER,
                     Intent::SAMPLE_UTTERANCE,
                     Intent::SPEAKER,
                     Intent::TRANSITION,
