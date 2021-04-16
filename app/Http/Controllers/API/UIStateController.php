@@ -112,8 +112,13 @@ class UIStateController extends Controller
     public function massUpdateIntents(MassIntentRequest $request, Turn $turn, $type): FocusedTurnResource
     {
         $participant = $request->participant;
-        $responseParticipant = $type == 'response' ? $participant : ($participant === 'APP' ? 'USER' : 'APP');
-        $requestParticipant = $responseParticipant === 'APP' ? 'USER' : 'APP';
+        if ($type === 'response') {
+            $responseParticipant = $participant;
+            $requestParticipant = $this->getOppositeParticipant($responseParticipant);
+        } else {
+            $requestParticipant = $participant;
+            $responseParticipant = $this->getOppositeParticipant($requestParticipant);
+        }
 
         $turn->getRequestIntents()->each(function (Intent $intent) use ($requestParticipant) {
             $intent->setSpeaker($requestParticipant);
@@ -126,5 +131,16 @@ class UIStateController extends Controller
         });
 
         return $this->showFocusedTurn($turn);
+    }
+
+    /**
+     * Returns the opposite of the given participant - either APP or USER
+     *
+     * @param $participant
+     * @return string
+     */
+    private function getOppositeParticipant($participant): string
+    {
+        return $participant === 'APP' ? 'USER' : 'APP';
     }
 }
