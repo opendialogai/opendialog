@@ -4,13 +4,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MassIntentRequest;
 use App\Http\Resources\ConversationTreeResource;
 use App\Http\Resources\FocusedConversationResource;
 use App\Http\Resources\FocusedIntentResource;
 use App\Http\Resources\FocusedScenarioResource;
 use App\Http\Resources\FocusedSceneResource;
 use App\Http\Resources\FocusedTurnResource;
-use App\Http\Resources\ScenarioResource;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
@@ -101,5 +101,46 @@ class UIStateController extends Controller
     {
         $conversationTree = ConversationDataClient::getConversationTreeByScenarioUid($scenario->getUid());
         return new ConversationTreeResource($conversationTree);
+    }
+
+    /**
+     * @param MassIntentRequest $request
+     * @param Turn $turn
+     * @param $type
+     * @return FocusedTurnResource
+     */
+    public function massUpdateIntents(MassIntentRequest $request, Turn $turn, $type): FocusedTurnResource
+    {
+        $participant = $request->participant;
+        if ($type === 'response') {
+            $responseParticipant = $participant;
+            $requestParticipant = $this->getOppositeParticipant($responseParticipant);
+        } else {
+            $requestParticipant = $participant;
+            $responseParticipant = $this->getOppositeParticipant($requestParticipant);
+        }
+
+        $turn->getRequestIntents()->each(function (Intent $intent) use ($requestParticipant) {
+            $intent->setSpeaker($requestParticipant);
+            ConversationDataClient::updateIntent($intent);
+        });
+
+        $turn->getResponseIntents()->each(function (Intent $intent) use ($responseParticipant) {
+            $intent->setSpeaker($responseParticipant);
+            ConversationDataClient::updateIntent($intent);
+        });
+
+        return $this->showFocusedTurn($turn);
+    }
+
+    /**
+     * Returns the opposite of the given participant - either APP or USER
+     *
+     * @param $participant
+     * @return string
+     */
+    private function getOppositeParticipant($participant): string
+    {
+        return $participant === 'APP' ? 'USER' : 'APP';
     }
 }

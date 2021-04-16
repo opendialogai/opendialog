@@ -153,6 +153,9 @@ Route::namespace('API')
             Route::get('ui-state/focused/intent/{intent}', 'UIStateController@showFocusedIntent');
 
             Route::get('ui-state/scenarios/{scenario}/tree', 'UIStateController@showConversationTree');
+
+            Route::patch('ui-state/turns/{turn}/intents/{type}', 'UIStateController@massUpdateIntents')
+                ->where('type', '(request)|(response)');
         });
 
         Route::post('conversation-simulation', 'ConversationSimulationController@simulate');
