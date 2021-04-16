@@ -46,17 +46,17 @@ RUN ln -s /etc/nginx/sites-available/docker-app.conf /etc/nginx/sites-enabled/do
 
 RUN chown -R www-data:www-data /var/www
 
-RUN chmod +x ./scripts/set_up_od_docker.sh
-RUN ./scripts/set_up_od_docker.sh
+RUN chmod +x ./docker/scripts/docker-set-up.sh
+RUN ./docker/scripts/docker-set-up.sh
 
 RUN chmod -R 755 /var/www/storage
 
-COPY .env.example.docker .env
+COPY docker/.env.example.docker .env
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 EXPOSE 80
 EXPOSE 443
 
-RUN ["chmod", "+x", "./scripts/docker-start.sh"]
-CMD ["./scripts/docker-start.sh"]
+RUN ["chmod", "+x", "./docker/scripts/docker-start.sh"]
+CMD ["./docker/scripts/docker-start.sh"]
