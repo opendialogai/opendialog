@@ -24,20 +24,19 @@ use Tests\TestCase;
 
 class ImportExportSerializerTest extends TestCase
 {
-
     public static function getConversationObjectPropertyByName(string $name, ConversationObject $object)
     {
         if (!in_array($name, $object::allFields())) {
             throw new \RuntimeException("Can't access property %s of %s", $name, get_class($object));
         }
         $nameToPropertyValue = [
-            ConversationObject::UID => fn(ConversationObject $object) => $object->getUid(),
-            ConversationObject::OD_ID => fn(ConversationObject $object) => $object->getOdId(),
-            ConversationObject::NAME => fn(ConversationObject $object) => $object->getName(),
-            ConversationObject::DESCRIPTION => fn(ConversationObject $object) => $object->getDescription(),
-            ConversationObject::INTERPRETER => fn(ConversationObject $object) => $object->getInterpreter(),
-            ConversationObject::BEHAVIORS => fn(ConversationObject $object) => $object->getBehaviors(),
-            ConversationObject::CONDITIONS => fn(ConversationObject $object) => $object->getConditions(),
+            ConversationObject::UID => fn (ConversationObject $object) => $object->getUid(),
+            ConversationObject::OD_ID => fn (ConversationObject $object) => $object->getOdId(),
+            ConversationObject::NAME => fn (ConversationObject $object) => $object->getName(),
+            ConversationObject::DESCRIPTION => fn (ConversationObject $object) => $object->getDescription(),
+            ConversationObject::INTERPRETER => fn (ConversationObject $object) => $object->getInterpreter(),
+            ConversationObject::BEHAVIORS => fn (ConversationObject $object) => $object->getBehaviors(),
+            ConversationObject::CONDITIONS => fn (ConversationObject $object) => $object->getConditions(),
         ];
 
         return $nameToPropertyValue[$name]($object);
@@ -52,9 +51,9 @@ class ImportExportSerializerTest extends TestCase
             return self::getConversationObjectPropertyByName($name, $object);
         } else {
             $nameToPropertyValue = [
-                Scenario::ACTIVE => fn(Scenario $scenario) => $scenario->isActive(),
-                Scenario::STATUS => fn(Scenario $scenario) => $scenario->getStatus(),
-                Scenario::CONVERSATIONS => fn(Scenario $scenario) => $scenario->getConversations()
+                Scenario::ACTIVE => fn (Scenario $scenario) => $scenario->isActive(),
+                Scenario::STATUS => fn (Scenario $scenario) => $scenario->getStatus(),
+                Scenario::CONVERSATIONS => fn (Scenario $scenario) => $scenario->getConversations()
             ];
             return $nameToPropertyValue[$name]($object);
         }
@@ -69,8 +68,8 @@ class ImportExportSerializerTest extends TestCase
             return self::getConversationObjectPropertyByName($name, $object);
         } else {
             $nameToPropertyValue = [
-                Conversation::SCENARIO => fn(Conversation $conversation) => $conversation->getScenario(),
-                Conversation::SCENES => fn(Conversation $conversation) => $conversation->getScenes(),
+                Conversation::SCENARIO => fn (Conversation $conversation) => $conversation->getScenario(),
+                Conversation::SCENES => fn (Conversation $conversation) => $conversation->getScenes(),
             ];
             return $nameToPropertyValue[$name]($object);
         }
@@ -85,8 +84,8 @@ class ImportExportSerializerTest extends TestCase
             return self::getConversationObjectPropertyByName($name, $object);
         } else {
             $nameToPropertyValue = [
-                Scene::CONVERSATION => fn(Scene $scene) => $scene->getConversation(),
-                Scene::TURNS => fn(Scene $scene) => $scene->getTurns(),
+                Scene::CONVERSATION => fn (Scene $scene) => $scene->getConversation(),
+                Scene::TURNS => fn (Scene $scene) => $scene->getTurns(),
             ];
             return $nameToPropertyValue[$name]($object);
         }
@@ -101,10 +100,10 @@ class ImportExportSerializerTest extends TestCase
             return self::getConversationObjectPropertyByName($name, $object);
         } else {
             $nameToPropertyValue = [
-                Turn::SCENE => fn(Turn $turn) => $turn->getScene(),
-                Turn::REQUEST_INTENTS => fn(Turn $turn) => $turn->getRequestIntents(),
-                Turn::RESPONSE_INTENTS => fn(Turn $turn) => $turn->getResponseIntents(),
-                Turn::VALID_ORIGINS => fn(Turn $turn) => $turn->getValidOrigins()
+                Turn::SCENE => fn (Turn $turn) => $turn->getScene(),
+                Turn::REQUEST_INTENTS => fn (Turn $turn) => $turn->getRequestIntents(),
+                Turn::RESPONSE_INTENTS => fn (Turn $turn) => $turn->getResponseIntents(),
+                Turn::VALID_ORIGINS => fn (Turn $turn) => $turn->getValidOrigins()
             ];
             return $nameToPropertyValue[$name]($object);
         }
@@ -119,15 +118,15 @@ class ImportExportSerializerTest extends TestCase
             return self::getConversationObjectPropertyByName($name, $object);
         } else {
             $nameToPropertyValue = [
-                Intent::SPEAKER => fn(Intent $intent) => $intent->getSpeaker(),
-                Intent::CONFIDENCE => fn(Intent $intent) => $intent->getConfidence(),
-                Intent::SAMPLE_UTTERANCE => fn(Intent $intent) => $intent->getSampleUtterance(),
-                Intent::LISTENS_FOR => fn(Intent $intent) => $intent->getListensFor(),
-                Intent::EXPECTED_ATTRIBUTES => fn(Intent $intent) => $intent->getExpectedAttributes(),
-                Intent::TRANSITION => fn(Intent $intent) => $intent->getTransition(),
-                Intent::VIRTUAL_INTENTS => fn(Intent $intent) => $intent->getVirtualIntents(),
-                Intent::ACTIONS => fn(Intent $intent) => $intent->getActions(),
-                Intent::TURN => fn(Intent $intent) => $intent->getTurn()
+                Intent::SPEAKER => fn (Intent $intent) => $intent->getSpeaker(),
+                Intent::CONFIDENCE => fn (Intent $intent) => $intent->getConfidence(),
+                Intent::SAMPLE_UTTERANCE => fn (Intent $intent) => $intent->getSampleUtterance(),
+                Intent::LISTENS_FOR => fn (Intent $intent) => $intent->getListensFor(),
+                Intent::EXPECTED_ATTRIBUTES => fn (Intent $intent) => $intent->getExpectedAttributes(),
+                Intent::TRANSITION => fn (Intent $intent) => $intent->getTransition(),
+                Intent::VIRTUAL_INTENTS => fn (Intent $intent) => $intent->getVirtualIntents(),
+                Intent::ACTIONS => fn (Intent $intent) => $intent->getActions(),
+                Intent::TURN => fn (Intent $intent) => $intent->getTurn()
             ];
             return $nameToPropertyValue[$name]($object);
         }
@@ -143,18 +142,24 @@ class ImportExportSerializerTest extends TestCase
     {
         foreach ($fields as $field) {
             if ($expected instanceof Scenario && $actual instanceof Scenario) {
-                $this->assertEquals(self::getScenarioPropertyByName($field, $expected),
-                    self::getScenarioPropertyByName($field, $actual));
+                $this->assertEquals(
+                    self::getScenarioPropertyByName($field, $expected),
+                    self::getScenarioPropertyByName($field, $actual)
+                );
             }
 
             if ($expected instanceof Conversation && $actual instanceof Conversation) {
-                $this->assertEquals(self::getConversationPropertyByName($field, $expected),
-                    self::getConversationPropertyByName($field, $actual));
+                $this->assertEquals(
+                    self::getConversationPropertyByName($field, $expected),
+                    self::getConversationPropertyByName($field, $actual)
+                );
             }
 
             if ($expected instanceof Scene && $actual instanceof Scene) {
-                $this->assertEquals(self::getScenePropertyByName($field, $expected),
-                    self::getScenePropertyByName($field, $actual));
+                $this->assertEquals(
+                    self::getScenePropertyByName($field, $expected),
+                    self::getScenePropertyByName($field, $actual)
+                );
             }
 
             if ($expected instanceof Turn && $actual instanceof Turn) {
@@ -162,8 +167,10 @@ class ImportExportSerializerTest extends TestCase
             }
 
             if ($expected instanceof Intent && $actual instanceof Intent) {
-                $this->assertEquals(self::getIntentPropertyByName($field, $expected),
-                    self::getIntentPropertyByName($field, $actual));
+                $this->assertEquals(
+                    self::getIntentPropertyByName($field, $expected),
+                    self::getIntentPropertyByName($field, $actual)
+                );
             }
         }
     }
@@ -723,7 +730,6 @@ class ImportExportSerializerTest extends TestCase
                 ]
             ]
         ], $normalizedScenario);
-
     }
 
     public function testDeserializeMinimalScenario()
@@ -754,7 +760,6 @@ class ImportExportSerializerTest extends TestCase
             Scenario::CONDITIONS,
             Scenario::CONVERSATIONS
         ]);
-
     }
 
     public function testDeserializeScenarioToIntentBranch()
@@ -807,7 +812,7 @@ class ImportExportSerializerTest extends TestCase
             $this->assertEquals($deserializedScenario, $deserializedConversation->getScenario());
             $this->assertNullTimestamps($deserializedConversation);
             $this->assertNull($deserializedConversation->getUid());
-            $matchingConversation = $fullScenario->getConversations()->filter(fn($conversation) => $conversation->getOdId() ===
+            $matchingConversation = $fullScenario->getConversations()->filter(fn ($conversation) => $conversation->getOdId() ===
                 $deserializedConversation->getOdId())->first();
             $this->assertNotNull($matchingConversation);
             $this->assertEqualFields($matchingConversation, $deserializedConversation, [
@@ -828,7 +833,7 @@ class ImportExportSerializerTest extends TestCase
                 $this->assertNull($deserializedScene->getUid());
                 /* @var $matchingScene Scene */
                 $matchingScene =
-                    $matchingConversation->getScenes()->filter(fn($scene) => $scene->getOdId() === $deserializedScene->getOdId())
+                    $matchingConversation->getScenes()->filter(fn ($scene) => $scene->getOdId() === $deserializedScene->getOdId())
                         ->first();
                 $this->assertNotNull($matchingScene);
                 $this->assertEqualFields($matchingScene, $deserializedScene, [
@@ -849,7 +854,7 @@ class ImportExportSerializerTest extends TestCase
                     $this->assertNull($deserializedTurn->getUid());
                     /* @var $matchingTurn Turn */
                     $matchingTurn =
-                        $matchingScene->getTurns()->filter(fn($turn) => $turn->getOdId() === $deserializedTurn->getOdId())
+                        $matchingScene->getTurns()->filter(fn ($turn) => $turn->getOdId() === $deserializedTurn->getOdId())
                             ->first();
                     $this->assertNotNull($matchingTurn);
                     $this->assertEqualFields($matchingTurn, $deserializedTurn, [
@@ -870,7 +875,7 @@ class ImportExportSerializerTest extends TestCase
                         $this->assertNullTimestamps($deserializedRequestIntent);
                         $this->assertNull($deserializedRequestIntent->getUid());
                         /* @var $matchingRequestIntent Intent */
-                        $matchingRequestIntent = $matchingTurn->getRequestIntents()->filter(fn($turn) => $turn->getOdId() ===
+                        $matchingRequestIntent = $matchingTurn->getRequestIntents()->filter(fn ($turn) => $turn->getOdId() ===
                             $deserializedRequestIntent->getOdId())->first();
                         $this->assertNotNull($matchingRequestIntent);
                         $this->assertEqualFields($matchingRequestIntent, $deserializedRequestIntent, [
@@ -895,7 +900,7 @@ class ImportExportSerializerTest extends TestCase
                         $this->assertNullTimestamps($deserializedResponseIntent);
                         $this->assertNull($deserializedResponseIntent->getUid());
                         /* @var $matchingResponseIntent Intent */
-                        $matchingResponseIntent = $matchingTurn->getResponseIntents()->filter(fn($turn) => $turn->getOdId() ===
+                        $matchingResponseIntent = $matchingTurn->getResponseIntents()->filter(fn ($turn) => $turn->getOdId() ===
                             $deserializedResponseIntent->getOdId())->first();
                         $this->assertNotNull($matchingResponseIntent);
                         $this->assertEqualFields($matchingResponseIntent, $deserializedResponseIntent, [
@@ -918,6 +923,4 @@ class ImportExportSerializerTest extends TestCase
             }
         }
     }
-
-
 }
