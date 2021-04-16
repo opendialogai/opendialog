@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   app:
-    image: opendialogai/opendialog:${TAG}
+    image: opendialogai/opendialog:1.x
     restart: on-failure
     tty: true
     ports:
@@ -10,33 +10,25 @@ services:
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
-      FORCE_HTTPS: 'false'
-      DB_CONNECTION: 'mysql'
-      DB_HOST: 'db'
-      DB_PORT: '3306'
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      APP_NAME: ${APP_NAME}
     working_dir: /var/www
     networks:
       - app-network
     depends_on:
-      - db
+      - mysql
       - dgraph-server
       - dgraph-ratel
       - dgraph-zero
-  db:
+  mysql:
     image: mysql:5.7.27
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_DATABASE: opendialog
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: opendialog
+      MYSQL_PASSWORD: opendialog
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
@@ -44,7 +36,7 @@ services:
     networks:
       - app-network
   dgraph-zero:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     volumes:
       - type: volume
         source: dgraph
@@ -61,7 +53,7 @@ services:
     links:
       - dgraph-server
   dgraph-server:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     volumes:
       - type: volume
         source: dgraph
@@ -72,11 +64,11 @@ services:
       - 8080:8080
       - 9080:9080
     restart: on-failure
-    command: dgraph alpha --my=dgraph-server:7080 --lru_mb=2048 --zero=dgraph-zero:5080
+    command: dgraph alpha --auth_token=dgraphauthsecrettoken --whitelist 0.0.0.0/0 --my=dgraph-server:7080 --lru_mb=2048 --zero=dgraph-zero:5080
     networks:
       - app-network
   dgraph-ratel:
-    image: dgraph/dgraph:v1.2.5
+    image: dgraph/dgraph:v20.11.0
     ports:
       - 9001:8000
     volumes:

@@ -109,12 +109,17 @@ class ScenariosController extends Controller
      */
     private function createDefaultConversations(Scenario $scenario): Scenario
     {
+        $scenarioName = $scenario->getName();
+        $scenarioNameAsId = preg_replace('/\s/', '', ucwords($scenario->getOdId()));
+        $welcomeOutgoingIntentId = "intent.app.welcomeResponseFor$scenarioNameAsId";
+        $noMatchOutgoingIntentId = "intent.app.noMatchResponse$scenarioNameAsId";
+
         $welcomeConversation = $this->createAtomicCallbackConversation(
             $scenario,
             'Welcome',
             'intent.core.welcome',
             'Hello from user',
-            'intent.app.welcomeResponse',
+            $welcomeOutgoingIntentId,
             'Hello from bot'
         );
 
@@ -123,7 +128,7 @@ class ScenariosController extends Controller
             'No Match',
             'intent.core.NoMatch',
             '[no match]',
-            'intent.app.noMatchResponse',
+            $noMatchOutgoingIntentId,
             'Sorry, I didn\'t understand that'
         );
 
@@ -133,11 +138,11 @@ class ScenariosController extends Controller
         $persistedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
 
         $this->createMessageForOutgoingIntent(
-            'intent.app.welcomeResponse',
-            "Hi! This is the default welcome message for the Welcome Scenario."
+            $welcomeOutgoingIntentId,
+            "Hi! This is the default welcome message for the $scenarioName Scenario."
         );
         $this->createMessageForOutgoingIntent(
-            'intent.app.noMatchResponse',
+            $noMatchOutgoingIntentId,
             "Sorry, I didn't understand that."
         );
 
