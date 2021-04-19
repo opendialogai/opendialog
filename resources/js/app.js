@@ -11,7 +11,7 @@ import 'core-js/features/array'
 import router from '@/router/index'
 
 import OpenDialogAdmin from '@opendialogai/opendialog-design-system-pkg/src'
-import PerfectScrollbar from '@opendialogai/opendialog-design-system-pkg/node_modules/vue2-perfect-scrollbar'
+import PerfectScrollbar from 'vue2-perfect-scrollbar'
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import VueCookies from 'vue-cookies'
