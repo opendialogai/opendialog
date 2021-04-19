@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe3c77b1387348bb288ff8b87d2e2757",
+    "content-hash": "5a020dfed196a0e29802007779e3c290",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2583,16 +2583,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-feature/add-conditions-full-intent",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "2c4e119b486e802add43804935d04ac833cd288f"
+                "reference": "360e9367497af38661606c94ea507c755b444c53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/2c4e119b486e802add43804935d04ac833cd288f",
-                "reference": "2c4e119b486e802add43804935d04ac833cd288f",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/360e9367497af38661606c94ea507c755b444c53",
+                "reference": "360e9367497af38661606c94ea507c755b444c53",
                 "shasum": ""
             },
             "require": {
@@ -2619,7 +2619,6 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2671,9 +2670,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/feature/add-conditions-full-intent"
             },
-            "time": "2021-04-16T15:51:23+00:00"
+            "time": "2021-04-19T16:40:37+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
