@@ -14,6 +14,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
+use OpenDialogAi\Core\Conversation\Condition;
+use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
@@ -98,7 +100,18 @@ class ScenariosController extends Controller
         /** @var Scenario $newScenario */
         $newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
 
-        $updatedScenario = $this->createDefaultConversations($newScenario);
+        $persistedScenario = $this->createDefaultConversations($newScenario);
+
+        // Add a new condition to the scenario now that it has an ID
+        $condition = new Condition(
+            'eq',
+            [['id' => 'attribute', 'value' => 'user.selected_scenario']],
+            [['id' => 'value', 'value' => $persistedScenario->getUid()]]
+        );
+
+        $persistedScenario->setConditions(new ConditionCollection([$condition]));
+
+        $updatedScenario = ConversationDataClient::updateScenario($persistedScenario);
 
         return (new ScenarioResource($updatedScenario))->response()->setStatusCode(201);
     }
