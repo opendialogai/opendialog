@@ -23,9 +23,15 @@ use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class ScenariosController extends Controller
 {
+    /**
+     * @var ResponseEngineServiceInterface
+     */
+    private $responseEngineService;
+
     /**
      * Create a new controller instance.
      *
@@ -34,6 +40,7 @@ class ScenariosController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->responseEngineService = resolve(ResponseEngineServiceInterface::class);
     }
 
     /**
@@ -137,11 +144,12 @@ class ScenariosController extends Controller
 
         $persistedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
 
-        $this->createMessageForOutgoingIntent(
+        $this->responseEngineService->createMessageForOutgoingIntent(
             $welcomeOutgoingIntentId,
             "Hi! This is the default welcome message for the $scenarioName Scenario."
         );
-        $this->createMessageForOutgoingIntent(
+
+        $this->responseEngineService->createMessageForOutgoingIntent(
             $noMatchOutgoingIntentId,
             "Sorry, I didn't understand that."
         );

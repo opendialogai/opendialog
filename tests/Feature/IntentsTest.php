@@ -11,12 +11,11 @@ use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundExceptio
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
-use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
-use OpenDialogAi\Core\Conversation\TurnCollection;
-use OpenDialogAi\Core\Conversation\VirtualIntent;
 use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
+use OpenDialogAi\ResponseEngine\MessageTemplate;
+use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
 class IntentsTest extends TestCase
@@ -225,6 +224,13 @@ class IntentsTest extends TestCase
                     "sample_utterance" => "Hello!"
                 ]
             ]);
+
+        // Ensure that an outgoing intent and message template have not been created
+        $this->assertDatabaseMissing('outgoing_intents', ['name' => 'Welcome intent 1']);
+        $this->assertCount(0, OutgoingIntent::all());
+
+        $this->assertDatabaseMissing('message_templates', ['name' => 'Welcome intent 1']);
+        $this->assertCount(0, MessageTemplate::all());
     }
 
     public function testAddResponseIntentToTurn()
@@ -299,6 +305,13 @@ class IntentsTest extends TestCase
                     "sample_utterance" => "Bye!"
                 ]
             ]);
+
+        // Ensure that an outgoing intent and message template have not been created
+        $this->assertDatabaseHas('outgoing_intents', ['name' => 'Goodbye intent 1']);
+        $this->assertCount(1, OutgoingIntent::all());
+
+        $this->assertDatabaseHas('message_templates', ['name' => 'Goodbye intent 1']);
+        $this->assertCount(1, MessageTemplate::all());
     }
 
     public function testGetTurnIntentByTurnAndIntentUid()
