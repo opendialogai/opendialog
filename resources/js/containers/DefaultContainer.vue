@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    <Header :navigationItems="navigationItems"/>
     <div class="app-body">
       <Sidebar :navigationItems="navigationItems" :user="user" :minimized="false"/>
       <main class="main">

@@ -1,14 +1,1 @@
 @import '~@opendialogai/opendialog-design-system-pkg/src/sass/app';
-
-body {
-    background-color: #fff;
-}
-
-.collapse-codemirror {
-    .CodeMirror {
-        height: auto;
-    }
-    .CodeMirror-scroll {
-        max-height: 300px;
-    }
-}

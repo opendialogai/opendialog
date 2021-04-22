@@ -24,7 +24,7 @@
     <script>window.user = {!! json_encode(auth()->user()) !!};</script>
   </head>
 
-  <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+  <body class="app">
     <div id="app">
       <app></app>
     </div>
