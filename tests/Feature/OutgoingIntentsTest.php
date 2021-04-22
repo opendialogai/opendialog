@@ -57,6 +57,13 @@ class OutgoingIntentsTest extends TestCase
             );
     }
 
+    public function testOutgoingIntentsView404()
+    {
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/outgoing-intent/made-up')
+            ->assertStatus(404);
+    }
+
     public function testOutgoingIntentsViewAllEndpoint()
     {
         $outgoingIntents = OutgoingIntent::all();

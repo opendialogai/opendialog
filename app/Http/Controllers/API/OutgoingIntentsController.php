@@ -95,7 +95,7 @@ class OutgoingIntentsController extends Controller
             return new OutgoingIntentResource($outgoingIntent);
         }
 
-        return response()->setStatusCode(404);
+        abort(404);
     }
 
     /**
