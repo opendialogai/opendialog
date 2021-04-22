@@ -20,9 +20,6 @@ use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
-use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
-use OpenDialogAi\ResponseEngine\MessageTemplate;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class ScenariosController extends Controller
@@ -260,24 +257,5 @@ class ScenariosController extends Controller
         $conversation->addScene($scene);
 
         return $conversation;
-    }
-
-    /**
-     * @param string $outgoingIntentId
-     * @param string $text
-     */
-    private function createMessageForOutgoingIntent(string $outgoingIntentId, string $text): void
-    {
-        /** @var OutgoingIntent $outgoingIntent */
-        $outgoingIntent = OutgoingIntent::firstOrCreate(['name' => $outgoingIntentId]);
-
-        if ($outgoingIntent->messageTemplates()->get()->isEmpty()) {
-            MessageTemplate::firstOrCreate([
-                'name' => $outgoingIntentId,
-            ], [
-                'message_markup' => (new MessageMarkUpGenerator())->addTextMessage($text)->getMarkUp(),
-                'outgoing_intent_id' => $outgoingIntent->id
-            ]);
-        }
     }
 }
