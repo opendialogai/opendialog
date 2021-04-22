@@ -37,7 +37,7 @@
           user: {
             first_name: '{!! auth()->user()->name !!}',
             last_name: '',
-            email: '{!! auth()->user()->email !!}',
+            {{--email: '{!! auth()->user()->email !!}',--}}
             external_id: '{!! auth()->user()->id !!}',
           },
         };

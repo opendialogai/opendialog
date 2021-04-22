@@ -4,23 +4,26 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import 'core-js/features/promise';
-import 'core-js/features/string';
-import 'core-js/features/array';
+import 'core-js/features/promise'
+import 'core-js/features/string'
+import 'core-js/features/array'
 
-import router from '@/router/index';
+import router from '@/router/index'
 
 import OpenDialogAdmin from '@opendialogai/opendialog-design-system-pkg/src'
+import PerfectScrollbar from 'vue2-perfect-scrollbar'
 
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
-import VueCookies from 'vue-cookies';
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+import VueCookies from 'vue-cookies'
 
 require('@/bootstrap');
+
 window.Vue = require('vue');
 window.Vue.use(OpenDialogAdmin);
 window.Vue.use(BootstrapVue);
 window.Vue.use(BootstrapVueIcons);
 window.Vue.use(VueCookies);
+window.Vue.use(PerfectScrollbar)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
