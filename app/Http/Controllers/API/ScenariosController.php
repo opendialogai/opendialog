@@ -105,8 +105,8 @@ class ScenariosController extends Controller
         // Add a new condition to the scenario now that it has an ID
         $condition = new Condition(
             'eq',
-            [['id' => 'attribute', 'value' => 'user.selected_scenario']],
-            [['id' => 'value', 'value' => $persistedScenario->getUid()]]
+            ['attribute' => 'user.selected_scenario'],
+            ['value' => $persistedScenario->getUid()]
         );
 
         $persistedScenario->setConditions(new ConditionCollection([$condition]));
