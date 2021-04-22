@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationLog\ChatbotUser;
 use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
+use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\RequestLog;
 use OpenDialogAi\ResponseEngine\MessageTemplate;
 use Symfony\Component\Yaml\Yaml;
@@ -87,17 +89,21 @@ class StatisticsController extends Controller
         return $data;
     }
 
+    public function scenarios()
+    {
+        $totalActivatedScenarios = $this->getActiveScenarios()->count();
+
+        return [
+            'value' => $totalActivatedScenarios,
+        ];
+    }
+
     public function conversations()
     {
-        if ($value = Helper::getCache('conversations')) {
-            return [
-                'value' => $value,
-            ];
-        }
-
-        $totalActivatedConversations = Conversation::where('status', ConversationNode::ACTIVATED)
-            ->get()->count();
-        Helper::setCache('conversations', $totalActivatedConversations);
+        $totalActivatedConversations = 0;
+        $this->getActiveScenarios()->each(function (Scenario $scenario) use (&$totalActivatedConversations) {
+            $totalActivatedConversations += $scenario->getConversations()->count();
+        });
 
         return [
             'value' => $totalActivatedConversations,
@@ -154,5 +160,15 @@ class StatisticsController extends Controller
         return [
             'value' => $totalMessageTemplates,
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActiveScenarios()
+    {
+        return ConversationDataClient::getAllScenarios()->filter(function (Scenario $scenario) {
+            return $scenario->isActive();
+        });
     }
 }

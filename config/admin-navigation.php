@@ -16,7 +16,7 @@ return [
                 ],
                 [
                     'title' => 'Message Editor',
-                    'url' => '/admin/users',
+                    'url' => '/admin/outgoing-intents',
                     'icon' => 'message'
                 ],
                 [
@@ -26,7 +26,7 @@ return [
                 ],
                 [
                     'title' => 'Dynamic Attributes',
-                    'url' => '/admin/conversations',
+                    'url' => '/admin/dynamic-attributes',
                     'icon' => 'apps'
                 ],
             ],

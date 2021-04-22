@@ -138,8 +138,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 Route::prefix('stats')->middleware(['auth'])->group(function () {
     Route::get('chatbot-users', 'StatisticsController@chatbotUsers');
     Route::get('requests', 'StatisticsController@requests');
+    Route::get('scenarios', 'StatisticsController@scenarios');
     Route::get('conversations', 'StatisticsController@conversations');
-    Route::get('incoming-intents', 'StatisticsController@incomingIntents');
     Route::get('message-templates', 'StatisticsController@messageTemplates');
 });
 
