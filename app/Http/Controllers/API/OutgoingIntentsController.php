@@ -75,17 +75,27 @@ class OutgoingIntentsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return OutgoingIntentResource
+     * @param  $id
+     * @return OutgoingIntentResource|Response
      */
-    public function show($id): OutgoingIntentResource
+    public function show($id)
     {
-        /** @var OutgoingIntent $outgoingIntent */
-        $outgoingIntent = OutgoingIntent::find($id);
+        if (is_numeric($id)) {
+            /** @var OutgoingIntent $outgoingIntent */
+            $outgoingIntent = OutgoingIntent::find($id);
+        } else {
+            // assume we have the outgoing intent name rather than an ID
+            /** @var OutgoingIntent $outgoingIntent */
+            $outgoingIntent = OutgoingIntent::where('name', $id)->first();
+        }
 
-        $outgoingIntent->makeVisible('id');
+        if ($outgoingIntent) {
+            $outgoingIntent->makeVisible('id');
 
-        return new OutgoingIntentResource($outgoingIntent);
+            return new OutgoingIntentResource($outgoingIntent);
+        }
+
+        return response()->setStatusCode(404);
     }
 
     /**
