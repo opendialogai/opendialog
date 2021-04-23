@@ -34,7 +34,7 @@ return [
             ],
             [
                 'type' => StatsContants::NUMBER,
-                'name' => 'Messages',
+                'name' => 'Outgoing Intents',
                 'endpoint' => '/stats/message-templates',
                 'width' => StatsContants::THIRD,
             ],
