@@ -4,7 +4,6 @@ parameters:
       keywords:
         - "die("
         - "var_dump("
-        - "dd("
         - "exit;"
       whitelist_patterns: []
       triggered_by: ['php']

@@ -22,19 +22,19 @@ return [
         [
             [
                 'type' => StatsContants::NUMBER,
+                'name' => 'Active Scenarios',
+                'endpoint' => '/stats/scenarios',
+                'width' => StatsContants::THIRD,
+            ],
+            [
+                'type' => StatsContants::NUMBER,
                 'name' => 'Active Conversations',
                 'endpoint' => '/stats/conversations',
                 'width' => StatsContants::THIRD,
             ],
             [
                 'type' => StatsContants::NUMBER,
-                'name' => 'Incoming intents',
-                'endpoint' => '/stats/incoming-intents',
-                'width' => StatsContants::THIRD,
-            ],
-            [
-                'type' => StatsContants::NUMBER,
-                'name' => 'Messages',
+                'name' => 'Outgoing Intents',
                 'endpoint' => '/stats/message-templates',
                 'width' => StatsContants::THIRD,
             ],
