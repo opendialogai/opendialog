@@ -43,6 +43,27 @@ class OutgoingIntentsTest extends TestCase
             );
     }
 
+    public function testOutgoingIntentsViewByName()
+    {
+        $outgoingIntent = OutgoingIntent::first();
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/outgoing-intent/' . $outgoingIntent->name)
+            ->assertStatus(200)
+            ->assertJsonFragment(
+                [
+                    'name' => $outgoingIntent->name,
+                ]
+            );
+    }
+
+    public function testOutgoingIntentsView404()
+    {
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/outgoing-intent/made-up')
+            ->assertStatus(404);
+    }
+
     public function testOutgoingIntentsViewAllEndpoint()
     {
         $outgoingIntents = OutgoingIntent::all();

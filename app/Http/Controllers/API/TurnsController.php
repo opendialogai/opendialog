@@ -12,12 +12,19 @@ use App\Http\Resources\TurnIntentResourceCollection;
 use App\Http\Resources\TurnResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Turn;
+use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class TurnsController extends Controller
 {
+    /**
+     * @var ResponseEngineServiceInterface
+     */
+    private $responseEngineService;
+
     /**
      * Create a new controller instance.
      *
@@ -26,6 +33,7 @@ class TurnsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->responseEngineService = resolve(ResponseEngineServiceInterface::class);
     }
 
     /**
@@ -63,11 +71,12 @@ class TurnsController extends Controller
         $newIntent->setTurn($turn);
         if ($request->get('order') === 'REQUEST') {
             $savedIntent = ConversationDataClient::addRequestIntent($newIntent);
-            return new TurnIntentResource($savedIntent, 'REQUEST');
-        } elseif ($request->get('order') === 'RESPONSE') {
+        } else {
             $savedIntent = ConversationDataClient::addResponseIntent($newIntent);
-            return new TurnIntentResource($savedIntent, 'RESPONSE');
         }
+
+        $this->createMessageTemplate($request->get('intent'));
+        return new TurnIntentResource($savedIntent, $request->get('order'));
     }
 
     /**
@@ -145,6 +154,28 @@ class TurnsController extends Controller
             return new TurnIntentResource($updatedTurnWithIntent->getRequestIntents()->first(), 'REQUEST');
         } elseif ($updatedTurnWithIntent->getResponseIntents()->count() > 0) {
             return new TurnIntentResource($updatedTurnWithIntent->getResponseIntents()->first(), 'RESPONSE');
+        }
+    }
+
+    /**
+     * Creates an intent and message template in the Response Engine if the intent being created is from the APP participant
+     *
+     * @param array $intent
+     */
+    private function createMessageTemplate(array $intent)
+    {
+        if ($intent['speaker'] === 'APP') {
+            Log::info(
+                sprintf('Creating a new intent and message template for intent %s as the speaker was APP', $intent['name'])
+            );
+            $this->responseEngineService->createMessageForOutgoingIntent($intent['name'], $intent['sample_utterance']);
+        } else {
+            Log::debug(
+                sprintf(
+                    'Not creating a new intent and message template for intent %s as the speaker was USER',
+                    $intent['name']
+                )
+            );
         }
     }
 }
