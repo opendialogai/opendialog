@@ -6,7 +6,8 @@ namespace Tests\Feature;
 use App\Http\Facades\Serializer;
 use App\Http\Resources\ScenarioResource;
 use App\User;
-
+use OpenDialogAi\Core\Conversation\Condition;
+use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
@@ -169,6 +170,15 @@ class ScenariosTest extends TestCase
         $fakeScenarioCreated->setODId("example_scenario");
         $fakeScenarioCreated->setDescription('An example scenario');
 
+        $fakeScenarioUpdated = clone($fakeScenarioCreated);
+        $condition = new Condition(
+            'eq',
+            ['attribute' => 'user.selected_scenario'],
+            ['value' => $fakeScenarioCreated->getUid()]
+        );
+
+        $fakeScenarioUpdated->setConditions(new ConditionCollection([$condition]));
+
         $fakeConversation = new Conversation($fakeScenarioCreated);
         $fakeConversation->setName('Welcome Conversation');
         $fakeConversation->setOdId('welcome_conversation');
@@ -183,7 +193,7 @@ class ScenariosTest extends TestCase
 
         Serializer::shouldReceive('normalize')
             ->once()
-            ->with($fakeScenarioCreated, 'json', ScenarioResource::$fields)
+            ->with($fakeScenarioUpdated, 'json', ScenarioResource::$fields)
             ->andReturn(json_decode('{
             "uid": "0x0001",
             "odId": "example_scenario",
@@ -196,6 +206,11 @@ class ScenariosTest extends TestCase
             ->once()
             ->with($fakeScenario)
             ->andReturn($fakeScenarioCreated);
+
+        ConversationDataClient::shouldReceive('updateScenario')
+            ->once()
+            ->with($fakeScenarioCreated)
+            ->andReturn($fakeScenarioUpdated);
 
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation-builder/scenarios/', [
