@@ -33,7 +33,7 @@ return [
             [
                 [
                     'title' => 'Chatbot Users',
-                    'url' => '/admin/users',
+                    'url' => '/admin/chatbot-users',
                     'icon' => 'profile'
                 ],
                 [
@@ -49,7 +49,7 @@ return [
             ],
             [
                 [
-                    'title' => 'Test Chatbot',
+                    'title' => 'Preview',
                     'url' => '/admin/demo',
                     'icon' => 'speech'
                 ],
