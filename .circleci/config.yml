@@ -61,6 +61,21 @@ jobs:
       # Install key
       - run: php artisan key:generate
 
+      # Install node dependencies
+      - restore_cache:
+          keys:
+            - v1-node-dependencies-{{ checksum "package-lock.json" }}
+            - v1-node-dependencies-
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: v1-node-dependencies-{{ checksum "package-lock.json" }}
+
+      - run: npm run prod
+
       # run tests!
       - run:
           name: "Setup custom environment variables"
