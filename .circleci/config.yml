@@ -63,7 +63,7 @@ jobs:
 
       # Install node dependencies
       - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-        -
+
       - restore_cache:
           keys:
             - v1-node-dependencies-{{ checksum "yarn.lock" }}
