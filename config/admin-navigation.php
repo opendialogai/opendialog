@@ -46,6 +46,13 @@ return [
                     'url' => '/admin/warnings',
                     'icon' => 'notification-waiting'
                 ]
+            ],
+            [
+                [
+                    'title' => 'Test Chatbot',
+                    'url' => '/admin/demo',
+                    'icon' => 'speech'
+                ],
             ]
         ],
 ];
