@@ -12,10 +12,10 @@
     <script>window.Laravel = {!! json_encode(['apiToken' => auth()->user()->api_token ?? null, 'userId' => auth()->user()->id]) !!};</script>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ mix('js/app.js') }}" defer></script>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
     <script>window.DashboardCards = {!! json_encode(config('admin-stats.cards')) !!};</script>
 
