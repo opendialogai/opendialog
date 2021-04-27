@@ -14,18 +14,23 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
+use OpenDialogAi\Core\Conversation\Condition;
+use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
-use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
-use OpenDialogAi\ResponseEngine\MessageTemplate;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
+use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class ScenariosController extends Controller
 {
+    /**
+     * @var ResponseEngineServiceInterface
+     */
+    private $responseEngineService;
+
     /**
      * Create a new controller instance.
      *
@@ -34,6 +39,7 @@ class ScenariosController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->responseEngineService = resolve(ResponseEngineServiceInterface::class);
     }
 
     /**
@@ -98,7 +104,18 @@ class ScenariosController extends Controller
         /** @var Scenario $newScenario */
         $newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
 
-        $updatedScenario = $this->createDefaultConversations($newScenario);
+        $persistedScenario = $this->createDefaultConversations($newScenario);
+
+        // Add a new condition to the scenario now that it has an ID
+        $condition = new Condition(
+            'eq',
+            ['attribute' => 'user.selected_scenario'],
+            ['value' => $persistedScenario->getUid()]
+        );
+
+        $persistedScenario->setConditions(new ConditionCollection([$condition]));
+
+        $updatedScenario = ConversationDataClient::updateScenario($persistedScenario);
 
         return (new ScenarioResource($updatedScenario))->response()->setStatusCode(201);
     }
@@ -137,11 +154,12 @@ class ScenariosController extends Controller
 
         $persistedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
 
-        $this->createMessageForOutgoingIntent(
+        $this->responseEngineService->createMessageForOutgoingIntent(
             $welcomeOutgoingIntentId,
             "Hi! This is the default welcome message for the $scenarioName Scenario."
         );
-        $this->createMessageForOutgoingIntent(
+
+        $this->responseEngineService->createMessageForOutgoingIntent(
             $noMatchOutgoingIntentId,
             "Sorry, I didn't understand that."
         );
@@ -252,24 +270,5 @@ class ScenariosController extends Controller
         $conversation->addScene($scene);
 
         return $conversation;
-    }
-
-    /**
-     * @param string $outgoingIntentId
-     * @param string $text
-     */
-    private function createMessageForOutgoingIntent(string $outgoingIntentId, string $text): void
-    {
-        /** @var OutgoingIntent $outgoingIntent */
-        $outgoingIntent = OutgoingIntent::firstOrCreate(['name' => $outgoingIntentId]);
-
-        if ($outgoingIntent->messageTemplates()->get()->isEmpty()) {
-            MessageTemplate::firstOrCreate([
-                'name' => $outgoingIntentId,
-            ], [
-                'message_markup' => (new MessageMarkUpGenerator())->addTextMessage($text)->getMarkUp(),
-                'outgoing_intent_id' => $outgoingIntent->id
-            ]);
-        }
     }
 }

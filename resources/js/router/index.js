@@ -38,7 +38,8 @@ const router = new VueRouter({
         {
           path: 'conversation-builder/scenarios',
           name: 'scenarios',
-          component: Scenarios
+          component: Scenarios,
+          props: route => ({ newScenario: route.query.newScenario === "true" })
         },
         {
           path: 'conversation-builder/*',

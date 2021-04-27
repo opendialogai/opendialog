@@ -7,7 +7,7 @@ jobs:
   tests:
     docker:
       # specify the version you desire here
-      - image: circleci/php:7.4.10-fpm
+      - image: circleci/php:7.4.10-node-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -60,6 +60,23 @@ jobs:
 
       # Install key
       - run: php artisan key:generate
+
+      # Install node dependencies
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+
+      - restore_cache:
+          keys:
+            - v1-node-dependencies-{{ checksum "yarn.lock" }}
+            - v1-node-dependencies-
+            -
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: v1-node-dependencies-{{ checksum "yarn.lock" }}
+
+      - run: yarn run prod
 
       # run tests!
       - run:

@@ -1,53 +1,58 @@
 <?php
 
 return [
-
-    'items' => [
+    'items' =>
         [
-            'title' => 'Dashboard',
-            'url' => '/admin',
-            'icon' => 'od-icon-home',
+            [
+                [
+                    'title' => 'Dashboard',
+                    'url' => '/admin',
+                    'icon' => 'home-2',
+                ],
+                [
+                    'title' => 'Designer',
+                    'url' => '/admin/conversation-builder/scenarios',
+                    'icon' => 'filter-descending'
+                ],
+                [
+                    'title' => 'Message Editor',
+                    'url' => '/admin/outgoing-intents',
+                    'icon' => 'message'
+                ],
+                [
+                    'title' => 'Interface settings',
+                    'url' => '/admin/webchat-setting',
+                    'icon' => 'settings-sliders'
+                ],
+                [
+                    'title' => 'Dynamic Attributes',
+                    'url' => '/admin/dynamic-attributes',
+                    'icon' => 'apps'
+                ],
+            ],
+            [
+                [
+                    'title' => 'Chatbot Users',
+                    'url' => '/admin/chatbot-users',
+                    'icon' => 'profile'
+                ],
+                [
+                    'title' => 'Requests',
+                    'url' => '/admin/requests',
+                    'icon' => 'download'
+                ],
+                [
+                    'title' => 'Warnings',
+                    'url' => '/admin/warnings',
+                    'icon' => 'notification-waiting'
+                ]
+            ],
+            [
+                [
+                    'title' => 'Preview',
+                    'url' => '/admin/demo',
+                    'icon' => 'speech'
+                ],
+            ]
         ],
-        [
-            'title' => 'Conversation Designer',
-            'url' => '/admin/conversation-builder/scenarios',
-            'icon' => 'od-icon-conversation-builder',
-        ],
-        [
-            'title' => 'Chatbot Users',
-            'url' => '/admin/chatbot-users',
-            'icon' => 'icon-layers',
-        ],
-        [
-            'title' => 'Users',
-            'url' => '/admin/users',
-            'icon' => 'icon-people',
-        ],
-        [
-            'title' => 'Dynamic Attributes',
-            'url' => '/admin/dynamic-attributes',
-            'icon' => 'cui-list',
-        ],
-        [
-            'title' => 'Webchat settings',
-            'url' => '/admin/webchat-setting',
-            'icon' => 'icon-settings',
-        ],
-        [
-            'title' => 'Requests',
-            'url' => '/admin/requests',
-            'icon' => 'cui-inbox',
-        ],
-        [
-            'title' => 'Warnings',
-            'url' => '/admin/warnings',
-            'icon' => 'cui-list',
-        ],
-        [
-            'title' => 'Global Contexts',
-            'url' => '/admin/global-contexts',
-            'icon' => 'cui-info',
-        ]
-    ],
-
 ];

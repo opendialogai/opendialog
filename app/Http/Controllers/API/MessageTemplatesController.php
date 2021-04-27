@@ -84,9 +84,12 @@ class MessageTemplatesController extends Controller
     {
         $messageTemplate = MessageTemplate::where('outgoing_intent_id', $outgoingIntentId)->find($id);
 
-        $messageTemplate->makeVisible('id');
+        if ($messageTemplate) {
+            $messageTemplate->makeVisible('id');
+            return new MessageTemplateResource($messageTemplate);
+        }
 
-        return new MessageTemplateResource($messageTemplate);
+        abort(404);
     }
 
 
