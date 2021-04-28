@@ -3,6 +3,9 @@
 
 namespace App\Http\Serializers;
 
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ActionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ActionsCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\ApiTurnNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorsCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConditionCollectionNormalizer;
@@ -17,7 +20,6 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormal
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TransitionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnCollectionNormalizer;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\ApiTurnNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\VirtualIntentCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\VirtualIntentNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -47,7 +49,9 @@ class ConversationSerializer
             new BehaviorNormalizer(),
             new VirtualIntentCollectionNormalizer(),
             new VirtualIntentNormalizer(),
-            new TransitionNormalizer()
+            new TransitionNormalizer(),
+            new ActionNormalizer(),
+            new ActionsCollectionNormalizer()
         ];
         $encoders = [new JsonEncoder()];
         $this->serializer = new Serializer($normalizers, $encoders);
