@@ -21,11 +21,19 @@ services:
     working_dir: /var/www
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
     depends_on:
       - db
+      - dgraph-zero
       - dgraph-server
       - dgraph-ratel
-      - dgraph-zero
   db:
     image: mysql:5.7.27
     restart: unless-stopped
@@ -43,6 +51,14 @@ services:
       - dbdata:/var/lib/mysql
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
   dgraph-zero:
     image: dgraph/dgraph:v20.11.0
     volumes:
@@ -58,7 +74,17 @@ services:
     command: dgraph zero --my=dgraph-zero:5080
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
     links:
+      - dgraph-server
+    depends_on:
       - dgraph-server
   dgraph-server:
     image: dgraph/dgraph:v20.11.0
@@ -75,6 +101,16 @@ services:
     command: dgraph alpha --auth_token=${DGRAPH_AUTH_TOKEN} --whitelist 0.0.0.0/0 --my=dgraph-server:7080 --lru_mb=2048 --zero=dgraph-zero:5080
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.40'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    depends_on:
+      - db
   dgraph-ratel:
     image: dgraph/dgraph:v20.11.0
     ports:
@@ -88,6 +124,16 @@ services:
     networks:
       - app-network
     command: dgraph-ratel
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    depends_on:
+      - dgraph-zero
 
 networks:
   app-network:
