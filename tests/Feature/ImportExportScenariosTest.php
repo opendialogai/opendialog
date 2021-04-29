@@ -455,8 +455,8 @@ class ImportExportScenariosTest extends TestCase
         $minimalScenarioFilePath = ScenarioImportExportHelper::getScenarioFilePath("minimal_scenario");
 
         // Run the Import (Storage mocked)
-        $storedExampleScenario = $this->addFakeUids($this->getMatchingExampleScenario());
-        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        $storedExampleScenario = $this->getMatchingExampleScenario();
+        $storedMinimalScenario = $this->getMatchingMinimalScenario();
         ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
         ScenarioCollection([$storedExampleScenario]));
         ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
@@ -492,8 +492,8 @@ class ImportExportScenariosTest extends TestCase
         $this->disk->put($filePath, $invalidScenarioJson);
 
         // Run import, mocking data for example_scenario.scenario.json and minimal_scenario.scenario.json
-        $storedExampleScenario = $this->addFakeUids($this->getMatchingExampleScenario());
-        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        $storedExampleScenario = $this->getMatchingExampleScenario();
+        $storedMinimalScenario = $this->getMatchingMinimalScenario();
         ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
         ScenarioCollection([$storedExampleScenario]));
         ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
@@ -519,7 +519,7 @@ class ImportExportScenariosTest extends TestCase
         $this->assertCount(1, $previousScenarios);
 
         // Run the Import (Storage mocked)
-        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        $storedMinimalScenario = $this->getMatchingMinimalScenario();
         ConversationDataClient::shouldReceive('getAllScenarios')->twice()
             ->andReturn(new ScenarioCollection([$storedExistingExampleScenario]));
         ConversationDataClient::shouldReceive('addFullScenarioGraph')->once()->andReturn($storedMinimalScenario);
@@ -555,8 +555,8 @@ class ImportExportScenariosTest extends TestCase
         );
 
         // Round trip
-        $storedExampleScenario = $this->addFakeUids($this->getMatchingExampleScenario());
-        $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
+        $storedExampleScenario = $this->getMatchingExampleScenario();
+        $storedMinimalScenario = $this->getMatchingMinimalScenario();
 
         ConversationDataClient::shouldReceive('getAllScenarios')
             ->twice()
