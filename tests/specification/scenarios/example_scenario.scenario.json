@@ -4,7 +4,13 @@
     "description": "An example scenario",
     "interpreter": "",
     "behaviors": [],
-    "conditions": [],
+    "conditions": [
+        {
+            "operation": "eq",
+            "operationAttributes": [{"id": "attribute", "value": "selected_scenario"}],
+            "parameters": [{"id": "value", "value": "$path:example_scenario"}]
+        }
+    ],
     "conversations": [
         {
             "od_id": "example_conversation",
@@ -44,7 +50,8 @@
                                     "listens_for" : ["other_example_intent_id"],
                                     "expected_attributes" : [],
                                     "virtual_intents" : [],
-                                    "actions" : []
+                                    "actions" : [],
+                                    "transition": null
                                 }
                             ],
                             "response_intents": [
@@ -61,7 +68,12 @@
                                     "listens_for" : [],
                                     "expected_attributes" : [],
                                     "virtual_intents" : [],
-                                    "actions" : []
+                                    "actions" : [],
+                                    "transition": {
+                                        "conversation": "$path:example_scenario/example_conversation",
+                                        "scene": "$path:example_scenario/example_conversation/example_scene",
+                                        "turn": null
+                                    }
                                 }
                             ]
                         }

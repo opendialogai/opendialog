@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Adapter\AbstractAdapter;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
+use OpenDialogAi\Core\Conversation\Condition;
+use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
@@ -334,7 +336,16 @@ class ImportExportScenariosTest extends TestCase
 
         $turn->addResponseIntent($responseIntent);
 
-        return $this->addFakeUids($scenario);
+        $this->addFakeUids($scenario);
+
+        $scenario->setConditions(new ConditionCollection([
+            new Condition('eq', ['attribute' => 'selected_scenario'], ['value' => $scenario->getUid()])
+        ]));
+
+        $requestIntent->setTransition(null);
+        $responseIntent->setTransition(new Transition($conversation->getUid(), $scene->getUid(), null));
+
+        return $scenario;
     }
 
     /**
