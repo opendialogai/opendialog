@@ -95,7 +95,7 @@ class ImportExportScenariosTest extends TestCase
      *
      * @return Scenario
      */
-    public function getFullTestScenario()
+    public function getFullTestScenario(): Scenario
     {
         /**
          * Scenario
@@ -358,7 +358,7 @@ class ImportExportScenariosTest extends TestCase
 
         // Mock storing the scenario in DGraph
         ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenario)
-            ->andReturn($this->addFakeUids($this->getFullTestScenario()));
+            ->andReturn($this->addFakeUids($scenario));
         $storedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
 
         $expectedFilePath = ScenarioImportExportHelper::getScenarioFilePath($storedScenario->getOdId());
@@ -549,31 +549,44 @@ class ImportExportScenariosTest extends TestCase
     {
         // Get data for existing scenario files.
         $previousScenarioFiles = ScenarioImportExportHelper::getScenarioFiles();
-        $previousScenarioFileData = array_combine($previousScenarioFiles,
-            array_map(fn($path) => ScenarioImportExportHelper::getScenarioFileData($path), $previousScenarioFiles));
+        $previousScenarioFileData = array_combine(
+            $previousScenarioFiles,
+            array_map(fn($path) => ScenarioImportExportHelper::getScenarioFileData($path), $previousScenarioFiles)
+        );
 
         // Round trip
         $storedExampleScenario = $this->addFakeUids($this->getMatchingExampleScenario());
         $storedMinimalScenario = $this->addFakeUids($this->getMatchingMinimalScenario());
-        ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
-        ScenarioCollection([$storedExampleScenario]));
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
+
+        ConversationDataClient::shouldReceive('getAllScenarios')
+            ->twice()
+            ->andReturn(
+                new ScenarioCollection(),
+                new ScenarioCollection([$storedExampleScenario])
+            );
+
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')
+            ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
+
         $this->artisan('scenarios:import');
 
-        ConversationDataclient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection
-        ([
-            $storedExampleScenario,
-            $storedMinimalScenario
-        ]));
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')->twice()
+        ConversationDataclient::shouldReceive('getAllScenarios')
+            ->once()
+            ->andReturn(new ScenarioCollection([$storedExampleScenario, $storedMinimalScenario]));
+
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+            ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
+
         $this->artisan('scenarios:export');
 
         // Get data for current scenario files.
         $currentScenarioFiles = ScenarioImportExportHelper::getScenarioFiles();
-        $currentScenarioFilesData = array_combine($currentScenarioFiles,
-            array_map(fn($path) => ScenarioImportExportHelper::getScenarioFileData($path), $currentScenarioFiles));
+        $currentScenarioFilesData = array_combine(
+            $currentScenarioFiles,
+            array_map(fn($path) => ScenarioImportExportHelper::getScenarioFileData($path), $currentScenarioFiles)
+        );
 
         $this->assertEquals(count($previousScenarioFileData), count($currentScenarioFilesData));
 
@@ -583,7 +596,5 @@ class ImportExportScenariosTest extends TestCase
             $this->assertEquals(ImportExportSerializer::decode($currentData, 'json'),
                 ImportExportSerializer::decode($previousData, 'json'));
         }
-
     }
-
 }
