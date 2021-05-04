@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Console\Facades\ImportExportSerializer;
 use App\ImportExportHelpers\ScenarioImportExportHelper;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,7 @@ use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
@@ -37,7 +39,7 @@ class ImportExportScenariosTest extends TestCase
 {
 
     /**
-     * @var \Illuminate\Contracts\Filesystem\Filesystem
+     * @var Filesystem
      */
     protected $disk;
     /**
@@ -128,7 +130,7 @@ class ImportExportScenariosTest extends TestCase
         $scenario->setStatus(Scenario::LIVE_STATUS);
 
         // Conversations
-        $conversationA = new \OpenDialogAi\Core\Conversation\Conversation($scenario);
+        $conversationA = new Conversation($scenario);
         $conversationA->setOdId("test_conversation_a");
         $conversationA->setName("Test conversation (A)");
         $conversationA->setDescription("(A) Test conversation description.");
@@ -277,9 +279,10 @@ class ImportExportScenariosTest extends TestCase
     /**
      * Returns a Scenario matching the exported scenario specification/scenarios/example_scenario.scenario.json
      *
+     * @param bool $withPathSubstitutableObjects
      * @return Scenario
      */
-    public function getMatchingExampleScenario(): Scenario
+    public function getMatchingExampleScenario(bool $withPathSubstitutableObjects = true): Scenario
     {
         $scenario = new Scenario();
         $scenario->setOdId("example_scenario");
@@ -338,12 +341,14 @@ class ImportExportScenariosTest extends TestCase
 
         $this->addFakeUids($scenario);
 
-        $scenario->setConditions(new ConditionCollection([
-            new Condition('eq', ['attribute' => 'selected_scenario'], ['value' => $scenario->getUid()])
-        ]));
+        if ($withPathSubstitutableObjects) {
+            $scenario->setConditions(new ConditionCollection([
+                new Condition('eq', ['attribute' => 'selected_scenario'], ['value' => $scenario->getUid()])
+            ]));
 
-        $requestIntent->setTransition(null);
-        $responseIntent->setTransition(new Transition($conversation->getUid(), $scene->getUid(), null));
+            $requestIntent->setTransition(new Transition(null, null, null));
+            $responseIntent->setTransition(new Transition($conversation->getUid(), $scene->getUid(), null));
+        }
 
         return $scenario;
     }
@@ -466,22 +471,44 @@ class ImportExportScenariosTest extends TestCase
         $minimalScenarioFilePath = ScenarioImportExportHelper::getScenarioFilePath("minimal_scenario");
 
         // Run the Import (Storage mocked)
-        $storedExampleScenario = $this->getMatchingExampleScenario();
+        $storedExampleScenario = $this->getMatchingExampleScenario(false);
         $storedMinimalScenario = $this->getMatchingMinimalScenario();
-        ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
-        ScenarioCollection([$storedExampleScenario]));
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
-            ->andReturn($storedExampleScenario, $storedMinimalScenario);
-        $this->artisan('scenarios:import')->expectsOutput(sprintf("Importing scenario from file %s...", $exampleScenarioFilePath))
-            ->expectsOutput(sprintf("Importing scenario from file %s...", $minimalScenarioFilePath));
 
+        ConversationDataClient::shouldReceive('getAllScenarios')
+            ->twice()
+            ->andReturn(new ScenarioCollection(), new ScenarioCollection([$storedExampleScenario]));
+
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')
+            ->twice()
+            ->andReturn($storedExampleScenario, $storedMinimalScenario);
+
+        // To update the path in the scenario's condition
+        ConversationDataClient::shouldReceive('updateScenario')
+            ->once();
+
+        // To update the path in the intent's transition
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once();
+
+        // After updates are made we get the full scenario with the updates included now
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+            ->once()
+            ->andReturn($this->getMatchingExampleScenario());
+
+        $this->artisan('scenarios:import')
+            ->expectsOutput(sprintf("Importing scenario from file %s...", $exampleScenarioFilePath))
+            ->expectsOutput(sprintf("Importing scenario from file %s...", $minimalScenarioFilePath));
 
         // Check stored scenarios (Storage mocked)
         $allStoredScenarios = new ScenarioCollection([
             $storedExampleScenario,
             $storedMinimalScenario
         ]);
-        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn($allStoredScenarios);
+
+        ConversationDataClient::shouldReceive('getAllScenarios')
+            ->once()
+            ->andReturn($allStoredScenarios);
+
         $storedScenarios = ConversationDataClient::getAllScenarios(false);
         $this->assertCount(2, $storedScenarios);
 
@@ -490,7 +517,6 @@ class ImportExportScenariosTest extends TestCase
 
         $storedMinimalScenario = $storedScenarios->filter(fn($scenario) => $scenario->getOdId() === "minimal_scenario");
         $this->assertNotNull($storedMinimalScenario);
-
     }
 
     public function testImportInvalidScenario()
@@ -505,12 +531,30 @@ class ImportExportScenariosTest extends TestCase
         // Run import, mocking data for example_scenario.scenario.json and minimal_scenario.scenario.json
         $storedExampleScenario = $this->getMatchingExampleScenario();
         $storedMinimalScenario = $this->getMatchingMinimalScenario();
-        ConversationDataClient::shouldReceive('getAllScenarios')->twice()->andReturn(new ScenarioCollection(), new
-        ScenarioCollection([$storedExampleScenario]));
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->twice()
+
+        ConversationDataClient::shouldReceive('getAllScenarios')
+            ->twice()
+            ->andReturn(new ScenarioCollection(), new ScenarioCollection([$storedExampleScenario]));
+
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')
+            ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
-        $this->artisan('scenarios:import')->expectsOutput(sprintf("Import of %s failed. Unable to decode file as json",
-            $filePath));
+
+        // To update the path in the scenario's condition
+        ConversationDataClient::shouldReceive('updateScenario')
+            ->once();
+
+        // To update the path in the intent's transition
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once();
+
+        // After updates are made we get the full scenario with the updates included now
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+            ->once()
+            ->andReturn($this->getMatchingExampleScenario());
+
+        $this->artisan('scenarios:import')
+            ->expectsOutput(sprintf("Import of %s failed. Unable to decode file as json", $filePath));
     }
 
     public function testImportDuplicateOdId()
@@ -580,6 +624,19 @@ class ImportExportScenariosTest extends TestCase
             ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
 
+        // To update the path in the scenario's condition
+        ConversationDataClient::shouldReceive('updateScenario')
+            ->once();
+
+        // To update the path in the intent's transition
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once();
+
+        // After updates are made we get the full scenario with the updates included now
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+            ->once()
+            ->andReturn($this->getMatchingExampleScenario());
+
         $this->artisan('scenarios:import');
 
         ConversationDataclient::shouldReceive('getAllScenarios')
@@ -604,8 +661,10 @@ class ImportExportScenariosTest extends TestCase
         foreach ($currentScenarioFilesData as $filePath => $currentData) {
             $this->assertArrayHasKey($filePath, $previousScenarioFileData);
             $previousData = $previousScenarioFileData[$filePath];
-            $this->assertEquals(ImportExportSerializer::decode($currentData, 'json'),
-                ImportExportSerializer::decode($previousData, 'json'));
+            $this->assertEquals(
+                ImportExportSerializer::decode($currentData, 'json'),
+                ImportExportSerializer::decode($previousData, 'json')
+            );
         }
     }
 }

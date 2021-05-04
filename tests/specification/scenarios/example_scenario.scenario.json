@@ -51,7 +51,11 @@
                                     "expected_attributes" : [],
                                     "virtual_intents" : [],
                                     "actions" : [],
-                                    "transition": null
+                                    "transition": {
+                                        "conversation": null,
+                                        "scene": null,
+                                        "turn": null
+                                    }
                                 }
                             ],
                             "response_intents": [
