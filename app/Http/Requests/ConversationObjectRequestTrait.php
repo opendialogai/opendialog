@@ -12,7 +12,7 @@ trait ConversationObjectRequestTrait
     public function odIdRule(ConversationObject $parent = null): array
     {
         return [
-            'od_id' => ['string', 'required', 'not_regex:/[\$\:\/]/', new OdId($parent)],
+            'od_id' => ['bail', 'string', 'filled', 'not_regex:/[\$\:\/]/', new OdId($parent)],
         ];
     }
 }

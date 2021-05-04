@@ -3,7 +3,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Status;
 use Illuminate\Foundation\Http\FormRequest;
 use OpenDialogAi\Core\Conversation\ConversationObject;
 
