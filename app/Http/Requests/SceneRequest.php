@@ -4,9 +4,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use OpenDialogAi\Core\Conversation\ConversationObject;
 
 class SceneRequest extends FormRequest
 {
+    use ConversationObjectRequestTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,9 +27,11 @@ class SceneRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        /** @var ConversationObject $parent */
+        $parent = $this->route('conversation');
+
+        return $this->odIdRule($parent) + [
             'id' => 'string',
-            'od_id' => 'string',
             'name' => 'string',
             'description' => 'string',
             'interpreter' => 'nullable|string',
