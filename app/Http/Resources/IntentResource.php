@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 
 use App\Http\Facades\Serializer;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenDialogAi\Core\Conversation\Action;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\Intent;
@@ -34,7 +35,8 @@ class IntentResource extends JsonResource
             Intent::ACTIONS,
             Intent::BEHAVIORS => Behavior::FIELDS,
             Intent::CONDITIONS => Condition::FIELDS,
-            Intent::TRANSITION
+            Intent::TRANSITION,
+            Intent::ACTIONS => Action::FIELDS
         ]
     ];
 
