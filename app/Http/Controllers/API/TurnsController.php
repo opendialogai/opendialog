@@ -157,6 +157,17 @@ class TurnsController extends Controller
         }
     }
 
+    public function destroyTurnIntent(TurnIntentRequest $request, Turn $turn, Intent $intent) : Response
+    {
+        ConversationDataClient::deleteTurnIntent($turn->getUid(), $intent->getUid(), $request->get('order'));
+
+        if (ConversationDataClient::deleteIntentByUid($intent->getUid())) {
+            return response()->noContent(200);
+        } else {
+            return response('Error deleting conversation, check the logs', 500);
+        }
+    }
+
     /**
      * Creates an intent and message template in the Response Engine if the intent being created is from the APP participant
      *

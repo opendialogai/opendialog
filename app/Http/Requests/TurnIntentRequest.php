@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class TurnIntentRequest extends FormRequest
 {
@@ -25,7 +27,7 @@ class TurnIntentRequest extends FormRequest
     public function rules()
     {
         return [
-            'order' => 'string',
+            'order' => ['string', Rule::in([Turn::REQUEST_INTENTS, Turn::RESPONSE_INTENTS])],
             'intent' => 'array'
         ];
     }
