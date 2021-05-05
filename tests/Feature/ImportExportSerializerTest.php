@@ -4,6 +4,7 @@
 namespace Tests\Feature;
 
 use App\Console\Facades\ImportExportSerializer;
+use App\ImportExportHelpers\PathSubstitutionHelper;
 use Illuminate\Support\Carbon;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
@@ -922,5 +923,81 @@ class ImportExportSerializerTest extends TestCase
                 }
             }
         }
+    }
+
+    public function testMap()
+    {
+        $scenarioUid = "0x123";
+        $scenario = new Scenario();
+        $scenario->setOdId("example_scenario");
+        $scenario->setUid($scenarioUid);
+        $expectedScenarioPath = '$path:example_scenario';
+
+        $conversationUid = "0x124";
+        $conversation = new Conversation($scenario);
+        $conversation->setOdId("example_conversation");
+        $conversation->setUid($conversationUid);
+        $expectedConversationPath = '$path:example_scenario/example_conversation';
+
+        $scene1Uid = "0x125";
+        $scene1 = new Scene($conversation);
+        $scene1->setOdId("example_scene1");
+        $scene1->setUid($scene1Uid);
+        $expectedScene1Path = '$path:example_scenario/example_conversation/example_scene1';
+
+        $turn1Uid = "0x126";
+        $turn1 = new Turn($scene1);
+        $turn1->setOdId("example_turn");
+        $turn1->setUid($turn1Uid);
+        $expectedTurn1Path = '$path:example_scenario/example_conversation/example_scene1/example_turn';
+
+        $scene2Uid = "0x127";
+        $scene2 = new Scene($conversation);
+        $scene2->setOdId("example_scene2");
+        $scene2->setUid($scene2Uid);
+        $expectedScene2Path = '$path:example_scenario/example_conversation/example_scene2';
+
+        $turn2Uid = "0x128";
+        $turn2 = new Turn($scene2);
+        $turn2->setOdId("example_turn");
+        $turn2->setUid($turn2Uid);
+        $expectedTurn2Path = '$path:example_scenario/example_conversation/example_scene2/example_turn';
+
+        $scenario->setConversations(new ConversationCollection([$conversation]));
+        $conversation->setScenes(new SceneCollection([$scene1, $scene2]));
+        $scene1->setTurns(new TurnCollection([$turn1]));
+        $scene2->setTurns(new TurnCollection([$turn2]));
+
+        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($scenario);
+
+        $this->assertArrayHasKey($scenarioUid, $map);
+        $this->assertEquals($expectedScenarioPath, $map->get($scenarioUid));
+        $this->assertArrayHasKey($expectedScenarioPath, $map);
+        $this->assertEquals($scenarioUid, $map->get($expectedScenarioPath));
+
+        $this->assertArrayHasKey($conversationUid, $map);
+        $this->assertEquals($expectedConversationPath, $map->get($conversationUid));
+        $this->assertArrayHasKey($expectedConversationPath, $map);
+        $this->assertEquals($conversationUid, $map->get($expectedConversationPath));
+
+        $this->assertArrayHasKey($scene1Uid, $map);
+        $this->assertEquals($expectedScene1Path, $map->get($scene1Uid));
+        $this->assertArrayHasKey($expectedScene1Path, $map);
+        $this->assertEquals($scene1Uid, $map->get($expectedScene1Path));
+
+        $this->assertArrayHasKey($turn1Uid, $map);
+        $this->assertEquals($expectedTurn1Path, $map->get($turn1Uid));
+        $this->assertArrayHasKey($expectedTurn1Path, $map);
+        $this->assertEquals($turn1Uid, $map->get($expectedTurn1Path));
+
+        $this->assertArrayHasKey($scene2Uid, $map);
+        $this->assertEquals($expectedScene2Path, $map->get($scene2Uid));
+        $this->assertArrayHasKey($expectedScene2Path, $map);
+        $this->assertEquals($scene2Uid, $map->get($expectedScene2Path));
+
+        $this->assertArrayHasKey($turn2Uid, $map);
+        $this->assertEquals($expectedTurn2Path, $map->get($turn2Uid));
+        $this->assertArrayHasKey($expectedTurn2Path, $map);
+        $this->assertEquals($turn2Uid, $map->get($expectedTurn2Path));
     }
 }

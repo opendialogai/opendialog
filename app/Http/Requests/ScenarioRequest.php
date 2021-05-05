@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ScenarioRequest extends FormRequest
 {
+    use ConversationObjectRequestTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,9 +26,8 @@ class ScenarioRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        return $this->odIdRule() + [
             'uid' => 'string',
-            'odID' => 'string',
             'name' => 'string',
             'description' => 'string',
             'defaultInterpreter' => 'string',

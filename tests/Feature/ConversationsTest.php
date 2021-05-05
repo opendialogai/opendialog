@@ -224,13 +224,11 @@ class ConversationsTest extends TestCase
             ->json('PATCH', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid(), [
                 'name' => $fakeConversationUpdated->getName(),
                 'id' => $fakeConversationUpdated->getUid(),
-                'od_id' => $fakeConversationUpdated->getODId(),
                 'description' =>  $fakeConversationUpdated->getDescription()
             ])
             //->assertStatus(200)
             ->assertJson([
                 "id" => "0x0001",
-                "od_id" => "new_example_conversation",
                 "name" => "New Example conversation updated",
                 "description" => "An new example conversation updated",
                 "interpreter" => "interpreter.core.nlp",

@@ -248,13 +248,11 @@ class ScenesTest extends TestCase
             ->json('PATCH', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid(), [
                 'name' => $fakeSceneUpdated->getName(),
                 'id' => $fakeSceneUpdated->getUid(),
-                'od_id' => $fakeSceneUpdated->getODId(),
                 'description' =>  $fakeSceneUpdated->getDescription()
             ])
             //->assertStatus(200)
             ->assertJson([
                 "id" => "0x0001",
-                "od_id" => "welcome_scene",
                 "name" => "Welcome scene updated",
                 "description" => "A welcome scene updated",
                 "interpreter" => "interpreter.core.nlp",

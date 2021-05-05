@@ -5,7 +5,6 @@ namespace App\Console\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-
 /**
  * @method static serialize($data, string $format, array $context = []): string
  * @method static normalize($data, string $format, array $context = []): array

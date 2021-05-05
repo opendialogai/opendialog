@@ -3,11 +3,15 @@
 
 namespace App\ImportExportHelpers;
 
-
 use App\Console\Facades\ImportExportSerializer;
+use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Exceptions\DuplicateConversationObjectOdIdException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
+use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class ScenarioImportExportHelper extends BaseImportExportHelper
 {
@@ -99,18 +103,113 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
      */
     public static function importScenarioFromString(string $data): Scenario
     {
+        $hasPathsToSubstitute = PathSubstitutionHelper::stringContainsPaths($data);
+
+        $serializerContext = [];
+
+        if ($hasPathsToSubstitute) {
+            $serializerContext = [
+                ScenarioNormalizer::IGNORE_OBJECTS_WITH_POTENTIAL_PATH_VALUES => true,
+            ];
+        }
+
         /* @var $importingScenario Scenario */
-        $importingScenario = ImportExportSerializer::deserialize($data, Scenario::class, 'json');
+        $importingScenario = ImportExportSerializer::deserialize($data, Scenario::class, 'json', $serializerContext);
 
         $existingScenarios = ConversationDataClient::getAllScenarios(false);
 
-        $duplicateScenarios = $existingScenarios->filter(fn($scenario) => $scenario->getOdId() === $importingScenario->getOdId());
+        $duplicateScenarios = $existingScenarios->filter(
+            fn ($scenario) => $scenario->getOdId() === $importingScenario->getOdId()
+        );
         if ($duplicateScenarios->count() > 0) {
-            throw new DuplicateConversationObjectOdIdException( $importingScenario->getOdId(),
-                sprintf("Cannot import scenario with odId %s. A scenario with that odId already exists!",
-                $importingScenario->getOdId()));
+            throw new DuplicateConversationObjectOdIdException(
+                $importingScenario->getOdId(),
+                sprintf(
+                    "Cannot import scenario with odId %s. A scenario with that odId already exists!",
+                    $importingScenario->getOdId()
+                )
+            );
         }
-        return ConversationDataClient::addFullScenarioGraph($importingScenario);
+
+        $persistedScenario = ConversationDataClient::addFullScenarioGraph($importingScenario);
+
+        if (!$hasPathsToSubstitute) {
+            return $persistedScenario;
+        }
+
+        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($persistedScenario);
+
+        // Deserialize WITH objects with potential path values and substitute the paths for the UIDs
+        /** @var Scenario $scenarioWithPathsSubstituted */
+        $scenarioWithPathsSubstituted = ImportExportSerializer::deserialize($data, Scenario::class, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        if (PathSubstitutionHelper::shouldPatch($scenarioWithPathsSubstituted)) {
+            $scenarioPatch = PathSubstitutionHelper::createPatch($persistedScenario->getUid(), $scenarioWithPathsSubstituted);
+            ConversationDataClient::updateScenario($scenarioPatch);
+        }
+
+        foreach ($scenarioWithPathsSubstituted->getConversations() as $cIdx => $conversation) {
+            /** @var Conversation $conversation */
+
+            /** @var Conversation $persistedConversation */
+            $persistedConversation = $persistedScenario->getConversations()[$cIdx];
+
+            if (PathSubstitutionHelper::shouldPatch($conversation)) {
+                $conversationPatch = PathSubstitutionHelper::createPatch($persistedConversation->getUid(), $conversation);
+                ConversationDataClient::updateConversation($conversationPatch);
+            }
+
+            foreach ($conversation->getScenes() as $sIdx => $scene) {
+                /** @var Scene $scene */
+
+                /** @var Scene $persistedScene */
+                $persistedScene = $persistedConversation->getScenes()[$sIdx];
+
+                if (PathSubstitutionHelper::shouldPatch($scene)) {
+                    $scenePatch = PathSubstitutionHelper::createPatch($persistedScene->getUid(), $scene);
+                    ConversationDataClient::updateScene($scenePatch);
+                }
+
+                foreach ($scene->getTurns() as $tIdx => $turn) {
+                    /** @var Turn $turn */
+
+                    /** @var Turn $persistedTurn */
+                    $persistedTurn = $persistedScene->getTurns()[$tIdx];
+
+                    if (PathSubstitutionHelper::shouldPatch($turn)) {
+                        $turnPatch = PathSubstitutionHelper::createPatch($persistedTurn->getUid(), $turn);
+                        ConversationDataClient::updateTurn($turnPatch);
+                    }
+
+                    foreach ($turn->getRequestIntents() as $iIdx => $intent) {
+                        /** @var Intent $intent */
+
+                        /** @var Intent $persistedIntent */
+                        $persistedIntent = $persistedTurn->getRequestIntents()[$iIdx];
+
+                        if (PathSubstitutionHelper::shouldPatch($intent)) {
+                            $intentPatch = PathSubstitutionHelper::createPatch($persistedIntent->getUid(), $intent);
+                            ConversationDataClient::updateIntent($intentPatch);
+                        }
+                    }
+
+                    foreach ($turn->getResponseIntents() as $iIdx => $intent) {
+                        /** @var Turn $intent */
+
+                        /** @var Intent $persistedIntent */
+                        $persistedIntent = $persistedTurn->getResponseIntents()[$iIdx];
+
+                        if (PathSubstitutionHelper::shouldPatch($intent)) {
+                            $intentPatch = PathSubstitutionHelper::createPatch($persistedIntent->getUid(), $intent);
+                            ConversationDataClient::updateIntent($intentPatch);
+                        }
+                    }
+                }
+            }
+        }
+
+        return ConversationDataClient::getFullScenarioGraph($persistedScenario->getUid());
     }
 }
-
