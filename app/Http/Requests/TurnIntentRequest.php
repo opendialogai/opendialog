@@ -27,7 +27,7 @@ class TurnIntentRequest extends FormRequest
     public function rules()
     {
         return [
-            'order' => ['string', Rule::in([Turn::REQUEST_INTENTS, Turn::RESPONSE_INTENTS])],
+            'order' => ['string', Rule::in([Turn::ORDER_REQUEST, Turn::ORDER_RESPONSE])],
             'intent' => 'array'
         ];
     }
