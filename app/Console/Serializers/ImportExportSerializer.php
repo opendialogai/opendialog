@@ -7,10 +7,20 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorsCollectionNo
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConditionCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\BehaviorNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ConditionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ConversationNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\IntentNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\SceneNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TransitionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TurnNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\VirtualIntentNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\VirtualIntentCollectionNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -23,37 +33,37 @@ class ImportExportSerializer
     {
         $normalizers = [
             new ScenarioCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer(),
+            new ScenarioNormalizer(),
             new ConversationCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ConversationNormalizer(),
+            new ConversationNormalizer(),
             new SceneCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\SceneNormalizer(),
+            new SceneNormalizer(),
             new TurnCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TurnNormalizer(),
+            new TurnNormalizer(),
             new IntentCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\IntentNormalizer(),
+            new IntentNormalizer(),
             new ConditionCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ConditionNormalizer(),
+            new ConditionNormalizer(),
             new BehaviorsCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\BehaviorNormalizer(),
+            new BehaviorNormalizer(),
             new VirtualIntentCollectionNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\VirtualIntentNormalizer(),
-            new \OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TransitionNormalizer()
+            new VirtualIntentNormalizer(),
+            new TransitionNormalizer()
         ];
-        $encoders = [new JsonEncoder()];
+        $encoders = [new JsonEncoder(new JsonEncode([JsonEncode::OPTIONS => JSON_UNESCAPED_SLASHES]))];
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
     /**
      * @param          $data
-     * @param  string  $format
-     *
+     * @param string $format
+     * @param array $context
      * @return string serialized object in the form of a string
      */
-    public function serialize($data, string $format): string
+    public function serialize($data, string $format, array $context = []): string
     {
         return $this->getSerializer()
-            ->serialize($data, $format);
+            ->serialize($data, $format, $context);
     }
 
     /**

@@ -7,11 +7,9 @@ use App\User;
 use Carbon\Carbon;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
-use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\IntentCollection;
-use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
@@ -262,14 +260,12 @@ class TurnsTest extends TestCase
             ->json('PATCH', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid(), [
                 'name' => $fakeTurnUpdated->getName(),
                 'id' => $fakeTurnUpdated->getUid(),
-                'od_id' => $fakeTurnUpdated->getOdId(),
                 'description' =>  $fakeTurnUpdated->getDescription(),
                 'valid_origins' => $fakeTurnUpdated->getValidOrigins()
             ])
             //->assertStatus(200)
             ->assertJson([
                 "id" => "0x0004",
-                "od_id" => "welcome_turn_updated",
                 "name" => "Welcome turn updated",
                 "description" => "A welcome turn updated",
                 "interpreter" => "interpreter.core.nlp",
