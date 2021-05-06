@@ -157,9 +157,9 @@ class TurnsController extends Controller
         }
     }
 
-    public function destroyTurnIntent(TurnIntentRequest $request, Turn $turn, Intent $intent) : Response
+    public function destroyTurnIntent(Turn $turn, Intent $intent) : Response
     {
-        ConversationDataClient::deleteTurnIntent($turn->getUid(), $intent->getUid(), $request->get('order'));
+        ConversationDataClient::deleteTurnIntent($turn->getUid(), $intent->getUid());
 
         if (ConversationDataClient::deleteIntentByUid($intent->getUid())) {
             return response()->noContent(200);
