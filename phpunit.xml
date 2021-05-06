@@ -37,5 +37,8 @@
         <env name="DGRAPH_PORT" value="8082"/>
         <env name="DGRAPH_AUTH_TOKEN" value="dgraphtestservertoken"/>
         <env name="STATS_CACHE_LENGTH" value="0"/>
+        <env name="LUIS_APP_URL" value="luis_example_url"/>
+        <env name="LUIS_APP_ID" value="luis_example_id"/>
+        <env name="LUIS_SUBSCRIPTION_KEY" value="luis_example_sub_key"/>
     </php>
 </phpunit>
