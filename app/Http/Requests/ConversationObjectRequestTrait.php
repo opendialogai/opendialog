@@ -3,7 +3,6 @@
 
 namespace App\Http\Requests;
 
-
 use App\Rules\OdId;
 use OpenDialogAi\Core\Conversation\ConversationObject;
 

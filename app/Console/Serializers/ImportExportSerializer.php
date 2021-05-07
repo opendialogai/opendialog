@@ -2,7 +2,6 @@
 
 namespace App\Console\Serializers;
 
-
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\BehaviorsCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConditionCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationCollectionNormalizer;
@@ -16,6 +15,8 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExp
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TransitionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TurnNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\VirtualIntentNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ActionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ActionsCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnCollectionNormalizer;
@@ -48,7 +49,9 @@ class ImportExportSerializer
             new BehaviorNormalizer(),
             new VirtualIntentCollectionNormalizer(),
             new VirtualIntentNormalizer(),
-            new TransitionNormalizer()
+            new TransitionNormalizer(),
+            new ActionsCollectionNormalizer(),
+            new ActionNormalizer()
         ];
         $encoders = [new JsonEncoder(new JsonEncode([JsonEncode::OPTIONS => JSON_UNESCAPED_SLASHES]))];
         $this->serializer = new Serializer($normalizers, $encoders);

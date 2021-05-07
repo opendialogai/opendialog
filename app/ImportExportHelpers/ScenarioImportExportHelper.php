@@ -3,7 +3,6 @@
 
 namespace App\ImportExportHelpers;
 
-
 use App\Console\Facades\ImportExportSerializer;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
@@ -119,11 +118,17 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
 
         $existingScenarios = ConversationDataClient::getAllScenarios(false);
 
-        $duplicateScenarios = $existingScenarios->filter(fn($scenario) => $scenario->getOdId() === $importingScenario->getOdId());
+        $duplicateScenarios = $existingScenarios->filter(
+            fn ($scenario) => $scenario->getOdId() === $importingScenario->getOdId()
+        );
         if ($duplicateScenarios->count() > 0) {
-            throw new DuplicateConversationObjectOdIdException( $importingScenario->getOdId(),
-                sprintf("Cannot import scenario with odId %s. A scenario with that odId already exists!",
-                $importingScenario->getOdId()));
+            throw new DuplicateConversationObjectOdIdException(
+                $importingScenario->getOdId(),
+                sprintf(
+                    "Cannot import scenario with odId %s. A scenario with that odId already exists!",
+                    $importingScenario->getOdId()
+                )
+            );
         }
 
         $persistedScenario = ConversationDataClient::addFullScenarioGraph($importingScenario);
@@ -208,4 +213,3 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
         return ConversationDataClient::getFullScenarioGraph($persistedScenario->getUid());
     }
 }
-

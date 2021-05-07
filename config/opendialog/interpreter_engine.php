@@ -11,6 +11,16 @@ return [
 //         'example_type' => 'first_name'
     ],
 
+    'dialogflow_config' => [
+        'interpreter.core.dialogflow' => [
+            'project_id' => env('DIALOGFLOW_PROJECT_ID'),
+            'intents' => [
+                'Knowledge.KnowledgeBase.*' => 'intent.dialogflow.faq',
+            ],
+            'entities' => [],
+        ],
+    ],
+
     /**
      * Custom interpreters registered in the format
      */

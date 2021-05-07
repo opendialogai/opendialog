@@ -46,7 +46,6 @@ class TurnsTest extends TestCase
 
     public function testGetAllTurnsByScene()
     {
-
         $fakeScene = new Scene();
         $fakeScene->setUid('0x0002');
         $fakeScene->setName('New Example scene 1');

@@ -73,7 +73,7 @@ class ImportExportScenariosTest extends TestCase
     {
         static $currentUid = 0;
 
-        $getUid = fn(int $count) => "0x".(1000 + $count);
+        $getUid = fn (int $count) => "0x".(1000 + $count);
         $scenario->setUid($getUid($currentUid++));
         $conversations = $scenario->getConversations();
         foreach ($conversations as $conversation) {
@@ -455,8 +455,10 @@ class ImportExportScenariosTest extends TestCase
 
         ConversationDataClient::shouldReceive('getAllScenarios')->andReturn(new ScenarioCollection([$storedTestScenario]));
         ConversationDataClient::shouldReceive('getFullScenarioGraph')->withAnyArgs()->andReturn($storedTestScenario);
-        $this->artisan('scenarios:export')->expectsOutput(sprintf("Scenario file at %s already exists. Deleting...",
-            $existingExportFilePath));
+        $this->artisan('scenarios:export')->expectsOutput(sprintf(
+            "Scenario file at %s already exists. Deleting...",
+            $existingExportFilePath
+        ));
 
         $newData = ScenarioImportExportHelper::getScenarioFileData($existingExportFilePath);
         $this->assertNotEquals($previousData, $newData);
@@ -512,10 +514,10 @@ class ImportExportScenariosTest extends TestCase
         $storedScenarios = ConversationDataClient::getAllScenarios(false);
         $this->assertCount(2, $storedScenarios);
 
-        $storedExampleScenario = $storedScenarios->filter(fn($scenario) => $scenario->getOdId() === "example_scenario");
+        $storedExampleScenario = $storedScenarios->filter(fn ($scenario) => $scenario->getOdId() === "example_scenario");
         $this->assertNotNull($storedExampleScenario);
 
-        $storedMinimalScenario = $storedScenarios->filter(fn($scenario) => $scenario->getOdId() === "minimal_scenario");
+        $storedMinimalScenario = $storedScenarios->filter(fn ($scenario) => $scenario->getOdId() === "minimal_scenario");
         $this->assertNotNull($storedMinimalScenario);
     }
 
@@ -568,8 +570,7 @@ class ImportExportScenariosTest extends TestCase
             ->andReturn($this->addFakeUids($existingExampleScenario));
         $storedExistingExampleScenario = ConversationDataClient::addFullScenarioGraph($existingExampleScenario);
         // We've added one scenario, expect one to exist.
-        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection
-        ([$storedExistingExampleScenario]));
+        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection([$storedExistingExampleScenario]));
         $previousScenarios = ConversationDataClient::getAllScenarios(false);
         $this->assertCount(1, $previousScenarios);
 
@@ -579,12 +580,14 @@ class ImportExportScenariosTest extends TestCase
             ->andReturn(new ScenarioCollection([$storedExistingExampleScenario]));
         ConversationDataClient::shouldReceive('addFullScenarioGraph')->once()->andReturn($storedMinimalScenario);
         $this->artisan('scenarios:import')
-            ->expectsOutput(sprintf("An existing Scenario with odId %s already exists!. Skipping %s!", "example_scenario",
-                ScenarioImportExportHelper::getScenarioFilePath("example_scenario")));
+            ->expectsOutput(sprintf(
+                "An existing Scenario with odId %s already exists!. Skipping %s!",
+                "example_scenario",
+                ScenarioImportExportHelper::getScenarioFilePath("example_scenario")
+            ));
 
         // We should have added a second scenario.
-        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection
-        ([
+        ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection([
             $storedExistingExampleScenario,
             $storedMinimalScenario
         ]));
@@ -593,11 +596,10 @@ class ImportExportScenariosTest extends TestCase
 
         // The example scenario import was skipped, so it should be unchanged.
         $currentExampleScenarioUid =
-            $currentScenarios->filter(fn($scenario) => $scenario->getOdId() === "example_scenario")->first()->getUid();
+            $currentScenarios->filter(fn ($scenario) => $scenario->getOdId() === "example_scenario")->first()->getUid();
         ConversationDataClient::shouldReceive('getFullScenarioGraph')->once()->andReturn($storedExistingExampleScenario);
         $currentStoredExampleScenario = ConversationDataClient::getFullScenarioGraph($currentExampleScenarioUid);
         $this->assertEquals($storedExistingExampleScenario, $currentStoredExampleScenario);
-
     }
 
     public function testImportExportRoundTrip()
@@ -606,7 +608,7 @@ class ImportExportScenariosTest extends TestCase
         $previousScenarioFiles = ScenarioImportExportHelper::getScenarioFiles();
         $previousScenarioFileData = array_combine(
             $previousScenarioFiles,
-            array_map(fn($path) => ScenarioImportExportHelper::getScenarioFileData($path), $previousScenarioFiles)
+            array_map(fn ($path) => ScenarioImportExportHelper::getScenarioFileData($path), $previousScenarioFiles)
         );
 
         // Round trip
@@ -653,7 +655,7 @@ class ImportExportScenariosTest extends TestCase
         $currentScenarioFiles = ScenarioImportExportHelper::getScenarioFiles();
         $currentScenarioFilesData = array_combine(
             $currentScenarioFiles,
-            array_map(fn($path) => ScenarioImportExportHelper::getScenarioFileData($path), $currentScenarioFiles)
+            array_map(fn ($path) => ScenarioImportExportHelper::getScenarioFileData($path), $currentScenarioFiles)
         );
 
         $this->assertEquals(count($previousScenarioFileData), count($currentScenarioFilesData));

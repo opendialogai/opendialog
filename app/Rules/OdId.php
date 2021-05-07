@@ -3,7 +3,6 @@
 
 namespace App\Rules;
 
-
 use Illuminate\Contracts\Validation\Rule;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationObject;
