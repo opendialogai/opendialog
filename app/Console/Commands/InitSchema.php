@@ -10,7 +10,7 @@ class InitSchema extends Command
 {
     protected $signature = 'schema:init {--y|yes}';
 
-    protected $description = 'Init local dgraph schema';
+    protected $description = 'Update Dgraph schema';
 
     public function handle()
     {
@@ -18,7 +18,7 @@ class InitSchema extends Command
             $continue = true;
         } else {
             $continue = $this->confirm(
-                'This will clear your local dgraph schema. Are you sure you want to continue?'
+                'This will update your Dgraph schema. Are you sure you want to continue?'
             );
         }
 
@@ -26,9 +26,9 @@ class InitSchema extends Command
             /** @var DGraphGraphQLClient $client */
             $client = resolve(GraphQLClientInterface::class);
 
-            $this->info('Init Schema');
+            $this->info('Update Schema');
             $client->setSchema(config('opendialog.graphql.schema'));
-            $this->info('Schema initialized');
+            $this->info('Schema updated');
         } else {
             $this->info('OK, not running');
         }

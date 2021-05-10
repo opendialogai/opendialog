@@ -3,26 +3,31 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use OpenDialogAi\Core\Graph\DGraph\DGraphClient;
+use OpenDialogAi\GraphQLClient\DGraphGraphQLClient;
+use OpenDialogAi\GraphQLClient\GraphQLClientInterface;
 
 class UpdateSchema extends Command
 {
-    protected $signature = 'schema:update';
+    protected $signature = 'schema:update {--y|yes}';
 
-    protected $description = 'Update local dgraph schema';
+    protected $description = 'Update Dgraph schema';
 
     public function handle()
     {
-        $continue = $this->confirm(
-            'This will update your local dgraph schema. Are you sure you want to continue?'
-        );
+        if ($this->option('yes')) {
+            $continue = true;
+        } else {
+            $continue = $this->confirm(
+                'This will update your Dgraph schema. Are you sure you want to continue?'
+            );
+        }
 
         if ($continue) {
-            $client = app()->make(DGraphClient::class);
+            /** @var DGraphGraphQLClient $client */
+            $client = resolve(GraphQLClientInterface::class);
 
-            $this->info('Init Schema');
-            $client->initSchema();
-
+            $this->info('Update Schema');
+            $client->setSchema(config('opendialog.graphql.schema'));
             $this->info('Schema updated');
         } else {
             $this->info('OK, not running');
