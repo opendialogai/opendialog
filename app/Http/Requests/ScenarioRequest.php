@@ -26,8 +26,10 @@ class ScenarioRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->odIdRule() + [
-            'uid' => 'string',
+        $currentUid = $this->get('id');
+
+        return $this->odIdRule(null, $currentUid) + [
+            'id' => 'string',
             'name' => 'string',
             'description' => 'string',
             'defaultInterpreter' => 'string',
