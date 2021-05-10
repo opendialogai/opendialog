@@ -25,8 +25,12 @@ class FocusedIntentResource extends JsonResource
             Intent::NAME,
             Intent::DESCRIPTION,
             Intent::INTERPRETER,
-            Intent::BEHAVIORS,
-            Intent::CONDITIONS,
+            Intent::BEHAVIORS => [],
+            Intent::CONDITIONS => [
+                Condition::OPERATION,
+                Condition::OPERATION_ATTRIBUTES,
+                Condition::PARAMETERS
+            ],
             Intent::CREATED_AT,
             Intent::UPDATED_AT,
             Intent::SPEAKER,
@@ -36,7 +40,7 @@ class FocusedIntentResource extends JsonResource
             Intent::EXPECTED_ATTRIBUTES,
             Intent::TRANSITION,
             Intent::VIRTUAL_INTENTS,
-            Intent::ACTIONS,
+            Intent::ACTIONS => Action::FIELDS,
             Intent::TURN => [
                 Turn::UID,
                 Turn::OD_ID,
