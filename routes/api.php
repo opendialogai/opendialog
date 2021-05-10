@@ -140,6 +140,7 @@ Route::namespace('API')
 
             Route::get('turns/{turn}/turn-intents/{intent}', 'TurnsController@getTurnIntentByTurnAndIntent');
             Route::patch('turns/{turn}/turn-intents/{intent}', 'TurnsController@updateTurnIntent');
+            Route::delete('turns/{turn}/turn-intents/{intent}', 'TurnsController@destroyTurnIntent');
 
             Route::get('intents/{intent}', 'IntentsController@show');
             Route::patch('intents/{intent}', 'IntentsController@update');
