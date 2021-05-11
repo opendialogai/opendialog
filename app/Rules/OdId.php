@@ -14,10 +14,12 @@ use OpenDialogAi\Core\Conversation\Scene;
 class OdId implements Rule
 {
     private ?ConversationObject $parent;
+    private ?string $currentUid;
 
-    public function __construct(ConversationObject $parent = null)
+    public function __construct(ConversationObject $parent = null, string $currentUid = null)
     {
         $this->parent = $parent;
+        $this->currentUid = $currentUid;
     }
 
     /**
@@ -29,7 +31,7 @@ class OdId implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->isOdIdUniqueWithinParentScope($value, $this->parent);
+        return $this->isOdIdUniqueWithinParentScope($value, $this->parent, $this->currentUid);
     }
 
     /**
@@ -48,10 +50,14 @@ class OdId implements Rule
      *
      * @param string $odId
      * @param ConversationObject|null $parent If null the od_id represents a scenario
+     * @param string|null $currentUid The current graph ID to ensure we don't check against the currently updating object
      * @return bool
      */
-    private function isOdIdUniqueWithinParentScope(string $odId, ConversationObject $parent = null): bool
-    {
+    private function isOdIdUniqueWithinParentScope(
+        string $odId,
+        ConversationObject $parent = null,
+        string $currentUid = null
+    ): bool {
         $children = new ODObjectCollection();
 
         if (is_null($parent)) {
@@ -73,6 +79,11 @@ class OdId implements Rule
                     $children = $parent->getTurns();
                     break;
             }
+        }
+
+        if ($currentUid) {
+            // Remove the currently updating object so that it doesn't check the od_id against itself
+            $children = $children->filter(fn (ConversationObject $object) => $object->getUid() != $currentUid);
         }
 
         return $children->getObjectsWithId($odId)->isEmpty();
