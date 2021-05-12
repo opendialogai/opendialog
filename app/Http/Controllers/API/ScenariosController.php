@@ -19,9 +19,11 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
+use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
 use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class ScenariosController extends Controller
@@ -49,7 +51,7 @@ class ScenariosController extends Controller
      */
     public function index(): ScenarioResource
     {
-        $scenarios = ConversationDataClient::getAllScenarios(false);
+        $scenarios = ConversationDataClient::getAllScenarios();
         return new ScenarioResource($scenarios);
     }
 
@@ -263,6 +265,13 @@ class ScenariosController extends Controller
         $responseIntent->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::COMPLETING_BEHAVIOR)]));
         $responseIntent->setCreatedAt(Carbon::now());
         $responseIntent->setUpdatedAt(Carbon::now());
+
+        $messageTemplate = new MessageTemplate();
+        $messageTemplate->setName('auto generated');
+        $messageTemplate->setOdId('auto_generated');
+        $messageTemplate->setMessageMarkup((new MessageMarkUpGenerator())->addTextMessage($outgoingSampleUtterance)->getMarkUp());
+
+        $responseIntent->addMessageTemplate($messageTemplate);
 
         $turn->addRequestIntent($requestIntent);
         $turn->addResponseIntent($responseIntent);
