@@ -55,22 +55,7 @@ class IntentsTest extends TestCase
         $fakeTurn->setOdId('new_example_turn_1');
         $fakeTurn->setDescription("An new example turn 1");
 
-        $fakeRequestIntent = new Intent($fakeTurn);
-        $fakeRequestIntent->setUid('0x0005');
-        $fakeRequestIntent->setOdId('welcome_intent_1');
-        $fakeRequestIntent->setName('Welcome intent 1');
-        $fakeRequestIntent->setDescription('A welcome intent 1');
-        $fakeRequestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setInterpreter('interpreter.core.nlp');
-        $fakeRequestIntent->setConditions(new ConditionCollection());
-        $fakeRequestIntent->setBehaviors(new BehaviorsCollection());
-        $fakeRequestIntent->setSpeaker(Intent::USER);
-        $fakeRequestIntent->setConfidence(1.0);
-        $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null, null, null));
-        $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
-        $fakeRequestIntent->setSampleUtterance('Hello!');
+        $fakeRequestIntent = $this->createIntent($fakeTurn, '0x0005', 'welcome_intent_1', Intent::USER);
 
         $fakeResponseIntent = new Intent($fakeTurn);
         $fakeResponseIntent->setUid('0x0006');
@@ -160,22 +145,7 @@ class IntentsTest extends TestCase
         $fakeTurn->setOdId('new_example_turn_1');
         $fakeTurn->setDescription("An new example turn 1");
 
-        $fakeRequestIntent = new Intent($fakeTurn);
-        $fakeRequestIntent->setUid('0x0005');
-        $fakeRequestIntent->setOdId('welcome_intent_1');
-        $fakeRequestIntent->setName('Welcome intent 1');
-        $fakeRequestIntent->setDescription('A welcome intent 1');
-        $fakeRequestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setInterpreter('interpreter.core.nlp');
-        $fakeRequestIntent->setConditions(new ConditionCollection());
-        $fakeRequestIntent->setBehaviors(new BehaviorsCollection());
-        $fakeRequestIntent->setSpeaker(Intent::USER);
-        $fakeRequestIntent->setConfidence(1.0);
-        $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null, null, null));
-        $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
-        $fakeRequestIntent->setSampleUtterance('Hello!');
+        $fakeRequestIntent = $this->createIntent($fakeTurn, '0x0005', 'welcome_intent_1', Intent::USER);
 
         ConversationDataClient::shouldReceive('getTurnByUid')
             ->once()
@@ -322,23 +292,7 @@ class IntentsTest extends TestCase
         $fakeTurn->setOdId('new_example_turn_1');
         $fakeTurn->setDescription("An new example turn 1");
 
-        $fakeRequestIntent = new Intent($fakeTurn);
-        $fakeRequestIntent->setUid('0x0005');
-        $fakeRequestIntent->setOdId('welcome_intent_1');
-        $fakeRequestIntent->setName('Welcome intent 1');
-        $fakeRequestIntent->setDescription('A welcome intent 1');
-        $fakeRequestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setInterpreter('interpreter.core.nlp');
-        $fakeRequestIntent->setConditions(new ConditionCollection());
-        $fakeRequestIntent->setBehaviors(new BehaviorsCollection());
-        $fakeRequestIntent->setSpeaker(Intent::USER);
-        $fakeRequestIntent->setConfidence(1.0);
-        $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null, null, null));
-        $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
-        $fakeRequestIntent->setSampleUtterance('Hello!');
-
+        $fakeRequestIntent = $this->createIntent($fakeTurn, '0x0005', 'welcome_intent_1', Intent::USER);
 
         $fakeTurnWithFakeRequestIntent = $fakeTurn;
         $fakeTurnWithFakeRequestIntent->addRequestIntent($fakeRequestIntent);
@@ -392,38 +346,13 @@ $fakeRequestIntent->getUid())
         $fakeTurn->setOdId('new_example_turn_1');
         $fakeTurn->setDescription("An new example turn 1");
 
-        $fakeRequestIntent = new Intent($fakeTurn);
-        $fakeRequestIntent->setUid('0x0005');
-        $fakeRequestIntent->setOdId('welcome_intent_1');
-        $fakeRequestIntent->setName('Welcome intent 1');
-        $fakeRequestIntent->setDescription('A welcome intent 1');
-        $fakeRequestIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeRequestIntent->setInterpreter('interpreter.core.nlp');
-        $fakeRequestIntent->setConditions(new ConditionCollection());
-        $fakeRequestIntent->setBehaviors(new BehaviorsCollection());
-        $fakeRequestIntent->setSpeaker(Intent::USER);
-        $fakeRequestIntent->setConfidence(1.0);
-        $fakeRequestIntent->setListensFor(['intent_a', 'intent_b']);
-        $fakeRequestIntent->setTransition(new Transition(null, null, null));
-        $fakeRequestIntent->setVirtualIntents(new VirtualIntentCollection());
-        $fakeRequestIntent->setSampleUtterance('Hello!');
+        $fakeRequestIntent = $this->createIntent($fakeTurn, '0x0005', 'welcome_intent_1', Intent::USER);
 
-        $fakeUpdatedResponseIntent = new Intent($fakeTurn);
-        $fakeUpdatedResponseIntent->setUid('0x0005');
+        $fakeUpdatedResponseIntent = clone($fakeRequestIntent);
         $fakeUpdatedResponseIntent->setOdId('welcome_intent_updated');
         $fakeUpdatedResponseIntent->setName('Welcome intent 1 Updated');
         $fakeUpdatedResponseIntent->setDescription('A welcome intent updated');
-        $fakeUpdatedResponseIntent->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeUpdatedResponseIntent->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeUpdatedResponseIntent->setInterpreter('interpreter.core.nlp');
-        $fakeUpdatedResponseIntent->setConditions(new ConditionCollection());
-        $fakeUpdatedResponseIntent->setBehaviors(new BehaviorsCollection());
-        $fakeUpdatedResponseIntent->setSpeaker(Intent::USER);
-        $fakeUpdatedResponseIntent->setConfidence(1.0);
         $fakeUpdatedResponseIntent->setListensFor(['intent_a_updated', 'intent_b']);
-        $fakeUpdatedResponseIntent->setTransition(new Transition(null, null, null));
-        $fakeUpdatedResponseIntent->setVirtualIntents(new VirtualIntentCollection());
         $fakeUpdatedResponseIntent->setSampleUtterance('Hello Updated!');
 
         $fakeUpdatedTurn = $fakeTurn;
