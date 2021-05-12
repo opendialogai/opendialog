@@ -30,7 +30,9 @@ class ConversationRequest extends FormRequest
         /** @var ConversationObject $parent */
         $parent = $this->route('scenario');
 
-        return $this->odIdRule($parent) + [
+        $currentUid = $this->get('uid');
+
+        return $this->odIdRule($parent, $currentUid) + [
             'uid' => 'string',
             'name' => 'string'
         ];

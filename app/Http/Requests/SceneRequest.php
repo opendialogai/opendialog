@@ -30,7 +30,9 @@ class SceneRequest extends FormRequest
         /** @var ConversationObject $parent */
         $parent = $this->route('conversation');
 
-        return $this->odIdRule($parent) + [
+        $currentUid = $this->get('id');
+
+        return $this->odIdRule($parent, $currentUid) + [
             'id' => 'string',
             'name' => 'string',
             'description' => 'string',

@@ -25,8 +25,12 @@ class FocusedIntentResource extends JsonResource
             Intent::NAME,
             Intent::DESCRIPTION,
             Intent::INTERPRETER,
-            Intent::BEHAVIORS,
-            Intent::CONDITIONS,
+            Intent::BEHAVIORS => [],
+            Intent::CONDITIONS => [
+                Condition::OPERATION,
+                Condition::OPERATION_ATTRIBUTES,
+                Condition::PARAMETERS
+            ],
             Intent::CREATED_AT,
             Intent::UPDATED_AT,
             Intent::SPEAKER,
@@ -36,7 +40,7 @@ class FocusedIntentResource extends JsonResource
             Intent::EXPECTED_ATTRIBUTES,
             Intent::TRANSITION,
             Intent::VIRTUAL_INTENTS,
-            Intent::ACTIONS,
+            Intent::ACTIONS => Action::FIELDS,
             Intent::TURN => [
                 Turn::UID,
                 Turn::OD_ID,
@@ -123,17 +127,7 @@ class FocusedIntentResource extends JsonResource
 
         unset($normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['scene']);
 
-        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['id'] =
-            $normalizedIntent['id'];
-        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['od_id'] =
-            $normalizedIntent['od_id'];
-        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['name'] =
-            $normalizedIntent['name'];
-        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['description'] =
-            $normalizedIntent['description'];
-        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent']['sample_utterance'] =
-            $normalizedIntent['sample_utterance'];
-
+        $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['focusedIntent'] = $normalizedIntent;
         $intentsArray = $normalizedIntentToReturn['scenario']['conversation']['scene']['turn']['intents'];
 
         $order = "";
