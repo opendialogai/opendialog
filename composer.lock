@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efd80e41ded7fcf689822aa420d9367d",
+    "content-hash": "33082f0e91375db227fec1e4cc423184",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3232,16 +3232,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/OPNDLG-647_message_data_client",
+            "version": "dev-feature/OPNDLG-650_response_conversation_engine_updates",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "401f3bf31fe0512428ff8711f246c3d91cc84003"
+                "reference": "90762c7b9150029b4986c6d1d124c3d2cf5f69c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/401f3bf31fe0512428ff8711f246c3d91cc84003",
-                "reference": "401f3bf31fe0512428ff8711f246c3d91cc84003",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/90762c7b9150029b4986c6d1d124c3d2cf5f69c7",
+                "reference": "90762c7b9150029b4986c6d1d124c3d2cf5f69c7",
                 "shasum": ""
             },
             "require": {
@@ -3320,9 +3320,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-647_message_data_client"
+                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-650_response_conversation_engine_updates"
             },
-            "time": "2021-05-12T10:25:49+00:00"
+            "time": "2021-05-12T16:46:14+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
