@@ -139,7 +139,7 @@ class ScenariosController extends Controller
             'intent.core.welcome',
             'Hello from user',
             $welcomeOutgoingIntentId,
-            'Hello from bot'
+            "Hi! This is the default welcome message for the $scenarioName Scenario."
         );
 
         $noMatchConversation = $this->createAtomicCallbackConversation(
