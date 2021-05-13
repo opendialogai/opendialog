@@ -55,7 +55,8 @@
                                         "conversation": null,
                                         "scene": null,
                                         "turn": null
-                                    }
+                                    },
+                                    "message_templates": []
                                 }
                             ],
                             "response_intents": [
@@ -77,7 +78,18 @@
                                         "conversation": "$path:example_scenario/example_conversation",
                                         "scene": "$path:example_scenario/example_conversation/example_scene",
                                         "turn": null
-                                    }
+                                    },
+                                    "message_templates": [
+                                        {
+                                            "name": "message template",
+                                            "od_id": "message_template",
+                                            "message_markup": "message markup",
+                                            "description": "description",
+                                            "interpreter": "",
+                                            "conditions": [],
+                                            "behaviors": []
+                                        }
+                                    ]
                                 }
                             ]
                         }
