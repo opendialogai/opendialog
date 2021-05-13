@@ -4,40 +4,53 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ComponentConfigurationRequest;
+use App\Http\Resources\ComponentConfigurationCollection;
+use App\Http\Resources\ComponentConfigurationResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
+use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
 
 class ComponentConfigurationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return ComponentConfigurationCollection|Response
      */
-    public function index(): Response
+    public function index()
     {
-        //
+        return new ComponentConfigurationCollection(ComponentConfiguration::paginate(50));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param ComponentConfigurationRequest $request
-     * @return Response
+     * @return ComponentConfigurationResource|Response
      */
-    public function store(ComponentConfigurationRequest $request): Response
+    public function store(ComponentConfigurationRequest $request)
     {
-        //
+        $configuration = ComponentConfiguration::create($request->all());
+
+        return new ComponentConfigurationResource($configuration);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return ComponentConfigurationResource|Response
      */
-    public function show(int $id): Response
+    public function show(int $id)
     {
-        //
+        try {
+            /** @var ComponentConfiguration $configuration */
+            $configuration = ComponentConfiguration::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response(null, 404);
+        }
+
+        return new ComponentConfigurationResource($configuration);
     }
 
     /**
@@ -47,9 +60,19 @@ class ComponentConfigurationController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(ComponentConfigurationRequest $request, int $id): Response
+    public function update(ComponentConfigurationRequest $request, int $id)
     {
-        //
+        try {
+            /** @var ComponentConfiguration $configuration */
+            $configuration = ComponentConfiguration::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response(null, 404);
+        }
+
+        $configuration->fill($request->all());
+        $configuration->save();
+
+        return response()->noContent();
     }
 
     /**
@@ -60,6 +83,15 @@ class ComponentConfigurationController extends Controller
      */
     public function destroy(int $id): Response
     {
-        //
+        try {
+            /** @var ComponentConfiguration $configuration */
+            $configuration = ComponentConfiguration::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response(null, 404);
+        }
+
+        $configuration->delete();
+
+        return response()->noContent();
     }
 }

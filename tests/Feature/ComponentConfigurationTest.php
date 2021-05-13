@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\User;
-use OpenDialogAi\AttributeEngine\DynamicAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
 use OpenDialogAi\Core\InterpreterEngine\Luis\LuisInterpreterConfiguration;
 use Tests\TestCase;
@@ -94,9 +93,9 @@ class ComponentConfigurationTest extends TestCase
         /** @var ComponentConfiguration $updatedConfiguration */
         $updatedConfiguration = ComponentConfiguration::find($configuration->id);
 
-        $this->assertEquals($updatedConfiguration->name, $data['name']);
-        $this->assertEquals($updatedConfiguration->componentId, $data['component_id']);
-        $this->assertEquals($updatedConfiguration->configuration, $data['configuration']);
+        $this->assertEquals($data['name'], $updatedConfiguration->name);
+        $this->assertEquals($data['component_id'], $updatedConfiguration->component_id);
+        $this->assertEquals($data['configuration'], $updatedConfiguration->configuration);
     }
 
     public function testUpdateDuplicateName()
@@ -105,7 +104,7 @@ class ComponentConfigurationTest extends TestCase
         $a = factory(ComponentConfiguration::class)->create();
 
         /** @var ComponentConfiguration $b */
-        $a = factory(ComponentConfiguration::class)->create();
+        $b = factory(ComponentConfiguration::class)->create();
 
         $data = [
             'name' => $b->name
@@ -113,16 +112,15 @@ class ComponentConfigurationTest extends TestCase
 
         $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/component-configuration/'.$a->id, $data)
-            ->assertStatus(400)
-            ->assertJsonFragment([
-                'field' => 'name',
-            ]);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name']);
     }
 
     public function testStoreValidData()
     {
+        $name = 'My New Name';
         $data = [
-            'name' => 'My New Name',
+            'name' => $name,
             'component_id' => self::COMPONENT_ID,
             'configuration' => self::CONFIGURATION,
         ];
@@ -132,7 +130,7 @@ class ComponentConfigurationTest extends TestCase
             ->assertStatus(201)
             ->assertJsonFragment($data);
 
-        $this->assertDatabaseHas('dynamic_attributes', $data);
+        $this->assertDatabaseHas('component_configurations', ['name' => $name]);
     }
 
     public function testStoreInvalidComponentId()
@@ -145,10 +143,8 @@ class ComponentConfigurationTest extends TestCase
 
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/component-configuration/', $data)
-            ->assertStatus(400)
-            ->assertJson([
-                'field' => 'component_id',
-            ]);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['component_id']);
     }
 
     public function testStoreInvalidConfiguration()
@@ -166,10 +162,8 @@ class ComponentConfigurationTest extends TestCase
 
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/component-configuration/', $data)
-            ->assertStatus(400)
-            ->assertJson([
-                'field' => 'configuration',
-            ]);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['configuration']);
     }
 
     public function testDestroy()
@@ -181,6 +175,6 @@ class ComponentConfigurationTest extends TestCase
             ->json('DELETE', '/admin/api/component-configuration/'.$configuration->id)
             ->assertStatus(204);
 
-        $this->assertEquals(null, DynamicAttribute::find($configuration->id));
+        $this->assertEquals(null, ComponentConfiguration::find($configuration->id));
     }
 }

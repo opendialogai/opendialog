@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ComponentConfigurationRule;
+use App\Rules\ComponentRegistrationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ComponentConfigurationRequest extends FormRequest
 {
@@ -24,7 +27,28 @@ class ComponentConfigurationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'sometimes',
+                'bail',
+                'string',
+                'filled',
+                'unique:component_configurations,name'
+            ],
+            'component_id' => [
+                'sometimes',
+                'bail',
+                Rule::requiredIf(!is_null($this->get('configuration'))),
+                'string',
+                'filled',
+                new ComponentRegistrationRule
+            ],
+            'configuration' => [
+                'sometimes',
+                'bail',
+                Rule::requiredIf(!is_null($this->get('component_id'))),
+                'array',
+                new ComponentConfigurationRule($this->get('component_id', ''))
+            ],
         ];
     }
 }
