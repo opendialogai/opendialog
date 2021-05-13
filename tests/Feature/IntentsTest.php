@@ -9,6 +9,7 @@ use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\MessageTemplateDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Transition;
@@ -239,6 +240,10 @@ class IntentsTest extends TestCase
             ->withAnyArgs()
             ->andReturn($fakeResponseIntent);
 
+        MessageTemplateDataClient::shouldReceive('addMessageTemplateToIntent')
+            ->once()
+            ->withAnyArgs();
+
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid() . '/intents', [
                 "order" => "RESPONSE",
@@ -275,13 +280,6 @@ class IntentsTest extends TestCase
                     "sample_utterance" => "Bye!"
                 ]
             ]);
-
-        // Ensure that an outgoing intent and message template have not been created
-        $this->assertDatabaseHas('outgoing_intents', ['name' => 'Goodbye intent 1']);
-        $this->assertCount(1, OutgoingIntent::all());
-
-        $this->assertDatabaseHas('message_templates', ['name' => 'Goodbye intent 1']);
-        $this->assertCount(1, MessageTemplate::all());
     }
 
     public function testGetTurnIntentByTurnAndIntentUid()
