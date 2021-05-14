@@ -9,6 +9,8 @@ use Illuminate\Validation\Rule;
 
 class ComponentConfigurationRequest extends FormRequest
 {
+    protected $stopOnFirstFailure = true;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,29 +30,26 @@ class ComponentConfigurationRequest extends FormRequest
     {
         return [
             'name' => [
-                'sometimes',
+                Rule::requiredIf($this->method() == 'POST'),
                 'bail',
                 'string',
                 'filled',
                 'unique:component_configurations,name'
             ],
             'component_id' => [
-                'sometimes',
                 'bail',
-                Rule::requiredIf(!is_null($this->get('configuration'))),
+                Rule::requiredIf($this->method() == 'POST' || !is_null($this->get('configuration'))),
                 'string',
                 'filled',
                 new ComponentRegistrationRule
             ],
             'configuration' => [
-                'sometimes',
                 'bail',
-                Rule::requiredIf(!is_null($this->get('component_id'))),
+                Rule::requiredIf($this->method() == 'POST' || !is_null($this->get('component_id'))),
                 'array',
                 new ComponentConfigurationRule($this->get('component_id', ''))
             ],
             'active' => [
-                'sometimes',
                 'bail',
                 'boolean',
             ]

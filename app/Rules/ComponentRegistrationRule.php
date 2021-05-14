@@ -26,6 +26,6 @@ class ComponentRegistrationRule implements Rule
      */
     public function message()
     {
-        return ':value is not a registered component.';
+        return ':input is not a registered component.';
     }
 }

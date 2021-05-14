@@ -3,8 +3,13 @@
 namespace Tests\Feature;
 
 use App\User;
+use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
+use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\InterpreterEngine\Luis\LuisInterpreterConfiguration;
+use OpenDialogAi\InterpreterEngine\Facades\InterpreterService;
+use OpenDialogAi\InterpreterEngine\Interpreters\CallbackInterpreter;
 use Tests\TestCase;
 
 class ComponentConfigurationTest extends TestCase
@@ -82,8 +87,6 @@ class ComponentConfigurationTest extends TestCase
 
         $data = [
             'name' => 'My New Name',
-            'component_id' => self::COMPONENT_ID,
-            'configuration' => self::CONFIGURATION,
         ];
 
         $this->actingAs($this->user, 'api')
@@ -94,8 +97,8 @@ class ComponentConfigurationTest extends TestCase
         $updatedConfiguration = ComponentConfiguration::find($configuration->id);
 
         $this->assertEquals($data['name'], $updatedConfiguration->name);
-        $this->assertEquals($data['component_id'], $updatedConfiguration->component_id);
-        $this->assertEquals($data['configuration'], $updatedConfiguration->configuration);
+        $this->assertEquals(self::COMPONENT_ID, $updatedConfiguration->component_id);
+        $this->assertEquals(self::CONFIGURATION, $updatedConfiguration->configuration);
     }
 
     public function testUpdateDuplicateName()
@@ -147,6 +150,19 @@ class ComponentConfigurationTest extends TestCase
             ->assertJsonValidationErrors(['component_id']);
     }
 
+    public function testStoreMissingName()
+    {
+        $data = [
+            'component_id' => self::COMPONENT_ID,
+            'configuration' => self::CONFIGURATION,
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configuration/', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name']);
+    }
+
     public function testStoreInvalidConfiguration()
     {
         // LUIS interpreter requires three fields in its configuration (app_url, app_id, subscription_key)
@@ -176,5 +192,76 @@ class ComponentConfigurationTest extends TestCase
             ->assertStatus(204);
 
         $this->assertEquals(null, ComponentConfiguration::find($configuration->id));
+    }
+
+    public function testTestConfigurationSuccess()
+    {
+        $data = [
+            'name' => 'My New Name',
+            'component_id' => self::COMPONENT_ID,
+            'configuration' => self::CONFIGURATION,
+        ];
+
+        InterpreterService::shouldReceive('getInterpreter')
+            ->twice()
+            ->andReturn(new class extends CallbackInterpreter {
+                public function interpret(UtteranceAttribute $utterance): IntentCollection
+                {
+                    $intent = new Intent();
+                    $intent->setOdId('test');
+                    $intent->setConfidence(1);
+
+                    return new IntentCollection([$intent]);
+                }
+            });
+
+        // For request validation
+        InterpreterService::shouldReceive('isInterpreterAvailable')
+            ->once()
+            ->andReturn(true);
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configurations/test', $data)
+            ->assertStatus(200);
+    }
+
+    public function testTestConfigurationFailureInvalidData()
+    {
+        $data = [
+            'name' => 'My New Name',
+            'configuration' => self::CONFIGURATION,
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configurations/test', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['component_id']);
+    }
+
+    public function testTestConfigurationFailureNoResponseFromProvider()
+    {
+        $data = [
+            'name' => 'My New Name',
+            'component_id' => self::COMPONENT_ID,
+            'configuration' => self::CONFIGURATION,
+        ];
+
+        InterpreterService::shouldReceive('getInterpreter')
+            ->twice()
+            ->andReturn(new class extends CallbackInterpreter {
+                public function interpret(UtteranceAttribute $utterance): IntentCollection
+                {
+                    return new IntentCollection();
+                }
+            });
+
+        // For request validation
+        InterpreterService::shouldReceive('isInterpreterAvailable')
+            ->once()
+            ->andReturn(true);
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configurations/test', $data)
+            ->assertStatus(400);
     }
 }

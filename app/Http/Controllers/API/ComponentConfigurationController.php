@@ -8,7 +8,9 @@ use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
+use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
+use OpenDialogAi\InterpreterEngine\Facades\InterpreterService;
 
 class ComponentConfigurationController extends Controller
 {
@@ -93,5 +95,26 @@ class ComponentConfigurationController extends Controller
         $configuration->delete();
 
         return response()->noContent();
+    }
+
+    /**
+     * Allows for testing of a configuration without persisting it
+     *
+     * @param ComponentConfigurationRequest $request
+     * @return Response
+     */
+    public function test(ComponentConfigurationRequest $request): Response
+    {
+        // todo: with configuration
+        $interpreter = InterpreterService::getInterpreter($request->get('component_id'));
+
+        $utterance = new UtteranceAttribute('configuration_test');
+        $utterance->setText("Hello from OpenDialog");
+        $utterance->setCallbackId("test");
+
+        $intents = $interpreter->interpret($utterance);
+
+        $status = $intents->isEmpty() ? 400 : 200;
+        return response(null, $status);
     }
 }
