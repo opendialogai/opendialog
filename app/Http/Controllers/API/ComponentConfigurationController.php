@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ComponentConfigurationRequest;
+use App\Http\Requests\ComponentConfigurationTestRequest;
 use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -103,7 +104,7 @@ class ComponentConfigurationController extends Controller
      * @param ComponentConfigurationRequest $request
      * @return Response
      */
-    public function test(ComponentConfigurationRequest $request): Response
+    public function test(ComponentConfigurationTestRequest $request): Response
     {
         // todo: with configuration
         $interpreter = InterpreterService::getInterpreter($request->get('component_id'));
