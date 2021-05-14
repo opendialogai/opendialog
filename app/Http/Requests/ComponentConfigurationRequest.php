@@ -49,6 +49,11 @@ class ComponentConfigurationRequest extends FormRequest
                 'array',
                 new ComponentConfigurationRule($this->get('component_id', ''))
             ],
+            'active' => [
+                'sometimes',
+                'bail',
+                'boolean',
+            ]
         ];
     }
 }
