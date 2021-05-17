@@ -120,7 +120,7 @@ class MessageGraphTemplateTest extends TestCase
         $messageTemplate = new MessageTemplate();
         $messageTemplate->setOdId('od_id');
         $messageTemplate->setName('name');
-        $messageTemplate->setMessageMarkup('<message></message>');
+        $messageTemplate->setMessageMarkup('<text-message>hello</text-message>');
 
         $createdMessageTemplate = clone($messageTemplate);
         $createdMessageTemplate->setUid('0x00002');
@@ -137,14 +137,14 @@ class MessageGraphTemplateTest extends TestCase
             ->json('POST', '/admin/api/conversation-builder/intents/0x00001/message-templates', [
                 'od_id' => 'od_id',
                 'name' => 'name',
-                'message_markup' => '<message></message>'
+                'message_markup' => '<message><text-message>hello</text-message></message>'
             ])
             ->assertStatus(200)
             ->assertJsonFragment([
                'id' => $createdMessageTemplate->getUid(),
                'od_id' => 'od_id',
                'name' => 'name',
-                'message_markup' => '<message></message>'
+                'message_markup' => '<text-message>hello</text-message>'
             ]);
     }
 
