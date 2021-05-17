@@ -152,7 +152,7 @@ class MessageGraphTemplateTest extends TestCase
     {
         $intent = $this->createIntent(new Turn(), '0x00001', 'test_id', Intent::USER);
         ConversationDataClient::shouldReceive('getIntentByUid')
-            ->times(3)
+            ->times(4)
             ->with('0x00001', false)
             ->andReturn($intent);
 
@@ -173,5 +173,10 @@ class MessageGraphTemplateTest extends TestCase
             ->json('POST', '/admin/api/conversation-builder/intents/0x00001/message-templates', [
                 'message_markup' => '<message><text-message/></message>'
             ])->assertStatus(422);
+
+        // post without any message mark up should fail
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/intents/0x00001/message-templates', [])
+            ->assertStatus(422);
     }
 }

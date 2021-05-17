@@ -4,6 +4,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use OpenDialogAi\ResponseEngine\Rules\MessageXML;
 
 class MessageTemplateRequest extends FormRequest
@@ -33,7 +34,10 @@ class MessageTemplateRequest extends FormRequest
             'description' => 'string',
             'behaviors' => 'array',
             'conditions' => 'array',
-            'message_markup' => [new MessageXML()]
+            'message_markup' => [
+                Rule::requiredIf($this->method() === 'POST'),
+                new MessageXML()
+            ]
         ];
     }
 }
