@@ -120,7 +120,7 @@ class MessageGraphTemplateTest extends TestCase
         $messageTemplate = new MessageTemplate();
         $messageTemplate->setOdId('od_id');
         $messageTemplate->setName('name');
-        $messageTemplate->setMessageMarkup('xml');
+        $messageTemplate->setMessageMarkup('<message></message>');
 
         $createdMessageTemplate = clone($messageTemplate);
         $createdMessageTemplate->setUid('0x00002');
@@ -137,14 +137,41 @@ class MessageGraphTemplateTest extends TestCase
             ->json('POST', '/admin/api/conversation-builder/intents/0x00001/message-templates', [
                 'od_id' => 'od_id',
                 'name' => 'name',
-                'message_markup' => 'xml'
+                'message_markup' => '<message></message>'
             ])
             ->assertStatus(200)
             ->assertJsonFragment([
                'id' => $createdMessageTemplate->getUid(),
                'od_id' => 'od_id',
                'name' => 'name',
-                'message_markup' => 'xml'
+                'message_markup' => '<message></message>'
             ]);
+    }
+
+    public function testMessageValidation()
+    {
+        $intent = $this->createIntent(new Turn(), '0x00001', 'test_id', Intent::USER);
+        ConversationDataClient::shouldReceive('getIntentByUid')
+            ->times(3)
+            ->with('0x00001', false)
+            ->andReturn($intent);
+
+        MessageTemplateDataClient::shouldReceive('addMessageTemplateToIntent')
+            ->never();
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/intents/0x00001/message-templates', [
+                'message_markup' => '<message>njlsdfkjds</message>'
+            ])->assertStatus(422);
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/intents/0x00001/message-templates', [
+                'message_markup' => '<message><madeup>this is a made up message type</madeup></message>'
+            ])->assertStatus(422);
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/intents/0x00001/message-templates', [
+                'message_markup' => '<message><text-message/></message>'
+            ])->assertStatus(422);
     }
 }
