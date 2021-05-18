@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Console\Facades\ImportExportSerializer;
 use App\ImportExportHelpers\ScenarioImportExportHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Adapter\AbstractAdapter;
@@ -15,10 +14,10 @@ use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
 use OpenDialogAi\Core\Conversation\Scene;
@@ -336,6 +335,14 @@ class ImportExportScenariosTest extends TestCase
         $responseIntent->setSampleUtterance("Example sample utterance");
         $responseIntent->setConfidence(1);
         $responseIntent->setSpeaker(Intent::APP);
+
+        $messageTemplate = new MessageTemplate();
+        $messageTemplate->setName('message template');
+        $messageTemplate->setOdId('message_template');
+        $messageTemplate->setMessageMarkup('message markup');
+        $messageTemplate->setDescription("description");
+
+        $responseIntent->addMessageTemplate($messageTemplate);
 
         $turn->addResponseIntent($responseIntent);
 
@@ -664,8 +671,8 @@ class ImportExportScenariosTest extends TestCase
             $this->assertArrayHasKey($filePath, $previousScenarioFileData);
             $previousData = $previousScenarioFileData[$filePath];
             $this->assertEquals(
-                ImportExportSerializer::decode($currentData, 'json'),
-                ImportExportSerializer::decode($previousData, 'json')
+                ImportExportSerializer::decode($previousData, 'json'),
+                ImportExportSerializer::decode($currentData, 'json')
             );
         }
     }

@@ -227,8 +227,8 @@ class ScenariosTest extends TestCase
                 'conversations' => [['id' => $fakeConversationCreated->getUid()]]
             ]);
 
-        $this->assertCount(2, OutgoingIntent::all());
-        $this->assertCount(2, MessageTemplate::all());
+        $this->assertCount(0, OutgoingIntent::all());
+        $this->assertCount(0, MessageTemplate::all());
     }
 
     public function testUpdateScenarioNotFound()
