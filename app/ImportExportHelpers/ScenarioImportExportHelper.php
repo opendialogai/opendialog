@@ -116,7 +116,7 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
         /* @var $importingScenario Scenario */
         $importingScenario = ImportExportSerializer::deserialize($data, Scenario::class, 'json', $serializerContext);
 
-        $existingScenarios = ConversationDataClient::getAllScenarios(false);
+        $existingScenarios = ConversationDataClient::getAllScenarios();
 
         $duplicateScenarios = $existingScenarios->filter(
             fn ($scenario) => $scenario->getOdId() === $importingScenario->getOdId()

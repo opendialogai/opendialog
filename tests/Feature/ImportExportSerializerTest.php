@@ -526,7 +526,8 @@ class ImportExportSerializerTest extends TestCase
                                             'listens_for' => [],
                                             'expected_attributes' => [],
                                             'virtual_intents' => [],
-                                            'actions' => []
+                                            'actions' => [],
+                                            'message_templates' => []
                                         ]
                                     ],
                                     'response_intents' => []
@@ -606,7 +607,8 @@ class ImportExportSerializerTest extends TestCase
                                                     "intent_id" => "test_intent_b"
                                                 ]
                                             ],
-                                            "actions" => []
+                                            "actions" => [],
+                                            "message_templates" => []
                                         ]
                                     ],
                                     "response_intents" => [
@@ -623,7 +625,8 @@ class ImportExportSerializerTest extends TestCase
                                             "listens_for" => [],
                                             "expected_attributes" => [],
                                             "virtual_intents" => [],
-                                            "actions" => []
+                                            "actions" => [],
+                                            "message_templates" => []
                                         ]
                                     ]
                                 ],
@@ -649,7 +652,8 @@ class ImportExportSerializerTest extends TestCase
                                             "listens_for" => [],
                                             "expected_attributes" => [],
                                             "virtual_intents" => [],
-                                            "actions" => []
+                                            "actions" => [],
+                                            'message_templates' => []
                                         ]
                                     ],
                                     "response_intents" => []
@@ -687,7 +691,8 @@ class ImportExportSerializerTest extends TestCase
                                             "listens_for" => [],
                                             "expected_attributes" => [],
                                             "virtual_intents" => [],
-                                            "actions" => []
+                                            "actions" => [],
+                                            'message_templates' => []
                                         ]
                                     ]
                                 ]
