@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Turn;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -27,8 +28,18 @@ class TurnResource extends JsonResource
             Turn::VALID_ORIGINS,
             Turn::BEHAVIORS => Behavior::FIELDS,
             Turn::CONDITIONS => Condition::FIELDS,
-            Turn::REQUEST_INTENTS => [Intent::UID],
-            Turn::RESPONSE_INTENTS => [Intent::UID],
+            Turn::REQUEST_INTENTS => [
+                Intent::UID,
+                Intent::NAME,
+                Intent::SAMPLE_UTTERANCE,
+                Intent::SPEAKER
+            ],
+            Turn::RESPONSE_INTENTS => [
+                Intent::UID,
+                Intent::NAME,
+                Intent::SAMPLE_UTTERANCE,
+                Intent::SPEAKER,
+            ],
         ]
     ];
 
