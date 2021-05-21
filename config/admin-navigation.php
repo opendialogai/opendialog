@@ -15,37 +15,15 @@ return [
                     'icon' => 'filter-descending'
                 ],
                 [
-                    'title' => 'Message Editor',
-                    'url' => '/admin/outgoing-intents',
-                    'icon' => 'message'
+                    'title' => 'Interpreters - NLU',
+                    'url' => '/admin/interpreters',
+                    'icon' => 'pattern'
                 ],
                 [
                     'title' => 'Interface settings',
                     'url' => '/admin/webchat-setting',
                     'icon' => 'settings-sliders'
                 ],
-                [
-                    'title' => 'Dynamic Attributes',
-                    'url' => '/admin/dynamic-attributes',
-                    'icon' => 'apps'
-                ],
-            ],
-            [
-                [
-                    'title' => 'Chatbot Users',
-                    'url' => '/admin/chatbot-users',
-                    'icon' => 'profile'
-                ],
-                [
-                    'title' => 'Requests',
-                    'url' => '/admin/requests',
-                    'icon' => 'download'
-                ],
-                [
-                    'title' => 'Warnings',
-                    'url' => '/admin/warnings',
-                    'icon' => 'notification-waiting'
-                ]
             ],
             [
                 [
