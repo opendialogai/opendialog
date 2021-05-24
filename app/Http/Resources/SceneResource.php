@@ -7,6 +7,7 @@ use App\Http\Facades\Serializer;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\Condition;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -27,7 +28,22 @@ class SceneResource extends JsonResource
             Scene::BEHAVIORS => Behavior::FIELDS,
             Scene::CONDITIONS => Condition::FIELDS,
             Scene::TURNS => [
-                Turn::UID
+                Turn::UID,
+                Turn::OD_ID,
+                Turn::NAME,
+                Turn::DESCRIPTION,
+                Turn::REQUEST_INTENTS => [
+                    Intent::UID,
+                    Intent::NAME,
+                    Intent::SAMPLE_UTTERANCE,
+                    Intent::SPEAKER
+                ],
+                Turn::RESPONSE_INTENTS => [
+                    Intent::UID,
+                    Intent::NAME,
+                    Intent::SAMPLE_UTTERANCE,
+                    Intent::SPEAKER,
+                ],
             ]
         ]
     ];
