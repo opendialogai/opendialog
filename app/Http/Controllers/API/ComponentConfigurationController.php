@@ -10,7 +10,7 @@ use App\Http\Resources\ComponentConfigurationResource;
 use Illuminate\Http\Response;
 use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
-use OpenDialogAi\InterpreterEngine\Facades\InterpreterService;
+use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationController extends Controller
 {
@@ -84,13 +84,13 @@ class ComponentConfigurationController extends Controller
      */
     public function test(ComponentConfigurationTestRequest $request): Response
     {
-        // todo: with configuration
-        $interpreter = InterpreterService::getInterpreter($request->get('component_id'));
+        $interpreterClass = resolve(InterpreterComponentServiceInterface::class)->get($request->get('component_id'));
 
         $utterance = new UtteranceAttribute('configuration_test');
         $utterance->setText("Hello from OpenDialog");
         $utterance->setCallbackId("test");
 
+        $interpreter = new $interpreterClass($interpreterClass::createConfiguration('test', $request->get('configuration')));
         $intents = $interpreter->interpret($utterance);
 
         $status = $intents->isEmpty() ? 400 : 200;

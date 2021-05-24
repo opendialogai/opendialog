@@ -12,6 +12,7 @@ use App\Http\Resources\ScenarioResource;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use OpenDialogAi\Core\Console\Commands\CreateCoreConfigurations;
 use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\Condition;
@@ -98,6 +99,10 @@ class ScenariosController extends Controller
     {
         /** @var Scenario $newScenario */
         $newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
+
+        if ($newScenario->getInterpreter() === "") {
+            $newScenario->setInterpreter(CreateCoreConfigurations::DEFAULT_CALLBACK);
+        }
 
         $persistedScenario = $this->createDefaultConversations($newScenario);
 
@@ -231,7 +236,7 @@ class ScenariosController extends Controller
         $requestIntent->setOdId($incomingIntentId);
         $requestIntent->setDescription('Automatically generated');
         $requestIntent->setSampleUtterance($incomingSampleUtterance);
-        $requestIntent->setInterpreter('interpreter.core.callbackInterpreter');
+        $requestIntent->setInterpreter(CreateCoreConfigurations::DEFAULT_CALLBACK);
         $requestIntent->setConfidence(1);
         $requestIntent->setCreatedAt(Carbon::now());
         $requestIntent->setUpdatedAt(Carbon::now());

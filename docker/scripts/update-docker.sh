@@ -14,5 +14,8 @@ php artisan schema:init --yes
 echo "Creating admin user"
 php artisan admin_user:create
 
+echo "Creating default component configurations"
+php artisan configurations:create
+
 echo "Ensuring log directory is writable..."
 chmod -R 777 /var/www/storage/logs

@@ -3,7 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use OpenDialogAi\InterpreterEngine\Facades\InterpreterService;
+use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentRegistrationRule implements Rule
 {
@@ -16,7 +16,7 @@ class ComponentRegistrationRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return InterpreterService::isInterpreterAvailable($value);
+        return resolve(InterpreterComponentServiceInterface::class)->has($value);
     }
 
     /**

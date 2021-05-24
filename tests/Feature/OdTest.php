@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\User;
+use Illuminate\Support\Facades\Artisan;
 use OpenDialogAi\ActionEngine\Service\ActionEngineInterface;
 use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
 use OpenDialogAi\ContextEngine\Contracts\ContextService;
-use OpenDialogAi\InterpreterEngine\Service\InterpreterServiceInterface;
+use OpenDialogAi\Core\InterpreterEngine\Service\ConfiguredInterpreterServiceInterface;
+use OpenDialogAi\Core\InterpreterEngine\Service\InterpreterServiceInterface;
+use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 use OpenDialogAi\SensorEngine\Service\SensorService;
 use OpenDialogAi\Webchat\Console\Commands\WebchatSettings;
@@ -18,6 +21,11 @@ class OdTest extends TestCase
     public function setup(): void
     {
         parent::setUp();
+        Artisan::call('configurations:create');
+
+        $this->app->forgetInstance(ConfiguredInterpreterServiceInterface::class);
+        $this->app->forgetInstance(InterpreterComponentServiceInterface::class);
+
         $this->webchatSetup();
     }
 

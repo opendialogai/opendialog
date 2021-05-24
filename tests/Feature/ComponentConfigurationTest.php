@@ -3,13 +3,16 @@
 namespace Tests\Feature;
 
 use App\User;
+use Illuminate\Support\Facades\Artisan;
+use Mockery\MockInterface;
 use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
-use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\InterpreterEngine\Callback\CallbackInterpreterConfiguration;
 use OpenDialogAi\Core\InterpreterEngine\Luis\LuisInterpreterConfiguration;
-use OpenDialogAi\InterpreterEngine\Facades\InterpreterService;
+use OpenDialogAi\Core\InterpreterEngine\Service\ConfiguredInterpreterServiceInterface;
 use OpenDialogAi\InterpreterEngine\Interpreters\CallbackInterpreter;
+use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 use Tests\TestCase;
 
 class ComponentConfigurationTest extends TestCase
@@ -26,6 +29,10 @@ class ComponentConfigurationTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Artisan::call('configurations:create');
+
+        $this->app->forgetInstance(ConfiguredInterpreterServiceInterface::class);
+        $this->app->forgetInstance(InterpreterComponentServiceInterface::class);
 
         $this->user = factory(User::class)->create();
     }
@@ -49,7 +56,7 @@ class ComponentConfigurationTest extends TestCase
 
     public function testViewAll()
     {
-        for ($i = 0; $i < 52; $i++) {
+        for ($i = 0; $i < 51; $i++) {
             factory(ComponentConfiguration::class)->create();
         }
 
@@ -202,23 +209,16 @@ class ComponentConfigurationTest extends TestCase
             'configuration' => self::CONFIGURATION,
         ];
 
-        InterpreterService::shouldReceive('getInterpreter')
-            ->twice()
-            ->andReturn(new class extends CallbackInterpreter {
-                public function interpret(UtteranceAttribute $utterance): IntentCollection
-                {
-                    $intent = new Intent();
-                    $intent->setOdId('test');
-                    $intent->setConfidence(1);
+        $this->mock(InterpreterComponentServiceInterface::class, function (MockInterface $mock) {
+            $mock->shouldReceive('get')
+                ->twice()
+                ->andReturn(CallbackInterpreter::class);
 
-                    return new IntentCollection([$intent]);
-                }
-            });
-
-        // For request validation
-        InterpreterService::shouldReceive('isInterpreterAvailable')
-            ->once()
-            ->andReturn(true);
+            // For request validation
+            $mock->shouldReceive('has')
+                ->once()
+                ->andReturn(true);
+        });
 
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/component-configurations/test', $data)
@@ -246,19 +246,22 @@ class ComponentConfigurationTest extends TestCase
             'configuration' => self::CONFIGURATION,
         ];
 
-        InterpreterService::shouldReceive('getInterpreter')
-            ->twice()
-            ->andReturn(new class extends CallbackInterpreter {
-                public function interpret(UtteranceAttribute $utterance): IntentCollection
-                {
-                    return new IntentCollection();
-                }
-            });
+        $mockInterpreter = new class(CallbackInterpreterConfiguration::create('test', self::CONFIGURATION)) extends CallbackInterpreter {
+            public function interpret(UtteranceAttribute $utterance): IntentCollection
+            {
+                return new IntentCollection();
+            }
+        };
 
-        // For request validation
-        InterpreterService::shouldReceive('isInterpreterAvailable')
-            ->once()
-            ->andReturn(true);
+        $this->mock(InterpreterComponentServiceInterface::class, function (MockInterface $mock) use ($mockInterpreter) {
+            $mock->shouldReceive('get')
+                ->twice()
+                ->andReturn(get_class($mockInterpreter));
+
+            $mock->shouldReceive('has')
+                ->once()
+                ->andReturn(true);
+        });
 
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/component-configurations/test', $data)

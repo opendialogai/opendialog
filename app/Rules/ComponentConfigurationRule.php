@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use OpenDialogAi\Core\InterpreterEngine\Exceptions\InvalidConfigurationDataException;
 use OpenDialogAi\InterpreterEngine\Exceptions\InterpreterNotRegisteredException;
-use OpenDialogAi\InterpreterEngine\Facades\InterpreterService;
+use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationRule implements Rule
 {
@@ -26,8 +26,10 @@ class ComponentConfigurationRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        $componentService = resolve(InterpreterComponentServiceInterface::class);
+
         try {
-            $interpreter = InterpreterService::getInterpreter($this->componentId);
+            $interpreter = $componentService->get($this->componentId);
         } catch (InterpreterNotRegisteredException $e) {
             $this->errorMessage = $e->getMessage();
             return false;
