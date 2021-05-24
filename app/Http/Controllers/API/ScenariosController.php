@@ -100,7 +100,9 @@ class ScenariosController extends Controller
         /** @var Scenario $newScenario */
         $newScenario = Serializer::deserialize($request->getContent(), Scenario::class, 'json');
 
-        $newScenario->setInterpreter(CreateCoreConfigurations::DEFAULT_CALLBACK);
+        if ($newScenario->getInterpreter() === "") {
+            $newScenario->setInterpreter(CreateCoreConfigurations::DEFAULT_CALLBACK);
+        }
 
         $persistedScenario = $this->createDefaultConversations($newScenario);
 
