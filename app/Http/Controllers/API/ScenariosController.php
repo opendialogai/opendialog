@@ -20,18 +20,14 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
-use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
+use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
 
 class ScenariosController extends Controller
 {
-    /**
-     * @var ResponseEngineServiceInterface
-     */
-    private $responseEngineService;
-
     /**
      * Create a new controller instance.
      *
@@ -40,7 +36,6 @@ class ScenariosController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->responseEngineService = resolve(ResponseEngineServiceInterface::class);
     }
 
     /**
@@ -50,7 +45,7 @@ class ScenariosController extends Controller
      */
     public function index(): ScenarioResource
     {
-        $scenarios = ConversationDataClient::getAllScenarios(false);
+        $scenarios = ConversationDataClient::getAllScenarios();
         return new ScenarioResource($scenarios);
     }
 
@@ -74,7 +69,7 @@ class ScenariosController extends Controller
      */
     public function showConversationsByScenario(Scenario $scenario): ConversationResource
     {
-        $conversations = ConversationDataClient::getAllConversationsByScenario($scenario, false);
+        $conversations = ConversationDataClient::getAllConversationsByScenario($scenario);
         return new ConversationResource($conversations);
     }
 
@@ -140,7 +135,7 @@ class ScenariosController extends Controller
             'intent.core.welcome',
             'Hello from user',
             $welcomeOutgoingIntentId,
-            'Hello from bot'
+            "Hi! This is the default welcome message for the $scenarioName Scenario."
         );
 
         $noMatchConversation = $this->createAtomicCallbackConversation(
@@ -155,19 +150,7 @@ class ScenariosController extends Controller
         $scenario->addConversation($welcomeConversation);
         $scenario->addConversation($noMatchConversation);
 
-        $persistedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
-
-        $this->responseEngineService->createMessageForOutgoingIntent(
-            $welcomeOutgoingIntentId,
-            "Hi! This is the default welcome message for the $scenarioName Scenario."
-        );
-
-        $this->responseEngineService->createMessageForOutgoingIntent(
-            $noMatchOutgoingIntentId,
-            "Sorry, I didn't understand that."
-        );
-
-        return $persistedScenario;
+        return ConversationDataClient::addFullScenarioGraph($scenario);
     }
 
     /**
@@ -266,6 +249,13 @@ class ScenariosController extends Controller
         $responseIntent->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::COMPLETING_BEHAVIOR)]));
         $responseIntent->setCreatedAt(Carbon::now());
         $responseIntent->setUpdatedAt(Carbon::now());
+
+        $messageTemplate = new MessageTemplate();
+        $messageTemplate->setName('auto generated');
+        $messageTemplate->setOdId('auto_generated');
+        $messageTemplate->setMessageMarkup((new MessageMarkUpGenerator())->addTextMessage($outgoingSampleUtterance)->getMarkUp());
+
+        $responseIntent->addMessageTemplate($messageTemplate);
 
         $turn->addRequestIntent($requestIntent);
         $turn->addResponseIntent($responseIntent);

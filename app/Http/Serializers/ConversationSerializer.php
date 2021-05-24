@@ -14,6 +14,8 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationCollectio
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\MessageTemplateCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\MessageTemplateNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
@@ -51,7 +53,9 @@ class ConversationSerializer
             new VirtualIntentNormalizer(),
             new TransitionNormalizer(),
             new ActionNormalizer(),
-            new ActionsCollectionNormalizer()
+            new ActionsCollectionNormalizer(),
+            new MessageTemplateNormalizer(),
+            new MessageTemplateCollectionNormalizer()
         ];
         $encoders = [new JsonEncoder()];
         $this->serializer = new Serializer($normalizers, $encoders);

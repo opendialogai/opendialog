@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use OpenDialogAi\Core\Conversation\DataClients\MessageTemplateDataClient;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 
@@ -64,6 +65,14 @@ class RouteServiceProvider extends ServiceProvider
                 return ConversationDataClient::getIntentByUid($value, false);
             } catch (ConversationObjectNotFoundException $exception) {
                 throw new ModelNotFoundException(sprintf('Intent with ID %s not found', $value));
+            }
+        });
+
+        Route::bind('messageTemplate', function ($value) {
+            try {
+                return resolve(MessageTemplateDataClient::class)->getMessageTemplateById($value);
+            } catch (ConversationObjectNotFoundException $exception) {
+                throw new ModelNotFoundException(sprintf('MessageTemplate with ID %s not found', $value));
             }
         });
 

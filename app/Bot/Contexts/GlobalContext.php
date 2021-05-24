@@ -2,7 +2,7 @@
 
 namespace App\Bot\Contexts;
 
-use OpenDialogAi\AttributeEngine\Attributes\AttributeInterface;
+use OpenDialogAi\AttributeEngine\Contracts\Attribute;
 use OpenDialogAi\AttributeEngine\Facades\AttributeResolver;
 use OpenDialogAi\ContextEngine\Contexts\Custom\AbstractCustomContext;
 
@@ -12,7 +12,8 @@ use OpenDialogAi\ContextEngine\Contexts\Custom\AbstractCustomContext;
  */
 class GlobalContext extends AbstractCustomContext
 {
-    public static $name = 'global';
+    public static string $componentId = 'global';
+    public static ?string $componentName = 'Global';
 
     /**
      * A function to load all custom attributes from any external sources into this custom context.
@@ -28,7 +29,7 @@ class GlobalContext extends AbstractCustomContext
 
     /**
      * @param \App\GlobalContext $context
-     * @return AttributeInterface
+     * @return Attribute
      */
     private function createAttribute(\App\GlobalContext $context)
     {
