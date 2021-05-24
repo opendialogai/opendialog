@@ -180,6 +180,7 @@ class ConversationsTest extends TestCase
                 "interpreter" => "interpreter.core.nlp",
                 "behaviors" => [],
                 "conditions" => [],
+                "scenes" => [],
                 "created_at" => "2021-02-24T09:30:00+0000",
                 "updated_at" => "2021-02-24T09:30:00+0000"
             ]);
