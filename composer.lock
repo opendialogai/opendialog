@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96c3c0f413aad2ad9109197ba9e750d4",
+    "content-hash": "fe3c77b1387348bb288ff8b87d2e2757",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1688,16 +1688,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.15.8",
+            "version": "v3.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "cae7735e67acf738881c02ca12604cc4a7ad2e5a"
+                "reference": "29d9722e5c3b4d21b49acd820ac486e2b92096df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/cae7735e67acf738881c02ca12604cc4a7ad2e5a",
-                "reference": "cae7735e67acf738881c02ca12604cc4a7ad2e5a",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/29d9722e5c3b4d21b49acd820ac486e2b92096df",
+                "reference": "29d9722e5c3b4d21b49acd820ac486e2b92096df",
                 "shasum": ""
             },
             "require": {
@@ -1727,9 +1727,9 @@
             ],
             "support": {
                 "issues": "https://github.com/protocolbuffers/protobuf-php/issues",
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.15.8"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.16.0"
             },
-            "time": "2021-04-08T17:17:35+00:00"
+            "time": "2021-05-07T01:06:10+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -3232,16 +3232,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/OPNDLG-685--interpreter-configuration",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "6dfed5833cfcd4f0ec23f0b42e3221f7444f65a7"
+                "reference": "df3b6ed20b602d6b9cd86740ded4b06304eaffd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/6dfed5833cfcd4f0ec23f0b42e3221f7444f65a7",
-                "reference": "6dfed5833cfcd4f0ec23f0b42e3221f7444f65a7",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/df3b6ed20b602d6b9cd86740ded4b06304eaffd9",
+                "reference": "df3b6ed20b602d6b9cd86740ded4b06304eaffd9",
                 "shasum": ""
             },
             "require": {
@@ -3269,6 +3269,7 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3320,9 +3321,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-685--interpreter-configuration"
+                "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-05-14T09:17:26+00:00"
+            "time": "2021-05-20T10:11:58+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",

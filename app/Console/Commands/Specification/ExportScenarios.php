@@ -20,7 +20,7 @@ class ExportScenarios extends Command
     public function handle()
     {
         $this->info('Beginning scenarios export...');
-        $scenarios = ConversationDataClient::getAllScenarios(false);
+        $scenarios = ConversationDataClient::getAllScenarios();
         foreach ($scenarios as $scenario) {
             $fullScenarioGraph = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
             $this->exportScenario($fullScenarioGraph);

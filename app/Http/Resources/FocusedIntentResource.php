@@ -9,6 +9,7 @@ use OpenDialogAi\Core\Conversation\Action;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
@@ -41,6 +42,20 @@ class FocusedIntentResource extends JsonResource
             Intent::TRANSITION,
             Intent::VIRTUAL_INTENTS,
             Intent::ACTIONS => Action::FIELDS,
+            Intent::MESSAGE_TEMPLATES => [
+                MessageTemplate::UID,
+                MessageTemplate::OD_ID,
+                MessageTemplate::NAME,
+                MessageTemplate::MESSAGE_MARKUP,
+                MessageTemplate::DESCRIPTION,
+                MessageTemplate::CREATED_AT,
+                MessageTemplate::UPDATED_AT,
+                MessageTemplate::CONDITIONS => [
+                    Condition::OPERATION,
+                    Condition::OPERATION_ATTRIBUTES,
+                    Condition::PARAMETERS
+                ],
+            ],
             Intent::TURN => [
                 Turn::UID,
                 Turn::OD_ID,
@@ -63,6 +78,20 @@ class FocusedIntentResource extends JsonResource
                         Condition::OPERATION_ATTRIBUTES,
                         Condition::PARAMETERS
                     ],
+                    Intent::MESSAGE_TEMPLATES => [
+                        MessageTemplate::UID,
+                        MessageTemplate::OD_ID,
+                        MessageTemplate::NAME,
+                        MessageTemplate::MESSAGE_MARKUP,
+                        MessageTemplate::DESCRIPTION,
+                        MessageTemplate::CREATED_AT,
+                        MessageTemplate::UPDATED_AT,
+                        MessageTemplate::CONDITIONS => [
+                            Condition::OPERATION,
+                            Condition::OPERATION_ATTRIBUTES,
+                            Condition::PARAMETERS
+                        ],
+                    ],
                     Intent::ACTIONS => Action::FIELDS
                 ],
                 Turn::RESPONSE_INTENTS =>[
@@ -81,7 +110,21 @@ class FocusedIntentResource extends JsonResource
                         Condition::OPERATION_ATTRIBUTES,
                         Condition::PARAMETERS
                     ],
-                    Intent::ACTIONS => Action::FIELDS
+                    Intent::ACTIONS => Action::FIELDS,
+                    Intent::MESSAGE_TEMPLATES => [
+                        MessageTemplate::UID,
+                        MessageTemplate::OD_ID,
+                        MessageTemplate::NAME,
+                        MessageTemplate::MESSAGE_MARKUP,
+                        MessageTemplate::DESCRIPTION,
+                        MessageTemplate::CREATED_AT,
+                        MessageTemplate::UPDATED_AT,
+                        MessageTemplate::CONDITIONS => [
+                            Condition::OPERATION,
+                            Condition::OPERATION_ATTRIBUTES,
+                            Condition::PARAMETERS
+                        ],
+                    ],
                 ],
                 Turn::SCENE => [
                     Scene::UID,

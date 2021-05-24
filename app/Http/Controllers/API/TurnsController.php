@@ -14,8 +14,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\MessageTemplateDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Turn;
+use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
 use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class TurnsController extends Controller
@@ -69,13 +72,15 @@ class TurnsController extends Controller
     {
         $newIntent = Serializer::denormalize($request->get('intent'), Intent::class, 'json');
         $newIntent->setTurn($turn);
+
         if ($request->get('order') === 'REQUEST') {
             $savedIntent = ConversationDataClient::addRequestIntent($newIntent);
         } else {
             $savedIntent = ConversationDataClient::addResponseIntent($newIntent);
         }
 
-        $this->createMessageTemplate($request->get('intent'));
+        $this->createMessageTemplate($savedIntent);
+
         return new TurnIntentResource($savedIntent, $request->get('order'));
     }
 
@@ -171,20 +176,29 @@ class TurnsController extends Controller
     /**
      * Creates an intent and message template in the Response Engine if the intent being created is from the APP participant
      *
-     * @param array $intent
+     * @param Intent $intent
      */
-    private function createMessageTemplate(array $intent)
+    private function createMessageTemplate(Intent $intent)
     {
-        if ($intent['speaker'] === 'APP') {
+        if ($intent->getSpeaker() === 'APP') {
             Log::info(
-                sprintf('Creating a new intent and message template for intent %s as the speaker was APP', $intent['name'])
+                sprintf('Creating a new intent and message template for intent %s as the speaker was APP', $intent->getName())
             );
-            $this->responseEngineService->createMessageForOutgoingIntent($intent['name'], $intent['sample_utterance']);
+
+            $messageTemplate = new MessageTemplate();
+            $messageTemplate->setName('auto generated');
+            $messageTemplate->setOdId('auto_generated');
+            $messageTemplate->setIntent($intent);
+            $messageTemplate->setMessageMarkup(
+                (new MessageMarkUpGenerator())->addTextMessage($intent->getSampleUtterance())->getMarkUp()
+            );
+
+            MessageTemplateDataClient::addMessageTemplateToIntent($messageTemplate);
         } else {
             Log::debug(
                 sprintf(
                     'Not creating a new intent and message template for intent %s as the speaker was USER',
-                    $intent['name']
+                    $intent->getName()
                 )
             );
         }
