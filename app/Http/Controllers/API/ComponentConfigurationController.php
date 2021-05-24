@@ -7,7 +7,6 @@ use App\Http\Requests\ComponentConfigurationRequest;
 use App\Http\Requests\ComponentConfigurationTestRequest;
 use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
@@ -41,39 +40,25 @@ class ComponentConfigurationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param ComponentConfiguration $componentConfiguration
      * @return ComponentConfigurationResource|Response
      */
-    public function show(int $id)
+    public function show(ComponentConfiguration $componentConfiguration)
     {
-        try {
-            /** @var ComponentConfiguration $configuration */
-            $configuration = ComponentConfiguration::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return response(null, 404);
-        }
-
-        return new ComponentConfigurationResource($configuration);
+        return new ComponentConfigurationResource($componentConfiguration);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param ComponentConfigurationRequest $request
-     * @param int $id
+     * @param ComponentConfiguration $componentConfiguration
      * @return Response
      */
-    public function update(ComponentConfigurationRequest $request, int $id)
+    public function update(ComponentConfigurationRequest $request, ComponentConfiguration $componentConfiguration)
     {
-        try {
-            /** @var ComponentConfiguration $configuration */
-            $configuration = ComponentConfiguration::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return response(null, 404);
-        }
-
-        $configuration->fill($request->all());
-        $configuration->save();
+        $componentConfiguration->fill($request->all());
+        $componentConfiguration->save();
 
         return response()->noContent();
     }
@@ -81,19 +66,12 @@ class ComponentConfigurationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param ComponentConfiguration $componentConfiguration
      * @return Response
      */
-    public function destroy(int $id): Response
+    public function destroy(ComponentConfiguration $componentConfiguration): Response
     {
-        try {
-            /** @var ComponentConfiguration $configuration */
-            $configuration = ComponentConfiguration::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return response(null, 404);
-        }
-
-        $configuration->delete();
+        $componentConfiguration->delete();
 
         return response()->noContent();
     }
@@ -101,7 +79,7 @@ class ComponentConfigurationController extends Controller
     /**
      * Allows for testing of a configuration without persisting it
      *
-     * @param ComponentConfigurationRequest $request
+     * @param ComponentConfigurationTestRequest $request
      * @return Response
      */
     public function test(ComponentConfigurationTestRequest $request): Response

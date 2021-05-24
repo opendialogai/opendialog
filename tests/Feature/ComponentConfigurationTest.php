@@ -49,7 +49,7 @@ class ComponentConfigurationTest extends TestCase
 
     public function testViewAll()
     {
-        for ($i = 0; $i < 52; $i++) {
+        for ($i = 0; $i < 51; $i++) {
             factory(ComponentConfiguration::class)->create();
         }
 
