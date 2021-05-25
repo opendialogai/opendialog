@@ -1,0 +1,124 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Sofia Pro';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    background-image:
+        url(/images/auth-background-top-left.png),
+        url(/images/auth-background-bottom-right-2.png),
+        url(/images/auth-background-bottom-right-1.png);
+    background-position:
+        top 0 left 0,
+        bottom 0 right 0,
+        bottom 0 right 0;
+    background-size: 150px, 120px, 250px;
+    background-repeat: no-repeat;
+
+}
+
+.img-wrapper {
+    width: 540px;
+    text-align: center;
+    margin-bottom: -100px;
+    margin-top: -100px;
+}
+
+.logo {
+    width: 80px;
+}
+
+
+.container {
+    background-color: #F7F7F9;
+    width:540px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 20px 20px 20px 0px;
+    padding-top: 20px;
+}
+
+form label {
+    text-align: left;
+    text-transform: uppercase;
+    color: #2F353B;
+    display: inline-block;
+    width: 412px;
+    margin-bottom: 6px;
+    margin-top: 1.75rem;
+}
+
+form .form-check label {
+    text-transform: none;
+    font-size: 14px;
+    color: #2F353B;
+    margin-top: 8px;
+    width:236px;
+}
+
+form .form-check .password-request {
+    font-size: 14px;
+}
+
+form button[type=submit] {
+    font-family: 'Sofia Pro';
+    color: white;
+    background: #0602FF;
+    border-radius: 24px;
+    width: 160px;
+    height: 48px;
+    border: none;
+    font-size: 16px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+form input[type=text], form input[type=email], form input[type=password] {
+    font-family: 'Sofia Pro';
+    width: 412px;
+    height: 42px;
+    padding-left: 12px;
+    border: 2px solid #BAB7D1;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 60px;
+    text-align: center;
+    color: #2F353B;
+    margin-bottom: 120px;
+}
+h1:before {
+    content: "";
+    display: block;
+    position: relative;
+    z-index: 1;
+    top: 160px;
+    left: 50%;
+    border: 2px solid #F8B501;
+    border-width: 0 0 0 2px;
+    width: 1px;
+    height: 80px;
+
+}
+p.subheader {
+    font-size: 30px;
+    text-align: center;
+    width: 540px;
+    color: #2F353B;
+}
+
+p.smaller {
+    font-size: 24px;
+}
+
+.home {
+    text-decoration: none;
+}
