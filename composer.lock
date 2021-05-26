@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe3c77b1387348bb288ff8b87d2e2757",
+    "content-hash": "82563e17614f75ff764551d75d62e251",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1202,302 +1202,53 @@
             "time": "2021-04-21T17:42:05+00:00"
         },
         {
-            "name": "google/cloud",
-            "version": "v0.153.0",
+            "name": "google/cloud-dialogflow",
+            "version": "dev-V2Beta1-support",
             "source": {
                 "type": "git",
-                "url": "https://github.com/googleapis/google-cloud-php.git",
-                "reference": "2fc2caf8ea1eed6b0ce2f65d1b664b9e54643ef1"
+                "url": "https://github.com/opendialogai/google-cloud-php-dialogflow.git",
+                "reference": "8306c3b6cab03308a24b62a3ea5e272bd1f93b88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php/zipball/2fc2caf8ea1eed6b0ce2f65d1b664b9e54643ef1",
-                "reference": "2fc2caf8ea1eed6b0ce2f65d1b664b9e54643ef1",
+                "url": "https://api.github.com/repos/opendialogai/google-cloud-php-dialogflow/zipball/8306c3b6cab03308a24b62a3ea5e272bd1f93b88",
+                "reference": "8306c3b6cab03308a24b62a3ea5e272bd1f93b88",
                 "shasum": ""
             },
             "require": {
-                "google/auth": "^1.6",
-                "google/common-protos": "^1.0",
-                "google/crc32": "^0.1.0",
-                "google/gax": "^1.1",
-                "guzzlehttp/guzzle": "^5.3|^6.0|^7.0",
-                "guzzlehttp/psr7": "^1.2",
-                "monolog/monolog": "^1.1|^2.0",
-                "php": ">=5.5",
-                "psr/http-message": "1.0.*",
-                "ramsey/uuid": "^3.0|^4.0",
-                "rize/uri-template": "~0.3"
-            },
-            "replace": {
-                "google/analytics-admin": "0.2.0",
-                "google/analytics-data": "0.4.0",
-                "google/cloud-asset": "1.4.0",
-                "google/cloud-assured-workloads": "0.3.0",
-                "google/cloud-automl": "1.3.4",
-                "google/cloud-bigquery": "1.22.0",
-                "google/cloud-bigquery-connection": "0.3.4",
-                "google/cloud-bigquery-reservation": "0.2.4",
-                "google/cloud-bigquery-storage": "1.0.3",
-                "google/cloud-bigquerydatatransfer": "1.2.4",
-                "google/cloud-bigtable": "1.10.0",
-                "google/cloud-billing": "1.2.4",
-                "google/cloud-channel": "0.2.0",
-                "google/cloud-common-protos": "0.2.1",
-                "google/cloud-compute": "0.1.0",
-                "google/cloud-container": "1.3.1",
-                "google/cloud-core": "1.41.1",
-                "google/cloud-data-catalog": "1.0.4",
-                "google/cloud-dataproc": "2.0.1",
-                "google/cloud-datastore": "1.12.4",
-                "google/cloud-datastore-admin": "0.2.0",
-                "google/cloud-debugger": "1.3.5",
-                "google/cloud-dialogflow": "0.19.1",
-                "google/cloud-dlp": "1.1.3",
-                "google/cloud-error-reporting": "0.18.3",
-                "google/cloud-firestore": "1.19.2",
-                "google/cloud-game-servers": "0.3.0",
-                "google/cloud-iot": "1.3.4",
-                "google/cloud-kms": "1.11.4",
-                "google/cloud-language": "0.24.6",
-                "google/cloud-logging": "1.21.1",
-                "google/cloud-memcache": "0.4.1",
-                "google/cloud-monitoring": "1.0.1",
-                "google/cloud-osconfig": "0.2.1",
-                "google/cloud-oslogin": "1.2.4",
-                "google/cloud-pubsub": "1.30.2",
-                "google/cloud-recaptcha-enterprise": "1.0.4",
-                "google/cloud-recommendations-ai": "0.2.4",
-                "google/cloud-recommender": "1.4.1",
-                "google/cloud-redis": "1.2.4",
-                "google/cloud-retail": "0.1.1",
-                "google/cloud-scheduler": "1.5.4",
-                "google/cloud-secret-manager": "1.4.0",
-                "google/cloud-security-center": "1.1.1",
-                "google/cloud-security-private-ca": "0.2.0",
-                "google/cloud-service-directory": "0.4.1",
-                "google/cloud-spanner": "1.36.0",
-                "google/cloud-speech": "1.3.3",
-                "google/cloud-storage": "1.23.1",
-                "google/cloud-talent": "0.15.3",
-                "google/cloud-tasks": "1.9.1",
-                "google/cloud-text-to-speech": "1.2.4",
-                "google/cloud-trace": "1.3.4",
-                "google/cloud-translate": "1.10.0",
-                "google/cloud-videointelligence": "1.12.1",
-                "google/cloud-vision": "1.3.1",
-                "google/cloud-web-risk": "1.0.4",
-                "google/cloud-web-security-scanner": "0.6.5",
-                "google/cloud-workflows": "0.2.0"
+                "google/gax": "^1.1"
             },
             "require-dev": {
-                "erusev/parsedown": "^1.6",
-                "google/cloud-tools": "^0.12.0",
-                "opis/closure": "^3.0",
+                "google/cloud-core": "^1.39",
                 "phpdocumentor/reflection": "^3.0",
-                "phpseclib/phpseclib": "^2",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*",
-                "swaggest/json-schema": "^0.12.0",
-                "symfony/console": "^3.0",
-                "symfony/lock": "3.3.x-dev#1ba6ac9",
-                "vierbergenlars/php-semver": "^3.0"
+                "phpunit/phpunit": "^4.8|^5.0"
             },
             "suggest": {
-                "opis/closure": "May be used to serialize closures to process jobs in the batch daemon. Please require version ^3.",
-                "phpseclib/phpseclib": "May be used in place of OpenSSL for creating signed Cloud Storage URLs. Please require version ^2."
+                "ext-grpc": "Enables use of gRPC, a universal high-performance RPC framework created by Google."
             },
-            "bin": [
-                "Core/bin/google-cloud-batch",
-                "Debugger/bin/google-cloud-debugger"
-            ],
             "type": "library",
             "extra": {
                 "component": {
-                    "id": "google-cloud",
-                    "target": "googleapis/google-cloud-php.git",
-                    "path": "src",
-                    "entry": [
-                        "Version.php",
-                        "ServiceBuilder.php"
-                    ]
+                    "id": "cloud-dialogflow",
+                    "path": "Dialogflow",
+                    "entry": null,
+                    "target": "googleapis/google-cloud-php-dialogflow.git"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "GPBMetadata\\Google\\": "CommonProtos/metadata",
-                    "GPBMetadata\\Google\\Analytics\\Admin\\": "AnalyticsAdmin/metadata",
-                    "GPBMetadata\\Google\\Analytics\\Data\\": "AnalyticsData/metadata",
-                    "GPBMetadata\\Google\\Bigtable\\": "Bigtable/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Asset\\": "Asset/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Assuredworkloads\\": "AssuredWorkloads/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Automl\\": "AutoMl/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Connection\\": "BigQueryConnection/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Datatransfer\\": "BigQueryDataTransfer/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Reservation\\": "BigQueryReservation/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Bigquery\\Storage\\": "BigQueryStorage/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Billing\\": "Billing/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Channel\\": "Channel/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Compute\\": "Compute/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Datacatalog\\": "DataCatalog/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Dataproc\\": "Dataproc/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Dialogflow\\": "Dialogflow/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Gaming\\": "Gaming/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Iot\\": "Iot/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Kms\\": "Kms/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Language\\": "Language/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Memcache\\": "Memcache/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Orgpolicy\\": "Asset/external/metadata/Cloud/Orgpolicy",
-                    "GPBMetadata\\Google\\Cloud\\Osconfig\\": "OsConfig/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Oslogin\\": "OsLogin/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Recaptchaenterprise\\": "RecaptchaEnterprise/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Recommendationengine\\": "RecommendationEngine/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Recommender\\": "Recommender/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Redis\\": "Redis/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Retail\\": "Retail/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Scheduler\\": "Scheduler/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Secretmanager\\": "SecretManager/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Secrets\\": "SecretManager/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Security\\Privateca\\": "SecurityPrivateCa/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Securitycenter\\": "SecurityCenter/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Servicedirectory\\": "ServiceDirectory/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Speech\\": "Speech/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Talent\\": "Talent/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Tasks\\": "Tasks/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Texttospeech\\": "TextToSpeech/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Translate\\": "Translate/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Videointelligence\\": "VideoIntelligence/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Vision\\": "Vision/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Webrisk\\": "WebRisk/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Websecurityscanner\\": "WebSecurityScanner/metadata",
-                    "GPBMetadata\\Google\\Cloud\\Workflows\\": "Workflows/metadata",
-                    "GPBMetadata\\Google\\Container\\": "Container/metadata",
-                    "GPBMetadata\\Google\\Datastore\\": "Datastore/metadata",
-                    "GPBMetadata\\Google\\Datastore\\Admin\\": "DatastoreAdmin/metadata",
-                    "GPBMetadata\\Google\\Devtools\\Clouddebugger\\": "Debugger/metadata",
-                    "GPBMetadata\\Google\\Devtools\\Clouderrorreporting\\": "ErrorReporting/metadata",
-                    "GPBMetadata\\Google\\Devtools\\Cloudtrace\\": "Trace/metadata",
-                    "GPBMetadata\\Google\\Firestore\\": "Firestore/metadata",
-                    "GPBMetadata\\Google\\Identity\\": "Asset/external/metadata/Identity",
-                    "GPBMetadata\\Google\\Logging\\": "Logging/metadata",
-                    "GPBMetadata\\Google\\Monitoring\\": "Monitoring/metadata",
-                    "GPBMetadata\\Google\\Privacy\\Dlp\\": "Dlp/metadata",
-                    "GPBMetadata\\Google\\Pubsub\\": "PubSub/metadata",
-                    "GPBMetadata\\Google\\Spanner\\": "Spanner/metadata",
-                    "Google\\Analytics\\Admin\\": "AnalyticsAdmin/src",
-                    "Google\\Analytics\\Data\\": "AnalyticsData/src",
-                    "Google\\Cloud\\": [
-                        "src",
-                        "CommonProtos/src"
-                    ],
-                    "Google\\Cloud\\Asset\\": "Asset/src",
-                    "Google\\Cloud\\AssuredWorkloads\\": "AssuredWorkloads/src",
-                    "Google\\Cloud\\AutoMl\\": "AutoMl/src",
-                    "Google\\Cloud\\BigQuery\\": "BigQuery/src",
-                    "Google\\Cloud\\BigQuery\\Connection\\": "BigQueryConnection/src",
-                    "Google\\Cloud\\BigQuery\\DataTransfer\\": "BigQueryDataTransfer/src",
-                    "Google\\Cloud\\BigQuery\\Reservation\\": "BigQueryReservation/src",
-                    "Google\\Cloud\\BigQuery\\Storage\\": "BigQueryStorage/src",
-                    "Google\\Cloud\\Bigtable\\": "Bigtable/src",
-                    "Google\\Cloud\\Billing\\": "Billing/src",
-                    "Google\\Cloud\\Channel\\": "Channel/src",
-                    "Google\\Cloud\\Compute\\": "Compute/src",
-                    "Google\\Cloud\\Container\\": "Container/src",
-                    "Google\\Cloud\\Core\\": "Core/src",
-                    "Google\\Cloud\\DataCatalog\\": "DataCatalog/src",
-                    "Google\\Cloud\\Dataproc\\": "Dataproc/src",
-                    "Google\\Cloud\\Datastore\\": "Datastore/src",
-                    "Google\\Cloud\\Datastore\\Admin\\": "DatastoreAdmin/src",
-                    "Google\\Cloud\\Debugger\\": "Debugger/src",
-                    "Google\\Cloud\\Dialogflow\\": "Dialogflow/src",
-                    "Google\\Cloud\\Dlp\\": "Dlp/src",
-                    "Google\\Cloud\\ErrorReporting\\": "ErrorReporting/src",
-                    "Google\\Cloud\\Firestore\\": "Firestore/src",
-                    "Google\\Cloud\\Gaming\\": "Gaming/src",
-                    "Google\\Cloud\\Iot\\": "Iot/src",
-                    "Google\\Cloud\\Kms\\": "Kms/src",
-                    "Google\\Cloud\\Language\\": "Language/src",
-                    "Google\\Cloud\\Logging\\": "Logging/src",
-                    "Google\\Cloud\\Memcache\\": "Memcache/src",
-                    "Google\\Cloud\\Monitoring\\": "Monitoring/src",
-                    "Google\\Cloud\\OrgPolicy\\": "Asset/external/protos/Cloud/OrgPolicy",
-                    "Google\\Cloud\\OsConfig\\": "OsConfig/src",
-                    "Google\\Cloud\\OsLogin\\": "OsLogin/src",
-                    "Google\\Cloud\\PubSub\\": "PubSub/src",
-                    "Google\\Cloud\\RecaptchaEnterprise\\": "RecaptchaEnterprise/src",
-                    "Google\\Cloud\\RecommendationEngine\\": "RecommendationEngine/src",
-                    "Google\\Cloud\\Recommender\\": "Recommender/src",
-                    "Google\\Cloud\\Redis\\": "Redis/src",
-                    "Google\\Cloud\\Retail\\": "Retail/src",
-                    "Google\\Cloud\\Scheduler\\": "Scheduler/src",
-                    "Google\\Cloud\\SecretManager\\": "SecretManager/src",
-                    "Google\\Cloud\\SecurityCenter\\": "SecurityCenter/src",
-                    "Google\\Cloud\\Security\\PrivateCA\\": "SecurityPrivateCa/src",
-                    "Google\\Cloud\\ServiceDirectory\\": "ServiceDirectory/src",
-                    "Google\\Cloud\\Spanner\\": "Spanner/src",
-                    "Google\\Cloud\\Speech\\": "Speech/src",
-                    "Google\\Cloud\\Storage\\": "Storage/src",
-                    "Google\\Cloud\\Talent\\": "Talent/src",
-                    "Google\\Cloud\\Tasks\\": "Tasks/src",
-                    "Google\\Cloud\\TextToSpeech\\": "TextToSpeech/src",
-                    "Google\\Cloud\\Trace\\": "Trace/src",
-                    "Google\\Cloud\\Translate\\": "Translate/src",
-                    "Google\\Cloud\\VideoIntelligence\\": "VideoIntelligence/src",
-                    "Google\\Cloud\\Vision\\": "Vision/src",
-                    "Google\\Cloud\\WebRisk\\": "WebRisk/src",
-                    "Google\\Cloud\\WebSecurityScanner\\": "WebSecurityScanner/src",
-                    "Google\\Cloud\\Workflows\\": "Workflows/src",
-                    "Google\\Identity\\": "Asset/external/protos/Identity"
+                    "Google\\Cloud\\Dialogflow\\": "src",
+                    "GPBMetadata\\Google\\Cloud\\Dialogflow\\": "metadata"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
-            "authors": [
-                {
-                    "name": "Dave Supplee",
-                    "email": "dwsupplee@gmail.com"
-                },
-                {
-                    "name": "John Pedrie",
-                    "email": "john@pedrie.com"
-                }
-            ],
-            "description": "Google Cloud Client Library",
-            "homepage": "http://github.com/googleapis/google-cloud-php",
-            "keywords": [
-                "Tasks",
-                "big query",
-                "bigquery",
-                "bigtable",
-                "cloud",
-                "datastore",
-                "gcs",
-                "google",
-                "google api",
-                "google api client",
-                "google apis",
-                "google apis client",
-                "google cloud",
-                "google cloud platform",
-                "kms",
-                "language",
-                "natural language",
-                "pub sub",
-                "pubsub",
-                "spanner",
-                "speech",
-                "stackdriver logging",
-                "storage",
-                "translate",
-                "translation",
-                "vision"
-            ],
+            "description": "Google Cloud Dialogflow Client for PHP",
             "support": {
-                "issues": "https://github.com/googleapis/google-cloud-php/issues",
-                "source": "https://github.com/googleapis/google-cloud-php/tree/v0.153.0"
+                "source": "https://github.com/opendialogai/google-cloud-php-dialogflow/tree/V2Beta1-support"
             },
-            "time": "2021-03-30T23:50:12+00:00"
+            "time": "2021-05-24T16:03:27+00:00"
         },
         {
             "name": "google/common-protos",
@@ -1541,52 +1292,6 @@
                 "source": "https://github.com/googleapis/common-protos-php/tree/1.3"
             },
             "time": "2020-08-26T16:05:09+00:00"
-        },
-        {
-            "name": "google/crc32",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/google/php-crc32.git",
-                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/google/php-crc32/zipball/a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
-                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.13 || v2.14.2",
-                "paragonie/random_compat": ">=2",
-                "phpunit/phpunit": "^4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Google\\CRC32\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Andrew Brampton",
-                    "email": "bramp@google.com"
-                }
-            ],
-            "description": "Various CRC32 implementations",
-            "homepage": "https://github.com/google/php-crc32",
-            "support": {
-                "issues": "https://github.com/google/php-crc32/issues",
-                "source": "https://github.com/google/php-crc32/tree/v0.1.0"
-            },
-            "time": "2019-05-09T06:24:58+00:00"
         },
         {
             "name": "google/gax",
@@ -1688,16 +1393,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.16.0",
+            "version": "v3.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "29d9722e5c3b4d21b49acd820ac486e2b92096df"
+                "reference": "d717dd20f64d418d46bfcee4b53c02998da2661f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/29d9722e5c3b4d21b49acd820ac486e2b92096df",
-                "reference": "29d9722e5c3b4d21b49acd820ac486e2b92096df",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/d717dd20f64d418d46bfcee4b53c02998da2661f",
+                "reference": "d717dd20f64d418d46bfcee4b53c02998da2661f",
                 "shasum": ""
             },
             "require": {
@@ -1727,9 +1432,9 @@
             ],
             "support": {
                 "issues": "https://github.com/protocolbuffers/protobuf-php/issues",
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.16.0"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.17.1"
             },
-            "time": "2021-05-07T01:06:10+00:00"
+            "time": "2021-05-24T18:19:31+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1799,16 +1504,16 @@
         },
         {
             "name": "grpc/grpc",
-            "version": "1.36.0",
+            "version": "1.38.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "6145dd917d340b579f0b663940b17cc93172b79a"
+                "reference": "e1687963fb0b087d0c70e75d3bfff9062eaeb215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/6145dd917d340b579f0b663940b17cc93172b79a",
-                "reference": "6145dd917d340b579f0b663940b17cc93172b79a",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/e1687963fb0b087d0c70e75d3bfff9062eaeb215",
+                "reference": "e1687963fb0b087d0c70e75d3bfff9062eaeb215",
                 "shasum": ""
             },
             "require": {
@@ -1837,9 +1542,9 @@
                 "rpc"
             ],
             "support": {
-                "source": "https://github.com/grpc/grpc-php/tree/v1.36.0"
+                "source": "https://github.com/grpc/grpc-php/tree/v1.38.0"
             },
-            "time": "2021-03-01T21:52:11+00:00"
+            "time": "2021-05-24T20:45:41+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2001,16 +1706,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
                 "shasum": ""
             },
             "require": {
@@ -2070,9 +1775,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.2"
             },
-            "time": "2021-03-21T16:25:00+00:00"
+            "time": "2021-04-26T09:17:50+00:00"
         },
         {
             "name": "jenssegers/model",
@@ -3232,22 +2937,22 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-feature/dialogflow-sdk",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "eb901901fd80b48f31404e988c2ee58ba79a5782"
+                "reference": "65f2111dee37089d673cae9630c47a9db1da2689"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/eb901901fd80b48f31404e988c2ee58ba79a5782",
-                "reference": "eb901901fd80b48f31404e988c2ee58ba79a5782",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/65f2111dee37089d673cae9630c47a9db1da2689",
+                "reference": "65f2111dee37089d673cae9630c47a9db1da2689",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^2.11",
                 "ext-json": "*",
-                "google/cloud": "^0.153.0",
+                "google/cloud-dialogflow": "dev-V2Beta1-support",
                 "guzzlehttp/guzzle": "^7.0.1",
                 "justinrainbow/json-schema": "^5.2",
                 "laravel/framework": "^8.0",
@@ -3269,7 +2974,6 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3321,9 +3025,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/feature/dialogflow-sdk"
             },
-            "time": "2021-05-24T16:32:07+00:00"
+            "time": "2021-05-26T09:29:03+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4444,54 +4148,6 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
-        },
-        {
-            "name": "rize/uri-template",
-            "version": "0.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rize/UriTemplate.git",
-                "reference": "6e0b97e00e0f36c652dd3c37b194ef07de669b82"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rize/UriTemplate/zipball/6e0b97e00e0f36c652dd3c37b194ef07de669b82",
-                "reference": "6e0b97e00e0f36c652dd3c37b194ef07de669b82",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8.36"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rize\\": "src/Rize"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marut K",
-                    "homepage": "http://twitter.com/rezigned"
-                }
-            ],
-            "description": "PHP URI Template (RFC 6570) supports both expansion & extraction",
-            "keywords": [
-                "RFC 6570",
-                "template",
-                "uri"
-            ],
-            "support": {
-                "issues": "https://github.com/rize/UriTemplate/issues",
-                "source": "https://github.com/rize/UriTemplate/tree/0.3.3"
-            },
-            "time": "2021-02-22T15:03:38+00:00"
         },
         {
             "name": "scrivo/highlight.php",
@@ -7355,16 +7011,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.21",
+            "version": "v4.4.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "3871c720871029f008928244e56cf43497da7e9d"
+                "reference": "8b6d1b97521e2f125039b3fcb4747584c6dfa0ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/3871c720871029f008928244e56cf43497da7e9d",
-                "reference": "3871c720871029f008928244e56cf43497da7e9d",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/8b6d1b97521e2f125039b3fcb4747584c6dfa0ef",
+                "reference": "8b6d1b97521e2f125039b3fcb4747584c6dfa0ef",
                 "shasum": ""
             },
             "require": {
@@ -7406,7 +7062,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v4.4.21"
+                "source": "https://github.com/symfony/yaml/tree/v4.4.24"
             },
             "funding": [
                 {
@@ -7422,7 +7078,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-05T17:58:50+00:00"
+            "time": "2021-05-16T09:52:47+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
