@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\MultiWebchatSettingsRequest;
+use App\Http\Requests\WebchatSettingsRequest;
+use App\Http\Resources\WebchatSettingsResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use OpenDialogAi\Webchat\WebchatSetting;
 
 class WebchatSettingsController extends Controller
@@ -19,94 +22,61 @@ class WebchatSettingsController extends Controller
         $this->middleware('auth');
     }
 
-
     /**
      * Display a listing of the resource.
      *
-     * @return WebchatSetting[]
+     * @return WebchatSettingsResourceCollection
      */
-    public function index()
+    public function index(): WebchatSettingsResourceCollection
     {
-        return WebchatSetting::all();
+        return new WebchatSettingsResourceCollection(WebchatSetting::nonTopLevel());
     }
-
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return Response
+     * @param WebchatSetting $webchatSetting
+     * @return WebchatSetting
      */
-    public function show($id)
+    public function show(WebchatSetting $webchatSetting): WebchatSetting
     {
-        return WebchatSetting::find($id);
+        return $webchatSetting;
     }
-
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int     $id
+     * @param WebchatSettingsRequest $request
+     * @param WebchatSetting $webchatSetting
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(WebchatSettingsRequest $request, WebchatSetting $webchatSetting): Response
     {
-        /** @var WebchatSetting $setting */
-        if ($setting = WebchatSetting::find($id)) {
-            $value = $request->get('value');
-
-            if ($error = $this->validateValue($setting, $value)) {
-                return response($error, 400);
-            }
-
-            $setting->update(['value' => $value]);
-
-            return response()->noContent(200);
-        }
-
-        return response()->noContent(404);
+        $webchatSetting->update(['value' => $request->get('value')]);
+        return response()->noContent(200);
     }
 
-
     /**
-     * @param WebchatSetting $setting
-     * @param string         $newValue
-     * @return string
+     * @param MultiWebchatSettingsRequest $request
+     * @return Response
      */
-    private function validateValue(WebchatSetting $setting, $newValue): ?string
+    public function multiUpdate(MultiWebchatSettingsRequest $request): Response
     {
-        switch ($setting->type) {
-            case 'string':
-                if (strlen($newValue) > 8192) {
-                    return 'The maximum length for a string value is 8192.';
-                }
-                break;
-            case 'number':
-                if ($newValue && !is_numeric($newValue)) {
-                    return 'This is not a valid number.';
-                }
-                break;
-            case 'colour':
-                if ($newValue && !preg_match('/#([a-f0-9]{3}){1,2}\b/i', $newValue)) {
-                    return 'This is not a valid hex colour.';
-                }
-                break;
-            case 'map':
-                if ($newValue && json_decode($newValue) == null) {
-                    return 'This is not a valid json value.';
-                }
-                break;
-            case 'object':
-                return 'Cannot update object value';
-                break;
-            case 'boolean':
-                if ($newValue != '0' && $newValue != '1' && $newValue != 'false' && $newValue != 'true') {
-                    return 'This is not a valid boolean value.';
-                }
-                break;
-        }
+        $value = json_decode($request->getContent(), true);
 
-        return null;
+        DB::beginTransaction();
+
+        try {
+            foreach ($value as $val) {
+                /** @var WebchatSetting $setting */
+                $setting = WebchatSetting::where('name', $val['name'])->first();
+                $setting->update(['value' => $val['value']]);
+            }
+            DB::commit();
+            return response()->noContent(200);
+        } catch (\Exception $error) {
+            DB::rollback();
+            return response($error, 400);
+        }
     }
 }

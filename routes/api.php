@@ -28,6 +28,7 @@ Route::namespace('API')
             'WebchatSettingsController',
             ['except' => ['store', 'destroy']]
         );
+        Route::put('/webchat-setting', 'WebchatSettingsController@multiUpdate');
         Route::apiResource(
             'chatbot-user',
             'ChatbotUsersController',
