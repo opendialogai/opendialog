@@ -83,5 +83,11 @@
             "@php artisan vendor:publish --tag=dgraph --force",
             "@php artisan vendor:publish --tag=public --force"
         ]
-    }
+    },
+    "repositories":  [
+        {
+            "type": "vcs",
+            "url": "https://github.com/opendialogai/google-cloud-php-dialogflow"
+        }
+    ]
 }
