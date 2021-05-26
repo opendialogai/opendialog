@@ -3,11 +3,15 @@
 namespace Tests\Feature;
 
 use App\User;
+use DateTime;
 use Illuminate\Support\Facades\Artisan;
 use Mockery\MockInterface;
 use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
+use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\Conversation\Scenario;
+use OpenDialogAi\Core\Conversation\ScenarioCollection;
 use OpenDialogAi\Core\InterpreterEngine\Callback\CallbackInterpreterConfiguration;
 use OpenDialogAi\Core\InterpreterEngine\Luis\LuisInterpreterConfiguration;
 use OpenDialogAi\Core\InterpreterEngine\Service\ConfiguredInterpreterServiceInterface;
@@ -266,5 +270,38 @@ class ComponentConfigurationTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/component-configurations/test', $data)
             ->assertStatus(400);
+    }
+
+    public function testQueryConfigurationUse()
+    {
+        $configurationName = 'Default Callback';
+        $data = [
+            'name' => $configurationName,
+        ];
+
+        $scenario1 = new Scenario();
+        $scenario1->setUid('0x123');
+        $scenario1->setOdId('scenario_1');
+        $scenario1->setInterpreter($configurationName);
+        $scenario1->setCreatedAt(new DateTime());
+        $scenario1->setUpdatedAt(new DateTime());
+
+        $scenario2 = new Scenario();
+        $scenario2->setUid('0x456');
+        $scenario2->setOdId('scenario_2');
+        $scenario2->setInterpreter($configurationName);
+        $scenario2->setCreatedAt(new DateTime());
+        $scenario2->setUpdatedAt(new DateTime());
+
+        ConversationDataClient::shouldReceive('getScenariosWhereInterpreterEquals')
+            ->once()
+            ->andReturn(new ScenarioCollection([
+                $scenario1,
+                $scenario2,
+            ]));
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configurations/query', $data)
+            ->assertStatus(200);
     }
 }
