@@ -293,7 +293,7 @@ class ComponentConfigurationTest extends TestCase
         $scenario2->setCreatedAt(new DateTime());
         $scenario2->setUpdatedAt(new DateTime());
 
-        ConversationDataClient::shouldReceive('getScenariosWhereInterpreterEquals')
+        ConversationDataClient::shouldReceive('getScenariosWhereInterpreterIsUsed')
             ->once()
             ->andReturn(new ScenarioCollection([
                 $scenario1,
