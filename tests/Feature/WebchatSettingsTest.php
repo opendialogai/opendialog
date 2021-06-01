@@ -93,7 +93,7 @@ class WebchatSettingsTest extends TestCase
             )
             ->getContent();
 
-        $this->assertCount(2, json_decode($response, true)[0]['children'][0]['children']);
+        $this->assertCount(2, json_decode($response, true)[0]['children'][0]['children'][0]);
     }
 
     public function testWebchatSettingsUpdateEndpoint()

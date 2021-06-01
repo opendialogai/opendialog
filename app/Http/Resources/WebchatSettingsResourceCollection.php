@@ -77,7 +77,7 @@ class WebchatSettingsResourceCollection extends ResourceCollection
             if (!$item->sibling) {
                 $formatted[] = [$item];
             } else {
-                $sibling = $items->filter(fn ($i) => ($i->id === $item->sibling))->first();
+                $sibling = $items->filter(fn ($i) => ($i->id == $item->sibling))->first();
                 $formatted[] = [$sibling, $item];
                 $processed[] = $sibling->id;
             }
