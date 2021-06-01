@@ -1,3 +1,59 @@
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('../../public/fonts/sofia_pro_regular_az-webfont.woff2') format('woff2'),
+    url('../../public/fonts/sofia_pro_regular_az-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('../../public/fonts/sofia_pro_medium_az-webfont.woff2') format('woff2'),
+    url('../../public/fonts/sofia_pro_medium_az-webfont.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('../../public/fonts/sofia_pro_light_az-webfont.woff2') format('woff2'),
+    url('../../public/fonts/sofia_pro_light_az-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('../../public/fonts/sofia_pro_semi_bold_az-webfont.woff2') format('woff2'),
+    url('../../public/fonts/sofia_pro_semi_bold_az-webfont.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('../../public/fonts/sofia_pro_ultralight_az-webfont.woff2') format('woff2'),
+    url('../../public/fonts/sofia_pro_ultralight_az-webfont.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('../../public/fonts/sofia_pro_bold_az-webfont.woff2') format('woff2'),
+    url('../../public/fonts/sofia_pro_bold_az-webfont.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('../../public/fonts/sofia_pro_black_az-webfont.woff2') format('woff2'),
+    url('../../public/fonts/sofia_pro_black_az-webfont.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
 html {
     height: 100%;
 }
