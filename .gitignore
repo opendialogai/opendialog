@@ -75,3 +75,4 @@ composer-dev.lock
 /public/images/od.svg
 /public/images/qna.png
 /public/images/rasa.svg
+/public/mix-manifest.json
