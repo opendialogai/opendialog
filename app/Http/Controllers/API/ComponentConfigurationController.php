@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ComponentConfigurationQueryRequest;
 use App\Http\Requests\ComponentConfigurationRequest;
 use App\Http\Requests\ComponentConfigurationTestRequest;
 use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
+use App\Http\Resources\ScenarioResource;
 use Illuminate\Http\Response;
 use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
+use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationController extends Controller
@@ -95,5 +98,18 @@ class ComponentConfigurationController extends Controller
 
         $status = $intents->isEmpty() ? 400 : 200;
         return response(null, $status);
+    }
+
+    /**
+     * Allows for querying of a configuration across all conversation objects
+     *
+     * @param ComponentConfigurationQueryRequest $request
+     * @return ScenarioResource|Response
+     */
+    public function query(ComponentConfigurationQueryRequest $request)
+    {
+        $scenarios = ConversationDataClient::getScenariosWhereInterpreterEquals($request->get('name'));
+
+        return new ScenarioResource($scenarios);
     }
 }
