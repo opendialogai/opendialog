@@ -44,19 +44,14 @@ class OdTest extends TestCase
     }
 
     /**
-     * Verify that the webchat endpoint is present.
+     * Verify that the webchat endpoint is not visible by default.
      *
      * @return void
      */
     public function testWebchatEndpoint()
     {
         $response = $this->get('/web-chat');
-
-        $response->assertStatus(200);
-        $response->assertSeeInOrder([
-            '<opendialog-chat>',
-            'vendor/webchat/js/app.js',
-        ], false);
+        $response->assertStatus(404);
     }
 
     /**
