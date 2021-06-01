@@ -13,7 +13,7 @@ class WebchatSettingsResourceCollection extends ResourceCollection
     {
         $response = [];
 
-        $this->collection->get()->groupBy(['section', 'subsection'])->each(function ($items, $title) use (&$response) {
+        $this->collection->groupBy(['section', 'subsection'])->each(function ($items, $title) use (&$response) {
             if ($title) {
                 $response[] = $this->formatSection($title, $items);
             }
@@ -68,14 +68,18 @@ class WebchatSettingsResourceCollection extends ResourceCollection
     private function formatChildren(Collection $items): array
     {
         $formatted = [];
+        $processed = [];
 
-        $items->each(function ($item) use (&$formatted, &$items) {
+        $items->each(function ($item) use (&$formatted, $items, &$processed) {
+            if (in_array($item->id, $processed)) {
+                return;
+            }
             if (!$item->sibling) {
                 $formatted[] = [$item];
             } else {
                 $sibling = $items->filter(fn ($i) => ($i->id === $item->sibling))->first();
-                $formatted[] = [$item, $sibling];
-                $items->forget($sibling);
+                $formatted[] = [$sibling, $item];
+                $processed[] = $sibling->id;
             }
         });
 

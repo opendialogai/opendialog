@@ -8,6 +8,7 @@ use App\Http\Requests\WebchatSettingsRequest;
 use App\Http\Resources\WebchatSettingsResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use OpenDialogAi\Webchat\Casts\WebchatSettingsValueCast;
 use OpenDialogAi\Webchat\WebchatSetting;
 
 class WebchatSettingsController extends Controller
@@ -29,7 +30,9 @@ class WebchatSettingsController extends Controller
      */
     public function index(): WebchatSettingsResourceCollection
     {
-        return new WebchatSettingsResourceCollection(WebchatSetting::nonTopLevel());
+        return new WebchatSettingsResourceCollection(
+            WebchatSetting::withCasts(['value' => WebchatSettingsValueCast::class])->get()
+        );
     }
 
     /**
