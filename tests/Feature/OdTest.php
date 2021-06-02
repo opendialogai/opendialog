@@ -52,11 +52,7 @@ class OdTest extends TestCase
     {
         $response = $this->get('/web-chat');
 
-        $response->assertStatus(200);
-        $response->assertSeeInOrder([
-            '<opendialog-chat>',
-            'vendor/webchat/js/app.js',
-        ], false);
+        $response->assertStatus(404);
     }
 
     /**

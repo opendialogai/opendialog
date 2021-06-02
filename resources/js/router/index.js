@@ -19,6 +19,14 @@ import Scenarios
   from '@opendialogai/opendialog-design-system-pkg/src/components/ConversationBuilder/Scenarios/Scenarios'
 import ConversationBuilder
   from '@opendialogai/opendialog-design-system-pkg/src/components/ConversationBuilder/Wrapper/ConversationBuilder'
+import Interpreters
+  from '@opendialogai/opendialog-design-system-pkg/src/components/Interpreters/Interpreters'
+import ConfigureInterpreter
+  from '@opendialogai/opendialog-design-system-pkg/src/components/Interpreters/ConfigureInterpreter'
+import MapInterpreter
+from '@opendialogai/opendialog-design-system-pkg/src/components/Interpreters/MapInterpreter'
+import EditInterpreter
+from '@opendialogai/opendialog-design-system-pkg/src/components/Interpreters/EditInterpreter'
 
 Vue.use(VueRouter);
 
@@ -46,6 +54,26 @@ const router = new VueRouter({
           name: 'conversation-builder',
           component: ConversationBuilder,
           props: route => ({ newScenario: route.query.newScenario })
+        },
+        {
+          path: 'interpreters',
+          name: 'interpreters',
+          component: Interpreters
+        },
+        {
+          path: 'interpreters/configure/new',
+          name: 'configure-interpreter',
+          component: ConfigureInterpreter
+        },
+        {
+          path: 'interpreters/configure/:id',
+          name: 'edit-interpreter',
+          component: EditInterpreter
+        },
+        {
+          path: 'interpreters/mapping/:id',
+          name: 'map-interpreter',
+          component: MapInterpreter
         },
         {
           path: 'webchat-setting',

@@ -24,7 +24,7 @@ if (env("USE_2FA")) {
 }
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/admin');
 });
 
 /**
@@ -130,6 +130,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     Route::get('conversation-builder/{anything}', 'AdminController@handle')->where('anything', '.*');
+    Route::get('interpreters', 'AdminController@handle');
+    Route::get('interpreters/{anything}', 'AdminController@handle')->where('anything', '.*');
 });
 
 /**
