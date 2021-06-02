@@ -36,20 +36,6 @@ Route::namespace('API')
         );
         Route::apiResource('user', 'UsersController');
 
-        Route::apiResource('outgoing-intent', 'OutgoingIntentsController');
-        Route::get(
-            'outgoing-intent/{id}/export',
-            'OutgoingIntentsController@export'
-        );
-        Route::post(
-            'outgoing-intent/{id}/import',
-            'OutgoingIntentsController@import'
-        );
-        Route::apiResource(
-            'outgoing-intent/{id}/message-templates',
-            'MessageTemplatesController'
-        );
-
         Route::apiResource('global-context', 'GlobalContextsController');
 
         Route::apiResource('component-configuration', 'ComponentConfigurationController');
@@ -103,15 +89,6 @@ Route::namespace('API')
             'ConversationsController@importAll'
         );
 
-        Route::get(
-            'outgoing-intents/export',
-            'OutgoingIntentsController@exportAll'
-        );
-        Route::post(
-            'outgoing-intents/import',
-            'OutgoingIntentsController@importAll'
-        );
-
         Route::post('specification-import', 'SpecificationController@import');
         Route::get('specification-export', 'SpecificationController@export');
 
@@ -149,7 +126,6 @@ Route::namespace('API')
             Route::get('intents/{intent}', 'IntentsController@show');
             Route::patch('intents/{intent}', 'IntentsController@update');
             Route::delete('intents/{intent}', 'IntentsController@destroy');
-
 
             Route::get('ui-state/focused/scenario/{scenario}', 'UIStateController@showFocusedScenario');
             Route::get('ui-state/focused/conversation/{conversation}', 'UIStateController@showFocusedConversation');
