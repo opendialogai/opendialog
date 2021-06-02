@@ -138,15 +138,15 @@ Route::namespace('API')
             Route::patch('ui-state/turns/{turn}/intents/{type}', 'UIStateController@massUpdateIntents')
                 ->where('type', '(request)|(response)');
 
-            Route::post('/intents/{intent}/message-templates', 'MessageTemplateGraphController@store');
+            Route::post('/intents/{intent}/message-templates', 'MessageTemplateController@store');
 
-            Route::get('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateGraphController@show');
-            Route::get('/message-templates/{messageTemplate}', 'MessageTemplateGraphController@show');
+            Route::get('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateController@show');
+            Route::get('/message-templates/{messageTemplate}', 'MessageTemplateController@show');
 
-            Route::delete('/message-templates/{messageTemplate}', 'MessageTemplateGraphController@destroy');
-            Route::delete('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateGraphController@destroy');
+            Route::delete('/message-templates/{messageTemplate}', 'MessageTemplateController@destroy');
+            Route::delete('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateController@destroy');
 
-            Route::patch('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateGraphController@update');
+            Route::patch('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateController@update');
         });
 
         Route::post('conversation-simulation', 'ConversationSimulationController@simulate');

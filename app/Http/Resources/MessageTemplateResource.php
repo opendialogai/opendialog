@@ -15,7 +15,7 @@ use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-class MessageTemplateGraphResource extends JsonResource
+class MessageTemplateResource extends JsonResource
 {
     public static $wrap = null;
 
