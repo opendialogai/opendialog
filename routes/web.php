@@ -55,26 +55,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     /**
-     * Outgoing Intents
-     */
-    Route::prefix('outgoing-intents')->group(function () {
-        Route::get('/', 'AdminController@handle');
-        Route::get('/add', 'AdminController@handle');
-        Route::get('/{outgoingIntent}', 'AdminController@handle');
-        Route::get('/{outgoingIntent}/edit', 'AdminController@handle');
-
-        /**
-         * Message Templates
-         */
-        Route::prefix('/{outgoingIntent}/message-templates')->group(function () {
-            Route::get('/', 'AdminController@handle');
-            Route::get('/add', 'AdminController@handle');
-            Route::get('/{id}', 'AdminController@handle');
-            Route::get('/{id}/edit', 'AdminController@handle');
-        });
-    });
-
-    /**
      * Chatbot Users
      */
     Route::prefix('chatbot-users')->group(function () {
