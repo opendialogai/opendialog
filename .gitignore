@@ -68,3 +68,11 @@ composer-dev.lock
 /public/fonts/sofia_pro_ultralight_az-webfont.woff
 /public/fonts/sofia_pro_ultralight_az-webfont.woff2
 /public/mix-manifest.json
+/public/images/dialogflow.svg
+/public/images/icons-doc.svg
+/public/images/luis.svg
+/public/images/np_users.svg
+/public/images/od.svg
+/public/images/qna.png
+/public/images/rasa.svg
+/public/mix-manifest.json
