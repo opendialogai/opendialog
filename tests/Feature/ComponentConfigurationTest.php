@@ -91,6 +91,36 @@ class ComponentConfigurationTest extends TestCase
         $this->assertEquals(2, count($response->data));
     }
 
+    public function testViewAllByComponentType()
+    {
+        factory(ComponentConfiguration::class)->create([
+            'component_id' => 'interpreter.test.one',
+        ]);
+
+        factory(ComponentConfiguration::class)->create([
+            'component_id' => 'action.test.one',
+        ]);
+
+        factory(ComponentConfiguration::class)->create([
+            'component_id' => 'action.test.two',
+        ]);
+
+        $configurations = ComponentConfiguration::all();
+
+        $this->get('/admin/api/component-configuration?type=interpreter')
+            ->assertStatus(302);
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/component-configuration?type=action')
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    $configurations[2]->toArray(),
+                    $configurations[3]->toArray(),
+                ],
+            ]);
+    }
+
     public function testUpdate()
     {
         /** @var ComponentConfiguration $configuration */
@@ -293,7 +323,7 @@ class ComponentConfigurationTest extends TestCase
         $scenario2->setCreatedAt(new DateTime());
         $scenario2->setUpdatedAt(new DateTime());
 
-        ConversationDataClient::shouldReceive('getScenariosWhereInterpreterEquals')
+        ConversationDataClient::shouldReceive('getScenariosWhereInterpreterIsUsed')
             ->once()
             ->andReturn(new ScenarioCollection([
                 $scenario1,
