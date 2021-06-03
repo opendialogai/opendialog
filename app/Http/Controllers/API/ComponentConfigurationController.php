@@ -11,6 +11,9 @@ use App\Http\Resources\ComponentConfigurationResource;
 use App\Http\Resources\ScenarioResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use OpenDialogAi\ActionEngine\Actions\ActionInput;
+use OpenDialogAi\ActionEngine\Actions\ActionInterface;
+use OpenDialogAi\ActionEngine\Service\ActionComponentServiceInterface;
 use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
 use OpenDialogAi\Core\Components\Exceptions\UnknownComponentTypeException;
@@ -161,7 +164,7 @@ class ComponentConfigurationController extends Controller
                 $scenarios = ConversationDataClient::getScenariosWhereInterpreterIsUsed($name);
                 break;
             case ComponentHelper::ACTION:
-                $scenarios = ConversationDataClient::getScenariosWhereActionsIsUsed($name);
+                $scenarios = ConversationDataClient::getScenariosWhereActionIsUsed($name);
                 break;
             default:
                 return response(null, 404);
@@ -195,6 +198,13 @@ class ComponentConfigurationController extends Controller
      */
     private function testAction(ComponentConfigurationTestRequest $request): Response
     {
-        return response(null, 400);
+        $actionClass = resolve(ActionComponentServiceInterface::class)->get($request->get('component_id'));
+
+        /** @var ActionInterface $action */
+        $action = new $actionClass($actionClass::createConfiguration('test', $request->get('configuration')));
+        $result = $action->perform(new ActionInput());
+
+        $status = $result->isSuccessful() ? 200 : 400;
+        return response(null, $status);
     }
 }
