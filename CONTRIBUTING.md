@@ -2,7 +2,7 @@
 
 ## Welcome
 
-Thanks a lot for considering to contribute to OpenDialog we're excited to have you join our ever-growing community.
+Thanks a lot for considering to contribute to OpenDialog. We are excited to have you join our ever-growing community.
 
 We've put together the following guidelines to help you figure out where you can best be helpful and contribute to OpenDialog and its packages, which are hosted in the [OpenDialog Organisation on GitHub](https://github.com/opendialogai). 
 
