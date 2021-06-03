@@ -9,6 +9,7 @@ use App\Http\Requests\ComponentConfigurationTestRequest;
 use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
 use App\Http\Resources\ScenarioResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use OpenDialogAi\AttributeEngine\CoreAttributes\UtteranceAttribute;
 use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
@@ -19,14 +20,42 @@ use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationController extends Controller
 {
+    const ALL = 'all';
+    const ACTION = 'action';
+    const INTERPRETER = 'interpreter';
+
+    const VALID_TYPES = [
+        self::ALL,
+        self::ACTION,
+        self::INTERPRETER,
+    ];
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return ComponentConfigurationCollection|Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ComponentConfigurationCollection(ComponentConfiguration::paginate(50));
+        $type = $request->get('type', self::ALL);
+
+        switch ($type) {
+            case self::ACTION:
+                $configurations = ComponentConfiguration::actions()->paginate(50);
+                break;
+            case self::INTERPRETER:
+                $configurations = ComponentConfiguration::interpreters()->paginate(50);
+                break;
+            case self::ALL:
+            default:
+                $configurations = ComponentConfiguration::paginate(50);
+                break;
+        }
+
+        $configurations->appends(['type' => $type]);
+
+        return new ComponentConfigurationCollection($configurations);
     }
 
     /**

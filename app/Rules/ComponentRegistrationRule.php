@@ -3,6 +3,8 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use OpenDialogAi\Core\Components\Exceptions\UnknownComponentTypeException;
+use OpenDialogAi\Core\Components\Helper\ComponentHelper;
 use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentRegistrationRule implements Rule
@@ -16,7 +18,18 @@ class ComponentRegistrationRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return resolve(InterpreterComponentServiceInterface::class)->has($value);
+        try {
+            $type = ComponentHelper::parseComponentId($value);
+        } catch (UnknownComponentTypeException $e) {
+            return false;
+        }
+
+        switch ($type) {
+            case ComponentHelper::INTERPRETER:
+                return resolve(InterpreterComponentServiceInterface::class)->has($value);
+            case ComponentHelper::ACTION:
+                return true;
+        }
     }
 
     /**
