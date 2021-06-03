@@ -1,4 +1,4 @@
-# Open Dialog Contributing Agreement
+# OpenDialog Contributing Agreement
 
 ## Welcome
 
