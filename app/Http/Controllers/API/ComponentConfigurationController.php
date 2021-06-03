@@ -161,7 +161,7 @@ class ComponentConfigurationController extends Controller
                 $scenarios = ConversationDataClient::getScenariosWhereInterpreterIsUsed($name);
                 break;
             case ComponentHelper::ACTION:
-                $scenarios = ConversationDataClient::getScenariosWhereActionsIsUsed($name);
+                $scenarios = ConversationDataClient::getScenariosWhereActionIsUsed($name);
                 break;
             default:
                 return response(null, 404);
