@@ -20,6 +20,11 @@ return [
                     'icon' => 'pattern'
                 ],
                 [
+                    'title' => 'Actions',
+                    'url' => '/admin/actions',
+                    'icon' => 'refresh'
+                ],
+                [
                     'title' => 'Interface settings',
                     'url' => '/admin/webchat-setting',
                     'icon' => 'settings-sliders'
