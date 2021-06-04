@@ -29,16 +29,17 @@
       <app></app>
     </div>
 
-    @if (request()->route()->getName() == 'webchat-demo')
+
+
+    @if (request()->route()->getName() == 'webchat-demo' && request()->get('selected_scenario'))
       <script>
         window.openDialogSettings = {
           url: "{{ env("APP_URL") }}",
           validPath: 'admin/demo',
           user: {
-            first_name: '{!! auth()->user()->name !!}',
-            last_name: '',
-            {{--email: '{!! auth()->user()->email !!}',--}}
-            external_id: '{!! auth()->user()->id !!}',
+            custom: {
+              selected_scenario: "{{request()->get('selected_scenario')}}"
+            }
           },
         };
       </script>

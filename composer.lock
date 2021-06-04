@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "976c1a0703702d91f60a24d8d1a1f446",
+    "content-hash": "53d55177ac07f571f91e5f1a664fcf14",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3072,29 +3072,28 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "1.x-dev",
+            "version": "dev-feature/send-chat-open-response-event",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "ad8f37e91ade79a733b839b7259b7ffefa0fd780"
+                "reference": "8e3fbfa13343286fa5403a9ff80df9c5787b1142"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/ad8f37e91ade79a733b839b7259b7ffefa0fd780",
-                "reference": "ad8f37e91ade79a733b839b7259b7ffefa0fd780",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/8e3fbfa13343286fa5403a9ff80df9c5787b1142",
+                "reference": "8e3fbfa13343286fa5403a9ff80df9c5787b1142",
                 "shasum": ""
             },
             "require": {
                 "genealabs/laravel-caffeine": "^8.0",
-                "php": "^7.3.0"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "opendialogai/core": "1.x-dev",
+                "opendialogai/core": "dev-feature/php-8-updgrade",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3124,9 +3123,9 @@
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
                 "issues": "https://github.com/opendialogai/webchat/issues",
-                "source": "https://github.com/opendialogai/webchat/tree/1.x"
+                "source": "https://github.com/opendialogai/webchat/tree/feature/send-chat-open-response-event"
             },
-            "time": "2021-06-02T16:28:11+00:00"
+            "time": "2021-06-04T11:15:13+00:00"
         },
         {
             "name": "opis/closure",

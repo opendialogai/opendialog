@@ -17,7 +17,7 @@
         "maennchen/zipstream-php": "^2.0",
         "opendialogai/core": "1.x-dev",
         "opendialogai/dgraph-docker": "20.11.0",
-        "opendialogai/webchat": "1.x-dev",
+        "opendialogai/webchat": "dev-feature/send-chat-open-response-event",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
         "propaganistas/laravel-phone": "^4.2",
