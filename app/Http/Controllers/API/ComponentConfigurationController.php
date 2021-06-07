@@ -11,6 +11,7 @@ use App\Http\Resources\ComponentConfigurationResource;
 use App\Http\Resources\ScenarioResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ActionEngine\Actions\ActionInput;
 use OpenDialogAi\ActionEngine\Actions\ActionInterface;
 use OpenDialogAi\ActionEngine\Service\ActionComponentServiceInterface;
@@ -179,16 +180,26 @@ class ComponentConfigurationController extends Controller
      */
     private function testInterpreter(ComponentConfigurationTestRequest $request): Response
     {
-        $interpreterClass = resolve(InterpreterComponentServiceInterface::class)->get($request->get('component_id'));
+        try {
+            $interpreterClass = resolve(InterpreterComponentServiceInterface::class)->get($request->get('component_id'));
 
-        $utterance = new UtteranceAttribute('configuration_test');
-        $utterance->setText("Hello from OpenDialog");
-        $utterance->setCallbackId("test");
+            $utterance = new UtteranceAttribute('configuration_test');
+            $utterance->setText("Hello from OpenDialog");
+            $utterance->setCallbackId("test");
 
-        $interpreter = new $interpreterClass($interpreterClass::createConfiguration('test', $request->get('configuration')));
-        $intents = $interpreter->interpret($utterance);
+            $interpreter = new $interpreterClass($interpreterClass::createConfiguration('test', $request->get('configuration')));
+            $intents = $interpreter->interpret($utterance);
 
-        $status = $intents->isEmpty() ? 400 : 200;
+            $status = $intents->isEmpty() ? 400 : 200;
+        } catch (\Exception $e) {
+            Log::info(sprintf(
+                'Running test on interpreter with component ID %s ran into and exception and failed - %s',
+                $request->get('component_id'),
+                $e->getMessage()
+            ));
+
+            $status = 400;
+        }
         return response(null, $status);
     }
 
@@ -198,13 +209,22 @@ class ComponentConfigurationController extends Controller
      */
     private function testAction(ComponentConfigurationTestRequest $request): Response
     {
-        $actionClass = resolve(ActionComponentServiceInterface::class)->get($request->get('component_id'));
+        try {
+            $actionClass = resolve(ActionComponentServiceInterface::class)->get($request->get('component_id'));
 
-        /** @var ActionInterface $action */
-        $action = new $actionClass($actionClass::createConfiguration('test', $request->get('configuration')));
-        $result = $action->perform(new ActionInput());
+            /** @var ActionInterface $action */
+            $action = new $actionClass($actionClass::createConfiguration('test', $request->get('configuration')));
+            $result = $action->perform(new ActionInput());
 
-        $status = $result->isSuccessful() ? 200 : 400;
+            $status = $result->isSuccessful() ? 200 : 400;
+        } catch (\Exception $e) {
+            Log::info(sprintf(
+                'Running test on action with component ID %s ran into and exception and failed - %s',
+                $request->get('component_id'),
+                $e->getMessage()
+            ));
+            $status = 400;
+        }
         return response(null, $status);
     }
 }
