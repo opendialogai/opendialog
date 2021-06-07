@@ -56,6 +56,7 @@ class UserContextController extends Controller
             }
         }
 
+        ksort($formatted);
         return $formatted;
     }
 }
