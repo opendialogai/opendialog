@@ -27,6 +27,10 @@ import MapInterpreter
 from '@opendialogai/opendialog-design-system-pkg/src/components/Interpreters/MapInterpreter'
 import EditInterpreter
 from '@opendialogai/opendialog-design-system-pkg/src/components/Interpreters/EditInterpreter'
+import Actions
+from '@opendialogai/opendialog-design-system-pkg/src/components/Actions/Actions'
+import ConfigureAction
+from '@opendialogai/opendialog-design-system-pkg/src/components/Actions/ConfigureAction'
 
 Vue.use(VueRouter);
 
@@ -54,6 +58,16 @@ const router = new VueRouter({
           name: 'conversation-builder',
           component: ConversationBuilder,
           props: route => ({ newScenario: route.query.newScenario })
+        },
+        {
+          path: 'actions',
+          name: 'actions',
+          component: Actions
+        },
+        {
+          path: 'actions/configure/:id',
+          name: 'configure-action',
+          component: ConfigureAction
         },
         {
           path: 'interpreters',
