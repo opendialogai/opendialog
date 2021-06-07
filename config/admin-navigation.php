@@ -15,7 +15,12 @@ return [
                     'icon' => 'filter-descending'
                 ],
                 [
-                    'title' => 'Interpreters - NLU',
+                    'title' => 'Message Editor',
+                    'url' => '/admin/message-editor',
+                    'icon' => 'edit-bubble'
+                ],
+                [
+                    'title' => 'Interpreters Setup',
                     'url' => '/admin/interpreters',
                     'icon' => 'pattern'
                 ],
@@ -33,4 +38,16 @@ return [
                 ],
             ]
         ],
+    'help' => [
+        [
+            'title' => 'Documentation',
+            'url' => 'https://docs.opendialog.ai',
+            'icon' => 'document'
+        ],
+        [
+            'title' => 'Contact Us',
+            'url' => 'https://opendialog.ai/contact-us',
+            'icon' => 'email'
+        ]
+    ]
 ];
