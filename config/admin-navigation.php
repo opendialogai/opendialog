@@ -20,7 +20,7 @@ return [
                     'icon' => 'pattern'
                 ],
                 [
-                    'title' => 'Actions',
+                    'title' => 'Actions Setup',
                     'url' => '/admin/actions',
                     'icon' => 'refresh'
                 ],
