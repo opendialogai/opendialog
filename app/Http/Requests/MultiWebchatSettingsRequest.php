@@ -21,7 +21,7 @@ class MultiWebchatSettingsRequest extends FormRequest
     {
         return [
             '*.name' => ['required', 'exists:webchat_settings,name'],
-            '*.value' => ['required', new WebchatSettingValueRule(true)]
+            '*.value' => ['present', new WebchatSettingValueRule(true)]
         ];
     }
 }
