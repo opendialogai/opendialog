@@ -5,6 +5,7 @@ import DefaultContainer from '@/containers/DefaultContainer'
 
 import Home from '@opendialogai/opendialog-design-system-pkg/src/components/Views/Home'
 import WebchatSettingView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatSettingView'
+import MessageEditor from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageEditor'
 import MessageTemplateView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageTemplateView'
 import OutgoingIntentView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/OutgoingIntentView'
 import ChatbotUsersView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ChatbotUsersView'
@@ -73,6 +74,11 @@ const router = new VueRouter({
           path: 'interpreters',
           name: 'interpreters',
           component: Interpreters
+        },
+        {
+          path: 'message-editor',
+          name: 'message-editor',
+          component: MessageEditor
         },
         {
           path: 'interpreters/configure/new',

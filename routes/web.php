@@ -134,6 +134,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('interpreters/{anything}', 'AdminController@handle')->where('anything', '.*');
     Route::get('actions', 'AdminController@handle');
     Route::get('actions/{anything}', 'AdminController@handle')->where('anything', '.*');
+    Route::get('message-editor', 'AdminController@handle');
 });
 
 /**
