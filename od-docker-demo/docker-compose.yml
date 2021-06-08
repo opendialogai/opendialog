@@ -16,7 +16,6 @@ services:
     depends_on:
       - mysql
       - dgraph-server
-      - dgraph-ratel
       - dgraph-zero
   mysql:
     image: mysql:5.7.27
@@ -36,7 +35,7 @@ services:
     networks:
       - app-network
   dgraph-zero:
-    image: dgraph/dgraph:v20.11.0
+    image: dgraph/dgraph:v21.03.0
     volumes:
       - type: volume
         source: dgraph
@@ -53,7 +52,7 @@ services:
     links:
       - dgraph-server
   dgraph-server:
-    image: dgraph/dgraph:v20.11.0
+    image: dgraph/dgraph:v21.03.0
     volumes:
       - type: volume
         source: dgraph
@@ -64,22 +63,9 @@ services:
       - 8080:8080
       - 9080:9080
     restart: on-failure
-    command: dgraph alpha --auth_token=dgraphauthsecrettoken --whitelist 0.0.0.0/0 --my=dgraph-server:7080 --lru_mb=2048 --zero=dgraph-zero:5080
+    command: dgraph alpha --security token=dgraphauthsecrettoken --security whitelist=0.0.0.0/0 --my=dgraph-server:7080 --zero=dgraph-zero:5080
     networks:
       - app-network
-  dgraph-ratel:
-    image: dgraph/dgraph:v20.11.0
-    ports:
-      - 9001:8000
-    volumes:
-      - type: volume
-        source: dgraph
-        target: /dgraph
-        volume:
-          nocopy: true
-    networks:
-      - app-network
-    command: dgraph-ratel
 
 networks:
   app-network:
