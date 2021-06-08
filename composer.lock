@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82d38a143c5b406be1b5c153dfad0b0c",
+    "content-hash": "976c1a0703702d91f60a24d8d1a1f446",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2937,16 +2937,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/OPNDLG-651_clean_up",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "52d0a946bbe6e4a19341e8bd366df6a3bed93bc8"
+                "reference": "4bf4229850c3b9883b53efed47a3656e8541f856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/52d0a946bbe6e4a19341e8bd366df6a3bed93bc8",
-                "reference": "52d0a946bbe6e4a19341e8bd366df6a3bed93bc8",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/4bf4229850c3b9883b53efed47a3656e8541f856",
+                "reference": "4bf4229850c3b9883b53efed47a3656e8541f856",
                 "shasum": ""
             },
             "require": {
@@ -2956,11 +2956,11 @@
                 "guzzlehttp/guzzle": "^7.0.1",
                 "justinrainbow/json-schema": "^5.2",
                 "laravel/framework": "^8.0",
-                "php": "^7.4.0",
+                "php": "^7.4.0 || ^8.0",
                 "php-ds/php-ds": "^1.2",
                 "symfony/property-access": "^5.2",
                 "symfony/serializer": "^5.2",
-                "symfony/yaml": "^4.3"
+                "symfony/yaml": "^5.2"
             },
             "require-dev": {
                 "barryvdh/laravel-ide-helper": "^2.7",
@@ -2973,6 +2973,7 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3022,9 +3023,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-651_clean_up"
+                "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-06-08T12:01:31+00:00"
+            "time": "2021-06-08T14:32:14+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -3072,17 +3073,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "ad8f37e91ade79a733b839b7259b7ffefa0fd780"
+                "reference": "360f9f6d1055f619349f1cc44425180f6e3bb498"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/ad8f37e91ade79a733b839b7259b7ffefa0fd780",
-                "reference": "ad8f37e91ade79a733b839b7259b7ffefa0fd780",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/360f9f6d1055f619349f1cc44425180f6e3bb498",
+                "reference": "360f9f6d1055f619349f1cc44425180f6e3bb498",
                 "shasum": ""
             },
             "require": {
                 "genealabs/laravel-caffeine": "^8.0",
-                "php": "^7.3.0"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "opendialogai/core": "1.x-dev",
@@ -3122,7 +3123,7 @@
                 "issues": "https://github.com/opendialogai/webchat/issues",
                 "source": "https://github.com/opendialogai/webchat/tree/1.x"
             },
-            "time": "2021-06-02T16:28:11+00:00"
+            "time": "2021-06-08T14:21:54+00:00"
         },
         {
             "name": "opis/closure",
@@ -6918,31 +6919,35 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.24",
+            "version": "v5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "8b6d1b97521e2f125039b3fcb4747584c6dfa0ef"
+                "reference": "3bbcf262fceb3d8f48175302e6ba0ac96e3a5a11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/8b6d1b97521e2f125039b3fcb4747584c6dfa0ef",
-                "reference": "8b6d1b97521e2f125039b3fcb4747584c6dfa0ef",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/3bbcf262fceb3d8f48175302e6ba0ac96e3a5a11",
+                "reference": "3bbcf262fceb3d8f48175302e6ba0ac96e3a5a11",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3",
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "conflict": {
-                "symfony/console": "<3.4"
+                "symfony/console": "<4.4"
             },
             "require-dev": {
-                "symfony/console": "^3.4|^4.0|^5.0"
+                "symfony/console": "^4.4|^5.0"
             },
             "suggest": {
                 "symfony/console": "For validating YAML files using the lint command"
             },
+            "bin": [
+                "Resources/bin/yaml-lint"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -6969,7 +6974,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v4.4.24"
+                "source": "https://github.com/symfony/yaml/tree/v5.3.0"
             },
             "funding": [
                 {
@@ -6985,7 +6990,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-16T09:52:47+00:00"
+            "time": "2021-05-26T17:43:10+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
