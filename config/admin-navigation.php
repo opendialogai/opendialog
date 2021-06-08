@@ -51,7 +51,7 @@ return [
         ],
         [
             'title' => 'Contact Us',
-            'url' => 'https://opendialog.ai/contact-us',
+            'url' => 'https://opendialog.ai/support',
             'icon' => 'email'
         ]
     ]
