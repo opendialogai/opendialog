@@ -5,12 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\MessageTemplateRequest;
-use App\Http\Resources\MessageTemplateGraphResource;
+use App\Http\Resources\MessageTemplateResource;
 use OpenDialogAi\Core\Conversation\DataClients\MessageTemplateDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
 
-class MessageTemplateGraphController extends Controller
+class MessageTemplateController extends Controller
 {
     /**
      * @var MessageTemplateDataClient
@@ -31,12 +31,12 @@ class MessageTemplateGraphController extends Controller
 
         $messageTemplate = $this->messageTemplateDataClient->addMessageTemplateToIntent($newMessageTemplate);
 
-        return new MessageTemplateGraphResource($messageTemplate);
+        return new MessageTemplateResource($messageTemplate);
     }
 
     public function show(?Intent $intent, MessageTemplate $messageTemplate)
     {
-        return new MessageTemplateGraphResource($messageTemplate);
+        return new MessageTemplateResource($messageTemplate);
     }
 
     public function destroy(?Intent $intent, MessageTemplate $messageTemplate)
@@ -48,9 +48,9 @@ class MessageTemplateGraphController extends Controller
         }
     }
 
-    public function update(Intent $intent, MessageTemplateRequest $request): MessageTemplateGraphResource
+    public function update(Intent $intent, MessageTemplateRequest $request): MessageTemplateResource
     {
         $update = Serializer::deserialize($request->getContent(), MessageTemplate::class, 'json');
-        return new MessageTemplateGraphResource($this->messageTemplateDataClient->updateMessageTemplate($update));
+        return new MessageTemplateResource($this->messageTemplateDataClient->updateMessageTemplate($update));
     }
 }
