@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "976c1a0703702d91f60a24d8d1a1f446",
+    "content-hash": "82d38a143c5b406be1b5c153dfad0b0c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2937,16 +2937,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-feature/OPNDLG-651_clean_up",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "be3c3db26dcbcd970311c422096cb82cd47435f0"
+                "reference": "3c87fd86528ed0d99bb01453abdd27bd081be222"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/be3c3db26dcbcd970311c422096cb82cd47435f0",
-                "reference": "be3c3db26dcbcd970311c422096cb82cd47435f0",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/3c87fd86528ed0d99bb01453abdd27bd081be222",
+                "reference": "3c87fd86528ed0d99bb01453abdd27bd081be222",
                 "shasum": ""
             },
             "require": {
@@ -2958,7 +2958,6 @@
                 "laravel/framework": "^8.0",
                 "php": "^7.4.0",
                 "php-ds/php-ds": "^1.2",
-                "spatie/laravel-activitylog": "^3.8",
                 "symfony/property-access": "^5.2",
                 "symfony/serializer": "^5.2",
                 "symfony/yaml": "^4.3"
@@ -2974,7 +2973,6 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2982,7 +2980,6 @@
                         "OpenDialogAi\\Core\\CoreServiceProvider",
                         "OpenDialogAi\\GraphQLClient\\GraphQLClientServiceProvider",
                         "OpenDialogAi\\Core\\Reflection\\ReflectionServiceProvider",
-                        "OpenDialogAi\\ConversationBuilder\\ConversationBuilderServiceProvider",
                         "OpenDialogAi\\ConversationEngine\\ConversationEngineServiceProvider",
                         "OpenDialogAi\\ConversationLog\\ConversationLogServiceProvider",
                         "OpenDialogAi\\ResponseEngine\\ResponseEngineServiceProvider",
@@ -3006,7 +3003,6 @@
                     "OpenDialogAi\\ActionEngine\\": "src/ActionEngine",
                     "OpenDialogAi\\AttributeEngine\\": "src/AttributeEngine",
                     "OpenDialogAi\\ContextEngine\\": "src/ContextEngine",
-                    "OpenDialogAi\\ConversationBuilder\\": "src/ConversationBuilder",
                     "OpenDialogAi\\MessageBuilder\\": "src/MessageBuilder",
                     "OpenDialogAi\\ConversationEngine\\": "src/ConversationEngine",
                     "OpenDialogAi\\ConversationLog\\": "src/ConversationLog",
@@ -3026,9 +3022,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-651_clean_up"
             },
-            "time": "2021-06-07T16:24:09+00:00"
+            "time": "2021-06-08T11:00:58+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -4279,96 +4275,6 @@
                 "source": "https://github.com/spatie/commonmark-highlighter/tree/2.1.1"
             },
             "time": "2020-11-11T21:55:01+00:00"
-        },
-        {
-            "name": "spatie/laravel-activitylog",
-            "version": "3.17.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-activitylog.git",
-                "reference": "bdc44862aaca39ecbd824133b80dbd7c8017ed7f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/bdc44862aaca39ecbd824133b80dbd7c8017ed7f",
-                "reference": "bdc44862aaca39ecbd824133b80dbd7c8017ed7f",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/config": "^6.0 || ^7.0 || ^8.0",
-                "illuminate/database": "^6.0 || ^7.0 || ^8.0",
-                "illuminate/support": "^6.0 || ^7.0 || ^8.0",
-                "php": "^7.3 || ^8.0"
-            },
-            "require-dev": {
-                "ext-json": "*",
-                "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
-                "phpunit/phpunit": "^9.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Spatie\\Activitylog\\ActivitylogServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\Activitylog\\": "src"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian De Deyne",
-                    "email": "sebastian@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Tom Witkowski",
-                    "email": "dev.gummibeer@gmail.com",
-                    "homepage": "https://gummibeer.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A very simple activity logger to monitor the users of your website or application",
-            "homepage": "https://github.com/spatie/activitylog",
-            "keywords": [
-                "activity",
-                "laravel",
-                "log",
-                "spatie",
-                "user"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/laravel-activitylog/issues",
-                "source": "https://github.com/spatie/laravel-activitylog/tree/3.17.0"
-            },
-            "funding": [
-                {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-03-02T16:49:06+00:00"
         },
         {
             "name": "spatie/laravel-flash",
