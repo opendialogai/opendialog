@@ -15,7 +15,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
-        "opendialogai/core": "dev-feature/OPNDLG-716--action-configuration-conv-eng",
+        "opendialogai/core": "dev-fix/OPNDLG-778--message-types",
         "opendialogai/dgraph-docker": "20.11.0",
         "opendialogai/webchat": "dev-fix/OPNDLG-778--minimal-styling",
         "phalcongelist/php-diff": "^2.0",

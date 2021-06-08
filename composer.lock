@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a4a2f56051f2a8efaa2ef9f66b7ac27",
+    "content-hash": "20308b14b21805bd94d237ae7673b3fb",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2937,16 +2937,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/OPNDLG-716--action-configuration-conv-eng",
+            "version": "dev-fix/OPNDLG-778--message-types",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "e8c50909dc7ddad0906018bfc03db26ec72166b8"
+                "reference": "f7a82c69d7037ed84293d1a13ae092644f2753c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/e8c50909dc7ddad0906018bfc03db26ec72166b8",
-                "reference": "e8c50909dc7ddad0906018bfc03db26ec72166b8",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/f7a82c69d7037ed84293d1a13ae092644f2753c7",
+                "reference": "f7a82c69d7037ed84293d1a13ae092644f2753c7",
                 "shasum": ""
             },
             "require": {
@@ -3025,9 +3025,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-716--action-configuration-conv-eng"
+                "source": "https://github.com/opendialogai/core/tree/fix/OPNDLG-778--message-types"
             },
-            "time": "2021-06-03T12:27:50+00:00"
+            "time": "2021-06-08T09:20:15+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -3075,12 +3075,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "1eb976c7139afccc8d187e3ede3da22d21ebf8d0"
+                "reference": "e29adf04dc7e03161431b89bf39f16efadaf8563"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/1eb976c7139afccc8d187e3ede3da22d21ebf8d0",
-                "reference": "1eb976c7139afccc8d187e3ede3da22d21ebf8d0",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/e29adf04dc7e03161431b89bf39f16efadaf8563",
+                "reference": "e29adf04dc7e03161431b89bf39f16efadaf8563",
                 "shasum": ""
             },
             "require": {
@@ -3124,7 +3124,7 @@
                 "issues": "https://github.com/opendialogai/webchat/issues",
                 "source": "https://github.com/opendialogai/webchat/tree/fix/OPNDLG-778--minimal-styling"
             },
-            "time": "2021-06-07T17:23:47+00:00"
+            "time": "2021-06-08T09:48:20+00:00"
         },
         {
             "name": "opis/closure",
