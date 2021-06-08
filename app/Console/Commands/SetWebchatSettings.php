@@ -54,7 +54,7 @@ class SetWebchatSettings extends Command
         $settings = [
             WebchatSetting::URL => "$odUrl/web-chat",
             WebchatSetting::OPEN => true,
-            WebchatSetting::TEAM_NAME => "OpenDialog",
+            WebchatSetting::TEAM_NAME => "",
             WebchatSetting::LOGO => "$odUrl/images/homepage-logo.svg",
             WebchatSetting::MESSAGE_DELAY => '500',
             WebchatSetting::COLOURS => 'colours',
