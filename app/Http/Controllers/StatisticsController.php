@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Stats\Helper;
 use Illuminate\Http\Request;
-use OpenDialogAi\ConversationBuilder\Conversation;
 use OpenDialogAi\ConversationLog\ChatbotUser;
-use OpenDialogAi\Core\Conversation\Conversation as ConversationNode;
+use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
+use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\RequestLog;
-use OpenDialogAi\ResponseEngine\MessageTemplate;
-use Symfony\Component\Yaml\Yaml;
 
 class StatisticsController extends Controller
 {
@@ -110,55 +110,28 @@ class StatisticsController extends Controller
         ];
     }
 
-    public function incomingIntents()
-    {
-        if ($value = Helper::getCache('incomingIntents')) {
-            return [
-                'value' => $value,
-            ];
-        }
-
-        $incomingIntents = [];
-
-        $conversations = Conversation::where('status', ConversationNode::ACTIVATED)->get();
-
-        foreach ($conversations as $conversation) {
-            $yaml = Yaml::parse($conversation->model);
-
-            foreach ($yaml['conversation']['scenes'] as $scene) {
-                if (isset($scene['intents'])) {
-                    foreach ($scene['intents'] as $intent) {
-                        if (isset($intent['u']['i'])) {
-                            if (!in_array($intent['u']['i'], $incomingIntents)) {
-                                $incomingIntents[] = $intent['u']['i'];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $totalIncomingIntents = count($incomingIntents);
-        Helper::setCache('incomingIntents', $totalIncomingIntents);
-
-        return [
-            'value' => $totalIncomingIntents,
-        ];
-    }
-
     public function messageTemplates()
     {
-        if ($value = Helper::getCache('messageTemplates')) {
-            return [
-                'value' => $value,
-            ];
-        }
+        $totalMessages = 0;
+        $this->getActiveScenarios()->each(function (Scenario $scenario) use (&$totalMessages) {
+            ConversationDataClient::getAllConversationsByScenario($scenario)
+                ->each(function (Conversation $conversation) use (&$totalMessages) {
+                    $conversation->getScenes()->each(function (Scene $scene) use (&$totalMessages) {
+                        $scene->getTurns()->each(function (Turn $turn) use (&$totalMessages) {
+                            $turn->getRequestIntents()->each(function (Intent $intent) use (&$totalMessages) {
+                                $totalMessages += $intent->getMessageTemplates()->count();
+                            });
 
-        $totalMessageTemplates = MessageTemplate::count();
-        Helper::setCache('messageTemplates', $totalMessageTemplates);
+                            $turn->getResponseIntents()->each(function (Intent $intent) use (&$totalMessages) {
+                                $totalMessages += $intent->getMessageTemplates()->count();
+                            });
+                        });
+                    });
+                });
+        });
 
         return [
-            'value' => $totalMessageTemplates,
+            'value' => $totalMessages,
         ];
     }
 
