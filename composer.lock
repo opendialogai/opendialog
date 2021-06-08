@@ -3075,12 +3075,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "d33b7e58db90255c1f38afd8ab8b34be2fc79b0b"
+                "reference": "df9c0c9f6230c098f3d4de7614addf24a97238de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/d33b7e58db90255c1f38afd8ab8b34be2fc79b0b",
-                "reference": "d33b7e58db90255c1f38afd8ab8b34be2fc79b0b",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/df9c0c9f6230c098f3d4de7614addf24a97238de",
+                "reference": "df9c0c9f6230c098f3d4de7614addf24a97238de",
                 "shasum": ""
             },
             "require": {
@@ -3124,7 +3124,7 @@
                 "issues": "https://github.com/opendialogai/webchat/issues",
                 "source": "https://github.com/opendialogai/webchat/tree/fix/OPNDLG-778--minimal-styling"
             },
-            "time": "2021-06-08T10:49:48+00:00"
+            "time": "2021-06-08T14:07:01+00:00"
         },
         {
             "name": "opis/closure",
