@@ -36,20 +36,6 @@ Route::namespace('API')
         );
         Route::apiResource('user', 'UsersController');
 
-        Route::apiResource('outgoing-intent', 'OutgoingIntentsController');
-        Route::get(
-            'outgoing-intent/{id}/export',
-            'OutgoingIntentsController@export'
-        );
-        Route::post(
-            'outgoing-intent/{id}/import',
-            'OutgoingIntentsController@import'
-        );
-        Route::apiResource(
-            'outgoing-intent/{id}/message-templates',
-            'MessageTemplatesController'
-        );
-
         Route::apiResource('global-context', 'GlobalContextsController');
 
         Route::apiResource('component-configuration', 'ComponentConfigurationController');
@@ -103,15 +89,6 @@ Route::namespace('API')
             'ConversationsController@importAll'
         );
 
-        Route::get(
-            'outgoing-intents/export',
-            'OutgoingIntentsController@exportAll'
-        );
-        Route::post(
-            'outgoing-intents/import',
-            'OutgoingIntentsController@importAll'
-        );
-
         Route::post('specification-import', 'SpecificationController@import');
         Route::get('specification-export', 'SpecificationController@export');
 
@@ -150,7 +127,6 @@ Route::namespace('API')
             Route::patch('intents/{intent}', 'IntentsController@update');
             Route::delete('intents/{intent}', 'IntentsController@destroy');
 
-
             Route::get('ui-state/focused/scenario/{scenario}', 'UIStateController@showFocusedScenario');
             Route::get('ui-state/focused/conversation/{conversation}', 'UIStateController@showFocusedConversation');
             Route::get('ui-state/focused/scene/{scene}', 'UIStateController@showFocusedScene');
@@ -162,15 +138,15 @@ Route::namespace('API')
             Route::patch('ui-state/turns/{turn}/intents/{type}', 'UIStateController@massUpdateIntents')
                 ->where('type', '(request)|(response)');
 
-            Route::post('/intents/{intent}/message-templates', 'MessageTemplateGraphController@store');
+            Route::post('/intents/{intent}/message-templates', 'MessageTemplateController@store');
 
-            Route::get('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateGraphController@show');
-            Route::get('/message-templates/{messageTemplate}', 'MessageTemplateGraphController@show');
+            Route::get('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateController@show');
+            Route::get('/message-templates/{messageTemplate}', 'MessageTemplateController@show');
 
-            Route::delete('/message-templates/{messageTemplate}', 'MessageTemplateGraphController@destroy');
-            Route::delete('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateGraphController@destroy');
+            Route::delete('/message-templates/{messageTemplate}', 'MessageTemplateController@destroy');
+            Route::delete('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateController@destroy');
 
-            Route::patch('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateGraphController@update');
+            Route::patch('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateController@update');
         });
         Route::get('{userId}/context', 'UserContextController@getUserContext');
         Route::post('{userId}/context', 'UserContextController@addToUserContext');

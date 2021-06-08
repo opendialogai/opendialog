@@ -195,13 +195,6 @@ class IntentsTest extends TestCase
                     "sample_utterance" => "Hello!"
                 ]
             ]);
-
-        // Ensure that an outgoing intent and message template have not been created
-        $this->assertDatabaseMissing('outgoing_intents', ['name' => 'Welcome intent 1']);
-        $this->assertCount(0, OutgoingIntent::all());
-
-        $this->assertDatabaseMissing('message_templates', ['name' => 'Welcome intent 1']);
-        $this->assertCount(0, MessageTemplate::all());
     }
 
     public function testAddResponseIntentToTurn()
