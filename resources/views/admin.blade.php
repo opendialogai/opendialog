@@ -19,7 +19,7 @@
 
     <script>window.DashboardCards = {!! json_encode(config('admin-stats.cards')) !!};</script>
 
-    <script>window.NavigationItems = {!! json_encode(config('admin-navigation.items')) !!};</script>
+    <script>window.NavigationItems = {!! json_encode(config('admin-navigation')) !!};</script>
 
     <script>window.user = {!! json_encode(auth()->user()) !!};</script>
   </head>
@@ -29,16 +29,17 @@
       <app></app>
     </div>
 
-    @if (request()->route()->getName() == 'webchat-demo')
+
+
+    @if (request()->route()->getName() == 'webchat-demo' && request()->get('selected_scenario'))
       <script>
         window.openDialogSettings = {
           url: "{{ env("APP_URL") }}",
           validPath: 'admin/demo',
           user: {
-            first_name: '{!! auth()->user()->name !!}',
-            last_name: '',
-            {{--email: '{!! auth()->user()->email !!}',--}}
-            external_id: '{!! auth()->user()->id !!}',
+            custom: {
+              selected_scenario: "{{request()->get('selected_scenario')}}"
+            }
           },
         };
       </script>

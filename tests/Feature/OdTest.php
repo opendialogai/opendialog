@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Support\Facades\Artisan;
-use OpenDialogAi\ActionEngine\Service\ActionEngineInterface;
+use OpenDialogAi\ActionEngine\Service\ActionServiceInterface;
 use OpenDialogAi\AttributeEngine\AttributeResolver\AttributeResolver;
 use OpenDialogAi\ContextEngine\Contracts\ContextService;
 use OpenDialogAi\Core\InterpreterEngine\Service\ConfiguredInterpreterServiceInterface;
@@ -77,8 +77,8 @@ class OdTest extends TestCase
      */
     public function testOdCoreServiceProviders()
     {
-        $actionEngine = resolve(ActionEngineInterface::class);
-        $this->assertInstanceOf(ActionEngineInterface::class, $actionEngine);
+        $actionEngine = resolve(ActionServiceInterface::class);
+        $this->assertInstanceOf(ActionServiceInterface::class, $actionEngine);
 
         $contextService = resolve(ContextService::class);
         $this->assertInstanceOf(ContextService::class, $contextService);

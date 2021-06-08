@@ -148,6 +148,8 @@ Route::namespace('API')
 
             Route::patch('/intents/{intent}/message-templates/{messageTemplate}', 'MessageTemplateController@update');
         });
+        Route::get('{userId}/context', 'UserContextController@getUserContext');
+        Route::post('{userId}/context', 'UserContextController@addToUserContext');
 
         Route::post('conversation-simulation', 'ConversationSimulationController@simulate');
     });

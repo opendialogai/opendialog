@@ -3,8 +3,11 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use OpenDialogAi\Core\InterpreterEngine\Exceptions\InvalidConfigurationDataException;
-use OpenDialogAi\InterpreterEngine\Exceptions\InterpreterNotRegisteredException;
+use OpenDialogAi\ActionEngine\Service\ActionComponentServiceInterface;
+use OpenDialogAi\Core\Components\Exceptions\ComponentNotRegisteredException;
+use OpenDialogAi\Core\Components\Exceptions\InvalidConfigurationDataException;
+use OpenDialogAi\Core\Components\Exceptions\UnknownComponentTypeException;
+use OpenDialogAi\Core\Components\Helper\ComponentHelper;
 use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationRule implements Rule
@@ -26,17 +29,31 @@ class ComponentConfigurationRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $componentService = resolve(InterpreterComponentServiceInterface::class);
+        try {
+            $type = ComponentHelper::parseComponentId($this->componentId);
+        } catch (UnknownComponentTypeException $e) {
+            $this->errorMessage = $e->getMessage();
+            return false;
+        }
+
+        switch ($type) {
+            case ComponentHelper::INTERPRETER:
+                $componentService = resolve(InterpreterComponentServiceInterface::class);
+                break;
+            case ComponentHelper::ACTION:
+                $componentService = resolve(ActionComponentServiceInterface::class);
+                break;
+        }
 
         try {
-            $interpreter = $componentService->get($this->componentId);
-        } catch (InterpreterNotRegisteredException $e) {
+            $component = $componentService->get($this->componentId);
+        } catch (ComponentNotRegisteredException $e) {
             $this->errorMessage = $e->getMessage();
             return false;
         }
 
         try {
-            $interpreter::createConfiguration('Component', $value);
+            $component::createConfiguration('Component', $value);
         } catch (InvalidConfigurationDataException $e) {
             $this->errorMessage = $e->getMessage();
             return false;
