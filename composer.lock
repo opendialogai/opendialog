@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac211dafea025c5f405bc9c858df5887",
+    "content-hash": "2f29053b455306c95145e41fe706cf59",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2937,16 +2937,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-feature/OPNDLG-715--turn-status",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "4bf4229850c3b9883b53efed47a3656e8541f856"
+                "reference": "4177a47ff63eb547649d3a270245594054f98704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/4bf4229850c3b9883b53efed47a3656e8541f856",
-                "reference": "4bf4229850c3b9883b53efed47a3656e8541f856",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/4177a47ff63eb547649d3a270245594054f98704",
+                "reference": "4177a47ff63eb547649d3a270245594054f98704",
                 "shasum": ""
             },
             "require": {
@@ -2968,12 +2968,11 @@
                 "friendsofphp/php-cs-fixer": "^2.15",
                 "matthewbdaly/artisan-standalone": "^0.0.8",
                 "mockery/mockery": "^1.2",
-                "opendialogai/dgraph-docker": "^20.11.0",
+                "opendialogai/dgraph-docker": "^21.03.0",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3023,9 +3022,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/rc/1.0.0-alpha"
+                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-715--turn-status"
             },
-            "time": "2021-06-08T14:32:14+00:00"
+            "time": "2021-06-10T13:11:10+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
