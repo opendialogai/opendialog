@@ -64,8 +64,8 @@ class StatusController extends Controller
      */
     private function checkDgraphStatus()
     {
-        $dgraphUrl = config('opendialog.core.DGRAPH_URL');
-        $dGraphPort = config('opendialog.core.DGRAPH_PORT');
+        $dgraphUrl = config('opendialog.graphql.DGRAPH_BASE_URL');
+        $dGraphPort = config('opendialog.graphql.DGRAPH_PORT');
 
         $client = new Client([
             'base_uri' => $dgraphUrl . ":" . $dGraphPort
