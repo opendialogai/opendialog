@@ -180,27 +180,44 @@ class ComponentConfigurationController extends Controller
      */
     private function testInterpreter(ComponentConfigurationTestRequest $request): Response
     {
+        $errors = null;
+
         try {
             $interpreterClass = resolve(InterpreterComponentServiceInterface::class)->get($request->get('component_id'));
 
             $utterance = new UtteranceAttribute('configuration_test');
-            $utterance->setText("Hello from OpenDialog");
+            $text = "Hello from OpenDialog";
+            $utterance->setText($text);
             $utterance->setCallbackId("test");
 
             $interpreter = new $interpreterClass($interpreterClass::createConfiguration('test', $request->get('configuration')));
             $intents = $interpreter->interpret($utterance);
 
             $status = $intents->isEmpty() ? 400 : 200;
+
+            if ($intents->isEmpty()) {
+                $errors = [
+                    'errors' => [
+                        'no-match' => [sprintf("No intent found for the utterance: '%s'.", $text)]
+                    ]
+                ];
+            }
         } catch (\Exception $e) {
             Log::info(sprintf(
-                'Running test on interpreter with component ID %s ran into and exception and failed - %s',
+                "Testing interpreter (%s) failed, caught exception: %s",
                 $request->get('component_id'),
                 $e->getMessage()
             ));
 
             $status = 400;
+
+            $errors = [
+                'errors' => [
+                    'exception' => [$e->getMessage()]
+                ]
+            ];
         }
-        return response(null, $status);
+        return response($errors, $status);
     }
 
     /**
