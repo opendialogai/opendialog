@@ -3,8 +3,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Status;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use OpenDialogAi\ConversationEngine\Util\ConversationalState;
+use OpenDialogAi\Core\Conversation\Intent;
 
 class SimulationRequest extends FormRequest
 {
@@ -31,8 +33,8 @@ class SimulationRequest extends FormRequest
             "scene" => "string|nullable",
             "turn" => "string|nullable",
             "intent" => "string|nullable",
-            "speaker" => "required|string",
-            "intent_is_request" => "required|boolean",
+            "speaker" => ['required', 'string', Rule::in(Intent::VALID_SPEAKERS)],
+            "turn_status" => ['required', 'string', Rule::in(ConversationalState::VALID_TURN_STATUSES)],
         ];
     }
 }
