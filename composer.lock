@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cabda88984af1959a3038606a60d208",
+    "content-hash": "ac211dafea025c5f405bc9c858df5887",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2937,16 +2937,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-fix/OPNDLG-833--qna",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "22a773e51dd6c9801d6fb164ca43caf94899d1ab"
+                "reference": "cda487b159582b242c8252b87f788cb27e5af37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/22a773e51dd6c9801d6fb164ca43caf94899d1ab",
-                "reference": "22a773e51dd6c9801d6fb164ca43caf94899d1ab",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/cda487b159582b242c8252b87f788cb27e5af37c",
+                "reference": "cda487b159582b242c8252b87f788cb27e5af37c",
                 "shasum": ""
             },
             "require": {
@@ -2968,11 +2968,12 @@
                 "friendsofphp/php-cs-fixer": "^2.15",
                 "matthewbdaly/artisan-standalone": "^0.0.8",
                 "mockery/mockery": "^1.2",
-                "opendialogai/dgraph-docker": "^21.03.0",
+                "opendialogai/dgraph-docker": "21.03.0.1",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3022,9 +3023,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/fix/OPNDLG-833--qna"
+                "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-06-15T11:57:50+00:00"
+            "time": "2021-06-15T16:44:42+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
