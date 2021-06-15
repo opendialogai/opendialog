@@ -9,6 +9,8 @@ use App\Http\Requests\ComponentConfigurationTestRequest;
 use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
 use App\Http\Resources\ScenarioResource;
+use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +22,8 @@ use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
 use OpenDialogAi\Core\Components\Exceptions\UnknownComponentTypeException;
 use OpenDialogAi\Core\Components\Helper\ComponentHelper;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\InterpreterEngine\Interpreters\QnAInterpreter;
+use OpenDialogAi\InterpreterEngine\QnA\QnAClient;
 use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationController extends Controller
@@ -189,20 +193,27 @@ class ComponentConfigurationController extends Controller
             $text = "Hello from OpenDialog";
             $utterance->setText($text);
             $utterance->setCallbackId("test");
+            $configuration = $interpreterClass::createConfiguration('test', $request->get('configuration'));
 
-            $interpreter = new $interpreterClass($interpreterClass::createConfiguration('test', $request->get('configuration')));
-            $intents = $interpreter->interpret($utterance);
+            if ($request->get('component_id') === QnAInterpreter::getComponentId()) {
+                $client = new QnAClient(new Client(), $configuration);
+                $response = $client->queryQnA($text);
+                $status = empty($response->getAnswers()) ? 400 : 200;
+            } else {
+                $interpreter = new $interpreterClass($configuration);
+                $intents = $interpreter->interpret($utterance);
 
-            $status = $intents->isEmpty() ? 400 : 200;
+                $status = $intents->isEmpty() ? 400 : 200;
+            }
 
-            if ($intents->isEmpty()) {
+            if ($status === 400) {
                 $errors = [
                     'errors' => [
                         'no-match' => [sprintf("No intent found for the utterance: '%s'.", $text)]
                     ]
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info(sprintf(
                 "Testing interpreter (%s) failed, caught exception: %s",
                 $request->get('component_id'),
@@ -234,7 +245,7 @@ class ComponentConfigurationController extends Controller
             $result = $action->perform(new ActionInput());
 
             $status = $result->isSuccessful() ? 200 : 400;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info(sprintf(
                 'Running test on action with component ID %s ran into and exception and failed - %s',
                 $request->get('component_id'),
