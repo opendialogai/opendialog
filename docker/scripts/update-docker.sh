@@ -12,7 +12,7 @@ echo "Initializing dgraph schema..."
 php artisan schema:init --yes
 
 echo "Creating admin user"
-php artisan admin_user:create
+php artisan user:create {}
 
 echo "Creating default component configurations"
 php artisan configurations:create
