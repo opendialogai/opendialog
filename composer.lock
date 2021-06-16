@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac211dafea025c5f405bc9c858df5887",
+    "content-hash": "6ca1747337a65d7aa514fe6692f0127c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2941,12 +2941,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "9b0a48005a09807681d424144c65066e9f0a35cf"
+                "reference": "cda487b159582b242c8252b87f788cb27e5af37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/9b0a48005a09807681d424144c65066e9f0a35cf",
-                "reference": "9b0a48005a09807681d424144c65066e9f0a35cf",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/cda487b159582b242c8252b87f788cb27e5af37c",
+                "reference": "cda487b159582b242c8252b87f788cb27e5af37c",
                 "shasum": ""
             },
             "require": {
@@ -3025,20 +3025,20 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-06-15T13:31:12+00:00"
+            "time": "2021-06-15T16:44:42+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
-            "version": "21.03.0",
+            "version": "21.03.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/dgraph-docker.git",
-                "reference": "ac99c6615306658615956e2e037abdb8fe2f94c5"
+                "reference": "2d954c694f0b742830064f2c1e1ba9a75fae97e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/ac99c6615306658615956e2e037abdb8fe2f94c5",
-                "reference": "ac99c6615306658615956e2e037abdb8fe2f94c5",
+                "url": "https://api.github.com/repos/opendialogai/dgraph-docker/zipball/2d954c694f0b742830064f2c1e1ba9a75fae97e8",
+                "reference": "2d954c694f0b742830064f2c1e1ba9a75fae97e8",
                 "shasum": ""
             },
             "require-dev": {
@@ -3063,9 +3063,9 @@
             "description": "The OpenDialog DGraph Docker compose file",
             "support": {
                 "issues": "https://github.com/opendialogai/dgraph-docker/issues",
-                "source": "https://github.com/opendialogai/dgraph-docker/tree/21.03.0"
+                "source": "https://github.com/opendialogai/dgraph-docker/tree/21.03.0.2"
             },
-            "time": "2021-06-07T13:14:12+00:00"
+            "time": "2021-06-15T11:30:56+00:00"
         },
         {
             "name": "opendialogai/webchat",
