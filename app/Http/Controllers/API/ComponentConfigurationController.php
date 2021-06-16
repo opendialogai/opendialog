@@ -9,6 +9,7 @@ use App\Http\Requests\ComponentConfigurationTestRequest;
 use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
 use App\Http\Resources\ScenarioResource;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +21,8 @@ use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
 use OpenDialogAi\Core\Components\Exceptions\UnknownComponentTypeException;
 use OpenDialogAi\Core\Components\Helper\ComponentHelper;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationController extends Controller
@@ -180,27 +183,67 @@ class ComponentConfigurationController extends Controller
      */
     private function testInterpreter(ComponentConfigurationTestRequest $request): Response
     {
+        $data = null;
+        $text = $request->get('utterance') ?? "Hello from OpenDialog";
+
         try {
             $interpreterClass = resolve(InterpreterComponentServiceInterface::class)->get($request->get('component_id'));
 
             $utterance = new UtteranceAttribute('configuration_test');
-            $utterance->setText("Hello from OpenDialog");
+            $utterance->setText($text);
             $utterance->setCallbackId("test");
 
-            $interpreter = new $interpreterClass($interpreterClass::createConfiguration('test', $request->get('configuration')));
+            $configuration = $interpreterClass::createConfiguration('test', $request->get('configuration'));
+            $interpreter = new $interpreterClass($configuration);
+
+            /** @var IntentCollection $intents */
             $intents = $interpreter->interpret($utterance);
 
             $status = $intents->isEmpty() ? 400 : 200;
-        } catch (\Exception $e) {
+
+            if ($intents->isEmpty()) {
+                $data = [
+                    'errors' => [
+                        'no-match' => [
+                            sprintf(
+                                "No intent found for the utterance: '%s'. Perhaps try a different utterance.",
+                                $text
+                            )
+                        ]
+                    ]
+                ];
+            } else {
+                /** @var Intent $intent */
+                $intent = $intents->first();
+                $data = [
+                    'messages' => [
+                        'intent' => [
+                            sprintf(
+                                "Utterance '%s' interpreted as intent '%s' with confidence %d%%.",
+                                $text,
+                                $intent->getOdId(),
+                                $intent->getConfidence() * 100
+                            )
+                        ]
+                    ]
+                ];
+            }
+        } catch (Exception $e) {
             Log::info(sprintf(
-                'Running test on interpreter with component ID %s ran into and exception and failed - %s',
+                "Testing interpreter (%s) failed, caught exception: %s",
                 $request->get('component_id'),
                 $e->getMessage()
             ));
 
             $status = 400;
+
+            $data = [
+                'errors' => [
+                    'exception' => [$e->getMessage()]
+                ]
+            ];
         }
-        return response(null, $status);
+        return response($data, $status);
     }
 
     /**
@@ -217,7 +260,7 @@ class ComponentConfigurationController extends Controller
             $result = $action->perform(new ActionInput());
 
             $status = $result->isSuccessful() ? 200 : 400;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info(sprintf(
                 'Running test on action with component ID %s ran into and exception and failed - %s',
                 $request->get('component_id'),
