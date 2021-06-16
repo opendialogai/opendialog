@@ -10,7 +10,6 @@ use App\Http\Resources\ComponentConfigurationCollection;
 use App\Http\Resources\ComponentConfigurationResource;
 use App\Http\Resources\ScenarioResource;
 use Exception;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -22,8 +21,8 @@ use OpenDialogAi\Core\Components\Configuration\ComponentConfiguration;
 use OpenDialogAi\Core\Components\Exceptions\UnknownComponentTypeException;
 use OpenDialogAi\Core\Components\Helper\ComponentHelper;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
-use OpenDialogAi\InterpreterEngine\Interpreters\QnAInterpreter;
-use OpenDialogAi\InterpreterEngine\QnA\QnAClient;
+use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\InterpreterEngine\Service\InterpreterComponentServiceInterface;
 
 class ComponentConfigurationController extends Controller
@@ -184,32 +183,48 @@ class ComponentConfigurationController extends Controller
      */
     private function testInterpreter(ComponentConfigurationTestRequest $request): Response
     {
-        $errors = null;
+        $data = null;
+        $text = $request->get('utterance') ?? "Hello from OpenDialog";
 
         try {
             $interpreterClass = resolve(InterpreterComponentServiceInterface::class)->get($request->get('component_id'));
 
             $utterance = new UtteranceAttribute('configuration_test');
-            $text = "Hello from OpenDialog";
             $utterance->setText($text);
             $utterance->setCallbackId("test");
+
             $configuration = $interpreterClass::createConfiguration('test', $request->get('configuration'));
+            $interpreter = new $interpreterClass($configuration);
 
-            if ($request->get('component_id') === QnAInterpreter::getComponentId()) {
-                $client = new QnAClient(new Client(), $configuration);
-                $response = $client->queryQnA($text);
-                $status = empty($response->getAnswers()) ? 400 : 200;
-            } else {
-                $interpreter = new $interpreterClass($configuration);
-                $intents = $interpreter->interpret($utterance);
+            /** @var IntentCollection $intents */
+            $intents = $interpreter->interpret($utterance);
 
-                $status = $intents->isEmpty() ? 400 : 200;
-            }
+            $status = $intents->isEmpty() ? 400 : 200;
 
-            if ($status === 400) {
-                $errors = [
+            if ($intents->isEmpty()) {
+                $data = [
                     'errors' => [
-                        'no-match' => [sprintf("No intent found for the utterance: '%s'.", $text)]
+                        'no-match' => [
+                            sprintf(
+                                "No intent found for the utterance: '%s'. Perhaps try a different utterance.",
+                                $text
+                            )
+                        ]
+                    ]
+                ];
+            } else {
+                /** @var Intent $intent */
+                $intent = $intents->first();
+                $data = [
+                    'messages' => [
+                        'intent' => [
+                            sprintf(
+                                "Utterance '%s' interpreted as intent '%s' with confidence %d%%.",
+                                $text,
+                                $intent->getOdId(),
+                                $intent->getConfidence() * 100
+                            )
+                        ]
                     ]
                 ];
             }
@@ -222,13 +237,13 @@ class ComponentConfigurationController extends Controller
 
             $status = 400;
 
-            $errors = [
+            $data = [
                 'errors' => [
                     'exception' => [$e->getMessage()]
                 ]
             ];
         }
-        return response($errors, $status);
+        return response($data, $status);
     }
 
     /**
