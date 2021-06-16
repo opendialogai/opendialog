@@ -17,7 +17,7 @@ class ConversationSimulationController extends Controller
 {
     public function simulate(SimulationRequest $request)
     {
-        $conversationalState = (new ConversationalState($request->json('speaker'), $request->json('intent_is_request')))
+        $conversationalState = (new ConversationalState($request->json('speaker'), $request->json('turn_status')))
             ->setScenarioId($request->json('scenario') ?? Scenario::UNDEFINED)
             ->setConversationId($request->json('conversation') ?? Conversation::UNDEFINED)
             ->setSceneId($request->json('scene') ?? Scene::UNDEFINED)
