@@ -240,6 +240,25 @@ class ComponentConfigurationTest extends TestCase
             ->assertJsonValidationErrors(['configuration.app_url']);
     }
 
+    public function testStoreInvalidAppUrlLocalEnv()
+    {
+        $this->app['config']->set('app.env', 'local');
+
+        $data = [
+            'name' => 'My New Name',
+            'component_id' => 'interpreter.core.luis',
+            'configuration' => [
+                LuisInterpreterConfiguration::APP_URL => 'file://example.com/', //invalid scheme
+                LuisInterpreterConfiguration::APP_ID => '123',
+            ],
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configuration/', $data)
+            ->assertStatus(422)
+            ->assertJsonMissingValidationErrors(['configuration.app_url']);
+    }
+
     public function testStoreInvalidWebhookUrl()
     {
         $data = [
@@ -254,6 +273,23 @@ class ComponentConfigurationTest extends TestCase
             ->json('POST', '/admin/api/component-configuration/', $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['configuration.webhook_url']);
+    }
+
+    public function testStoreInvalidWebhookUrlLocalEnv()
+    {
+        $this->app['config']->set('app.env', 'local');
+
+        $data = [
+            'name' => 'Bad webhook',
+            'component_id' => 'action.core.webhook',
+            'configuration' => [
+                'webhook_url' => 'localhost'
+            ],
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configuration/', $data)
+            ->assertJsonMissingValidationErrors(['configuration.webhook_url']);
     }
 
     public function testDestroy()
@@ -320,6 +356,24 @@ class ComponentConfigurationTest extends TestCase
             ->json('POST', '/admin/api/component-configurations/test', $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['configuration.app_url']);
+    }
+
+    public function testTestConfigurationInvalidUrlLocalEnv()
+    {
+        $this->app['config']->set('app.env', 'local');
+
+        $data = [
+            'name' => 'My New Name',
+            'component_id' => 'interpreter.core.luis',
+            'configuration' => [
+                LuisInterpreterConfiguration::APP_URL => 'file://example.com/', //invalid scheme
+                LuisInterpreterConfiguration::APP_ID => '123',
+            ],
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configurations/test', $data)
+            ->assertJsonMissingValidationErrors(['configuration.app_url']);
     }
 
     public function testTestConfigurationFailureNoResponseFromProvider()
