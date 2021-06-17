@@ -223,6 +223,39 @@ class ComponentConfigurationTest extends TestCase
             ->assertJsonValidationErrors(['configuration']);
     }
 
+    public function testStoreInvalidAppUrl()
+    {
+        $data = [
+            'name' => 'My New Name',
+            'component_id' => 'interpreter.core.luis',
+            'configuration' => [
+                LuisInterpreterConfiguration::APP_URL => 'file://example.com/', //invalid scheme
+                LuisInterpreterConfiguration::APP_ID => '123',
+            ],
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configuration/', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['configuration.app_url']);
+    }
+
+    public function testStoreInvalidWebhookUrl()
+    {
+        $data = [
+            'name' => 'Bad webhook',
+            'component_id' => 'action.core.webhook',
+            'configuration' => [
+                'webhook_url' => 'localhost'
+            ],
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configuration/', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['configuration.webhook_url']);
+    }
+
     public function testDestroy()
     {
         /** @var ComponentConfiguration $configuration */
@@ -270,6 +303,23 @@ class ComponentConfigurationTest extends TestCase
             ->json('POST', '/admin/api/component-configurations/test', $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['component_id']);
+    }
+
+    public function testTestConfigurationFailureInvalidUrl()
+    {
+        $data = [
+            'name' => 'My New Name',
+            'component_id' => 'interpreter.core.luis',
+            'configuration' => [
+                LuisInterpreterConfiguration::APP_URL => 'file://example.com/', //invalid scheme
+                LuisInterpreterConfiguration::APP_ID => '123',
+            ],
+        ];
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/component-configurations/test', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['configuration.app_url']);
     }
 
     public function testTestConfigurationFailureNoResponseFromProvider()

@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Rules\ComponentConfigurationRule;
 use App\Rules\ComponentRegistrationRule;
+use App\Rules\PublicUrlRule;
+use App\Rules\UrlSchemeRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -46,6 +48,16 @@ class ComponentConfigurationRequest extends FormRequest
                 Rule::requiredIf($this->method() == 'POST' || !is_null($this->get('component_id'))),
                 'array',
                 new ComponentConfigurationRule($this->get('component_id', ''))
+            ],
+            'configuration.app_url' => [
+                'active_url',
+                new PublicUrlRule,
+                new UrlSchemeRule
+            ],
+            'configuration.webhook_url' => [
+                'active_url',
+                new PublicUrlRule,
+                new UrlSchemeRule
             ],
             'active' => [
                 'bail',
