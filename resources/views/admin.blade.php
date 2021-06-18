@@ -9,7 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <script>window.Laravel = {!! json_encode(['apiToken' => auth()->user()->api_token ?? null, 'userId' => auth()->user()->id]) !!};</script>
+    <script>window.Laravel = {!! json_encode(['apiToken' => auth()->user()->api_token ?? null, 'userId' => auth()->user()->id, 'twoFactorAuthEnabled' => auth()->user()->twoFactorAuthEnabled()]) !!};</script>
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
@@ -22,6 +22,7 @@
     <script>window.NavigationItems = {!! json_encode(config('admin-navigation')) !!};</script>
 
     <script>window.user = {!! json_encode(auth()->user()) !!};</script>
+
   </head>
 
   <body class="app">

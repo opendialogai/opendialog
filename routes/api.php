@@ -89,9 +89,6 @@ Route::namespace('API')
             'ConversationsController@importAll'
         );
 
-        Route::post('specification-import', 'SpecificationController@import');
-        Route::get('specification-export', 'SpecificationController@export');
-
         Route::prefix('conversation-builder')->group(function () {
             Route::apiResource('scenarios', 'ScenariosController');
 
