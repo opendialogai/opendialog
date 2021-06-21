@@ -8,22 +8,29 @@ use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends Command
 {
-    protected $signature = 'user:create';
+    protected $signature = 'user:create {--userCheck} {first?} {last?} {email?} {password?}';
 
     protected $description = 'Create an admin user in the system';
 
     public function handle()
     {
+        if ($this->option('userCheck') && User::count() >0) {
+            $this->error('Not creating user, at least 1 already exists');
+            return 1;
+        }
+
+        $this->info('Creating user - please enter details');
+
         $user = new User();
 
-        $first = $this->ask('First Name');
-        $last = $this->ask('Last Name');
+        $first = $this->argument('first') ?? $this->ask('First Name');
+        $last = $this->argument('last') ?? $this->ask('Last Name');
 
         $user->name = "$first $last";
 
-        $user->email = $this->ask('Email');
+        $user->email = $this->argument('email') ?? $this->ask('Email');
 
-        $password = $this->createPassword();
+        $password = $this->argument('password') ?? $this->createPassword();
 
         $user->password = Hash::make($password);
 
