@@ -14,14 +14,22 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Fortify;
 
-Auth::routes(['register' => false]);
+Fortify::loginView(function () {
+    return view('auth.login');
+});
+Fortify::twoFactorChallengeView(function () {
+    return view('auth.two-factor-challenge');
+});
 
-if (env("USE_2FA")) {
-    Route::get('auth/token', 'Auth\TwoFactorController@showTokenForm');
-    Route::post('auth/token', 'Auth\TwoFactorController@validateTokenForm');
-    Route::post('auth/two-factor', 'Auth\TwoFactorController@setupTwoFactorAuth');
-}
+Fortify::requestPasswordResetLinkView(function () {
+    return view('auth.passwords.email');
+});
+
+Fortify::resetPasswordView(function ($request) {
+    return view('auth.passwords.reset', ['request' => $request]);
+});
 
 Route::get('/', function () {
     return redirect('/admin');

@@ -4,17 +4,17 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Srmklive\Authy\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatable;
-use Srmklive\Authy\Contracts\Auth\TwoFactor\Authenticatable as TwoFactorAuthenticatableContract;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
  * @property string email
  * @property string name
  * @property string password
- * @property string phone_number
- * @property string phone_country_code
+ * @property string remember_token
+ * @property string two_factor_recovery_codes
+ * @property string two_factor_secret
  */
-class User extends Authenticatable implements TwoFactorAuthenticatableContract
+class User extends Authenticatable
 {
     use Notifiable;
     use TwoFactorAuthenticatable;
@@ -25,7 +25,7 @@ class User extends Authenticatable implements TwoFactorAuthenticatableContract
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone_number',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -34,7 +34,10 @@ class User extends Authenticatable implements TwoFactorAuthenticatableContract
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'two_factor_options',
+        'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
@@ -45,4 +48,12 @@ class User extends Authenticatable implements TwoFactorAuthenticatableContract
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return bool
+     */
+    public function twoFactorAuthEnabled()
+    {
+        return !is_null($this->two_factor_secret);
+    }
 }
