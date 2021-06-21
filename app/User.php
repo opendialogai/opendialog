@@ -10,8 +10,9 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string email
  * @property string name
  * @property string password
- * @property string phone_number
- * @property string phone_country_code
+ * @property string remember_token
+ * @property string two_factor_recovery_codes
+ * @property string two_factor_secret
  */
 class User extends Authenticatable
 {
@@ -24,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone_number',
+        'name', 'email', 'password',
     ];
 
     /**

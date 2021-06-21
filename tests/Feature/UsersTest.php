@@ -70,7 +70,6 @@ class UsersTest extends TestCase
     public function testUsersUpdateEndpoint()
     {
         $user = User::latest()->first();
-
         $this->actingAs($this->user, 'api')
             ->json('PATCH', '/admin/api/user/' . $user->id, [
                 'name' => 'updated name',
@@ -87,16 +86,13 @@ class UsersTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/user', [
                 'name' => 'test',
-                'email' => 'test@test.com',
-                'phone_number' => '+41 (0)22 76 761 11',
+                'email' => 'test@test.com'
             ])
             ->assertStatus(201)
             ->assertJsonFragment(
                 [
                     'name' => 'test',
-                    'email' => 'test@test.com',
-                    'phone_country_code' => 41,
-                    'phone_number' => '022 767 61 11',
+                    'email' => 'test@test.com'
                 ]
             );
     }
@@ -133,7 +129,6 @@ class UsersTest extends TestCase
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/user', [
                 'email' => 'test@test.com',
-                'phone_number' => '+41 (0)22 76 761 11',
             ])
             ->assertStatus(400);
 
@@ -142,21 +137,10 @@ class UsersTest extends TestCase
         $response = $this->actingAs($this->user, 'api')
             ->json('POST', '/admin/api/user', [
                 'name' => 'test',
-                'phone_number' => '+41 (0)22 76 761 11',
             ])
             ->assertStatus(400);
 
         $this->assertEquals($response->content(), '{"field":"email","message":"User email field is required."}');
-
-        $response = $this->actingAs($this->user, 'api')
-            ->json('POST', '/admin/api/user', [
-                'name' => 'test',
-                'email' => 'test@test.com',
-                'phone_number' => '1',
-            ])
-            ->assertStatus(400);
-
-        $this->assertEquals($response->content(), '{"field":"phone_number","message":"Enter a valid phone number with prefix."}');
     }
 
     public function testUsersInvalidUpdateEndpoint()

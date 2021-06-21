@@ -151,18 +151,6 @@ class UsersController extends Controller
             ];
         }
 
-        if ($user->phone_number) {
-            $phoneUtil = PhoneNumberUtil::getInstance();
-            try {
-                $phoneUtil->parse($user->phone_number);
-            } catch (NumberParseException $e) {
-                return [
-                    'field' => 'phone_number',
-                    'message' => 'Enter a valid phone number with prefix.',
-                ];
-            }
-        }
-
         return null;
     }
 }
