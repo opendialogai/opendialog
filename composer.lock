@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e076c83696444d4da8875876c1e8d17",
+    "content-hash": "5ceded86dad9a5591acad681fc3ec263",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2937,16 +2937,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/OPNDLG-832--default-trigger-conversation",
+            "version": "dev-fix/OPNDLG-846_button_message_value_validation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "b5879e7505f95325b6276612236eff90ecc35465"
+                "reference": "b7dd2d90037ef1749e365a810180887e6ab5c33f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/b5879e7505f95325b6276612236eff90ecc35465",
-                "reference": "b5879e7505f95325b6276612236eff90ecc35465",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/b7dd2d90037ef1749e365a810180887e6ab5c33f",
+                "reference": "b7dd2d90037ef1749e365a810180887e6ab5c33f",
                 "shasum": ""
             },
             "require": {
@@ -3022,9 +3022,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-832--default-trigger-conversation"
+                "source": "https://github.com/opendialogai/core/tree/fix/OPNDLG-846_button_message_value_validation"
             },
-            "time": "2021-06-16T16:41:28+00:00"
+            "time": "2021-06-21T13:53:33+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
