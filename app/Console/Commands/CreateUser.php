@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends Command
 {
-    protected $signature = 'user:create {--userCheck} {first?} {last?} {email?} {password?} {phone?} ';
+    protected $signature = 'user:create {--userCheck} {first?} {last?} {email?} {password?}';
 
     protected $description = 'Create an admin user in the system';
 
