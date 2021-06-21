@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Rules\ComponentConfigurationRule;
 use App\Rules\ComponentRegistrationRule;
+use App\Rules\PublicUrlRule;
+use App\Rules\UrlSchemeRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,7 +28,7 @@ class ComponentConfigurationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => [
                 Rule::requiredIf($this->method() == 'POST'),
                 'bail',
@@ -52,5 +54,22 @@ class ComponentConfigurationRequest extends FormRequest
                 'boolean',
             ]
         ];
+
+        // Only set the URL validation rules if we are not in debug mode to allow local URLs during local development
+        if (config('app.env') !== 'local') {
+            $rules['configuration.app_url'] = [
+                'active_url',
+                new PublicUrlRule,
+                new UrlSchemeRule
+            ];
+
+            $rules['configuration.webhook_url'] = [
+                'active_url',
+                new PublicUrlRule,
+                new UrlSchemeRule
+            ];
+        }
+
+        return $rules;
     }
 }
