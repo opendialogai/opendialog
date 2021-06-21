@@ -9,10 +9,17 @@ use App\User;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
+use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\SceneCollection;
+use OpenDialogAi\Core\Conversation\Turn;
+use OpenDialogAi\Core\Conversation\TurnCollection;
 use Tests\TestCase;
 
 class ScenariosTest extends TestCase
@@ -162,28 +169,72 @@ class ScenariosTest extends TestCase
         $fakeScenario->setODId("example_scenario");
         $fakeScenario->setDescription('An example scenario');
 
-        $fakeScenarioCreated = new Scenario();
-        $fakeScenarioCreated->setName("Example scenario");
-        $fakeScenarioCreated->setUid("0x0001");
-        $fakeScenarioCreated->setODId("example_scenario");
-        $fakeScenarioCreated->setDescription('An example scenario');
+        $fakeWelcomeConversation = new Conversation($fakeScenario);
+        $fakeWelcomeConversation->setName('Welcome Conversation');
+        $fakeWelcomeConversation->setOdId('welcome_conversation');
+        $fakeWelcomeConversation->setDescription('Automatically generated');
+        $fakeScenario->setConversations(new ConversationCollection([$fakeWelcomeConversation]));
 
-        $fakeScenarioUpdated = clone($fakeScenarioCreated);
+        $fakeWelcomeScene = new Scene($fakeWelcomeConversation);
+        $fakeWelcomeScene->setName('Welcome Scene');
+        $fakeWelcomeScene->setOdId('welcome_scene');
+        $fakeWelcomeScene->setDescription('Automatically generated');
+        $fakeWelcomeConversation->setScenes(new SceneCollection([$fakeWelcomeScene]));
+
+        $fakeWelcomeTurn = new Turn($fakeWelcomeScene);
+        $fakeWelcomeTurn->setName('Welcome Turn');
+        $fakeWelcomeTurn->setOdId('welcome_turn');
+        $fakeWelcomeTurn->setDescription('Automatically generated');
+        $fakeWelcomeScene->setTurns(new TurnCollection([$fakeWelcomeTurn]));
+
+        $fakeWelcomeIntent = new Intent($fakeWelcomeTurn);
+        $fakeWelcomeIntent->setName('Welcome Intent');
+        $fakeWelcomeIntent->setOdId('intent.app.welcomeResponse');
+        $fakeWelcomeIntent->setSpeaker(Intent::APP);
+        $fakeWelcomeIntent->setDescription('Automatically generated');
+        $fakeWelcomeIntent->setIsRequestIntent(true);
+        $fakeWelcomeTurn->setRequestIntents(new IntentCollection([$fakeWelcomeIntent]));
+
+        $fakeTriggerConversation = new Conversation($fakeScenario);
+        $fakeTriggerConversation->setName('Trigger Conversation');
+        $fakeTriggerConversation->setOdId('trigger_conversation');
+        $fakeTriggerConversation->setDescription('Automatically generated');
+        $fakeScenario->setConversations(new ConversationCollection([$fakeTriggerConversation]));
+
+        $fakeTriggerScene = new Scene($fakeTriggerConversation);
+        $fakeTriggerScene->setName('Trigger Scene');
+        $fakeTriggerScene->setOdId('trigger_scene');
+        $fakeTriggerScene->setDescription('Automatically generated');
+        $fakeTriggerConversation->setScenes(new SceneCollection([$fakeTriggerScene]));
+
+        $fakeTriggerTurn = new Turn($fakeTriggerScene);
+        $fakeTriggerTurn->setName('Trigger Turn');
+        $fakeTriggerTurn->setOdId('trigger_turn');
+        $fakeTriggerTurn->setDescription('Automatically generated');
+        $fakeTriggerScene->setTurns(new TurnCollection([$fakeTriggerTurn]));
+
+        $fakeTriggerIntent = new Intent($fakeTriggerTurn);
+        $fakeTriggerIntent->setName('Trigger Intent');
+        $fakeTriggerIntent->setOdId('intent.core.welcome');
+        $fakeTriggerIntent->setSpeaker(Intent::USER);
+        $fakeTriggerIntent->setDescription('Automatically generated');
+        $fakeTriggerIntent->setIsRequestIntent(true);
+        $fakeTriggerTurn->setRequestIntents(new IntentCollection([$fakeTriggerIntent]));
+
+        $fakeScenarioCreated = clone($fakeScenario);
+        $fakeScenarioCreated->setUid("0x0001");
+
         $condition = new Condition(
             'eq',
             ['attribute' => 'user.selected_scenario'],
             ['value' => $fakeScenarioCreated->getUid()]
         );
 
+        $fakeScenarioUpdated = clone($fakeScenarioCreated);
         $fakeScenarioUpdated->setConditions(new ConditionCollection([$condition]));
 
-        $fakeConversation = new Conversation($fakeScenarioCreated);
-        $fakeConversation->setName('Welcome Conversation');
-        $fakeConversation->setOdId('welcome_conversation');
-        $fakeConversation->setDescription('Automatically generated');
-
-        $fakeConversationCreated = clone($fakeConversation);
-        $fakeConversationCreated->setUid("0x0001");
+        $fakeWelcomeConversationCreated = clone($fakeWelcomeConversation);
+        $fakeWelcomeConversationCreated->setUid("0x0001");
 
         Serializer::shouldReceive('deserialize')
             ->once()
@@ -205,9 +256,12 @@ class ScenariosTest extends TestCase
             ->with($fakeScenario)
             ->andReturn($fakeScenarioCreated);
 
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once()
+            ->andReturn($fakeTriggerIntent);
+
         ConversationDataClient::shouldReceive('updateScenario')
             ->once()
-            ->with($fakeScenarioCreated)
             ->andReturn($fakeScenarioUpdated);
 
         $this->actingAs($this->user, 'api')
@@ -222,7 +276,7 @@ class ScenariosTest extends TestCase
                 'uid'=> '0x0001',
                 'odId' => 'example_scenario',
                 'description' =>  'An example scenario',
-                'conversations' => [['id' => $fakeConversationCreated->getUid()]]
+                'conversations' => [['id' => $fakeWelcomeConversationCreated->getUid()]]
             ]);
     }
 
