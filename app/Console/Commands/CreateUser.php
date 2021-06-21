@@ -22,7 +22,6 @@ class CreateUser extends Command
         $user->name = "$first $last";
 
         $user->email = $this->ask('Email');
-        $user->phone_number = $this->ask('Phone number (with country code)');
 
         $password = $this->createPassword();
 

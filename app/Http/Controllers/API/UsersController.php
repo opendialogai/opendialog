@@ -11,8 +11,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumberUtil;
 
 class UsersController extends Controller
 {
@@ -83,10 +81,6 @@ class UsersController extends Controller
     {
         /** @var User $user */
         if ($user = User::find($id)) {
-            if ($user->phone_number) {
-                $user->phone_number = '+' . $user->phone_country_code . ' ' . $user->phone_number;
-            }
-
             $user->fill($request->all());
 
             if ($error = $this->validateValue($user)) {
