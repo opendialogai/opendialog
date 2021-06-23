@@ -5,10 +5,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\ScenarioRequest;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ScenarioResource;
+use App\Rules\OdId;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -108,14 +110,7 @@ class ScenariosController extends Controller
         $persistedScenario = $this->createDefaultConversations($newScenario);
 
         // Add a new condition to the scenario now that it has an ID
-        $condition = new Condition(
-            'eq',
-            ['attribute' => 'user.selected_scenario'],
-            ['value' => $persistedScenario->getUid()]
-        );
-
-        $persistedScenario->setConditions(new ConditionCollection([$condition]));
-
+        $persistedScenario = $this->setDefaultScenarioCondition($persistedScenario);
         $updatedScenario = ConversationDataClient::updateScenario($persistedScenario);
 
         return (new ScenarioResource($updatedScenario))->response()->setStatusCode(201);
@@ -211,6 +206,44 @@ class ScenariosController extends Controller
         } else {
             return response('Error deleting scenario, check the logs', 500);
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Scenario $scenario
+     * @return ScenarioResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Scenario $scenario): ScenarioResource
+    {
+        $scenario = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
+
+        $odId = $request->get('od_id', sprintf("%s_copy", $scenario->getOdId()));
+
+        if (OdId::isOdIdUniqueWithinParentScope($odId)) {
+            $name = $request->get('name', sprintf("%s copy", $scenario->getName()));
+        } else {
+            $originalOdId = $odId;
+            $i = 1;
+
+            do {
+                $i++;
+                $odId = sprintf("%s_%d", $originalOdId, $i);
+            } while (!OdId::isOdIdUniqueWithinParentScope($odId));
+
+            $name = $request->get('name', sprintf("%s copy %d", $scenario->getName(), $i));
+        }
+
+        $scenario->removeUid();
+        $scenario->setOdId($odId);
+        $scenario->setName($name);
+
+        $duplicate = ConversationDataClient::addFullScenarioGraph($scenario);
+
+        // Reset the default condition as it will have the old UID
+        $duplicate = $this->setDefaultScenarioCondition($duplicate);
+        $duplicate = ConversationDataClient::updateScenario($duplicate);
+
+        return new ScenarioResource($duplicate);
     }
 
     /**
@@ -398,5 +431,22 @@ class ScenariosController extends Controller
 
         /** @var Intent */
         return $turn->getRequestIntents()->first();
+    }
+
+    /**
+     * @param Scenario $scenario
+     * @return Scenario
+     */
+    private function setDefaultScenarioCondition(Scenario $scenario): Scenario
+    {
+        $condition = new Condition(
+            'eq',
+            ['attribute' => 'user.selected_scenario'],
+            ['value' => $scenario->getUid()]
+        );
+
+        $scenario->setConditions(new ConditionCollection([$condition]));
+
+        return $scenario;
     }
 }

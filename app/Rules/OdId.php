@@ -31,7 +31,7 @@ class OdId implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->isOdIdUniqueWithinParentScope($value, $this->parent, $this->currentUid);
+        return self::isOdIdUniqueWithinParentScope($value, $this->parent, $this->currentUid);
     }
 
     /**
@@ -53,7 +53,7 @@ class OdId implements Rule
      * @param string|null $currentUid The current graph ID to ensure we don't check against the currently updating object
      * @return bool
      */
-    private function isOdIdUniqueWithinParentScope(
+    public static function isOdIdUniqueWithinParentScope(
         string $odId,
         ConversationObject $parent = null,
         string $currentUid = null
