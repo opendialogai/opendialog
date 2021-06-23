@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fe880ffb6078d9d214ac4555b66ed27",
+    "content-hash": "86663db80c9a27ffadefdc3687b589b9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2917,16 +2917,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-feautre/OPNDLG-850_intent_ids_with_message",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "42b1ef1298fb0f861e99d3c68259b2767bc5c7a5"
+                "reference": "d42f613379f11c2bc0e79cccda21b6b48c5184ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/42b1ef1298fb0f861e99d3c68259b2767bc5c7a5",
-                "reference": "42b1ef1298fb0f861e99d3c68259b2767bc5c7a5",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/d42f613379f11c2bc0e79cccda21b6b48c5184ed",
+                "reference": "d42f613379f11c2bc0e79cccda21b6b48c5184ed",
                 "shasum": ""
             },
             "require": {
@@ -2953,7 +2953,6 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3003,9 +3002,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/feautre/OPNDLG-850_intent_ids_with_message"
             },
-            "time": "2021-06-21T16:21:43+00:00"
+            "time": "2021-06-23T10:25:06+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",

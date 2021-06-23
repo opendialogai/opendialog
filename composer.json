@@ -16,7 +16,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
-        "opendialogai/core": "1.x-dev",
+        "opendialogai/core": "dev-feautre/OPNDLG-850_intent_ids_with_message",
         "opendialogai/dgraph-docker": "21.03.0.2",
         "opendialogai/webchat": "1.x-dev",
         "phalcongelist/php-diff": "^2.0",
