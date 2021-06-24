@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\TurnIntentRequest;
 use App\Http\Requests\TurnRequest;
 use App\Http\Resources\TurnIntentResource;
@@ -19,15 +20,9 @@ use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
-use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class TurnsController extends Controller
 {
-    /**
-     * @var ResponseEngineServiceInterface
-     */
-    private $responseEngineService;
-
     /**
      * Create a new controller instance.
      *
@@ -36,7 +31,6 @@ class TurnsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->responseEngineService = resolve(ResponseEngineServiceInterface::class);
     }
 
     /**
@@ -202,5 +196,20 @@ class TurnsController extends Controller
                 )
             );
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Turn $turn
+     * @return TurnResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Turn $turn): TurnResource
+    {
+        $turn = ConversationDataClient::getFullTurnGraph($turn->getUid());
+        $turn->removeUid();
+        $turn = $request->setUniqueOdId($turn, $turn->getScene());
+
+        $duplicate = ConversationDataClient::addFullTurnGraph($turn);
+        return new TurnResource($duplicate);
     }
 }

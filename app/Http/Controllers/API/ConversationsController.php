@@ -4,16 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\SceneRequest;
-use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\SceneResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
-use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 
 class ConversationsController extends Controller
@@ -108,5 +107,20 @@ class ConversationsController extends Controller
         } else {
             return response('Error deleting conversation, check the logs', 500);
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Conversation $conversation
+     * @return ConversationResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Conversation $conversation): ConversationResource
+    {
+        $conversation = ConversationDataClient::getFullConversationGraph($conversation->getUid());
+        $conversation->removeUid();
+        $conversation = $request->setUniqueOdId($conversation, $conversation->getScenario());
+
+        $duplicate = ConversationDataClient::addFullConversationGraph($conversation);
+        return new ConversationResource($duplicate);
     }
 }

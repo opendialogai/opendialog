@@ -5,13 +5,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\SceneRequest;
 use App\Http\Requests\TurnRequest;
 use App\Http\Resources\SceneResource;
 use App\Http\Resources\TurnResource;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
@@ -95,5 +94,20 @@ class ScenesController extends Controller
         } else {
             return response('Error deleting conversation, check the logs', 500);
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Scene $conversation
+     * @return SceneResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Scene $conversation): SceneResource
+    {
+        $scene = ConversationDataClient::getFullSceneGraph($conversation->getUid());
+        $scene->removeUid();
+        $scene = $request->setUniqueOdId($scene, $conversation->getConversation());
+
+        $duplicate = ConversationDataClient::addFullSceneGraph($scene);
+        return new SceneResource($duplicate);
     }
 }

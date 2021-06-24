@@ -10,7 +10,6 @@ use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\ScenarioRequest;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ScenarioResource;
-use App\Rules\OdId;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -216,26 +215,8 @@ class ScenariosController extends Controller
     public function duplicate(ConversationObjectDuplicationRequest $request, Scenario $scenario): ScenarioResource
     {
         $scenario = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
-
-        $odId = $request->get('od_id', sprintf("%s_copy", $scenario->getOdId()));
-
-        if (OdId::isOdIdUniqueWithinParentScope($odId)) {
-            $name = $request->get('name', sprintf("%s copy", $scenario->getName()));
-        } else {
-            $originalOdId = $odId;
-            $i = 1;
-
-            do {
-                $i++;
-                $odId = sprintf("%s_%d", $originalOdId, $i);
-            } while (!OdId::isOdIdUniqueWithinParentScope($odId));
-
-            $name = $request->get('name', sprintf("%s copy %d", $scenario->getName(), $i));
-        }
-
         $scenario->removeUid();
-        $scenario->setOdId($odId);
-        $scenario->setName($name);
+        $scenario = $request->setUniqueOdId($scenario);
 
         $duplicate = ConversationDataClient::addFullScenarioGraph($scenario);
 

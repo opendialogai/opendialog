@@ -262,4 +262,38 @@ class ConversationsTest extends TestCase
             ->json('DELETE', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid())
             ->assertStatus(200);
     }
+
+    public function testDuplication()
+    {
+        $scenario = ScenariosTest::getFakeScenarioForDuplication();
+
+        /** @var Conversation $conversation */
+        $conversation = $scenario->getConversations()->getObjectsWithId('example_conversation')->first();
+
+        // Called during route binding
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->andReturn($conversation);
+
+        // Called in controller
+        ConversationDataClient::shouldReceive('getFullConversationGraph')
+            ->once()
+            ->andReturn($conversation);
+
+        ConversationDataClient::shouldReceive('addFullConversationGraph')
+            ->once()
+            ->andReturnUsing(function ($conversation) {
+                $conversation->setUid('0x9999');
+                return $conversation;
+            });
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/conversations/' . $conversation->getUid() . '/duplicate')
+            ->assertStatus(200)
+            ->assertJson([
+                'name' => 'Example Conversation copy 2',
+                'od_id' => 'example_conversation_copy_2',
+                'id'=> '0x9999',
+            ]);
+    }
 }

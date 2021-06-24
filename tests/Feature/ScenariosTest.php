@@ -120,7 +120,7 @@ class ScenariosTest extends TestCase
 
     public function testGetScenarioByUid()
     {
-        $fakeScenario = $this->getFakeScenario();
+        $fakeScenario = self::getFakeScenario();
 
         Serializer::shouldReceive('normalize')
             ->once()
@@ -281,9 +281,9 @@ class ScenariosTest extends TestCase
             ]);
     }
 
-    public function testDuplicateScenarioSuccess()
+    public function testDuplicateScenarioFailure()
     {
-        $scenario = $this->getFakeScenarioForDuplication();
+        $scenario = self::getFakeScenarioForDuplication();
 
         // Called during route binding
         ConversationDataClient::shouldReceive('getScenarioByUid')
@@ -304,9 +304,9 @@ class ScenariosTest extends TestCase
             ->assertStatus(422);
     }
 
-    public function testDuplicateScenarioFailure()
+    public function testDuplicateScenarioSuccess()
     {
-        $scenario = $this->getFakeScenarioForDuplication();
+        $scenario = self::getFakeScenarioForDuplication();
 
         // Called during route binding
         ConversationDataClient::shouldReceive('getScenarioByUid')
@@ -376,7 +376,7 @@ class ScenariosTest extends TestCase
 
     public function testUpdateScenario()
     {
-        $fakeScenario = $this->getFakeScenario();
+        $fakeScenario = self::getFakeScenario();
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
             ->with($fakeScenario->getUid(), false)
@@ -437,7 +437,7 @@ class ScenariosTest extends TestCase
 
     public function testDeleteScenario()
     {
-        $fakeScenario = $this->getFakeScenario();
+        $fakeScenario = self::getFakeScenario();
 
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
@@ -457,7 +457,7 @@ class ScenariosTest extends TestCase
     /**
      * @return Scenario
      */
-    public function getFakeScenario(): Scenario
+    public static function getFakeScenario(): Scenario
     {
         $fakeScenario = new Scenario();
         $fakeScenario->setName("Example scenario");
@@ -468,51 +468,103 @@ class ScenariosTest extends TestCase
         return $fakeScenario;
     }
 
-    public function getFakeScenarioForDuplication(): Scenario
+    public static function getFakeScenarioForDuplication(): Scenario
     {
-        $scenario = $this->getFakeScenario();
+        $scenario = self::getFakeScenario();
 
-        $conversations[] = new Conversation();
-        $conversations[0]->setName("Example Conversation 1");
-        $conversations[0]->setUid('0x0002');
-        $conversations[0]->setOdId("example_conversation_1");
-        $conversations[0]->setCreatedAt(Carbon::now());
-        $conversations[0]->setUpdatedAt(Carbon::now());
-        $conversations[0]->setScenario($scenario);
+        $conversation = new Conversation();
+        $conversation->setName("Example Conversation");
+        $conversation->setUid('0x0002');
+        $conversation->setOdId("example_conversation");
+        $conversation->setCreatedAt(Carbon::now());
+        $conversation->setUpdatedAt(Carbon::now());
+        $conversation->setScenario($scenario);
+        $conversations[] = $conversation;
 
-        $scenes[] = new Scene();
-        $scenes[0]->setName("Example Scene 1");
-        $scenes[0]->setUid('0x0003');
-        $scenes[0]->setOdId("example_scene_1");
-        $scenes[0]->setCreatedAt(Carbon::now());
-        $scenes[0]->setUpdatedAt(Carbon::now());
-        $scenes[0]->setConversation($conversations[0]);
+        $scene = new Scene();
+        $scene->setName("Example Scene");
+        $scene->setUid('0x0003');
+        $scene->setOdId("example_scene");
+        $scene->setCreatedAt(Carbon::now());
+        $scene->setUpdatedAt(Carbon::now());
+        $scene->setConversation($conversations[0]);
+        $scenes[] = $scene;
 
-        $turns[] = new Turn();
-        $turns[0]->setName("Example Turn 1");
-        $turns[0]->setUid('0x0004');
-        $turns[0]->setOdId("example_turn_1");
-        $turns[0]->setCreatedAt(Carbon::now());
-        $turns[0]->setUpdatedAt(Carbon::now());
-        $turns[0]->setScene($scenes[0]);
+        $turn = new Turn();
+        $turn->setName("Example Turn");
+        $turn->setUid('0x0004');
+        $turn->setOdId("example_turn");
+        $turn->setCreatedAt(Carbon::now());
+        $turn->setUpdatedAt(Carbon::now());
+        $turn->setScene($scenes[0]);
+        $turns[] = $turn;
 
-        $requestIntents[] = new Intent();
-        $requestIntents[0]->setIsRequestIntent(true);
-        $requestIntents[0]->setName("Example Intent 1");
-        $requestIntents[0]->setUid('0x0005');
-        $requestIntents[0]->setOdId("example_turn_1");
-        $requestIntents[0]->setCreatedAt(Carbon::now());
-        $requestIntents[0]->setUpdatedAt(Carbon::now());
-        $requestIntents[0]->setTurn($turns[0]);
+        $requestIntent = new Intent();
+        $requestIntent->setIsRequestIntent(true);
+        $requestIntent->setName("Example Request Intent");
+        $requestIntent->setUid('0x0005');
+        $requestIntent->setOdId("example_request_intent");
+        $requestIntent->setCreatedAt(Carbon::now());
+        $requestIntent->setUpdatedAt(Carbon::now());
+        $requestIntent->setTurn($turns[0]);
+        $requestIntents[] = $requestIntent;
 
-        $responseIntents[] = new Intent();
-        $responseIntents[0]->setIsRequestIntent(true);
-        $responseIntents[0]->setName("Example Intent 2");
-        $responseIntents[0]->setUid('0x0006');
-        $responseIntents[0]->setOdId("example_turn_2");
-        $responseIntents[0]->setCreatedAt(Carbon::now());
-        $responseIntents[0]->setUpdatedAt(Carbon::now());
-        $responseIntents[0]->setTurn($turns[0]);
+        $responseIntent = new Intent();
+        $responseIntent->setIsRequestIntent(true);
+        $responseIntent->setName("Example Response Intent");
+        $responseIntent->setUid('0x0006');
+        $responseIntent->setOdId("example_response_intent");
+        $responseIntent->setCreatedAt(Carbon::now());
+        $responseIntent->setUpdatedAt(Carbon::now());
+        $responseIntent->setTurn($turns[0]);
+        $responseIntents[] = $responseIntent;
+
+        $conversation = new Conversation();
+        $conversation->setName("Example Conversation copy");
+        $conversation->setUid('0x0002');
+        $conversation->setOdId("example_conversation_copy");
+        $conversation->setCreatedAt(Carbon::now());
+        $conversation->setUpdatedAt(Carbon::now());
+        $conversation->setScenario($scenario);
+        $conversations[] = $conversation;
+
+        $scene = new Scene();
+        $scene->setName("Example Scene copy");
+        $scene->setUid('0x0003');
+        $scene->setOdId("example_scene_copy");
+        $scene->setCreatedAt(Carbon::now());
+        $scene->setUpdatedAt(Carbon::now());
+        $scene->setConversation($conversations[0]);
+        $scenes[] = $scene;
+
+        $turn = new Turn();
+        $turn->setName("Example Turn copy");
+        $turn->setUid('0x0004');
+        $turn->setOdId("example_turn_copy");
+        $turn->setCreatedAt(Carbon::now());
+        $turn->setUpdatedAt(Carbon::now());
+        $turn->setScene($scenes[0]);
+        $turns[] = $turn;
+
+        $requestIntent = new Intent();
+        $requestIntent->setIsRequestIntent(true);
+        $requestIntent->setName("Example Request Intent copy");
+        $requestIntent->setUid('0x0005');
+        $requestIntent->setOdId("example_request_intent_copy");
+        $requestIntent->setCreatedAt(Carbon::now());
+        $requestIntent->setUpdatedAt(Carbon::now());
+        $requestIntent->setTurn($turns[0]);
+        $requestIntents[] = $requestIntent;
+
+        $responseIntent = new Intent();
+        $responseIntent->setIsRequestIntent(true);
+        $responseIntent->setName("Example Response Intent copy");
+        $responseIntent->setUid('0x0006');
+        $responseIntent->setOdId("example_response_intent_copy");
+        $responseIntent->setCreatedAt(Carbon::now());
+        $responseIntent->setUpdatedAt(Carbon::now());
+        $responseIntent->setTurn($turns[0]);
+        $responseIntents[] = $responseIntent;
 
         $turns[0]->setRequestIntents(new IntentCollection($requestIntents));
         $turns[0]->setResponseIntents(new IntentCollection($responseIntents));

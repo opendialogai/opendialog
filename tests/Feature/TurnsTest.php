@@ -7,6 +7,7 @@ use App\User;
 use Carbon\Carbon;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
+use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\IntentCollection;
@@ -298,5 +299,45 @@ class TurnsTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid())
             ->assertStatus(200);
+    }
+
+    public function testDuplication()
+    {
+        $scenario = ScenariosTest::getFakeScenarioForDuplication();
+
+        /** @var Conversation $conversation */
+        $conversation = $scenario->getConversations()->getObjectsWithId('example_conversation')->first();
+
+        /** @var Scene $scene */
+        $scene = $conversation->getScenes()->getObjectsWithId('example_scene')->first();
+
+        /** @var Turn $turn */
+        $turn = $scene->getTurns()->getObjectsWithId('example_turn')->first();
+
+        // Called during route binding
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->andReturn($turn);
+
+        // Called in controller
+        ConversationDataClient::shouldReceive('getFullTurnGraph')
+            ->once()
+            ->andReturn($turn);
+
+        ConversationDataClient::shouldReceive('addFullTurnGraph')
+            ->once()
+            ->andReturnUsing(function ($turn) {
+                $turn->setUid('0x9999');
+                return $turn;
+            });
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/turns/' . $turn->getUid() . '/duplicate')
+            ->assertStatus(200)
+            ->assertJson([
+                'name' => 'Example Turn copy 2',
+                'od_id' => 'example_turn_copy_2',
+                'id'=> '0x9999',
+            ]);
     }
 }

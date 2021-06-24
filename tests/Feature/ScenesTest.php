@@ -286,4 +286,41 @@ class ScenesTest extends TestCase
             ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
             ->assertStatus(200);
     }
+
+    public function testDuplication()
+    {
+        $scenario = ScenariosTest::getFakeScenarioForDuplication();
+
+        /** @var Conversation $conversation */
+        $conversation = $scenario->getConversations()->getObjectsWithId('example_conversation')->first();
+
+        /** @var Scene $scene */
+        $scene = $conversation->getScenes()->getObjectsWithId('example_scene')->first();
+
+        // Called during route binding
+        ConversationDataClient::shouldReceive('getSceneByUid')
+            ->once()
+            ->andReturn($scene);
+
+        // Called in controller
+        ConversationDataClient::shouldReceive('getFullSceneGraph')
+            ->once()
+            ->andReturn($scene);
+
+        ConversationDataClient::shouldReceive('addFullSceneGraph')
+            ->once()
+            ->andReturnUsing(function ($scene) {
+                $scene->setUid('0x9999');
+                return $scene;
+            });
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/scenes/' . $scene->getUid() . '/duplicate')
+            ->assertStatus(200)
+            ->assertJson([
+                'name' => 'Example Scene copy 2',
+                'od_id' => 'example_scene_copy_2',
+                'id'=> '0x9999',
+            ]);
+    }
 }
