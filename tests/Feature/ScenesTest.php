@@ -10,6 +10,7 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\SceneDataClient;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
 use OpenDialogAi\Core\Conversation\TurnCollection;
@@ -302,12 +303,12 @@ class ScenesTest extends TestCase
             ->once()
             ->andReturn($scene);
 
-        // Called in controller
-        ConversationDataClient::shouldReceive('getFullSceneGraph')
-            ->once()
+        // Called in controller, once before persisting, and again after
+        SceneDataClient::shouldReceive('getFullSceneGraph')
+            ->twice()
             ->andReturn($scene);
 
-        ConversationDataClient::shouldReceive('addFullSceneGraph')
+        SceneDataClient::shouldReceive('addFullSceneGraph')
             ->once()
             ->andReturnUsing(function ($scene) {
                 $scene->setUid('0x9999');

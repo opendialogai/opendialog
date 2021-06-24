@@ -10,6 +10,7 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\TurnDataClient;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
@@ -319,12 +320,12 @@ class TurnsTest extends TestCase
             ->once()
             ->andReturn($turn);
 
-        // Called in controller
-        ConversationDataClient::shouldReceive('getFullTurnGraph')
-            ->once()
+        // Called in controller, once before persisting, and again after
+        TurnDataClient::shouldReceive('getFullTurnGraph')
+            ->twice()
             ->andReturn($turn);
 
-        ConversationDataClient::shouldReceive('addFullTurnGraph')
+        TurnDataClient::shouldReceive('addFullTurnGraph')
             ->once()
             ->andReturnUsing(function ($turn) {
                 $turn->setUid('0x9999');

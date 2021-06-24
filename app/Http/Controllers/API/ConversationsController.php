@@ -118,9 +118,12 @@ class ConversationsController extends Controller
     {
         $conversation = ConversationDataClient::getFullConversationGraph($conversation->getUid());
         $conversation->removeUid();
+
+        /** @var Conversation $conversation */
         $conversation = $request->setUniqueOdId($conversation, $conversation->getScenario());
 
         $duplicate = ConversationDataClient::addFullConversationGraph($conversation);
+        $duplicate = ConversationDataClient::getFullConversationGraph($duplicate->getUid());
         return new ConversationResource($duplicate);
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e4762618032374595a6483f3c9ef9e3",
+    "content-hash": "b7913ed8bdcc33fec45e2675bc3e1f5f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2917,16 +2917,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/OPNDLG-546--duplicate-scenario",
+            "version": "dev-feature/545--duplicate-conversation-scene-turn",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "08ef860e9cdfa4222aad9ce7db7fef35b3b03dfb"
+                "reference": "6c43528b52a3e7546ad1a776baf724faaaa068c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/08ef860e9cdfa4222aad9ce7db7fef35b3b03dfb",
-                "reference": "08ef860e9cdfa4222aad9ce7db7fef35b3b03dfb",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/6c43528b52a3e7546ad1a776baf724faaaa068c0",
+                "reference": "6c43528b52a3e7546ad1a776baf724faaaa068c0",
                 "shasum": ""
             },
             "require": {
@@ -3002,9 +3002,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-546--duplicate-scenario"
+                "source": "https://github.com/opendialogai/core/tree/feature/545--duplicate-conversation-scene-turn"
             },
-            "time": "2021-06-22T17:31:01+00:00"
+            "time": "2021-06-24T20:44:57+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",

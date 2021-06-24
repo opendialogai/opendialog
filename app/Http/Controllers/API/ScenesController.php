@@ -12,6 +12,7 @@ use App\Http\Resources\SceneResource;
 use App\Http\Resources\TurnResource;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\SceneDataClient;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
 
@@ -103,11 +104,14 @@ class ScenesController extends Controller
      */
     public function duplicate(ConversationObjectDuplicationRequest $request, Scene $conversation): SceneResource
     {
-        $scene = ConversationDataClient::getFullSceneGraph($conversation->getUid());
+        $scene = SceneDataClient::getFullSceneGraph($conversation->getUid());
         $scene->removeUid();
+
+        /** @var Scene $scene */
         $scene = $request->setUniqueOdId($scene, $conversation->getConversation());
 
-        $duplicate = ConversationDataClient::addFullSceneGraph($scene);
+        $duplicate = SceneDataClient::addFullSceneGraph($scene);
+        $duplicate = SceneDataClient::getFullSceneGraph($duplicate->getUid());
         return new SceneResource($duplicate);
     }
 }

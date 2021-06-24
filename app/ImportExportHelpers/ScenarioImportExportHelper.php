@@ -8,6 +8,7 @@ use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Exceptions\DuplicateConversationObjectOdIdException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\ScenarioDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
@@ -131,7 +132,7 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
             );
         }
 
-        $persistedScenario = ConversationDataClient::addFullScenarioGraph($importingScenario);
+        $persistedScenario = ScenarioDataClient::addFullScenarioGraph($importingScenario);
 
         if (!$hasPathsToSubstitute) {
             return $persistedScenario;
@@ -145,6 +146,16 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
             ScenarioNormalizer::UID_MAP => $map
         ]);
 
+        return self::patchScenario($persistedScenario, $scenarioWithPathsSubstituted);
+    }
+
+    /**
+     * @param Scenario $persistedScenario
+     * @param Scenario $scenarioWithPathsSubstituted
+     * @return Scenario
+     */
+    public static function patchScenario(Scenario $persistedScenario, Scenario $scenarioWithPathsSubstituted): Scenario
+    {
         if (PathSubstitutionHelper::shouldPatch($scenarioWithPathsSubstituted)) {
             $scenarioPatch = PathSubstitutionHelper::createPatch($persistedScenario->getUid(), $scenarioWithPathsSubstituted);
             ConversationDataClient::updateScenario($scenarioPatch);
@@ -210,6 +221,6 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
             }
         }
 
-        return ConversationDataClient::getFullScenarioGraph($persistedScenario->getUid());
+        return ScenarioDataClient::getFullScenarioGraph($persistedScenario->getUid());
     }
 }

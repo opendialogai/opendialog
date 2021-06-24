@@ -275,9 +275,9 @@ class ConversationsTest extends TestCase
             ->once()
             ->andReturn($conversation);
 
-        // Called in controller
+        // Called in controller, once before persisting, and again after
         ConversationDataClient::shouldReceive('getFullConversationGraph')
-            ->once()
+            ->twice()
             ->andReturn($conversation);
 
         ConversationDataClient::shouldReceive('addFullConversationGraph')

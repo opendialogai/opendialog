@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Facades\MessageTemplateDataClient;
+use OpenDialogAi\Core\Conversation\Facades\TurnDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Turn;
@@ -205,11 +206,14 @@ class TurnsController extends Controller
      */
     public function duplicate(ConversationObjectDuplicationRequest $request, Turn $turn): TurnResource
     {
-        $turn = ConversationDataClient::getFullTurnGraph($turn->getUid());
+        $turn = TurnDataClient::getFullTurnGraph($turn->getUid());
         $turn->removeUid();
+
+        /** @var Turn $turn */
         $turn = $request->setUniqueOdId($turn, $turn->getScene());
 
-        $duplicate = ConversationDataClient::addFullTurnGraph($turn);
+        $duplicate = TurnDataClient::addFullTurnGraph($turn);
+        $duplicate = TurnDataClient::getFullTurnGraph($turn->getUid());
         return new TurnResource($duplicate);
     }
 }
