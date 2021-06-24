@@ -2920,12 +2920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "42b1ef1298fb0f861e99d3c68259b2767bc5c7a5"
+                "reference": "e42a1a79482027a28769b7a5fdac4dd71b661420"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/42b1ef1298fb0f861e99d3c68259b2767bc5c7a5",
-                "reference": "42b1ef1298fb0f861e99d3c68259b2767bc5c7a5",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/e42a1a79482027a28769b7a5fdac4dd71b661420",
+                "reference": "e42a1a79482027a28769b7a5fdac4dd71b661420",
                 "shasum": ""
             },
             "require": {
@@ -3004,7 +3004,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-06-21T16:21:43+00:00"
+            "time": "2021-06-24T09:08:57+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -3052,12 +3052,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "add60875840e888800432c230e2624b1fb4ba89a"
+                "reference": "a8726746dc6d4f6db2e6c92dbb217bdccb7907a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/add60875840e888800432c230e2624b1fb4ba89a",
-                "reference": "add60875840e888800432c230e2624b1fb4ba89a",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/a8726746dc6d4f6db2e6c92dbb217bdccb7907a6",
+                "reference": "a8726746dc6d4f6db2e6c92dbb217bdccb7907a6",
                 "shasum": ""
             },
             "require": {
@@ -3102,7 +3102,7 @@
                 "issues": "https://github.com/opendialogai/webchat/issues",
                 "source": "https://github.com/opendialogai/webchat/tree/1.x"
             },
-            "time": "2021-06-16T08:10:07+00:00"
+            "time": "2021-06-24T09:09:54+00:00"
         },
         {
             "name": "opis/closure",

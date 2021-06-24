@@ -714,10 +714,10 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@opendialogai/opendialog-design-system-pkg@^0.2.51":
-  version "0.2.52"
-  resolved "https://registry.yarnpkg.com/@opendialogai/opendialog-design-system-pkg/-/opendialog-design-system-pkg-0.2.52.tgz#efc70c8238091f77f96936697b404c9e370bffac"
-  integrity sha512-gOujpvVt5tMf9ZBC0Zc890088lLR9L3Dv0oBlFpxySd1iF4paoNJify1gumF0yW8gxws1OoVrD0QX1K+NDEpRQ==
+"@opendialogai/opendialog-design-system-pkg@^0.2.54":
+  version "0.2.54"
+  resolved "https://registry.yarnpkg.com/@opendialogai/opendialog-design-system-pkg/-/opendialog-design-system-pkg-0.2.54.tgz#1b690935526190a7b402bdd3009a47f40321a5ab"
+  integrity sha512-v0QhpXvm4SCqJv+opdgcXepC1SopGxZlBcxebtO3r4k1COFBz4tQ+91XtPQ0Pv4qWM428yBTVGlhHoja8M6A0w==
   dependencies:
     "@coreui/coreui" "^2.1.12"
     "@coreui/coreui-plugin-chartjs-custom-tooltips" "^1.3.1"
@@ -732,6 +732,7 @@
     cluster "^0.7.7"
     core-js "^3.1.4"
     font-awesome "^4.7.0"
+    he "^1.2.0"
     jquery "^3.5"
     less "^4.1.1"
     less-loader "^7.3.0"
@@ -3600,9 +3601,9 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
 
-he@1.2.x, he@^1.1.0:
+he@1.2.x, he@^1.1.0, he@^1.2.0:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
 hex-color-regex@^1.1.0:
