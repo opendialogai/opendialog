@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Console\Facades\ImportExportSerializer;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\ConversationObjectDuplicationRequest;
@@ -10,7 +11,8 @@ use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\ScenarioRequest;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ScenarioResource;
-use App\Rules\OdId;
+use App\ImportExportHelpers\PathSubstitutionHelper;
+use App\ImportExportHelpers\ScenarioImportExportHelper;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -20,6 +22,7 @@ use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
@@ -161,6 +164,7 @@ class ScenariosController extends Controller
         $scenario->addConversation($noMatchConversation);
 
         $scenario = ConversationDataClient::addFullScenarioGraph($scenario);
+        $scenario = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
 
         $welcomeId = $this->convertNameToId($welcomeName);
         $triggerId = $this->convertNameToId($triggerName);
@@ -217,31 +221,39 @@ class ScenariosController extends Controller
     {
         $scenario = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
 
-        $odId = $request->get('od_id', sprintf("%s_copy", $scenario->getOdId()));
+        // Set new OD ID for the scenario and create a map of UIDs to/from paths,
+        /** @var Scenario $scenario */
+        $scenario = $request->setUniqueOdId($scenario);
 
-        if (OdId::isOdIdUniqueWithinParentScope($odId)) {
-            $name = $request->get('name', sprintf("%s copy", $scenario->getName()));
-        } else {
-            $originalOdId = $odId;
-            $i = 1;
+        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($scenario);
 
-            do {
-                $i++;
-                $odId = sprintf("%s_%d", $originalOdId, $i);
-            } while (!OdId::isOdIdUniqueWithinParentScope($odId));
+        // Serialize, then deserialize, the scenario to convert the UID references to paths
+        $serialized = ImportExportSerializer::serialize($scenario, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
 
-            $name = $request->get('name', sprintf("%s copy %d", $scenario->getName(), $i));
-        }
+        /** @var Scenario $scenario */
+        $scenario = ImportExportSerializer::deserialize($serialized, Scenario::class, 'json');
 
-        $scenario->removeUid();
-        $scenario->setOdId($odId);
-        $scenario->setName($name);
+        $scenario->setCreatedAt(Carbon::now());
+        $scenario->setUpdatedAt(Carbon::now());
 
+        // Persist the scenario with the paths
         $duplicate = ConversationDataClient::addFullScenarioGraph($scenario);
+        $duplicate = ConversationDataClient::getFullScenarioGraph($duplicate->getUid());
 
-        // Reset the default condition as it will have the old UID
-        $duplicate = $this->setDefaultScenarioCondition($duplicate);
-        $duplicate = ConversationDataClient::updateScenario($duplicate);
+        // Create a new map of all new UIDs to/from paths
+        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($duplicate);
+
+        // Serialize the duplicate, then deserializing using the map to replace the paths with new UIDs
+        $serialized = ImportExportSerializer::serialize($duplicate, 'json');
+
+        /** @var Scenario $scenarioWithPathsSubstituted */
+        $scenarioWithPathsSubstituted = ImportExportSerializer::deserialize($serialized, Scenario::class, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        $duplicate = ScenarioImportExportHelper::patchScenario($duplicate, $scenarioWithPathsSubstituted);
 
         return new ScenarioResource($duplicate);
     }

@@ -257,6 +257,10 @@ class ScenariosTest extends TestCase
             ->with($fakeScenario)
             ->andReturn($fakeScenarioCreated);
 
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+            ->once()
+            ->andReturn($fakeScenarioCreated);
+
         ConversationDataClient::shouldReceive('updateIntent')
             ->once()
             ->andReturn($fakeTriggerIntent);
@@ -313,23 +317,41 @@ class ScenariosTest extends TestCase
             ->once()
             ->andReturn($scenario);
 
-        // Called in controller
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+        $duplicated = null;
+        ConversationDataClient::shouldReceive('addFullScenarioGraph')
             ->once()
-            ->andReturn($scenario);
+            ->andReturnUsing(function ($scenario) use (&$duplicated) {
+                $scenario = $scenario->copy();
+                $scenario->setUid('0x9999');
+                $duplicated = $scenario;
+                return $scenario;
+            });
+
+        // Called in controller, once before persisting, again after, and finally after patching
+        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+            ->times(3)
+            ->andReturnUsing(
+                fn ($uid) => $scenario,
+                function ($uid) use (&$duplicated) {
+                    return $duplicated;
+                },
+                function ($uid) use (&$duplicated) {
+                    $duplicated->setConditions(new ConditionCollection([new Condition(
+                        'eq',
+                        ['attribute' => 'user.selected_scenario'],
+                        ['value' => $uid]
+                    )]));
+
+                    return $duplicated;
+                }
+            );
 
         // Called in controller
         ConversationDataClient::shouldReceive('getAllScenarios')
             ->once()
             ->andReturn(new ScenarioCollection([$scenario]));
 
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')
-            ->once()
-            ->andReturnUsing(function ($scenario) {
-                $scenario->setUid('0x9999');
-                return $scenario;
-            });
-
+        // Called when patching the scenario's condition
         ConversationDataClient::shouldReceive('updateScenario')
             ->once()
             ->andReturnUsing(fn ($scenario) => $scenario);
@@ -463,8 +485,16 @@ class ScenariosTest extends TestCase
         $fakeScenario->setName("Example scenario");
         $fakeScenario->setUid('0x0001');
         $fakeScenario->setODId('example_scenario');
+        $fakeScenario->setConditions(new ConditionCollection([
+            new Condition(
+                'eq',
+                ['attribute' => 'user.selected_scenario'],
+                ['value' => '0x0001'],
+            )
+        ]));
         $fakeScenario->setCreatedAt(Carbon::now());
         $fakeScenario->setUpdatedAt(Carbon::now());
+
         return $fakeScenario;
     }
 

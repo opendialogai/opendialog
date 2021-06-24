@@ -145,6 +145,16 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
             ScenarioNormalizer::UID_MAP => $map
         ]);
 
+        return self::patchScenario($persistedScenario, $scenarioWithPathsSubstituted);
+    }
+
+    /**
+     * @param Scenario $persistedScenario
+     * @param Scenario $scenarioWithPathsSubstituted
+     * @return Scenario
+     */
+    public static function patchScenario(Scenario $persistedScenario, Scenario $scenarioWithPathsSubstituted): Scenario
+    {
         if (PathSubstitutionHelper::shouldPatch($scenarioWithPathsSubstituted)) {
             $scenarioPatch = PathSubstitutionHelper::createPatch($persistedScenario->getUid(), $scenarioWithPathsSubstituted);
             ConversationDataClient::updateScenario($scenarioPatch);
