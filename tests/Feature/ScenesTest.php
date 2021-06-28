@@ -303,10 +303,18 @@ class ScenesTest extends TestCase
             ->once()
             ->andReturn($scene);
 
-        // Called in controller, once before persisting, and again after
+        // Called in the controller, getting parent & sibling data
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->andReturnUsing(function ($uid) use ($conversation) { return $conversation; });
+
+        // Called in controller, once before persisting, again after, and finally after patching
         SceneDataClient::shouldReceive('getFullSceneGraph')
-            ->twice()
-            ->andReturn($scene);
+            ->times(3)
+            ->andReturnUsing(function ($uid) use ($scene) {
+                $scene->setUid($uid);
+                return $scene;
+            });
 
         SceneDataClient::shouldReceive('addFullSceneGraph')
             ->once()

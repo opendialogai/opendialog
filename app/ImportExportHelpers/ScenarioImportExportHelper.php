@@ -138,7 +138,7 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
             return $persistedScenario;
         }
 
-        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($persistedScenario);
+        $map = PathSubstitutionHelper::createScenarioMap($persistedScenario);
 
         // Deserialize WITH objects with potential path values and substitute the paths for the UIDs
         /** @var Scenario $scenarioWithPathsSubstituted */
@@ -161,66 +161,98 @@ class ScenarioImportExportHelper extends BaseImportExportHelper
             ConversationDataClient::updateScenario($scenarioPatch);
         }
 
-        foreach ($scenarioWithPathsSubstituted->getConversations() as $cIdx => $conversation) {
-            /** @var Conversation $conversation */
+        foreach ($scenarioWithPathsSubstituted->getConversations() as $cIdx => $conversationWithPathsSubstituted) {
+            /** @var Conversation $conversationWithPathsSubstituted */
 
             /** @var Conversation $persistedConversation */
             $persistedConversation = $persistedScenario->getConversations()[$cIdx];
 
-            if (PathSubstitutionHelper::shouldPatch($conversation)) {
-                $conversationPatch = PathSubstitutionHelper::createPatch($persistedConversation->getUid(), $conversation);
-                ConversationDataClient::updateConversation($conversationPatch);
-            }
-
-            foreach ($conversation->getScenes() as $sIdx => $scene) {
-                /** @var Scene $scene */
-
-                /** @var Scene $persistedScene */
-                $persistedScene = $persistedConversation->getScenes()[$sIdx];
-
-                if (PathSubstitutionHelper::shouldPatch($scene)) {
-                    $scenePatch = PathSubstitutionHelper::createPatch($persistedScene->getUid(), $scene);
-                    ConversationDataClient::updateScene($scenePatch);
-                }
-
-                foreach ($scene->getTurns() as $tIdx => $turn) {
-                    /** @var Turn $turn */
-
-                    /** @var Turn $persistedTurn */
-                    $persistedTurn = $persistedScene->getTurns()[$tIdx];
-
-                    if (PathSubstitutionHelper::shouldPatch($turn)) {
-                        $turnPatch = PathSubstitutionHelper::createPatch($persistedTurn->getUid(), $turn);
-                        ConversationDataClient::updateTurn($turnPatch);
-                    }
-
-                    foreach ($turn->getRequestIntents() as $iIdx => $intent) {
-                        /** @var Intent $intent */
-
-                        /** @var Intent $persistedIntent */
-                        $persistedIntent = $persistedTurn->getRequestIntents()[$iIdx];
-
-                        if (PathSubstitutionHelper::shouldPatch($intent)) {
-                            $intentPatch = PathSubstitutionHelper::createPatch($persistedIntent->getUid(), $intent);
-                            ConversationDataClient::updateIntent($intentPatch);
-                        }
-                    }
-
-                    foreach ($turn->getResponseIntents() as $iIdx => $intent) {
-                        /** @var Turn $intent */
-
-                        /** @var Intent $persistedIntent */
-                        $persistedIntent = $persistedTurn->getResponseIntents()[$iIdx];
-
-                        if (PathSubstitutionHelper::shouldPatch($intent)) {
-                            $intentPatch = PathSubstitutionHelper::createPatch($persistedIntent->getUid(), $intent);
-                            ConversationDataClient::updateIntent($intentPatch);
-                        }
-                    }
-                }
-            }
+            self::patchConversation($persistedConversation, $conversationWithPathsSubstituted);
         }
 
         return ScenarioDataClient::getFullScenarioGraph($persistedScenario->getUid());
+    }
+
+    /**
+     * @param Conversation $persistedConversation
+     * @param Conversation $conversationWithPathsSubstituted
+     */
+    public static function patchConversation(
+        Conversation $persistedConversation,
+        Conversation $conversationWithPathsSubstituted
+    ): void {
+        if (PathSubstitutionHelper::shouldPatch($conversationWithPathsSubstituted)) {
+            $conversationPatch = PathSubstitutionHelper::createPatch(
+                $persistedConversation->getUid(),
+                $conversationWithPathsSubstituted
+            );
+            ConversationDataClient::updateConversation($conversationPatch);
+        }
+
+        foreach ($conversationWithPathsSubstituted->getScenes() as $sIdx => $sceneWithPathsSubstituted) {
+            /** @var Scene $sceneWithPathsSubstituted */
+
+            /** @var Scene $persistedScene */
+            $persistedScene = $persistedConversation->getScenes()[$sIdx];
+
+            self::patchScene($persistedScene, $sceneWithPathsSubstituted);
+        }
+    }
+
+    /**
+     * @param Scene $persistedScene
+     * @param Scene $sceneWithPathsSubstituted
+     */
+    public static function patchScene(Scene $persistedScene, Scene $sceneWithPathsSubstituted): void
+    {
+        if (PathSubstitutionHelper::shouldPatch($sceneWithPathsSubstituted)) {
+            $scenePatch = PathSubstitutionHelper::createPatch($persistedScene->getUid(), $sceneWithPathsSubstituted);
+            ConversationDataClient::updateScene($scenePatch);
+        }
+
+        foreach ($sceneWithPathsSubstituted->getTurns() as $tIdx => $turnWithPathsSubstituted) {
+            /** @var Turn $turnWithPathsSubstituted */
+
+            /** @var Turn $persistedTurn */
+            $persistedTurn = $persistedScene->getTurns()[$tIdx];
+
+            self::patchTurn($persistedTurn, $turnWithPathsSubstituted);
+        }
+    }
+
+    /**
+     * @param Turn $persistedTurn
+     * @param Turn $turnWithPathsSubstituted
+     */
+    public static function patchTurn(Turn $persistedTurn, Turn $turnWithPathsSubstituted): void
+    {
+        if (PathSubstitutionHelper::shouldPatch($turnWithPathsSubstituted)) {
+            $turnPatch = PathSubstitutionHelper::createPatch($persistedTurn->getUid(), $turnWithPathsSubstituted);
+            ConversationDataClient::updateTurn($turnPatch);
+        }
+
+        foreach ($turnWithPathsSubstituted->getRequestIntents() as $iIdx => $intent) {
+            /** @var Intent $intent */
+
+            /** @var Intent $persistedIntent */
+            $persistedIntent = $persistedTurn->getRequestIntents()[$iIdx];
+
+            if (PathSubstitutionHelper::shouldPatch($intent)) {
+                $intentPatch = PathSubstitutionHelper::createPatch($persistedIntent->getUid(), $intent);
+                ConversationDataClient::updateIntent($intentPatch);
+            }
+        }
+
+        foreach ($turnWithPathsSubstituted->getResponseIntents() as $iIdx => $intent) {
+            /** @var Turn $intent */
+
+            /** @var Intent $persistedIntent */
+            $persistedIntent = $persistedTurn->getResponseIntents()[$iIdx];
+
+            if (PathSubstitutionHelper::shouldPatch($intent)) {
+                $intentPatch = PathSubstitutionHelper::createPatch($persistedIntent->getUid(), $intent);
+                ConversationDataClient::updateIntent($intentPatch);
+            }
+        }
     }
 }

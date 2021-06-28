@@ -275,10 +275,18 @@ class ConversationsTest extends TestCase
             ->once()
             ->andReturn($conversation);
 
-        // Called in controller, once before persisting, and again after
+        // Called in the controller, getting parent & sibling data
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->andReturnUsing(function ($uid) use ($scenario) { return $scenario; });
+
+        // Called in controller, once before persisting, again after, and finally after patching
         ConversationDataClient::shouldReceive('getFullConversationGraph')
-            ->twice()
-            ->andReturn($conversation);
+            ->times(3)
+            ->andReturnUsing(function ($uid) use ($conversation) {
+                $conversation->setUid($uid);
+                return $conversation;
+            });
 
         ConversationDataClient::shouldReceive('addFullConversationGraph')
             ->once()

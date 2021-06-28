@@ -33,7 +33,7 @@ class ExportScenarios extends Command
     {
         $filePath = ScenarioImportExportHelper::getScenarioFilePath($fullScenarioGraph->getOdId());
         $serialized = ImportExportSerializer::serialize($fullScenarioGraph, 'json', [
-            ScenarioNormalizer::UID_MAP => PathSubstitutionHelper::createConversationObjectUidToPathMap($fullScenarioGraph)
+            ScenarioNormalizer::UID_MAP => PathSubstitutionHelper::createScenarioMap($fullScenarioGraph)
         ]);
 
         if (ScenarioImportExportHelper::scenarioFileExists($filePath)) {

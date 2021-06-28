@@ -226,9 +226,9 @@ class ScenariosController extends Controller
         /** @var Scenario $scenario */
         $scenario = $request->setUniqueOdId($scenario);
 
-        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($scenario);
+        $map = PathSubstitutionHelper::createScenarioMap($scenario);
 
-        // Serialize, then deserialize, the scenario to convert the UID references to paths
+        // Serialize, then deserialize the scenario to convert the UID references to paths
         $serialized = ImportExportSerializer::serialize($scenario, 'json', [
             ScenarioNormalizer::UID_MAP => $map
         ]);
@@ -244,7 +244,7 @@ class ScenariosController extends Controller
         $duplicate = ScenarioDataClient::getFullScenarioGraph($duplicate->getUid());
 
         // Create a new map of all new UIDs to/from paths
-        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($duplicate);
+        $map = PathSubstitutionHelper::createScenarioMap($duplicate);
 
         // Serialize the duplicate, then deserializing using the map to replace the paths with new UIDs
         $serialized = ImportExportSerializer::serialize($duplicate, 'json');

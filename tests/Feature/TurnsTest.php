@@ -320,10 +320,18 @@ class TurnsTest extends TestCase
             ->once()
             ->andReturn($turn);
 
-        // Called in controller, once before persisting, and again after
+        // Called in the controller, getting parent & sibling data
+        ConversationDataClient::shouldReceive('getSceneByUid')
+            ->once()
+            ->andReturnUsing(function ($uid) use ($scene) { return $scene; });
+
+        // Called in controller, once before persisting, again after, and finally after patching
         TurnDataClient::shouldReceive('getFullTurnGraph')
-            ->twice()
-            ->andReturn($turn);
+            ->times(3)
+            ->andReturnUsing(function ($uid) use ($turn) {
+                $turn->setUid($uid);
+                return $turn;
+            });
 
         TurnDataClient::shouldReceive('addFullTurnGraph')
             ->once()

@@ -32,7 +32,7 @@ class PathSubstitutionHelper
      * @param Scenario $scenario
      * @return Map
      */
-    public static function createConversationObjectUidToPathMap(Scenario $scenario): Map
+    public static function createScenarioMap(Scenario $scenario): Map
     {
         $map = new Map();
 
@@ -43,33 +43,7 @@ class PathSubstitutionHelper
         $map->put($scenarioPath, $scenario->getUid());
 
         foreach ($scenario->getConversations() as $conversation) {
-            /** @var Conversation $conversation */
-
-            $conversationOdId = $conversation->getOdId();
-            $conversationPath = PathSubstitutionHelper::createPath($scenarioOdId, $conversationOdId);
-
-            $map->put($conversation->getUid(), $conversationPath);
-            $map->put($conversationPath, $conversation->getUid());
-
-            foreach ($conversation->getScenes() as $scene) {
-                /** @var Scene $scene */
-
-                $sceneOdId = $scene->getOdId();
-                $scenePath = PathSubstitutionHelper::createPath($scenarioOdId, $conversationOdId, $sceneOdId);
-
-                $map->put($scene->getUid(), $scenePath);
-                $map->put($scenePath, $scene->getUid());
-
-                foreach ($scene->getTurns() as $turn) {
-                    /** @var Turn $turn */
-
-                    $turnOdId = $turn->getOdId();
-                    $turnPath = PathSubstitutionHelper::createPath($scenarioOdId, $conversationOdId, $sceneOdId, $turnOdId);
-
-                    $map->put($turn->getUid(), $turnPath);
-                    $map->put($turnPath, $turn->getUid());
-                }
-            }
+            self::createConversationMap($conversation, $scenarioOdId, $map);
         }
 
         return $map;
@@ -134,5 +108,84 @@ class PathSubstitutionHelper
         }
 
         return $patchObject;
+    }
+
+    /**
+     * @param Conversation $conversation
+     * @param string|null $scenarioOdId
+     * @param Map|null $map
+     * @return Map
+     */
+    public static function createConversationMap(Conversation $conversation, string $scenarioOdId, Map $map = null): Map
+    {
+        if (is_null($map)) {
+            $map = new Map();
+        }
+
+        $conversationOdId = $conversation->getOdId();
+        $conversationPath = PathSubstitutionHelper::createPath($scenarioOdId, $conversationOdId);
+
+        $map->put($conversation->getUid(), $conversationPath);
+        $map->put($conversationPath, $conversation->getUid());
+
+        foreach ($conversation->getScenes() as $scene) {
+            self::createSceneMap($scene, $scenarioOdId, $conversationOdId, $map);
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param Scene $scene
+     * @param string|null $scenarioOdId
+     * @param string|null $conversationOdId
+     * @param Map|null $map
+     * @return Map
+     */
+    public static function createSceneMap(Scene $scene, string $scenarioOdId, string $conversationOdId, ?Map $map = null): Map
+    {
+        if (is_null($map)) {
+            $map = new Map();
+        }
+
+        $sceneOdId = $scene->getOdId();
+        $scenePath = PathSubstitutionHelper::createPath($scenarioOdId, $conversationOdId, $sceneOdId);
+
+        $map->put($scene->getUid(), $scenePath);
+        $map->put($scenePath, $scene->getUid());
+
+        foreach ($scene->getTurns() as $turn) {
+            self::createTurnMap($turn, $scenarioOdId, $conversationOdId, $sceneOdId, $map);
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param Turn $turn
+     * @param string|null $scenarioOdId
+     * @param string|null $conversationOdId
+     * @param string|null $sceneOdId
+     * @param Map|null $map
+     * @return Map
+     */
+    public static function createTurnMap(
+        Turn $turn,
+        ?string $scenarioOdId,
+        ?string $conversationOdId,
+        ?string $sceneOdId,
+        ?Map $map = null
+    ): Map {
+        if (is_null($map)) {
+            $map = new Map();
+        }
+
+        $turnOdId = $turn->getOdId();
+        $turnPath = PathSubstitutionHelper::createPath($scenarioOdId, $conversationOdId, $sceneOdId, $turnOdId);
+
+        $map->put($turn->getUid(), $turnPath);
+        $map->put($turnPath, $turn->getUid());
+
+        return $map;
     }
 }
