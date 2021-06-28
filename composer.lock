@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c664dc89a6dc963b06c4f39be9529e3",
+    "content-hash": "df4f584c2b9ca3eed76cb47230386eed",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2390,16 +2390,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "9be3b16c877d477357c015cec057548cf9b2a14a"
+                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/9be3b16c877d477357c015cec057548cf9b2a14a",
-                "reference": "9be3b16c877d477357c015cec057548cf9b2a14a",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
+                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
                 "shasum": ""
             },
             "require": {
@@ -2415,7 +2415,6 @@
                 "phpunit/phpunit": "^8.5.8"
             },
             "suggest": {
-                "ext-fileinfo": "Required for MimeType",
                 "ext-ftp": "Allows you to use FTP server storage",
                 "ext-openssl": "Allows you to use FTPS server storage",
                 "league/flysystem-aws-s3-v2": "Allows you to use S3 storage with AWS SDK v2",
@@ -2473,7 +2472,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/1.x"
+                "source": "https://github.com/thephpleague/flysystem/tree/1.1.4"
             },
             "funding": [
                 {
@@ -2481,7 +2480,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2020-08-23T07:39:11+00:00"
+            "time": "2021-06-23T21:56:05+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -2917,16 +2916,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/message_markup_generator_fix",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "5df70b0e0d0fed3c67a317d126bb81e3987b0d1f"
+                "reference": "e42a1a79482027a28769b7a5fdac4dd71b661420"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/5df70b0e0d0fed3c67a317d126bb81e3987b0d1f",
-                "reference": "5df70b0e0d0fed3c67a317d126bb81e3987b0d1f",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/e42a1a79482027a28769b7a5fdac4dd71b661420",
+                "reference": "e42a1a79482027a28769b7a5fdac4dd71b661420",
                 "shasum": ""
             },
             "require": {
@@ -2953,6 +2952,7 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3002,9 +3002,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/message_markup_generator_fix"
+                "source": "https://github.com/opendialogai/core/tree/1.x"
             },
-            "time": "2021-06-24T15:09:30+00:00"
+            "time": "2021-06-24T09:08:57+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -3052,12 +3052,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "add60875840e888800432c230e2624b1fb4ba89a"
+                "reference": "a8726746dc6d4f6db2e6c92dbb217bdccb7907a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/add60875840e888800432c230e2624b1fb4ba89a",
-                "reference": "add60875840e888800432c230e2624b1fb4ba89a",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/a8726746dc6d4f6db2e6c92dbb217bdccb7907a6",
+                "reference": "a8726746dc6d4f6db2e6c92dbb217bdccb7907a6",
                 "shasum": ""
             },
             "require": {
@@ -3102,7 +3102,7 @@
                 "issues": "https://github.com/opendialogai/webchat/issues",
                 "source": "https://github.com/opendialogai/webchat/tree/1.x"
             },
-            "time": "2021-06-16T08:10:07+00:00"
+            "time": "2021-06-24T09:09:54+00:00"
         },
         {
             "name": "opis/closure",

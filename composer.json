@@ -10,6 +10,7 @@
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
+        "genealabs/laravel-caffeine": "^8.0",
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.1",
