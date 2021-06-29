@@ -5,15 +5,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\IntentRequest;
-use App\Http\Requests\TurnRequest;
 use App\Http\Resources\IntentResource;
-use App\Http\Resources\TurnResource;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
-use OpenDialogAi\Core\Conversation\Scene;
-use OpenDialogAi\Core\Conversation\Turn;
 
 class IntentsController extends Controller
 {
@@ -65,5 +63,22 @@ class IntentsController extends Controller
         } else {
             return response('Error deleting conversation, check the logs', 500);
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Intent $intent
+     * @return IntentResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Intent $intent): IntentResource
+    {
+        $isRequest = $intent->isRequestIntent();
+        $intent = IntentDataClient::getFullIntentGraph($intent->getUid());
+        $intent->removeUid();
+
+        $duplicate = IntentDataClient::addFullIntentGraph($intent, $isRequest);
+        $duplicate = IntentDataClient::getFullIntentGraph($duplicate->getUid());
+
+        return new IntentResource($duplicate);
     }
 }

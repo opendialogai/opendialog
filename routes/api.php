@@ -127,6 +127,7 @@ Route::namespace('API')
             Route::get('intents/{intent}', 'IntentsController@show');
             Route::patch('intents/{intent}', 'IntentsController@update');
             Route::delete('intents/{intent}', 'IntentsController@destroy');
+            Route::post('intents/{intent}/duplicate', 'IntentsController@duplicate');
 
             Route::get('ui-state/focused/scenario/{scenario}', 'UIStateController@showFocusedScenario');
             Route::get('ui-state/focused/conversation/{conversation}', 'UIStateController@showFocusedConversation');

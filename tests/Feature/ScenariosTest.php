@@ -16,12 +16,14 @@ use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Facades\ScenarioDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
+use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
 use Tests\TestCase;
 
 class ScenariosTest extends TestCase
@@ -531,6 +533,7 @@ class ScenariosTest extends TestCase
         $turns[] = $turn;
 
         $requestIntent = new Intent();
+        $requestIntent->setSpeaker(Intent::USER);
         $requestIntent->setIsRequestIntent(true);
         $requestIntent->setName("Example Request Intent");
         $requestIntent->setUid('0x0005');
@@ -541,7 +544,8 @@ class ScenariosTest extends TestCase
         $requestIntents[] = $requestIntent;
 
         $responseIntent = new Intent();
-        $responseIntent->setIsRequestIntent(true);
+        $responseIntent->setSpeaker(Intent::APP);
+        $responseIntent->setIsRequestIntent(false);
         $responseIntent->setName("Example Response Intent");
         $responseIntent->setUid('0x0006');
         $responseIntent->setOdId("example_response_intent");
@@ -549,6 +553,15 @@ class ScenariosTest extends TestCase
         $responseIntent->setUpdatedAt(Carbon::now());
         $responseIntent->setTurn($turns[0]);
         $responseIntents[] = $responseIntent;
+
+        $message = new MessageTemplate();
+        $message->setName("Example Message");
+        $message->setUid('0x0007');
+        $message->setOdId('example_message');
+        $message->setMessageMarkup((new MessageMarkUpGenerator())->addTextMessage('Hello world')->getMarkUp());
+        $message->setCreatedAt(Carbon::now());
+        $message->setUpdatedAt(Carbon::now());
+        $message->setIntent($responseIntent);
 
         $conversation = new Conversation();
         $conversation->setName("Example Conversation copy");

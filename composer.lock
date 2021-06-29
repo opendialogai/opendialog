@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7913ed8bdcc33fec45e2675bc3e1f5f",
+    "content-hash": "b96c347cada941132f9d208c6483aedd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2917,16 +2917,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "dev-feature/545--duplicate-conversation-scene-turn",
+            "version": "dev-feature/OPNDLG-547--duplicate-intent",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "5da76fb803baf20a506d590b918a2fa5aa8cc074"
+                "reference": "209e5ad82b6d95a2c4098079ce50ab9a57fe2c8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/5da76fb803baf20a506d590b918a2fa5aa8cc074",
-                "reference": "5da76fb803baf20a506d590b918a2fa5aa8cc074",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/209e5ad82b6d95a2c4098079ce50ab9a57fe2c8a",
+                "reference": "209e5ad82b6d95a2c4098079ce50ab9a57fe2c8a",
                 "shasum": ""
             },
             "require": {
@@ -3002,9 +3002,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/feature/545--duplicate-conversation-scene-turn"
+                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-547--duplicate-intent"
             },
-            "time": "2021-06-28T13:14:56+00:00"
+            "time": "2021-06-29T14:59:06+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",

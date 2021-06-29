@@ -7,16 +7,17 @@ use App\User;
 use Carbon\Carbon;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
+use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Facades\MessageTemplateDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
-use OpenDialogAi\ResponseEngine\MessageTemplate;
-use OpenDialogAi\ResponseEngine\OutgoingIntent;
 use Tests\TestCase;
 
 class IntentsTest extends TestCase
@@ -557,5 +558,52 @@ $fakeRequestIntent->getUid())
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/intents/' . $fakeIntent->getUid())
             ->assertStatus(200);
+    }
+
+    public function testDuplication()
+    {
+        $scenario = ScenariosTest::getFakeScenarioForDuplication();
+
+        /** @var Conversation $conversation */
+        $conversation = $scenario->getConversations()->getObjectsWithId('example_conversation')->first();
+
+        /** @var Scene $scene */
+        $scene = $conversation->getScenes()->getObjectsWithId('example_scene')->first();
+
+        /** @var Turn $turn */
+        $turn = $scene->getTurns()->getObjectsWithId('example_turn')->first();
+
+        /** @var Intent $intent */
+        $intent = $turn->getResponseIntents()->getObjectsWithId('example_response_intent')->first();
+
+        // Called during route binding
+        ConversationDataClient::shouldReceive('getIntentByUid')
+            ->once()
+            ->andReturn($intent);
+
+        // Called in controller, once before persisting and again after
+        IntentDataClient::shouldReceive('getFullIntentGraph')
+            ->twice()
+            ->andReturnUsing(function ($uid) use ($intent) {
+                $intent->setUid($uid);
+                return $intent;
+            });
+
+        IntentDataClient::shouldReceive('addFullIntentGraph')
+            ->once()
+            ->andReturnUsing(function ($intent) {
+                $intent->setUid('0x9999');
+                return $intent;
+            });
+
+        // The OD ID should be the same because it is used for interpretation purposes and is therefore not expected to be unique
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/intents/' . $turn->getUid() . '/duplicate')
+            ->assertStatus(200)
+            ->assertJson([
+                'name' => 'Example Response Intent',
+                'od_id' => 'example_response_intent',
+                'id'=> '0x9999',
+            ]);
     }
 }
