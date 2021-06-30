@@ -149,7 +149,8 @@ class ScenariosController extends Controller
             $welcomeOutgoingIntentId,
             "Hi! This is the default welcome message for the $scenarioName Scenario.",
             true,
-            $welcomeBotMessage->getMarkUp()
+            $welcomeBotMessage->getMarkUp(),
+            false
         );
 
         $triggerName = 'Trigger';
@@ -230,6 +231,8 @@ class ScenariosController extends Controller
      * @param string $outgoingIntentId
      * @param string $outgoingSampleUtterance
      * @param bool $botLed = false
+     * @param string|null $botMessage
+     * @param bool $isStarting
      * @return Conversation
      */
     private function createAtomicCallbackConversation(
@@ -240,11 +243,12 @@ class ScenariosController extends Controller
         string $outgoingIntentId,
         string $outgoingSampleUtterance,
         bool $botLed = false,
-        string $botMessage = null
+        string $botMessage = null,
+        bool $isStarting = true
     ): Conversation {
         $nameAsId = $this->convertNameToId($name);
 
-        $turn = $this->createConversationToTurn($scenario, $name, $nameAsId);
+        $turn = $this->createConversationToTurn($scenario, $name, $nameAsId, $isStarting);
 
         $incomingIntent = new Intent($turn, Intent::USER);
         $incomingIntent->setIsRequestIntent(!$botLed);
@@ -347,17 +351,22 @@ class ScenariosController extends Controller
     /**
      * @param Scenario $scenario
      * @param string $name
-     * @param $nameAsId
+     * @param string $nameAsId
+     * @param bool $isStarting
      * @return Turn
      */
-    private function createConversationToTurn(Scenario $scenario, string $name, $nameAsId): Turn
+    private function createConversationToTurn(Scenario $scenario, string $name, string $nameAsId, bool $isStarting = true): Turn
     {
         $conversation = new Conversation($scenario);
         $conversation->setName("$name Conversation");
         $conversation->setOdId(sprintf('%s_conversation', $nameAsId));
         $conversation->setDescription('Automatically generated');
         $conversation->setInterpreter('');
-        $conversation->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+
+        if ($isStarting) {
+            $conversation->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+        }
+
         $conversation->setCreatedAt(Carbon::now());
         $conversation->setUpdatedAt(Carbon::now());
 
