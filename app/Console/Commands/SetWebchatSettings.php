@@ -122,7 +122,11 @@ class SetWebchatSettings extends Command
             WebchatSetting::HIDE_MESSAGE_TIME => true,
 
             WebchatSetting::NEW_USER_START_MINIMIZED => false,
+            WebchatSetting::RETURNING_USER_START_MINIMIZED => false,
+            WebchatSetting::ONGOING_USER_START_MINIMIZED => false,
             WebchatSetting::NEW_USER_OPEN_CALLBACK => 'WELCOME',
+            WebchatSetting::RETURNING_USER_OPEN_CALLBACK => 'WELCOME',
+            WebchatSetting::ONGOING_USER_OPEN_CALLBACK => '',
 
             WebchatSetting::VALID_PATH => '["*"]',
         ];
