@@ -113,7 +113,7 @@ class SetWebchatSettings extends Command
             WebchatSetting::NUMBER_OF_MESSAGES => 10,
             WebchatSetting::COLLECT_USER_IP => true,
             WebchatSetting::SHOW_RESTART_BUTTON => false,
-            WebchatSetting::SHOW_DOWNLOAD_BUTON => false,
+            WebchatSetting::SHOW_DOWNLOAD_BUTON => true,
             WebchatSetting::SHOW_END_CHAT_BUTON => false,
             WebchatSetting::HIDE_DATETIME_MESSAGE => true,
             WebchatSetting::RESTART_BUTTON_CALLBACK => 'WELCOME',
