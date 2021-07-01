@@ -14,7 +14,7 @@ class SetWebchatSettingsTest extends TestCase
         $this->assertNull(WebchatSetting::first());
 
         // Run the command
-        Artisan::call('webchat:setup');
+        Artisan::call('webchat:setup', ['--non-interactive' => true]);
 
         // Ensure that settings are set after the command is run
         $this->assertNotNull(WebchatSetting::first());
@@ -36,5 +36,23 @@ class SetWebchatSettingsTest extends TestCase
         $this->assertEquals(WebchatSetting::STRING, $url->type);
         $this->assertEquals(WebchatSetting::BOOLEAN, $useBotAvatar->type);
         $this->assertEquals(WebchatSetting::BOOLEAN, $useHumanAvatar->type);
+    }
+
+    public function testCommandWithOptions()
+    {
+        Artisan::call(
+            'webchat:setup',
+            ['--non-interactive' => true, 'settings' => [WebchatSetting::MESSAGE_DELAY, WebchatSetting::BUTTON_TEXT]]
+        );
+
+        $messageDelay = WebchatSetting::where('name', WebchatSetting::MESSAGE_DELAY)->first();
+        $buttonText = WebchatSetting::where('name', WebchatSetting::BUTTON_TEXT)->first();
+
+        $this->assertEquals(500, $messageDelay->value);
+        $this->assertEquals('#1b2956', $buttonText->value);
+
+        // Should have been added to the DB, but not set up with values
+        $this->assertEmpty(WebchatSetting::where('name', WebchatSetting::TEAM_NAME)->first()->value);
+        $this->assertEmpty(WebchatSetting::where('name', WebchatSetting::HEADER_BACKGROUND)->first()->value);
     }
 }
