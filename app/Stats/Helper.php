@@ -173,7 +173,7 @@ abstract class Helper
             };
         } else {
             $format = function (string $date) {
-                return 'w/c ' . Carbon::make($date)->monthName;
+                return Carbon::make($date)->monthName;
             };
         }
 
