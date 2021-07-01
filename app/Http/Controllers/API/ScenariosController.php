@@ -164,7 +164,6 @@ class ScenariosController extends Controller
         $scenario->addConversation($noMatchConversation);
 
         $scenario = ConversationDataClient::addFullScenarioGraph($scenario);
-        $scenario = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
 
         $welcomeId = $this->convertNameToId($welcomeName);
         $triggerId = $this->convertNameToId($triggerName);
