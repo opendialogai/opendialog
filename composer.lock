@@ -2921,12 +2921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "606e590a0bea1b98eba66f1fef2f782e31ca2e80"
+                "reference": "65058e9b3ff88d0ab64f998965ad78573fabdd64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/606e590a0bea1b98eba66f1fef2f782e31ca2e80",
-                "reference": "606e590a0bea1b98eba66f1fef2f782e31ca2e80",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/65058e9b3ff88d0ab64f998965ad78573fabdd64",
+                "reference": "65058e9b3ff88d0ab64f998965ad78573fabdd64",
                 "shasum": ""
             },
             "require": {
@@ -3004,7 +3004,7 @@
                 "issues": "https://github.com/opendialogai/core/issues",
                 "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-546--duplicate-scenario"
             },
-            "time": "2021-06-28T13:02:27+00:00"
+            "time": "2021-07-01T15:20:01+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
