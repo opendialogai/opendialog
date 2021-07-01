@@ -38,9 +38,7 @@ class FocusedSceneResource extends JsonResource
                     Scenario::DESCRIPTION
                 ]
             ],
-            Scene::BEHAVIORS =>[
-                Behavior::COMPLETING_BEHAVIOR
-            ],
+            Scene::BEHAVIORS => Behavior::FIELDS,
             Scene::CONDITIONS => [
                 Condition::OPERATION,
                 Condition::OPERATION_ATTRIBUTES,
@@ -51,6 +49,8 @@ class FocusedSceneResource extends JsonResource
                 Turn::OD_ID,
                 Turn::NAME,
                 Turn::DESCRIPTION,
+                Turn::BEHAVIORS => Behavior::FIELDS,
+                Turn::CONDITIONS => Condition::FIELDS,
             ]
         ]
     ];
