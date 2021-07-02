@@ -72,8 +72,10 @@ class StatusController extends Controller
         ]);
 
         try {
-            $client->request('GET', '/');
-            return true;
+            $response = $client->request('GET', '/health')->getBody()->getContents();
+            $status = json_decode($response)[0]->status;
+
+            return $status;
         } catch (\Exception $e) {
             return $e->getMessage();
         }

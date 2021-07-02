@@ -23,8 +23,6 @@
                     @endif
 
                     <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
                         <div class="form-group">
                             <label for="email">{{ __('E-Mail') }}</label>
                             <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
@@ -52,6 +50,8 @@
                         <button type="submit" class="btn btn-primary">
                             {{ __('Sign in') }}
                         </button>
+
+                        {{ csrf_field() }}
                     </form>
                 </div>
 </div>

@@ -33,6 +33,8 @@ class FocusedScenarioResource extends JsonResource
                 Conversation::OD_ID,
                 Conversation::NAME,
                 Conversation::DESCRIPTION,
+                Conversation::BEHAVIORS => Behavior::FIELDS,
+                Conversation::CONDITIONS => Condition::FIELDS,
             ]
         ]
     ];

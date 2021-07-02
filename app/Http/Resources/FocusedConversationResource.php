@@ -44,6 +44,8 @@ class FocusedConversationResource extends JsonResource
                 Scene::OD_ID,
                 Scene::NAME,
                 Scene::DESCRIPTION,
+                Scene::BEHAVIORS => Behavior::FIELDS,
+                Scene::CONDITIONS => Condition::FIELDS,
             ]
         ]
     ];

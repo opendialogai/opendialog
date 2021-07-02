@@ -21,6 +21,7 @@ export default {
     user() {
       return {
         name: window.user.name,
+        id: window.user.id,
         email: window.user.email,
         image: '/images/logo.svg'
       };

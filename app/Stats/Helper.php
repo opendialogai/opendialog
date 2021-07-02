@@ -2,11 +2,13 @@
 
 namespace App\Stats;
 
+use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
 use DateTime;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use OpenDialogAi\ConversationLog\Message;
@@ -155,5 +157,40 @@ abstract class Helper
         } else {
             return sprintf('statistic|%s', $statName);
         }
+    }
+
+    public static function setIntervals(array $data)
+    {
+        $start = Carbon::make(Arr::first($data['labels']));
+        $end = Carbon::make(Arr::last($data['labels']));
+
+        $diffInDays = $start->diffInDays($end);
+        if ($diffInDays <= 31) {
+            return $data;
+        } elseif ($diffInDays <= 90) {
+            $format = function (string $date) {
+                return 'w/c ' . Carbon::make($date)->startOfWeek()->format('m-d');
+            };
+        } else {
+            $format = function (string $date) {
+                return Carbon::make($date)->monthName;
+            };
+        }
+
+        $newData = [];
+        for ($i=0; $i< count($data['labels']); $i++) {
+            $label = $format($data['labels'][$i]);
+            if (!isset($newData[$label])) {
+                $newData[$label] = 0;
+            }
+
+            $newData[$label] += $data['values'][$i];
+        }
+
+        return [
+            'total' => $data['total'],
+            'labels' => array_keys($newData),
+            'values' => array_values($newData)
+        ];
     }
 }
