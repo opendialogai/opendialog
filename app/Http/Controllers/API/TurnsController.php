@@ -3,31 +3,32 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Console\Facades\ImportExportSerializer;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\TurnIntentRequest;
 use App\Http\Requests\TurnRequest;
 use App\Http\Resources\TurnIntentResource;
 use App\Http\Resources\TurnIntentResourceCollection;
 use App\Http\Resources\TurnResource;
+use App\ImportExportHelpers\PathSubstitutionHelper;
+use App\ImportExportHelpers\ScenarioImportExportHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Facades\MessageTemplateDataClient;
+use OpenDialogAi\Core\Conversation\Facades\TurnDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
-use OpenDialogAi\ResponseEngine\Service\ResponseEngineServiceInterface;
 
 class TurnsController extends Controller
 {
-    /**
-     * @var ResponseEngineServiceInterface
-     */
-    private $responseEngineService;
-
     /**
      * Create a new controller instance.
      *
@@ -36,7 +37,6 @@ class TurnsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->responseEngineService = resolve(ResponseEngineServiceInterface::class);
     }
 
     /**
@@ -202,5 +202,56 @@ class TurnsController extends Controller
                 )
             );
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Turn $turn
+     * @return TurnResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Turn $turn): TurnResource
+    {
+        $turn = TurnDataClient::getFullTurnGraph($turn->getUid());
+
+        $scene = ConversationDataClient::getSceneByUid($turn->getScene()->getUid());
+
+        /** @var Turn $turn */
+        $turn = $request->setUniqueOdId($turn, $scene);
+
+        $map = PathSubstitutionHelper::createTurnMap($turn, '_duplicate', '_duplicate', '_duplicate');
+
+        $turn->removeUid();
+
+        // Serialize, then deserialize the turn to convert the UID references to paths
+        $serialized = ImportExportSerializer::serialize($turn, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        /** @var Turn $turn */
+        $turn = ImportExportSerializer::deserialize($serialized, Turn::class, 'json');
+
+        $turn->setScene($scene);
+
+        $turn->setCreatedAt(Carbon::now());
+        $turn->setUpdatedAt(Carbon::now());
+
+        $duplicate = TurnDataClient::addFullTurnGraph($turn);
+        $duplicate = TurnDataClient::getFullTurnGraph($duplicate->getUid());
+
+        // Create a new map of all new UIDs to/from paths
+        $map = PathSubstitutionHelper::createTurnMap($duplicate, '_duplicate', '_duplicate', '_duplicate');
+
+        // Serialize the duplicate, then deserializing using the map to replace the paths with new UIDs
+        $serialized = ImportExportSerializer::serialize($duplicate, 'json');
+
+        /** @var Turn $turnWithPathsSubstituted */
+        $turnWithPathsSubstituted = ImportExportSerializer::deserialize($serialized, Turn::class, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        ScenarioImportExportHelper::patchTurn($duplicate, $turnWithPathsSubstituted);
+        $duplicate = TurnDataClient::getFullTurnGraph($duplicate->getUid());
+
+        return new TurnResource($duplicate);
     }
 }

@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Console\Facades\ImportExportSerializer;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\SceneRequest;
-use App\Http\Resources\ConversationCollection;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\SceneResource;
+use App\ImportExportHelpers\PathSubstitutionHelper;
+use App\ImportExportHelpers\ScenarioImportExportHelper;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
-use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
 
 class ConversationsController extends Controller
@@ -108,5 +112,56 @@ class ConversationsController extends Controller
         } else {
             return response('Error deleting conversation, check the logs', 500);
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Conversation $conversation
+     * @return ConversationResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Conversation $conversation): ConversationResource
+    {
+        $conversation = ConversationDataClient::getFullConversationGraph($conversation->getUid());
+
+        $scenario = ConversationDataClient::getScenarioByUid($conversation->getScenario()->getUid());
+
+        /** @var Conversation $conversation */
+        $conversation = $request->setUniqueOdId($conversation, $scenario);
+
+        $map = PathSubstitutionHelper::createConversationMap($conversation, '_duplicate');
+
+        $conversation->removeUid();
+
+        // Serialize, then deserialize the conversation to convert the UID references to paths
+        $serialized = ImportExportSerializer::serialize($conversation, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        /** @var Conversation $conversation */
+        $conversation = ImportExportSerializer::deserialize($serialized, Conversation::class, 'json');
+
+        $conversation->setScenario($scenario);
+
+        $conversation->setCreatedAt(Carbon::now());
+        $conversation->setUpdatedAt(Carbon::now());
+
+        $duplicate = ConversationDataClient::addFullConversationGraph($conversation);
+        $duplicate = ConversationDataClient::getFullConversationGraph($duplicate->getUid());
+
+        // Create a new map of all new UIDs to/from paths
+        $map = PathSubstitutionHelper::createConversationMap($duplicate, '_duplicate');
+
+        // Serialize the duplicate, then deserializing using the map to replace the paths with new UIDs
+        $serialized = ImportExportSerializer::serialize($duplicate, 'json');
+
+        /** @var Conversation $conversationWithPathsSubstituted */
+        $conversationWithPathsSubstituted = ImportExportSerializer::deserialize($serialized, Conversation::class, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        ScenarioImportExportHelper::patchConversation($duplicate, $conversationWithPathsSubstituted);
+        $duplicate = ConversationDataClient::getFullConversationGraph($duplicate->getUid());
+
+        return new ConversationResource($duplicate);
     }
 }

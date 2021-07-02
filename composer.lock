@@ -2920,12 +2920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "96bf59a38f5c67547c850a61aac61e54b45eeeb8"
+                "reference": "f6ec1f87eda14275f3596dfebdc740e6f9dcafa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/96bf59a38f5c67547c850a61aac61e54b45eeeb8",
-                "reference": "96bf59a38f5c67547c850a61aac61e54b45eeeb8",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/f6ec1f87eda14275f3596dfebdc740e6f9dcafa9",
+                "reference": "f6ec1f87eda14275f3596dfebdc740e6f9dcafa9",
                 "shasum": ""
             },
             "require": {
@@ -3002,9 +3002,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/feature/545--duplicate-conversation-scene-turn"
             },
-            "time": "2021-07-02T09:57:21+00:00"
+            "time": "2021-07-02T10:29:52+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
