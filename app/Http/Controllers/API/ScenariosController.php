@@ -3,12 +3,16 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Console\Facades\ImportExportSerializer;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\ConversationRequest;
 use App\Http\Requests\ScenarioRequest;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ScenarioResource;
+use App\ImportExportHelpers\PathSubstitutionHelper;
+use App\ImportExportHelpers\ScenarioImportExportHelper;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -18,6 +22,7 @@ use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
@@ -108,14 +113,7 @@ class ScenariosController extends Controller
         $persistedScenario = $this->createDefaultConversations($newScenario);
 
         // Add a new condition to the scenario now that it has an ID
-        $condition = new Condition(
-            'eq',
-            ['attribute' => 'user.selected_scenario'],
-            ['value' => $persistedScenario->getUid()]
-        );
-
-        $persistedScenario->setConditions(new ConditionCollection([$condition]));
-
+        $persistedScenario = $this->setDefaultScenarioCondition($persistedScenario);
         $updatedScenario = ConversationDataClient::updateScenario($persistedScenario);
 
         return (new ScenarioResource($updatedScenario))->response()->setStatusCode(201);
@@ -221,6 +219,52 @@ class ScenariosController extends Controller
         } else {
             return response('Error deleting scenario, check the logs', 500);
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Scenario $scenario
+     * @return ScenarioResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Scenario $scenario): ScenarioResource
+    {
+        $scenario = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
+
+        // Set new OD ID for the scenario and create a map of UIDs to/from paths,
+        /** @var Scenario $scenario */
+        $scenario = $request->setUniqueOdId($scenario);
+
+        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($scenario);
+
+        // Serialize, then deserialize, the scenario to convert the UID references to paths
+        $serialized = ImportExportSerializer::serialize($scenario, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        /** @var Scenario $scenario */
+        $scenario = ImportExportSerializer::deserialize($serialized, Scenario::class, 'json');
+
+        $scenario->setCreatedAt(Carbon::now());
+        $scenario->setUpdatedAt(Carbon::now());
+
+        // Persist the scenario with the paths
+        $duplicate = ConversationDataClient::addFullScenarioGraph($scenario);
+        $duplicate = ConversationDataClient::getFullScenarioGraph($duplicate->getUid());
+
+        // Create a new map of all new UIDs to/from paths
+        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($duplicate);
+
+        // Serialize the duplicate, then deserializing using the map to replace the paths with new UIDs
+        $serialized = ImportExportSerializer::serialize($duplicate, 'json');
+
+        /** @var Scenario $scenarioWithPathsSubstituted */
+        $scenarioWithPathsSubstituted = ImportExportSerializer::deserialize($serialized, Scenario::class, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        $duplicate = ScenarioImportExportHelper::patchScenario($duplicate, $scenarioWithPathsSubstituted);
+
+        return new ScenarioResource($duplicate);
     }
 
     /**
@@ -424,5 +468,22 @@ class ScenariosController extends Controller
 
         /** @var Intent */
         return $turn->getRequestIntents()->first();
+    }
+
+    /**
+     * @param Scenario $scenario
+     * @return Scenario
+     */
+    private function setDefaultScenarioCondition(Scenario $scenario): Scenario
+    {
+        $condition = new Condition(
+            'eq',
+            ['attribute' => 'user.selected_scenario'],
+            ['value' => $scenario->getUid()]
+        );
+
+        $scenario->setConditions(new ConditionCollection([$condition]));
+
+        return $scenario;
     }
 }
