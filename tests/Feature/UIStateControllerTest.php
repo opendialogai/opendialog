@@ -5,6 +5,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Carbon\Carbon;
+use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\BehaviorsCollection;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
@@ -46,6 +47,55 @@ class UIStateControllerTest extends TestCase
             ->assertStatus(404);
     }
 
+    public function testGetFocusedScenario()
+    {
+        $fakeScenario = new Scenario();
+        $fakeScenario->setUid('0x0001');
+        $fakeScenario->setName("Example scenario");
+        $fakeScenario->setOdId('example_scenario');
+        $fakeScenario->setDescription('An example scenario');
+        $fakeScenario->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+        $fakeScenario->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+
+        $fakeConversation = new Conversation($fakeScenario);
+        $fakeConversation->setUid('0x0002');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setDescription("An new example conversation");
+        $fakeConversation->setInterpreter('interpreter.core.nlp');
+        $fakeConversation->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::STARTING_BEHAVIOR)]));
+        $fakeConversation->setConditions(new ConditionCollection());
+        $fakeConversation->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+        $fakeConversation->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+
+        $fakeScenario->setConversations(new ConversationCollection([$fakeConversation]));
+
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->with($fakeScenario->getUid(), false)
+            ->andReturn($fakeScenario);
+
+        $this->actingAs($this->user, 'api')
+            ->json('GET', '/admin/api/conversation-builder/ui-state/focused/scenario/' . $fakeScenario->getUid())
+            ->assertJson([
+                'focusedScenario' => [
+                    'id'=> '0x0001',
+                    'od_id'=> 'example_scenario',
+                    'name'=> 'Example scenario',
+                    'description'=> 'An example scenario',
+                    'conversations' => [
+                        [
+                            "id" => "0x0002",
+                            "name" => "New Example conversation",
+                            "od_id" => "new_example_conversation",
+                            "description" => "An new example conversation",
+                            "behaviors" => ["STARTING"],
+                        ]
+                    ]
+                ]
+            ]);
+    }
+
     public function testGetFocusedConversation()
     {
         $fakeScenario = new Scenario();
@@ -54,7 +104,7 @@ class UIStateControllerTest extends TestCase
         $fakeScenario->setOdId('example_scenario');
         $fakeScenario->setDescription('An example scenario');
 
-        $fakeConversation = new Conversation();
+        $fakeConversation = new Conversation($fakeScenario);
         $fakeConversation->setUid('0x0002');
         $fakeConversation->setName('New Example conversation');
         $fakeConversation->setOdId('new_example_conversation');
@@ -64,8 +114,20 @@ class UIStateControllerTest extends TestCase
         $fakeConversation->setConditions(new ConditionCollection());
         $fakeConversation->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
         $fakeConversation->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
-
         $fakeConversation->setScenario($fakeScenario);
+
+        $fakeScene = new Scene($fakeConversation);
+        $fakeScene->setUid('0x0003');
+        $fakeScene->setName('New Example scene');
+        $fakeScene->setOdId('new_example_scene');
+        $fakeScene->setDescription("An new example scene");
+        $fakeScene->setInterpreter('interpreter.core.nlp');
+        $fakeScene->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::OPEN_BEHAVIOR)]));
+        $fakeScene->setConditions(new ConditionCollection());
+        $fakeScene->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+        $fakeScene->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+
+        $fakeConversation->setScenes(new SceneCollection([$fakeScene]));
 
         ConversationDataClient::shouldReceive('getConversationByUid')
             ->once()
@@ -85,17 +147,26 @@ class UIStateControllerTest extends TestCase
                     'od_id'=> 'example_scenario',
                     'name'=> 'Example scenario',
                     'description'=> 'An example scenario',
-                   'focusedConversation' => [
-                       "id" => "0x0002",
-                       "name" => "New Example conversation",
-                       "od_id" => "new_example_conversation",
-                       "description" => "An new example conversation",
-                       "interpreter" => "interpreter.core.nlp",
-                       "behaviors" => [],
-                       "conditions" => [],
-                       "created_at" => "2021-03-12T11:57:23+0000",
-                       "updated_at" => "2021-03-12T11:57:23+0000"
-                   ]
+                    'focusedConversation' => [
+                        "id" => "0x0002",
+                        "name" => "New Example conversation",
+                        "od_id" => "new_example_conversation",
+                        "description" => "An new example conversation",
+                        "interpreter" => "interpreter.core.nlp",
+                        "behaviors" => [],
+                        "conditions" => [],
+                        "created_at" => "2021-03-12T11:57:23+0000",
+                        "updated_at" => "2021-03-12T11:57:23+0000",
+                        "scenes" => [
+                            [
+                                "id" => "0x0003",
+                                "name" => "New Example scene",
+                                "od_id" => "new_example_scene",
+                                "description" => "An new example scene",
+                                "behaviors" => ["OPEN"],
+                            ]
+                        ]
+                    ]
                 ]
             ]);
     }
@@ -108,21 +179,7 @@ class UIStateControllerTest extends TestCase
         $fakeScenario->setOdId('example_scenario');
         $fakeScenario->setDescription('An example scenario');
 
-        $fakeScene = new Scene();
-        $fakeScene->setUid('0x0003');
-        $fakeScene->setOdId('welcome_scene');
-        $fakeScene->setName('Welcome scene');
-        $fakeScene->setDescription('A welcome scene');
-        $fakeScene->setInterpreter('interpreter.core.nlp');
-        $fakeScene->setBehaviors(new BehaviorsCollection());
-        $fakeScene->setConditions(new ConditionCollection());
-        $fakeScene->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeScene->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
-        $fakeScene->setTurns(new TurnCollection());
-
-
-
-        $fakeConversation = new Conversation();
+        $fakeConversation = new Conversation($fakeScenario);
         $fakeConversation->setUid('0x0002');
         $fakeConversation->setName('New Example conversation');
         $fakeConversation->setOdId('new_example_conversation');
@@ -132,15 +189,37 @@ class UIStateControllerTest extends TestCase
         $fakeConversation->setConditions(new ConditionCollection());
         $fakeConversation->setCreatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
         $fakeConversation->setUpdatedAt(Carbon::parse('2021-03-12T11:57:23+0000'));
+        $fakeScenario->setConversations(new ConversationCollection([$fakeConversation]));
 
-        $fakeConversation->setScenario($fakeScenario);
-        $fakeScene->setConversation($fakeConversation);
+        $fakeScene = new Scene($fakeConversation);
+        $fakeScene->setUid('0x0003');
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->setDescription('A welcome scene');
+        $fakeScene->setInterpreter('interpreter.core.nlp');
+        $fakeScene->setBehaviors(new BehaviorsCollection());
+        $fakeScene->setConditions(new ConditionCollection());
+        $fakeScene->setCreatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeScene->setUpdatedAt(Carbon::parse('2021-02-24T09:30:00+0000'));
+        $fakeConversation->setScenes(new SceneCollection([$fakeScene]));
+
+        $fakeTurn = new Turn($fakeScene);
+        $fakeTurn->setUid('0x0003');
+        $fakeTurn->setOdId('welcome_turn');
+        $fakeTurn->setName('Welcome turn');
+        $fakeTurn->setDescription('A welcome turn');
+        $fakeTurn->setInterpreter('interpreter.core.nlp');
+        $fakeTurn->setBehaviors(new BehaviorsCollection([
+            new Behavior(Behavior::STARTING_BEHAVIOR),
+            new Behavior(Behavior::OPEN_BEHAVIOR)
+        ]));
+
+        $fakeScene->setTurns(new TurnCollection([$fakeTurn]));
 
         ConversationDataClient::shouldReceive('getSceneByUid')
             ->once()
             ->with($fakeScene->getUid(), false)
             ->andReturn($fakeScene);
-
 
         ConversationDataClient::shouldReceive('getScenarioWithFocusedScene')
             ->once()
@@ -170,7 +249,15 @@ class UIStateControllerTest extends TestCase
                              "interpreter" => 'interpreter.core.nlp',
                              "behaviors" => [],
                              "conditions" => [],
-                             "turns" => []
+                             "turns" => [
+                                 [
+                                     "id" => "0x0003",
+                                     "od_id"=> "welcome_turn",
+                                     "name"=> "Welcome turn",
+                                     "description"=> "A welcome turn",
+                                     "behaviors" => ["STARTING", "OPEN"],
+                                 ]
+                             ]
                         ]
                     ]
                 ]
@@ -185,7 +272,6 @@ class UIStateControllerTest extends TestCase
             ->once()
             ->with($fakeTurn->getUid(), false)
             ->andReturn($fakeTurn);
-
 
         ConversationDataClient::shouldReceive('getScenarioWithFocusedTurn')
             ->once()
@@ -387,7 +473,9 @@ class UIStateControllerTest extends TestCase
                             "name" => "Goodbye intent 1",
                             "od_id" => "goodbye_intent_1",
                             "sample_utterance" => "Welcome user!",
-                            "speaker" => "USER"
+                            "speaker" => "USER",
+                            "behaviors" => [],
+                            "conditions" => [],
                         ],
                         "order" => "RESPONSE"
                     ],
@@ -398,7 +486,9 @@ class UIStateControllerTest extends TestCase
                             "name" => "Welcome intent 1",
                             "od_id" => "welcome_intent_1",
                             "sample_utterance" => "Hello!",
-                            "speaker" => "APP"
+                            "speaker" => "APP",
+                            "behaviors" => [],
+                            "conditions" => [],
                         ],
                         "order" => "REQUEST"
                     ]

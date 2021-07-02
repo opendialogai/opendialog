@@ -41,11 +41,11 @@ class StatisticsController extends Controller
                 ->get()->count();
         }
 
-        $data = [
+        $data = Helper::setIntervals([
             'total' => array_sum($values),
             'labels' => $labels,
             'values' => $values,
-        ];
+        ]);
 
         Helper::setCache('chatbotUsers', $data, $startDate, $endDate);
 
@@ -78,11 +78,11 @@ class StatisticsController extends Controller
                 ->get()->count();
         }
 
-        $data = [
+        $data = Helper::setIntervals([
             'total' => array_sum($values),
             'labels' => $labels,
             'values' => $values,
-        ];
+        ]);
 
         Helper::setCache('requests', $data, $startDate, $endDate);
 
