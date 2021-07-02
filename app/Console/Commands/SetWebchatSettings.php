@@ -31,10 +31,10 @@ class SetWebchatSettings extends Command
         $customSettings = !empty($settingsInput);
 
         if (!$this->option('non-interactive')) {
-            if (!$settingsInput && !$this->confirm('This will overwrite all current settings - are you sure you want to run?')) {
+            if (!$customSettings && !$this->confirm('This will overwrite all current settings - are you sure you want to run?')) {
                 $this->info('OK, not running');
                 return 1;
-            } elseif (!$this->confirm(
+            } elseif ($customSettings && !$this->confirm(
                 sprintf('This will update all of these settings - are you sure: %s', implode(',', $settingsInput))
             )
             ) {
