@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use App\Stats\Helper;
+use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use OpenDialogAi\ConversationLog\Message;
 use Tests\TestCase;
@@ -97,5 +99,54 @@ class StatsHelperTest extends TestCase
         $this->assertEquals($graphCount['total'], 1);
         $this->assertEquals($graphCount['labels'], $labels);
         $this->assertEquals($graphCount['values'], $values);
+    }
+
+    public function testSetIntervals()
+    {
+        $startDate = Carbon::make('2020-01-01');
+        $endDate = Carbon::make('2020-02-01');
+
+        $daily = Helper::setIntervals($this->setUpData($startDate, $endDate));
+        $this->assertCount(31, $daily['labels']);
+        $this->assertCount(31, $daily['values']);
+        $this->assertEquals(31, $daily['total']);
+
+        $endDate = Carbon::make('2020-03-01');
+
+        $weekly = Helper::setIntervals($this->setUpData($startDate, $endDate));
+        $this->assertCount(9, $weekly['labels']);
+        $this->assertCount(9, $weekly['values']);
+        $this->assertEquals(60, $weekly['total']);
+
+        $endDate = Carbon::make('2020-06-01');
+
+        $monthly = Helper::setIntervals($this->setUpData($startDate, $endDate));
+        $this->assertCount(5, $monthly['labels']);
+        $this->assertCount(5, $monthly['values']);
+        $this->assertEquals(152, $monthly['total']);
+    }
+
+    /**
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @return array[]
+     */
+    private function setUpData($startDate, $endDate): array
+    {
+        $startDate = clone($startDate);
+        $startDate->subDay();
+
+        $data = [
+            'labels' => [],
+            'values' => [],
+            'total' => 0
+        ];
+
+        while ($startDate->diffInDays($endDate) > 1) {
+            $data['labels'][] = $startDate->addDays(1)->format('Y-m-d');
+            $data['values'][] = 1;
+            $data['total'] += 1;
+        }
+        return $data;
     }
 }
