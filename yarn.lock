@@ -714,10 +714,10 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@opendialogai/opendialog-design-system-pkg@^0.2.55":
-  version "0.2.55"
-  resolved "https://registry.yarnpkg.com/@opendialogai/opendialog-design-system-pkg/-/opendialog-design-system-pkg-0.2.55.tgz#3c244c7e2ee09d20b326e4a5b1f19070d44e24b1"
-  integrity sha512-+AGi5w0OeeD4lX9vSUFtG+Aqvlt0IeaHkE94kB0dMqLkzv1TkpRvYdQdf43XJTbsexU830EH5e9SI1w04rQiAA==
+"@opendialogai/opendialog-design-system-pkg@^0.2.57":
+  version "0.2.57"
+  resolved "https://registry.yarnpkg.com/@opendialogai/opendialog-design-system-pkg/-/opendialog-design-system-pkg-0.2.57.tgz#8abdcea5ee8b0092c6267ea3e608159af81fc83f"
+  integrity sha512-cFp/6JbK4IO6DTXXbF6gD3Ez5UF/mFCcgqj+zU1pAyvXt/eaXfVk5TfLlofnXdrPdUgtOMUPw/3FgYVbCJHbcA==
   dependencies:
     "@coreui/coreui" "^2.1.12"
     "@coreui/coreui-plugin-chartjs-custom-tooltips" "^1.3.1"
@@ -749,6 +749,7 @@
     vue-router "^3.5.1"
     vue-select "^3.9.4"
     vue-slick-carousel "^1.0.6"
+    vue-smooth-reflow "^0.1.12"
     vue2-daterange-picker "^0.4.4"
     vue2-perfect-scrollbar "^1.5.0"
     vuex "^3.6.2"
@@ -7348,6 +7349,11 @@ vue-slick-carousel@^1.0.6:
     lodash.pick "^4.4.0"
     resize-observer-polyfill "1.5.1"
     vue "^2.6.10"
+
+vue-smooth-reflow@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/vue-smooth-reflow/-/vue-smooth-reflow-0.1.12.tgz#bca66e7cecc7ab1f683ebb02e1d9b75a2ab4db98"
+  integrity sha512-cic+dmqsBzu/lRMXf/mhUPMM0g0vancJGUyNMMGHjis0ilSFd1RjIrZYcU5B7ef+n5oshH33/zbMA8OYyRTu7Q==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
