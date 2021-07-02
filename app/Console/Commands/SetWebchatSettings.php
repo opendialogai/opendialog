@@ -13,7 +13,7 @@ class SetWebchatSettings extends Command
      *
      * @var string
      */
-    protected $signature = 'webchat:setup';
+    protected $signature = 'webchat:setup {settings?*} {--non-interactive}';
 
     /**
      * The console command description.
@@ -22,26 +22,27 @@ class SetWebchatSettings extends Command
      */
     protected $description = 'Updates the webchat_settings table with the correct settings for the opendialog project. It calls
     the webchat:settings command from the OpenDialogAi-Webchat package to create the correct rows in the table, then
-    populates the settings required for the opendialog project. If auditAppUrl, openDialogUrl and authToken are not included in
-    the call, the existing settings from the database will be used if they exist.';
+    populates the settings required for the opendialog project. An optional list of settings to be updated can be passed in to 
+    update only those settings';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return void
-     */
     public function handle()
     {
+        $settingsInput = $this->argument('settings');
+        $customSettings = !empty($settingsInput);
+
+        if (!$this->option('non-interactive')) {
+            if (!$customSettings && !$this->confirm('This will overwrite all current settings - are you sure you want to run?')) {
+                $this->info('OK, not running');
+                return 1;
+            } elseif ($customSettings && !$this->confirm(
+                sprintf('This will update all of these settings - are you sure: %s', implode(',', $settingsInput))
+            )
+            ) {
+                $this->info('OK, not running');
+                return 1;
+            }
+        }
+
         // First, run the OpenDialogAI-Webchat settings command to get our database in order
         $this->info('Setting up webchat settings table...');
         Artisan::call('webchat:settings');
@@ -113,7 +114,7 @@ class SetWebchatSettings extends Command
             WebchatSetting::NUMBER_OF_MESSAGES => 10,
             WebchatSetting::COLLECT_USER_IP => true,
             WebchatSetting::SHOW_RESTART_BUTTON => false,
-            WebchatSetting::SHOW_DOWNLOAD_BUTON => false,
+            WebchatSetting::SHOW_DOWNLOAD_BUTON => true,
             WebchatSetting::SHOW_END_CHAT_BUTON => false,
             WebchatSetting::HIDE_DATETIME_MESSAGE => true,
             WebchatSetting::RESTART_BUTTON_CALLBACK => 'WELCOME',
@@ -132,7 +133,16 @@ class SetWebchatSettings extends Command
         ];
 
         foreach ($settings as $name => $value) {
-            $this->updateSetting($name, $value);
+            if (!$customSettings || in_array($name, $settingsInput)) {
+                $this->updateSetting($name, $value);
+                if (($key = array_search($name, $settingsInput)) !== false) {
+                    unset($settingsInput[$key]);
+                }
+            }
+        }
+
+        if (!empty($settingsInput)) {
+            $this->info(sprintf('Settings not updated for %s - name(s) not valid', implode(',', $settingsInput)));
         }
     }
 
