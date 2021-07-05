@@ -12,7 +12,6 @@
 */
 
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Fortify;
 
@@ -52,17 +51,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     /**
-     * Conversations
-     */
-    Route::prefix('conversations')->group(function () {
-        Route::get('/', 'AdminController@handle');
-        Route::get('/add', 'AdminController@handle');
-        Route::get('/{id}', 'AdminController@handle');
-        Route::get('/{id}/edit', 'AdminController@handle');
-        Route::get('/{id}/message-templates', 'AdminController@handle');
-    });
-
-    /**
      * Chatbot Users
      */
     Route::prefix('chatbot-users')->group(function () {
@@ -82,7 +70,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     /**
-     * Users
+     * Dynamic Attributes
      */
     Route::prefix('dynamic-attributes')->group(function () {
         Route::get('/', 'AdminController@handle');
