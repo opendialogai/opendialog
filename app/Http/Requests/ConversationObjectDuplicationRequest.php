@@ -33,7 +33,8 @@ class ConversationObjectDuplicationRequest extends FormRequest
     }
 
     /**
-     * Finds and sets a unique OD ID for the given object, ensuring that it is unique with respect to it's parent scope
+     * Finds and sets a unique OD ID and name for the given object, ensuring that it is unique with respect to
+     * it's parent scope
      *
      * @param ConversationObject $object
      * @param ConversationObject|null $parent
