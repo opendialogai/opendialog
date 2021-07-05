@@ -91,7 +91,10 @@ const router = new VueRouter({
         {
           path: 'message-editor',
           name: 'message-editor',
-          component: MessageEditor
+          component: MessageEditor,
+          meta: {
+            title: 'Message Editor',
+          },
         },
         {
           path: 'interpreters/configure/new',
