@@ -74,6 +74,14 @@ class IntentsController extends Controller
     {
         $isRequest = $intent->isRequestIntent();
         $intent = IntentDataClient::getFullIntentGraph($intent->getUid());
+
+        if ($intent->getSpeaker() === Intent::APP) {
+            $turn = ConversationDataClient::getTurnByUid($intent->getTurn()->getUid());
+
+            /** @var Intent $intent */
+            $intent = $request->setUniqueOdId($intent, $turn, true);
+        }
+
         $intent->removeUid();
 
         $duplicate = IntentDataClient::addFullIntentGraph($intent, $isRequest);

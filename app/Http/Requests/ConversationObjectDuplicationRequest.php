@@ -38,30 +38,82 @@ class ConversationObjectDuplicationRequest extends FormRequest
      *
      * @param ConversationObject $object
      * @param ConversationObject|null $parent
+     * @param bool $isIntent
      * @return ConversationObject
      */
     public function setUniqueOdId(
         ConversationObject $object,
-        ?ConversationObject $parent = null
+        ?ConversationObject $parent = null,
+        bool $isIntent = false
     ): ConversationObject {
-        $odId = $this->get('od_id', sprintf("%s_copy", $object->getOdId()));
-        $originalOdId = $odId;
+        $originalOdId = $object->getOdId();
+        $odId = $this->get('od_id', $this->formatId($originalOdId, null, $isIntent));
 
         $i = 1;
         while (!OdId::isOdIdUniqueWithinParentScope($odId, $parent)) {
             $i++;
-            $odId = sprintf("%s_%d", $originalOdId, $i);
+            $odId = $this->formatId($originalOdId, $i, $isIntent);
         }
 
         if ($i > 1) {
-            $name = $this->get('name', sprintf("%s copy %d", $object->getName(), $i));
+            $name = $this->get('name', $this->formatName($object->getName(), $i, $isIntent));
         } else {
-            $name = $this->get('name', sprintf("%s copy", $object->getName()));
+            $name = $this->get('name', $this->formatName($object->getName(), null, $isIntent));
         }
 
         $object->setOdId($odId);
         $object->setName($name);
 
         return $object;
+    }
+
+    /**
+     * @param string $id
+     * @param int|null $number
+     * @param bool $isIntent
+     * @return string
+     */
+    public function formatId(string $id, int $number = null, bool $isIntent = false): string
+    {
+        if (is_null($number)) {
+            if ($isIntent) {
+                $id = sprintf("%sCopy", $id);
+            } else {
+                $id = sprintf("%s_copy", $id);
+            }
+        } else {
+            if ($isIntent) {
+                $id = sprintf("%sCopy%d", $id, $number);
+            } else {
+                $id = sprintf("%s_copy_%d", $id, $number);
+            }
+        }
+
+        return $id;
+    }
+
+    /**
+     * @param string $name
+     * @param int|null $number
+     * @param bool $isIntent
+     * @return string
+     */
+    public function formatName(string $name, int $number = null, bool $isIntent = false): string
+    {
+        if ($isIntent) {
+            $name = sprintf("%sCopy", $name);
+        } else {
+            $name = sprintf("%s copy", $name);
+        }
+
+        if (!is_null($number)) {
+            if ($isIntent) {
+                $name = sprintf("%s%d", $name, $number);
+            } else {
+                $name = sprintf("%s %d", $name, $number);
+            }
+        }
+
+        return $name;
     }
 }
