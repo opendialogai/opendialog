@@ -3,16 +3,21 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Console\Facades\ImportExportSerializer;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
+use App\Http\Requests\ConversationObjectDuplicationRequest;
 use App\Http\Requests\SceneRequest;
 use App\Http\Requests\TurnRequest;
 use App\Http\Resources\SceneResource;
 use App\Http\Resources\TurnResource;
-use Illuminate\Http\JsonResponse;
+use App\ImportExportHelpers\PathSubstitutionHelper;
+use App\ImportExportHelpers\ScenarioImportExportHelper;
 use Illuminate\Http\Response;
-use OpenDialogAi\Core\Conversation\Conversation;
+use Illuminate\Support\Carbon;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\SceneDataClient;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
 
@@ -95,5 +100,56 @@ class ScenesController extends Controller
         } else {
             return response('Error deleting conversation, check the logs', 500);
         }
+    }
+
+    /**
+     * @param ConversationObjectDuplicationRequest $request
+     * @param Scene $scene
+     * @return SceneResource
+     */
+    public function duplicate(ConversationObjectDuplicationRequest $request, Scene $scene): SceneResource
+    {
+        $scene = SceneDataClient::getFullSceneGraph($scene->getUid());
+
+        $conversation = ConversationDataClient::getConversationByUid($scene->getConversation()->getUid());
+
+        /** @var Scene $scene */
+        $scene = $request->setUniqueOdId($scene, $conversation);
+
+        $map = PathSubstitutionHelper::createSceneMap($scene, '_duplicate', '_duplicate');
+
+        $scene->removeUid();
+
+        // Serialize, then deserialize the scene to convert the UID references to paths
+        $serialized = ImportExportSerializer::serialize($scene, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        /** @var Scene $scene */
+        $scene = ImportExportSerializer::deserialize($serialized, Scene::class, 'json');
+
+        $scene->setConversation($conversation);
+
+        $scene->setCreatedAt(Carbon::now());
+        $scene->setUpdatedAt(Carbon::now());
+
+        $duplicate = SceneDataClient::addFullSceneGraph($scene);
+        $duplicate = SceneDataClient::getFullSceneGraph($duplicate->getUid());
+
+        // Create a new map of all new UIDs to/from paths
+        $map = PathSubstitutionHelper::createSceneMap($duplicate, '_duplicate', '_duplicate');
+
+        // Serialize the duplicate, then deserializing using the map to replace the paths with new UIDs
+        $serialized = ImportExportSerializer::serialize($duplicate, 'json');
+
+        /** @var Scene $sceneWithPathsSubstituted */
+        $sceneWithPathsSubstituted = ImportExportSerializer::deserialize($serialized, Scene::class, 'json', [
+            ScenarioNormalizer::UID_MAP => $map
+        ]);
+
+        ScenarioImportExportHelper::patchScene($duplicate, $sceneWithPathsSubstituted);
+        $duplicate = SceneDataClient::getFullSceneGraph($duplicate->getUid());
+
+        return new SceneResource($duplicate);
     }
 }

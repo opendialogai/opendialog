@@ -973,7 +973,7 @@ class ImportExportSerializerTest extends TestCase
         $scene1->setTurns(new TurnCollection([$turn1]));
         $scene2->setTurns(new TurnCollection([$turn2]));
 
-        $map = PathSubstitutionHelper::createConversationObjectUidToPathMap($scenario);
+        $map = PathSubstitutionHelper::createScenarioMap($scenario);
 
         $this->assertArrayHasKey($scenarioUid, $map);
         $this->assertEquals($expectedScenarioPath, $map->get($scenarioUid));

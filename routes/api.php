@@ -91,6 +91,7 @@ Route::namespace('API')
 
         Route::prefix('conversation-builder')->group(function () {
             Route::apiResource('scenarios', 'ScenariosController');
+            Route::post('scenarios/{scenario}/duplicate', 'ScenariosController@duplicate');
 
             Route::get('scenarios/{scenario}/conversations', 'ScenariosController@showConversationsByScenario');
             Route::post('scenarios/{scenario}/conversations', 'ScenariosController@storeConversationsAgainstScenario');
@@ -98,6 +99,7 @@ Route::namespace('API')
             Route::get('conversations/{conversation}', 'ConversationsController@show');
             Route::patch('conversations/{conversation}', 'ConversationsController@update');
             Route::delete('conversations/{conversation}', 'ConversationsController@destroy');
+            Route::post('conversations/{conversation}/duplicate', 'ConversationsController@duplicate');
 
             Route::get('conversations/{conversation}/scenes', 'ConversationsController@showScenesByConversation');
             Route::post('conversations/{conversation}/scenes', 'ConversationsController@storeSceneAgainstConversation');
@@ -105,6 +107,7 @@ Route::namespace('API')
             Route::get('scenes/{scene}', 'ScenesController@show');
             Route::patch('scenes/{scene}', 'ScenesController@update');
             Route::delete('scenes/{scene}', 'ScenesController@destroy');
+            Route::post('scenes/{scene}/duplicate', 'ScenesController@duplicate');
 
             Route::get('scenes/{scene}/turns', 'ScenesController@showTurnsByScene');
             Route::post('scenes/{scene}/turns', 'ScenesController@storeTurnAgainstScene');
@@ -112,6 +115,7 @@ Route::namespace('API')
             Route::get('turns/{turn}', 'TurnsController@show');
             Route::patch('turns/{turn}', 'TurnsController@update');
             Route::delete('turns/{turn}', 'TurnsController@destroy');
+            Route::post('turns/{turn}/duplicate', 'TurnsController@duplicate');
 
             Route::get('turns/{turn}/intents', 'TurnsController@showTurnIntentsByTurn');
             Route::post('turns/{turn}/intents', 'TurnsController@storeTurnIntentAgainstTurn');
@@ -123,6 +127,7 @@ Route::namespace('API')
             Route::get('intents/{intent}', 'IntentsController@show');
             Route::patch('intents/{intent}', 'IntentsController@update');
             Route::delete('intents/{intent}', 'IntentsController@destroy');
+            Route::post('intents/{intent}/duplicate', 'IntentsController@duplicate');
 
             Route::get('ui-state/focused/scenario/{scenario}', 'UIStateController@showFocusedScenario');
             Route::get('ui-state/focused/conversation/{conversation}', 'UIStateController@showFocusedConversation');

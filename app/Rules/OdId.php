@@ -7,9 +7,11 @@ use Illuminate\Contracts\Validation\Rule;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationObject;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\ODObjectCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class OdId implements Rule
 {
@@ -31,7 +33,7 @@ class OdId implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->isOdIdUniqueWithinParentScope($value, $this->parent, $this->currentUid);
+        return self::isOdIdUniqueWithinParentScope($value, $this->parent, $this->currentUid);
     }
 
     /**
@@ -53,7 +55,7 @@ class OdId implements Rule
      * @param string|null $currentUid The current graph ID to ensure we don't check against the currently updating object
      * @return bool
      */
-    private function isOdIdUniqueWithinParentScope(
+    public static function isOdIdUniqueWithinParentScope(
         string $odId,
         ConversationObject $parent = null,
         string $currentUid = null
@@ -77,6 +79,16 @@ class OdId implements Rule
                 case Scene::class:
                     /** @var Scene $parent */
                     $children = $parent->getTurns();
+                    break;
+
+                case Turn::class:
+                    /** @var Turn $parent */
+                    $children = $parent->getRequestIntents()
+                        ->merge($parent->getResponseIntents())
+                        ->filter(function (Intent $intent) {
+                            // Incoming intents shouldn't necessarily have unique OD ID's
+                            return $intent->getSpeaker() === Intent::APP;
+                        });
                     break;
             }
         }

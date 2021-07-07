@@ -15,6 +15,7 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\ScenarioDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
@@ -380,15 +381,15 @@ class ImportExportScenariosTest extends TestCase
         $scenario = $this->getFullTestScenario();
 
         // Mock storing the scenario in DGraph
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenario)
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->with($scenario)
             ->andReturn($this->addFakeUids($scenario));
-        $storedScenario = ConversationDataClient::addFullScenarioGraph($scenario);
+        $storedScenario = ScenarioDataClient::addFullScenarioGraph($scenario);
 
         $expectedFilePath = ScenarioImportExportHelper::getScenarioFilePath($storedScenario->getOdId());
 
         // Mocks for pulling data from DGraph
         ConversationDataClient::shouldReceive('getAllScenarios')->andReturn(new ScenarioCollection([$storedScenario]));
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')->with($storedScenario->getUid())
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')->with($storedScenario->getUid())
             ->andReturn($storedScenario);
 
         // Do the export
@@ -406,26 +407,26 @@ class ImportExportScenariosTest extends TestCase
         $scenarioA = $this->getSimpleTestScenario();
         $scenarioA->setOdId("test_scenario_a");
         $scenarioA->setName("Test scenario (A)");
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioA)
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioA)
             ->andReturn($this->addFakeUids($scenarioA));
-        $storedScenarioA = ConversationDataClient::addFullScenarioGraph($scenarioA);
+        $storedScenarioA = ScenarioDataClient::addFullScenarioGraph($scenarioA);
 
         // Store Scenario B (Storage mocked)
 
         $scenarioB = $this->getSimpleTestScenario();
         $scenarioB->setOdId("test_scenario_b");
         $scenarioB->setName("Test scenario (B)");
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioB)
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioB)
             ->andReturn($this->addFakeUids($scenarioB));
-        $storedScenarioB = ConversationDataClient::addFullScenarioGraph($scenarioB);
+        $storedScenarioB = ScenarioDataClient::addFullScenarioGraph($scenarioB);
 
         // Store Scenario C (Storage mocked)
         $scenarioC = $this->getSimpleTestScenario();
         $scenarioC->setOdId("test_scenario_c");
         $scenarioC->setName("Test scenario (C)");
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioC)
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->with($scenarioC)
             ->andReturn($this->addFakeUids($scenarioC));
-        $storedScenarioC = ConversationDataClient::addFullScenarioGraph($scenarioC);
+        $storedScenarioC = ScenarioDataClient::addFullScenarioGraph($scenarioC);
 
         // Run the export (Storage mocked)
         ConversationDataClient::shouldReceive('getAllScenarios')->andReturn(new ScenarioCollection([
@@ -433,7 +434,7 @@ class ImportExportScenariosTest extends TestCase
             $storedScenarioB,
             $storedScenarioC
         ]));
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')->withAnyArgs()
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')->withAnyArgs()
             ->andReturn($storedScenarioA, $storedScenarioB, $storedScenarioC);
         $this->artisan('scenarios:export');
 
@@ -456,12 +457,12 @@ class ImportExportScenariosTest extends TestCase
         $testScenario = new Scenario();
         $testScenario->setOdId("example_scenario");
         $testScenario->setName("Other example scenario");
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->with($testScenario)
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->with($testScenario)
             ->andReturn($this->addFakeUids($testScenario));
-        $storedTestScenario = ConversationDataClient::addFullScenarioGraph($testScenario);
+        $storedTestScenario = ScenarioDataClient::addFullScenarioGraph($testScenario);
 
         ConversationDataClient::shouldReceive('getAllScenarios')->andReturn(new ScenarioCollection([$storedTestScenario]));
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')->withAnyArgs()->andReturn($storedTestScenario);
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')->withAnyArgs()->andReturn($storedTestScenario);
         $this->artisan('scenarios:export')->expectsOutput(sprintf(
             "Scenario file at %s already exists. Deleting...",
             $existingExportFilePath
@@ -487,7 +488,7 @@ class ImportExportScenariosTest extends TestCase
             ->twice()
             ->andReturn(new ScenarioCollection(), new ScenarioCollection([$storedExampleScenario]));
 
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')
             ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
 
@@ -500,7 +501,7 @@ class ImportExportScenariosTest extends TestCase
             ->once();
 
         // After updates are made we get the full scenario with the updates included now
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')
             ->once()
             ->andReturn($this->getMatchingExampleScenario());
 
@@ -545,7 +546,7 @@ class ImportExportScenariosTest extends TestCase
             ->twice()
             ->andReturn(new ScenarioCollection(), new ScenarioCollection([$storedExampleScenario]));
 
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')
             ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
 
@@ -558,7 +559,7 @@ class ImportExportScenariosTest extends TestCase
             ->once();
 
         // After updates are made we get the full scenario with the updates included now
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')
             ->once()
             ->andReturn($this->getMatchingExampleScenario());
 
@@ -573,9 +574,9 @@ class ImportExportScenariosTest extends TestCase
         $existingExampleScenario->setOdId("example_scenario");
         $existingExampleScenario->setName("Existing scenario");
         $existingExampleScenario->setDescription("An existing scenario");
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->once()
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->once()
             ->andReturn($this->addFakeUids($existingExampleScenario));
-        $storedExistingExampleScenario = ConversationDataClient::addFullScenarioGraph($existingExampleScenario);
+        $storedExistingExampleScenario = ScenarioDataClient::addFullScenarioGraph($existingExampleScenario);
         // We've added one scenario, expect one to exist.
         ConversationDataClient::shouldReceive('getAllScenarios')->once()->andReturn(new ScenarioCollection([$storedExistingExampleScenario]));
         $previousScenarios = ConversationDataClient::getAllScenarios(false);
@@ -585,7 +586,7 @@ class ImportExportScenariosTest extends TestCase
         $storedMinimalScenario = $this->getMatchingMinimalScenario();
         ConversationDataClient::shouldReceive('getAllScenarios')->twice()
             ->andReturn(new ScenarioCollection([$storedExistingExampleScenario]));
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')->once()->andReturn($storedMinimalScenario);
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->once()->andReturn($storedMinimalScenario);
         $this->artisan('scenarios:import')
             ->expectsOutput(sprintf(
                 "An existing Scenario with odId %s already exists!. Skipping %s!",
@@ -604,8 +605,8 @@ class ImportExportScenariosTest extends TestCase
         // The example scenario import was skipped, so it should be unchanged.
         $currentExampleScenarioUid =
             $currentScenarios->filter(fn ($scenario) => $scenario->getOdId() === "example_scenario")->first()->getUid();
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')->once()->andReturn($storedExistingExampleScenario);
-        $currentStoredExampleScenario = ConversationDataClient::getFullScenarioGraph($currentExampleScenarioUid);
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')->once()->andReturn($storedExistingExampleScenario);
+        $currentStoredExampleScenario = ScenarioDataClient::getFullScenarioGraph($currentExampleScenarioUid);
         $this->assertEquals($storedExistingExampleScenario, $currentStoredExampleScenario);
     }
 
@@ -629,7 +630,7 @@ class ImportExportScenariosTest extends TestCase
                 new ScenarioCollection([$storedExampleScenario])
             );
 
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')
             ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
 
@@ -642,7 +643,7 @@ class ImportExportScenariosTest extends TestCase
             ->once();
 
         // After updates are made we get the full scenario with the updates included now
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')
             ->once()
             ->andReturn($this->getMatchingExampleScenario());
 
@@ -652,7 +653,7 @@ class ImportExportScenariosTest extends TestCase
             ->once()
             ->andReturn(new ScenarioCollection([$storedExampleScenario, $storedMinimalScenario]));
 
-        ConversationDataClient::shouldReceive('getFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')
             ->twice()
             ->andReturn($storedExampleScenario, $storedMinimalScenario);
 

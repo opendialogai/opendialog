@@ -9,6 +9,7 @@ use App\ImportExportHelpers\ScenarioImportExportHelper;
 use Illuminate\Console\Command;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\ScenarioDataClient;
 use OpenDialogAi\Core\Conversation\Scenario;
 
 class ExportScenarios extends Command
@@ -22,7 +23,7 @@ class ExportScenarios extends Command
         $this->info('Beginning scenarios export...');
         $scenarios = ConversationDataClient::getAllScenarios();
         foreach ($scenarios as $scenario) {
-            $fullScenarioGraph = ConversationDataClient::getFullScenarioGraph($scenario->getUid());
+            $fullScenarioGraph = ScenarioDataClient::getFullScenarioGraph($scenario->getUid());
             $this->exportScenario($fullScenarioGraph);
         }
         $this->info('Export complete!');
@@ -32,7 +33,7 @@ class ExportScenarios extends Command
     {
         $filePath = ScenarioImportExportHelper::getScenarioFilePath($fullScenarioGraph->getOdId());
         $serialized = ImportExportSerializer::serialize($fullScenarioGraph, 'json', [
-            ScenarioNormalizer::UID_MAP => PathSubstitutionHelper::createConversationObjectUidToPathMap($fullScenarioGraph)
+            ScenarioNormalizer::UID_MAP => PathSubstitutionHelper::createScenarioMap($fullScenarioGraph)
         ]);
 
         if (ScenarioImportExportHelper::scenarioFileExists($filePath)) {

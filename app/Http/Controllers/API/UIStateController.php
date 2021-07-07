@@ -39,8 +39,7 @@ class UIStateController extends Controller
      */
     public function showFocusedScenario(Scenario $scenario): FocusedScenarioResource
     {
-        $focusedScenario = ConversationDataClient::getScenarioByUid($scenario->getUid(), false);
-        return new FocusedScenarioResource($focusedScenario);
+        return new FocusedScenarioResource($scenario);
     }
 
     /**

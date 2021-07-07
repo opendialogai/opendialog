@@ -6,20 +6,24 @@ namespace Tests\Feature;
 use App\Http\Facades\Serializer;
 use App\Http\Resources\ScenarioResource;
 use App\User;
+use Carbon\Carbon;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\ScenarioDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\ScenarioCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
+use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
 use Tests\TestCase;
 
 class ScenariosTest extends TestCase
@@ -119,7 +123,7 @@ class ScenariosTest extends TestCase
 
     public function testGetScenarioByUid()
     {
-        $fakeScenario = $this->getFakeScenario();
+        $fakeScenario = self::getFakeScenario();
 
         Serializer::shouldReceive('normalize')
             ->once()
@@ -251,9 +255,13 @@ class ScenariosTest extends TestCase
             "conversations": [{"id": "0x0001"}]
         }', true));
 
-        ConversationDataClient::shouldReceive('addFullScenarioGraph')
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')
             ->once()
             ->with($fakeScenario)
+            ->andReturn($fakeScenarioCreated);
+
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')
+            ->once()
             ->andReturn($fakeScenarioCreated);
 
         ConversationDataClient::shouldReceive('updateIntent')
@@ -280,6 +288,105 @@ class ScenariosTest extends TestCase
             ]);
     }
 
+    public function testDuplicateScenarioFailure()
+    {
+        $scenario = self::getFakeScenarioForDuplication();
+
+        // Called during route binding
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->andReturn($scenario);
+
+        // Called during OD ID rule
+        ConversationDataClient::shouldReceive('getAllScenarios')
+            ->once()
+            ->andReturn(new ScenarioCollection([$scenario]));
+
+        // Attempt to duplicate with same ID
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/scenarios/' . $scenario->getUid() . '/duplicate', [
+                'name' => $scenario->getName(),
+                'od_id' => $scenario->getODId(),
+            ])
+            ->assertStatus(422);
+    }
+
+    public function testDuplicateScenarioSuccess()
+    {
+        $scenario = self::getFakeScenarioForDuplication();
+
+        // Called during route binding
+        ConversationDataClient::shouldReceive('getScenarioByUid')
+            ->once()
+            ->andReturn($scenario);
+
+        $duplicated = null;
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')
+            ->once()
+            ->andReturnUsing(function ($scenario) use (&$duplicated) {
+                $scenario = $scenario->copy();
+                $scenario->setUid('0x9999');
+                $duplicated = $scenario;
+                return $scenario;
+            });
+
+        // Called in controller, once before persisting, again after, and finally after patching
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')
+            ->times(3)
+            ->andReturnUsing(
+                fn ($uid) => $scenario,
+                function ($uid) use (&$duplicated) {
+                    return $duplicated;
+                },
+                function ($uid) use (&$duplicated) {
+                    $duplicated->setConditions(new ConditionCollection([new Condition(
+                        'eq',
+                        ['attribute' => 'user.selected_scenario'],
+                        ['value' => $uid]
+                    )]));
+
+                    return $duplicated;
+                }
+            );
+
+        // Called in controller
+        ConversationDataClient::shouldReceive('getAllScenarios')
+            ->once()
+            ->andReturn(new ScenarioCollection([$scenario]));
+
+        // Called when patching the scenario's condition
+        ConversationDataClient::shouldReceive('updateScenario')
+            ->once()
+            ->andReturnUsing(fn ($scenario) => $scenario);
+
+        // Attempt to duplicate with different ID
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/scenarios/' . $scenario->getUid() . '/duplicate')
+            ->assertStatus(200)
+            ->assertJson([
+                'name' => 'Example scenario copy',
+                'od_id' => 'example_scenario_copy',
+                'id'=> '0x9999',
+                "conditions" => [
+                    [
+                        "operation" => "eq",
+                        "operationAttributes" => [
+                            [
+                                "id" => "attribute",
+                                "value" => "user.selected_scenario"
+                            ]
+                        ],
+                        "parameters" => [
+                            [
+                                "id" => "value",
+                                "value" => "0x9999"
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
+    }
+
     public function testUpdateScenarioNotFound()
     {
         ConversationDataClient::shouldReceive('getScenarioByUid')
@@ -294,7 +401,7 @@ class ScenariosTest extends TestCase
 
     public function testUpdateScenario()
     {
-        $fakeScenario = $this->getFakeScenario();
+        $fakeScenario = self::getFakeScenario();
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
             ->with($fakeScenario->getUid(), false)
@@ -355,7 +462,7 @@ class ScenariosTest extends TestCase
 
     public function testDeleteScenario()
     {
-        $fakeScenario = $this->getFakeScenario();
+        $fakeScenario = self::getFakeScenario();
 
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
@@ -375,12 +482,140 @@ class ScenariosTest extends TestCase
     /**
      * @return Scenario
      */
-    public function getFakeScenario(): Scenario
+    public static function getFakeScenario(): Scenario
     {
         $fakeScenario = new Scenario();
         $fakeScenario->setName("Example scenario");
         $fakeScenario->setUid('0x0001');
         $fakeScenario->setODId('example_scenario');
+        $fakeScenario->setConditions(new ConditionCollection([
+            new Condition(
+                'eq',
+                ['attribute' => 'user.selected_scenario'],
+                ['value' => '0x0001'],
+            )
+        ]));
+        $fakeScenario->setCreatedAt(Carbon::now());
+        $fakeScenario->setUpdatedAt(Carbon::now());
+
         return $fakeScenario;
+    }
+
+    public static function getFakeScenarioForDuplication(): Scenario
+    {
+        $scenario = self::getFakeScenario();
+
+        $conversation = new Conversation();
+        $conversation->setName("Example Conversation");
+        $conversation->setUid('0x0002');
+        $conversation->setOdId("example_conversation");
+        $conversation->setCreatedAt(Carbon::now());
+        $conversation->setUpdatedAt(Carbon::now());
+        $conversation->setScenario($scenario);
+        $conversations[] = $conversation;
+
+        $scene = new Scene();
+        $scene->setName("Example Scene");
+        $scene->setUid('0x0003');
+        $scene->setOdId("example_scene");
+        $scene->setCreatedAt(Carbon::now());
+        $scene->setUpdatedAt(Carbon::now());
+        $scene->setConversation($conversations[0]);
+        $scenes[] = $scene;
+
+        $turn = new Turn();
+        $turn->setName("Example Turn");
+        $turn->setUid('0x0004');
+        $turn->setOdId("example_turn");
+        $turn->setCreatedAt(Carbon::now());
+        $turn->setUpdatedAt(Carbon::now());
+        $turn->setScene($scenes[0]);
+        $turns[] = $turn;
+
+        $requestIntent = new Intent();
+        $requestIntent->setSpeaker(Intent::USER);
+        $requestIntent->setIsRequestIntent(true);
+        $requestIntent->setName("Example Request Intent");
+        $requestIntent->setUid('0x0005');
+        $requestIntent->setOdId("intent.app.exampleRequestIntent");
+        $requestIntent->setCreatedAt(Carbon::now());
+        $requestIntent->setUpdatedAt(Carbon::now());
+        $requestIntent->setTurn($turns[0]);
+        $requestIntents[] = $requestIntent;
+
+        $responseIntent = new Intent();
+        $responseIntent->setSpeaker(Intent::APP);
+        $responseIntent->setIsRequestIntent(false);
+        $responseIntent->setName("Example Response Intent");
+        $responseIntent->setUid('0x0006');
+        $responseIntent->setOdId("intent.app.exampleResponseIntent");
+        $responseIntent->setCreatedAt(Carbon::now());
+        $responseIntent->setUpdatedAt(Carbon::now());
+        $responseIntent->setTurn($turns[0]);
+        $responseIntents[] = $responseIntent;
+
+        $message = new MessageTemplate();
+        $message->setName("Example Message");
+        $message->setUid('0x0007');
+        $message->setOdId('example_message');
+        $message->setMessageMarkup((new MessageMarkUpGenerator())->addTextMessage('Hello world')->getMarkUp());
+        $message->setCreatedAt(Carbon::now());
+        $message->setUpdatedAt(Carbon::now());
+        $message->setIntent($responseIntent);
+
+        $conversation = new Conversation();
+        $conversation->setName("Example Conversation copy");
+        $conversation->setUid('0x0002');
+        $conversation->setOdId("example_conversation_copy");
+        $conversation->setCreatedAt(Carbon::now());
+        $conversation->setUpdatedAt(Carbon::now());
+        $conversation->setScenario($scenario);
+        $conversations[] = $conversation;
+
+        $scene = new Scene();
+        $scene->setName("Example Scene copy");
+        $scene->setUid('0x0003');
+        $scene->setOdId("example_scene_copy");
+        $scene->setCreatedAt(Carbon::now());
+        $scene->setUpdatedAt(Carbon::now());
+        $scene->setConversation($conversations[0]);
+        $scenes[] = $scene;
+
+        $turn = new Turn();
+        $turn->setName("Example Turn copy");
+        $turn->setUid('0x0004');
+        $turn->setOdId("example_turn_copy");
+        $turn->setCreatedAt(Carbon::now());
+        $turn->setUpdatedAt(Carbon::now());
+        $turn->setScene($scenes[0]);
+        $turns[] = $turn;
+
+        $requestIntent = new Intent();
+        $requestIntent->setIsRequestIntent(true);
+        $requestIntent->setName("Example Request Intent copy");
+        $requestIntent->setUid('0x0005');
+        $requestIntent->setOdId("intent.app.exampleRequestIntentCopy");
+        $requestIntent->setCreatedAt(Carbon::now());
+        $requestIntent->setUpdatedAt(Carbon::now());
+        $requestIntent->setTurn($turns[0]);
+        $requestIntents[] = $requestIntent;
+
+        $responseIntent = new Intent();
+        $responseIntent->setIsRequestIntent(true);
+        $responseIntent->setName("Example Response Intent copy");
+        $responseIntent->setUid('0x0006');
+        $responseIntent->setOdId("intent.app.exampleResponseIntentCopy");
+        $responseIntent->setCreatedAt(Carbon::now());
+        $responseIntent->setUpdatedAt(Carbon::now());
+        $responseIntent->setTurn($turns[0]);
+        $responseIntents[] = $responseIntent;
+
+        $turns[0]->setRequestIntents(new IntentCollection($requestIntents));
+        $turns[0]->setResponseIntents(new IntentCollection($responseIntents));
+        $scenes[0]->setTurns(new TurnCollection($turns));
+        $conversations[0]->setScenes(new SceneCollection($scenes));
+        $scenario->setConversations(new ConversationCollection($conversations));
+
+        return $scenario;
     }
 }

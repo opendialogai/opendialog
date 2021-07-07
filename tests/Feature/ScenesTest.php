@@ -10,6 +10,7 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\SceneDataClient;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
 use OpenDialogAi\Core\Conversation\TurnCollection;
@@ -285,5 +286,50 @@ class ScenesTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
             ->assertStatus(200);
+    }
+
+    public function testDuplication()
+    {
+        $scenario = ScenariosTest::getFakeScenarioForDuplication();
+
+        /** @var Conversation $conversation */
+        $conversation = $scenario->getConversations()->getObjectsWithId('example_conversation')->first();
+
+        /** @var Scene $scene */
+        $scene = $conversation->getScenes()->getObjectsWithId('example_scene')->first();
+
+        // Called during route binding
+        ConversationDataClient::shouldReceive('getSceneByUid')
+            ->once()
+            ->andReturn($scene);
+
+        // Called in the controller, getting parent & sibling data
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->andReturnUsing(function ($uid) use ($conversation) { return $conversation; });
+
+        // Called in controller, once before persisting, again after, and finally after patching
+        SceneDataClient::shouldReceive('getFullSceneGraph')
+            ->times(3)
+            ->andReturnUsing(function ($uid) use ($scene) {
+                $scene->setUid($uid);
+                return $scene;
+            });
+
+        SceneDataClient::shouldReceive('addFullSceneGraph')
+            ->once()
+            ->andReturnUsing(function ($scene) {
+                $scene->setUid('0x9999');
+                return $scene;
+            });
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/scenes/' . $scene->getUid() . '/duplicate')
+            ->assertStatus(200)
+            ->assertJson([
+                'name' => 'Example Scene copy 2',
+                'od_id' => 'example_scene_copy_2',
+                'id'=> '0x9999',
+            ]);
     }
 }
