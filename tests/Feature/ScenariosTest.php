@@ -537,7 +537,7 @@ class ScenariosTest extends TestCase
         $requestIntent->setIsRequestIntent(true);
         $requestIntent->setName("Example Request Intent");
         $requestIntent->setUid('0x0005');
-        $requestIntent->setOdId("example_request_intent");
+        $requestIntent->setOdId("intent.app.exampleRequestIntent");
         $requestIntent->setCreatedAt(Carbon::now());
         $requestIntent->setUpdatedAt(Carbon::now());
         $requestIntent->setTurn($turns[0]);
@@ -548,7 +548,7 @@ class ScenariosTest extends TestCase
         $responseIntent->setIsRequestIntent(false);
         $responseIntent->setName("Example Response Intent");
         $responseIntent->setUid('0x0006');
-        $responseIntent->setOdId("example_response_intent");
+        $responseIntent->setOdId("intent.app.exampleResponseIntent");
         $responseIntent->setCreatedAt(Carbon::now());
         $responseIntent->setUpdatedAt(Carbon::now());
         $responseIntent->setTurn($turns[0]);
@@ -594,7 +594,7 @@ class ScenariosTest extends TestCase
         $requestIntent->setIsRequestIntent(true);
         $requestIntent->setName("Example Request Intent copy");
         $requestIntent->setUid('0x0005');
-        $requestIntent->setOdId("example_request_intent_copy");
+        $requestIntent->setOdId("intent.app.exampleRequestIntentCopy");
         $requestIntent->setCreatedAt(Carbon::now());
         $requestIntent->setUpdatedAt(Carbon::now());
         $requestIntent->setTurn($turns[0]);
@@ -604,7 +604,7 @@ class ScenariosTest extends TestCase
         $responseIntent->setIsRequestIntent(true);
         $responseIntent->setName("Example Response Intent copy");
         $responseIntent->setUid('0x0006');
-        $responseIntent->setOdId("example_response_intent_copy");
+        $responseIntent->setOdId("intent.app.exampleResponseIntentCopy");
         $responseIntent->setCreatedAt(Carbon::now());
         $responseIntent->setUpdatedAt(Carbon::now());
         $responseIntent->setTurn($turns[0]);
