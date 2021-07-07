@@ -502,7 +502,7 @@ class ImportExportScenariosTest extends TestCase
 
         // After updates are made we get the full scenario with the updates included now
         ScenarioDataClient::shouldReceive('getFullScenarioGraph')
-            ->once()
+            ->times(3)
             ->andReturn($this->getMatchingExampleScenario());
 
         $this->artisan('scenarios:import')
@@ -560,7 +560,7 @@ class ImportExportScenariosTest extends TestCase
 
         // After updates are made we get the full scenario with the updates included now
         ScenarioDataClient::shouldReceive('getFullScenarioGraph')
-            ->once()
+            ->times(3)
             ->andReturn($this->getMatchingExampleScenario());
 
         $this->artisan('scenarios:import')
@@ -584,9 +584,19 @@ class ImportExportScenariosTest extends TestCase
 
         // Run the Import (Storage mocked)
         $storedMinimalScenario = $this->getMatchingMinimalScenario();
-        ConversationDataClient::shouldReceive('getAllScenarios')->twice()
+
+        ConversationDataClient::shouldReceive('getAllScenarios')
+            ->twice()
             ->andReturn(new ScenarioCollection([$storedExistingExampleScenario]));
-        ScenarioDataClient::shouldReceive('addFullScenarioGraph')->once()->andReturn($storedMinimalScenario);
+
+        ScenarioDataClient::shouldReceive('addFullScenarioGraph')
+            ->once()
+            ->andReturn($storedMinimalScenario);
+
+        ScenarioDataClient::shouldReceive('getFullScenarioGraph')
+            ->once()
+            ->andReturn($storedMinimalScenario);
+
         $this->artisan('scenarios:import')
             ->expectsOutput(sprintf(
                 "An existing Scenario with odId %s already exists!. Skipping %s!",
@@ -644,7 +654,7 @@ class ImportExportScenariosTest extends TestCase
 
         // After updates are made we get the full scenario with the updates included now
         ScenarioDataClient::shouldReceive('getFullScenarioGraph')
-            ->once()
+            ->times(3)
             ->andReturn($this->getMatchingExampleScenario());
 
         $this->artisan('scenarios:import');
