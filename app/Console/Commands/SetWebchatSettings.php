@@ -13,7 +13,7 @@ class SetWebchatSettings extends Command
      *
      * @var string
      */
-    protected $signature = 'webchat:setup {settings?*} {--non-interactive}';
+    protected $signature = 'webchat:setup {settings?*} {--url=} {--non-interactive}';
 
     /**
      * The console command description.
@@ -48,7 +48,8 @@ class SetWebchatSettings extends Command
         Artisan::call('webchat:settings');
         $this->info('...done');
 
-        $odUrl = env('APP_URL');
+        $odUrl = $this->option('url') ? $this->option('url') : env('APP_URL');
+
         $commentsUrl = 'http://example.com';
         $token = 'ApiTokenValue';
 
