@@ -17,6 +17,9 @@ class WebchatSettingsTest extends TestCase
         parent::setUp();
 
         $this->user = factory(User::class)->create();
+
+        // Ensure we start with am empty webchat settings table
+        WebchatSetting::truncate();
     }
 
     public function testWebchatSettingsViewEndpoint()
