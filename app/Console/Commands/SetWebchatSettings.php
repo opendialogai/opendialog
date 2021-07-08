@@ -27,7 +27,11 @@ class SetWebchatSettings extends Command
 
     public function handle()
     {
-        $settingsInput = explode(',', $this->argument('settings'));
+        $settingsInput = null;
+        if (!is_null($this->argument('settings'))) {
+            $settingsInput = explode(',', $this->argument('settings'));
+        }
+
         $customSettings = !empty($settingsInput);
 
         if (!$this->option('non-interactive')) {
