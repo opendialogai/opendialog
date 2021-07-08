@@ -50,7 +50,7 @@ class SetWebchatSettingsTest extends TestCase
     {
         Artisan::call(
             'webchat:setup',
-            ['--non-interactive' => true, 'settings' => [WebchatSetting::MESSAGE_DELAY, WebchatSetting::BUTTON_TEXT]]
+            ['--non-interactive' => true, 'settings' => WebchatSetting::MESSAGE_DELAY . ',' . WebchatSetting::BUTTON_TEXT]
         );
 
         $messageDelay = WebchatSetting::where('name', WebchatSetting::MESSAGE_DELAY)->first();
