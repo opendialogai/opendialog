@@ -8,6 +8,14 @@ use OpenDialogAi\Webchat\WebchatSetting;
 
 class SetWebchatSettingsTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // Ensure we start with am empty webchat settings table
+        WebchatSetting::truncate();
+    }
+
     public function testCommand()
     {
         // Confirm that settings are not set before the command is run
