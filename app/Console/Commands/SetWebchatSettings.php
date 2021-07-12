@@ -22,7 +22,7 @@ class SetWebchatSettings extends Command
      */
     protected $description = 'Updates the webchat_settings table with the correct settings for the opendialog project. It calls
     the webchat:settings command from the OpenDialogAi-Webchat package to create the correct rows in the table, then
-    populates the settings required for the opendialog project. An optional list of settings to be updated can be passed in to 
+    populates the settings required for the opendialog project. An optional list of settings to be updated can be passed in to
     update only those settings';
 
     public function handle()
@@ -122,7 +122,7 @@ class SetWebchatSettings extends Command
             WebchatSetting::SHOW_DOWNLOAD_BUTON => true,
             WebchatSetting::SHOW_END_CHAT_BUTON => false,
             WebchatSetting::HIDE_DATETIME_MESSAGE => true,
-            WebchatSetting::RESTART_BUTTON_CALLBACK => 'WELCOME',
+            WebchatSetting::RESTART_BUTTON_CALLBACK => 'intent.core.welcome',
             WebchatSetting::MESSAGE_ANIMATION => false,
             WebchatSetting::HIDE_TYPING_INDICATOR_ON_INTERNAL_MESSAGES => false,
             WebchatSetting::HIDE_MESSAGE_TIME => true,
