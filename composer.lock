@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df4f584c2b9ca3eed76cb47230386eed",
+    "content-hash": "5b02adab60b32943bee479aae3821170",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2916,16 +2916,16 @@
         },
         {
             "name": "opendialogai/core",
-            "version": "1.x-dev",
+            "version": "dev-feature/OPNDLG-804--escalating-utterances",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/core.git",
-                "reference": "c4b88d7c3cebffc33693f817e89d0df22b2edf05"
+                "reference": "f89e303946a5c4ca4335438c4fac4a2c34f4616b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/core/zipball/c4b88d7c3cebffc33693f817e89d0df22b2edf05",
-                "reference": "c4b88d7c3cebffc33693f817e89d0df22b2edf05",
+                "url": "https://api.github.com/repos/opendialogai/core/zipball/f89e303946a5c4ca4335438c4fac4a2c34f4616b",
+                "reference": "f89e303946a5c4ca4335438c4fac4a2c34f4616b",
                 "shasum": ""
             },
             "require": {
@@ -2952,7 +2952,6 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3002,9 +3001,9 @@
             "description": "The OpenDialog Core package",
             "support": {
                 "issues": "https://github.com/opendialogai/core/issues",
-                "source": "https://github.com/opendialogai/core/tree/1.x"
+                "source": "https://github.com/opendialogai/core/tree/feature/OPNDLG-804--escalating-utterances"
             },
-            "time": "2021-07-07T09:59:22+00:00"
+            "time": "2021-07-12T16:19:01+00:00"
         },
         {
             "name": "opendialogai/dgraph-docker",
@@ -3048,16 +3047,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "1.x-dev",
+            "version": "dev-feature/OPNDLG-804--escalating-utterances",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "fe59f7e38eeff2a021aa42786bb9933f75b6dfe0"
+                "reference": "2dfeceba8a43bbb25a4d101542f91b0aa544bb1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/fe59f7e38eeff2a021aa42786bb9933f75b6dfe0",
-                "reference": "fe59f7e38eeff2a021aa42786bb9933f75b6dfe0",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/2dfeceba8a43bbb25a4d101542f91b0aa544bb1b",
+                "reference": "2dfeceba8a43bbb25a4d101542f91b0aa544bb1b",
                 "shasum": ""
             },
             "require": {
@@ -3070,7 +3069,6 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3100,9 +3098,9 @@
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
                 "issues": "https://github.com/opendialogai/webchat/issues",
-                "source": "https://github.com/opendialogai/webchat/tree/1.x"
+                "source": "https://github.com/opendialogai/webchat/tree/feature/OPNDLG-804--escalating-utterances"
             },
-            "time": "2021-07-02T10:50:44+00:00"
+            "time": "2021-07-12T16:00:18+00:00"
         },
         {
             "name": "opis/closure",
