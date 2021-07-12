@@ -45,6 +45,9 @@ const router = new VueRouter({
           path: '/',
           name: 'home',
           component: Home,
+          meta: {
+            title: 'Dashboard',
+          },
         },
         {
           path: 'conversation-builder/scenarios',
