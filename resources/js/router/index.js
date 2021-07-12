@@ -6,8 +6,6 @@ import DefaultContainer from '@/containers/DefaultContainer'
 import Home from '@opendialogai/opendialog-design-system-pkg/src/components/Views/Home'
 import WebchatSettingView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/WebchatSettingView'
 import MessageEditor from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageEditor'
-import MessageTemplateView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/MessageTemplateView'
-import OutgoingIntentView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/OutgoingIntentView'
 import ChatbotUsersView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/ChatbotUsersView'
 import UserView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/UserView'
 import RequestView from '@opendialogai/opendialog-design-system-pkg/src/components/Views/RequestView'
@@ -52,214 +50,253 @@ const router = new VueRouter({
           path: 'conversation-builder/scenarios',
           name: 'scenarios',
           component: Scenarios,
-          props: route => ({ newScenario: route.query.newScenario === "true" })
+          props: route => ({ newScenario: route.query.newScenario === "true" }),
+          meta: {
+              title: 'Scenarios',
+          },
         },
         {
           path: 'conversation-builder/*',
           name: 'conversation-builder',
           component: ConversationBuilder,
-          props: route => ({ newScenario: route.query.newScenario })
+          props: route => ({ newScenario: route.query.newScenario }),
+          meta: {
+              title: 'Conversation Designer',
+          },
         },
         {
           path: 'actions',
           name: 'actions',
-          component: Actions
+          component: Actions,
+          meta: {
+              title: 'Actions',
+          },
         },
         {
           path: 'actions/configure/:id',
           name: 'configure-action',
-          component: ConfigureAction
+          component: ConfigureAction,
+          meta: {
+              title: 'Conversation Designer',
+          },
         },
         {
           path: 'interpreters',
           name: 'interpreters',
-          component: Interpreters
+          component: Interpreters,
+          meta: {
+              title: 'Interpreters',
+          },
         },
         {
           path: 'message-editor',
           name: 'message-editor',
-          component: MessageEditor
+          component: MessageEditor,
+          meta: {
+            title: 'Message Editor',
+          },
         },
         {
           path: 'interpreters/configure/new',
           name: 'configure-interpreter',
-          component: ConfigureInterpreter
+          component: ConfigureInterpreter,
+          meta: {
+              title: 'Configure Interpreter',
+          },
         },
         {
           path: 'interpreters/configure/:id',
           name: 'edit-interpreter',
-          component: EditInterpreter
+          component: EditInterpreter,
+          meta: {
+              title: 'Configure Interpreter',
+          },
         },
         {
           path: 'interpreters/mapping/:id',
           name: 'map-interpreter',
-          component: MapInterpreter
+          component: MapInterpreter,
+          meta: {
+              title: 'Configure Interpreter',
+          },
         },
         {
           path: 'webchat-setting',
           name: 'webchat-setting',
           component: WebchatSettingView,
-        },
-        {
-          path: 'webchat-setting/:id',
-          component: WebchatSettingView,
-          props: true,
+          meta: {
+              title: 'Interface Settings',
+          },
         },
         {
           path: 'chatbot-users',
           name: 'chatbot-users',
           component: ChatbotUsersView,
+          meta: {
+              title: 'Chatbot Users',
+          },
         },
         {
           path: 'chatbot-users/:id',
           name: 'view-chatbot-user',
           component: ChatbotUsersView,
+          meta: {
+              title: 'Chatbot Users',
+          },
           props: true,
         },
         {
           path: 'chatbot-users/:id/conversation-log',
           name: 'conversation-log',
           component: ConversationLog,
+          meta: {
+              title: 'Conversation Log',
+          },
           props: true,
         },
         {
-          path: 'outgoing-intents/',
-          name: 'outgoing-intents',
-          component: OutgoingIntentView,
-        },
-        {
-          path: 'outgoing-intents/add',
-          name: 'add-outgoing-intent',
-          component: OutgoingIntentView,
-        },
-        {
-          path: 'outgoing-intents/:id',
-          name: 'view-outgoing-intent',
-          component: OutgoingIntentView,
-          props: true,
-        },
-        {
-            path: 'outgoing-intents/:id/edit',
-            name: 'edit-outgoing-intent',
-            component: OutgoingIntentView,
-            props: true,
-        },
-          {
-          path: 'outgoing-intents/:outgoingIntent/message-templates',
-          name: 'message-templates',
-          component: MessageTemplateView,
-          props: true,
-        },
-        {
-          path: 'outgoing-intents/:outgoingIntent/message-templates/add',
-          name: 'add-message-template',
-          component: MessageTemplateView,
-          props: true,
-        },
-        {
-          path: 'outgoing-intents/:outgoingIntent/message-templates/:id',
-          name: 'view-message-template',
-          component: MessageTemplateView,
-          props: true,
-        },
-        {
-          path: 'outgoing-intents/:outgoingIntent/message-templates/:id/edit',
-          name: 'edit-message-template',
-          component: MessageTemplateView,
-          props: true,
-        },
-      {
           path: 'dynamic-attributes',
           name: 'dynamic-attributes',
-          component: DynamicAttribute
-      },
-      {
+          component: DynamicAttribute,
+          meta: {
+              title: 'Dynamic Attributes',
+          },
+        },
+        {
           path: 'dynamic-attributes/add',
           name: 'add-dynamic-attribute',
           component: DynamicAttribute,
-      },
-      {
+          meta: {
+              title: 'Dynamic Attributes',
+          },
+        },
+        {
           path: 'dynamic-attributes/:id',
           name: 'view-dynamic-attribute',
           component: DynamicAttribute,
+          meta: {
+              title: 'Dynamic Attributes',
+          },
           props: true,
       },
       {
           path: 'dynamic-attributes/:id/edit',
           name: 'edit-dynamic-attribute',
           component: DynamicAttribute,
+          meta: {
+              title: 'Dynamic Attributes',
+          },
           props: true,
       },
         {
           path: 'users',
           name: 'users',
           component: UserView,
+          meta: {
+              title: 'Users',
+          },
         },
         {
           path: 'users/add',
           name: 'add-user',
           component: UserView,
+          meta: {
+              title: 'Add User',
+          },
         },
         {
           path: 'users/:id',
           name: 'view-user',
           component: UserView,
+          meta: {
+              title: 'Account',
+          },
           props: true,
         },
         {
           path: 'users/:id/edit',
           name: 'edit-user',
           component: UserView,
+          meta: {
+              title: 'Account',
+          },
           props: true,
         },
         {
           path: 'requests',
           name: 'requests',
           component: RequestView,
+          meta: {
+              title: 'Requests',
+          },
         },
         {
           path: 'requests/:id',
           name: 'view-request',
           component: RequestView,
+          meta: {
+              title: 'Requests',
+          },
           props: true,
         },
         {
           path: 'global-contexts',
           name: 'global-contexts',
           component: GlobalContextView,
+          meta: {
+              title: 'Global Contexts',
+          },
         },
         {
           path: 'global-contexts/add',
           name: 'add-global-context',
           component: GlobalContextView,
+          meta: {
+              title: 'Global Contexts',
+          },
         },
         {
           path: 'global-contexts/:id',
           name: 'view-global-context',
           component: GlobalContextView,
+          meta: {
+              title: 'Global Contexts',
+          },
           props: true,
         },
         {
           path: 'global-contexts/:id/edit',
           name: 'edit-global-context',
           component: GlobalContextView,
+          meta: {
+              title: 'Global Contexts',
+          },
           props: true,
         },
         {
           path: 'warnings',
           name: 'warnings',
           component: WarningView,
+          meta: {
+              title: 'Warnings',
+          },
         },
         {
           path: 'warnings/:id',
           name: 'view-warning',
           component: WarningView,
+          meta: {
+              title: 'Warnings',
+          },
           props: true,
         },
         {
           path: 'demo',
           name: 'webchat-demo',
           component: WebchatDemo,
+          meta: {
+              title: 'Preview',
+          },
         }
       ],
     },
