@@ -122,7 +122,7 @@ class SetWebchatSettings extends Command
             WebchatSetting::SHOW_DOWNLOAD_BUTON => true,
             WebchatSetting::SHOW_END_CHAT_BUTON => false,
             WebchatSetting::HIDE_DATETIME_MESSAGE => true,
-            WebchatSetting::RESTART_BUTTON_CALLBACK => 'intent.core.welcome',
+            WebchatSetting::RESTART_BUTTON_CALLBACK => 'intent.core.restart',
             WebchatSetting::MESSAGE_ANIMATION => false,
             WebchatSetting::HIDE_TYPING_INDICATOR_ON_INTERNAL_MESSAGES => false,
             WebchatSetting::HIDE_MESSAGE_TIME => true,

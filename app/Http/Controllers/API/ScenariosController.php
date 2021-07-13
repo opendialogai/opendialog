@@ -26,6 +26,7 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExp
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Facades\ScenarioDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
@@ -152,12 +153,23 @@ class ScenariosController extends Controller
         );
 
         $triggerName = 'Trigger';
-        $triggerIntent = $this->createRequestOnlyCallbackConversation(
+
+        $requestWelcomeIntent = new Intent(null, Intent::USER);
+        $requestWelcomeIntent->setName('intent.core.welcome');
+        $requestWelcomeIntent->setOdId('intent.core.welcome');
+        $requestWelcomeIntent->setSampleUtterance('- User triggers conversational application -');
+
+        $requestRestartIntent = new Intent(null, Intent::USER);
+        $requestRestartIntent->setName('intent.core.restart');
+        $requestRestartIntent->setOdId('intent.core.restart');
+        $requestRestartIntent->setSampleUtterance('- User restarts conversational application -');
+
+        $requestIntents = new IntentCollection([$requestWelcomeIntent, $requestRestartIntent]);
+
+        $triggerTurn = $this->createRequestOnlyCallbackConversation(
             $scenario,
             $triggerName,
-            'intent.core.welcome',
-            '- User triggers conversational application -',
-            Intent::USER
+            $requestIntents
         );
 
         $noMatchConversation = $this->createAtomicCallbackConversation(
@@ -170,7 +182,7 @@ class ScenariosController extends Controller
         );
 
         $scenario->addConversation($welcomeConversation);
-        $scenario->addConversation($triggerIntent->getConversation());
+        $scenario->addConversation($triggerTurn->getConversation());
         $scenario->addConversation($noMatchConversation);
 
         $scenario = ScenarioDataClient::addFullScenarioGraph($scenario);
@@ -179,16 +191,24 @@ class ScenariosController extends Controller
         $welcomeId = $this->convertNameToId($welcomeName);
         $triggerId = $this->convertNameToId($triggerName);
 
-        $welcomeIntent = $this->getRequestIntentForRequestOnlyConversation($scenario, $welcomeId);
-        $triggerIntent = $this->getRequestIntentForRequestOnlyConversation($scenario, $triggerId);
+        $welcomeIntent = $this->getRequestIntentsForRequestOnlyConversation($scenario, $welcomeId)->first();
 
-        $triggerIntent->setTransition(new Transition(
+        $triggerWelcomeIntent = $this->getRequestIntentsForRequestOnlyConversation($scenario, $triggerId)->first();
+        $triggerRestartIntent = $this->getRequestIntentsForRequestOnlyConversation($scenario, $triggerId)->last();
+
+        $triggerWelcomeIntent->setTransition(new Transition(
+            $welcomeIntent->getConversation()->getUid(),
+            $welcomeIntent->getScene()->getUid(),
+            $welcomeIntent->getTurn()->getUid()
+        ));
+        $triggerRestartIntent->setTransition(new Transition(
             $welcomeIntent->getConversation()->getUid(),
             $welcomeIntent->getScene()->getUid(),
             $welcomeIntent->getTurn()->getUid()
         ));
 
-        ConversationDataClient::updateIntent($triggerIntent);
+        ConversationDataClient::updateIntent($triggerWelcomeIntent);
+        ConversationDataClient::updateIntent($triggerRestartIntent);
 
         return $scenario;
     }
@@ -349,48 +369,23 @@ class ScenariosController extends Controller
     /**
      * @param Scenario $scenario
      * @param string $name
-     * @param string $intentId
-     * @param string $sampleUtterance
-     * @param string $speaker
-     * @return Intent
+     * @param IntentCollection $intents
+     * @return Turn
      */
     private function createRequestOnlyCallbackConversation(
         Scenario $scenario,
         string $name,
-        string $intentId,
-        string $sampleUtterance,
-        string $speaker
-    ): Intent {
+        IntentCollection $intents
+    ): Turn {
         $nameAsId = $this->convertNameToId($name);
 
         $turn = $this->createConversationToTurn($scenario, $name, $nameAsId);
 
-        $requestIntent = new Intent($turn, $speaker);
-        $requestIntent->setIsRequestIntent(true);
-        $requestIntent->setName($intentId);
-        $requestIntent->setOdId($intentId);
-        $requestIntent->setDescription('Automatically generated');
-        $requestIntent->setSampleUtterance($sampleUtterance);
-        $requestIntent->setConfidence(1);
-
-        if ($speaker === Intent::USER) {
-            $requestIntent->setInterpreter(CreateCoreConfigurations::DEFAULT_CALLBACK);
-        } else {
-            $requestIntent->setInterpreter('');
+        foreach ($intents as $intent) {
+            $this->createRequestIntent($turn, $intent);
         }
 
-        $turn->addRequestIntent($requestIntent);
-
-        if ($speaker === Intent::APP) {
-            $messageTemplate = new MessageTemplate();
-            $messageTemplate->setName('auto generated');
-            $messageTemplate->setOdId('auto_generated');
-            $messageTemplate->setMessageMarkup((new MessageMarkUpGenerator())->addTextMessage($sampleUtterance)->getMarkUp());
-
-            $requestIntent->addMessageTemplate($messageTemplate);
-        }
-
-        return $requestIntent;
+        return $turn;
     }
 
     /**
@@ -454,9 +449,9 @@ class ScenariosController extends Controller
     /**
      * @param Scenario $scenario
      * @param string $id
-     * @return Intent
+     * @return IntentCollection
      */
-    private function getRequestIntentForRequestOnlyConversation(Scenario $scenario, string $id): Intent
+    private function getRequestIntentsForRequestOnlyConversation(Scenario $scenario, string $id): IntentCollection
     {
         /** @var Conversation $conversation */
         $conversation = $scenario->getConversations()->getObjectsWithId(sprintf('%s_conversation', $id))->first();
@@ -467,8 +462,7 @@ class ScenariosController extends Controller
         /** @var Turn $turn */
         $turn = $scene->getTurns()->first();
 
-        /** @var Intent */
-        return $turn->getRequestIntents()->first();
+        return $turn->getRequestIntents();
     }
 
     /**
@@ -486,5 +480,38 @@ class ScenariosController extends Controller
         $scenario->setConditions(new ConditionCollection([$condition]));
 
         return $scenario;
+    }
+
+    /**
+     * @param Turn $turn
+     * @param Intent $requestIntent
+     */
+    private function createRequestIntent(Turn $turn, Intent $requestIntent): void
+    {
+        $requestIntent->setIsRequestIntent(true);
+        $requestIntent->setDescription('Automatically generated');
+        $requestIntent->setConfidence(1);
+
+        $speaker = $requestIntent->getSpeaker();
+
+        if ($speaker === Intent::USER) {
+            $requestIntent->setInterpreter(CreateCoreConfigurations::DEFAULT_CALLBACK);
+        } else {
+            $requestIntent->setInterpreter('');
+        }
+
+        $requestIntent->setTurn($turn);
+        $turn->addRequestIntent($requestIntent);
+
+        if ($speaker === Intent::APP) {
+            $messageTemplate = new MessageTemplate();
+            $messageTemplate->setName('auto generated');
+            $messageTemplate->setOdId('auto_generated');
+            $messageTemplate->setMessageMarkup(
+                (new MessageMarkUpGenerator())->addTextMessage($requestIntent->getSampleUtterance())->getMarkUp()
+            );
+
+            $requestIntent->addMessageTemplate($messageTemplate);
+        }
     }
 }
