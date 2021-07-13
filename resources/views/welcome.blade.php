@@ -8,9 +8,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+
+    @include("includes.gtm-head")
   </head>
 
   <body>
+    @include("includes.gtm-body")
+
     <div class="page">
       <div class="header">
         <img class="logo" src="/images/homepage-logo.svg" />

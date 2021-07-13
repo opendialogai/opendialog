@@ -23,9 +23,12 @@
 
     <script>window.user = {!! json_encode(auth()->user()) !!};</script>
 
+    @include("includes.gtm-head")
   </head>
 
   <body class="app">
+    @include("includes.gtm-body")
+
     <div id="app">
       <app></app>
     </div>
