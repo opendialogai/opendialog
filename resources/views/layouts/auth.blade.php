@@ -14,8 +14,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
+
+    @include("includes.gtm-head")
 </head>
 <body>
+    @include("includes.gtm-body")
+
     <div id="app">
         <main>
             @yield('content')
