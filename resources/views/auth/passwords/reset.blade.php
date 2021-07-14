@@ -2,7 +2,7 @@
 
 @section('content')
 
-            <a class="home" href="URL::to('/')">
+            <a class="home" href="{{URL::to('/')}}">
                 <div class="img-wrapper">
                     <img src="/images/logo.svg" />
                 </div>
@@ -26,17 +26,17 @@
 
                     <div class="form-group">
                         <label for="email">{{ __('E-Mail') }}</label>
-                        <input id="email" type="email" class="form-control" name="email" value="{{ $email ?? old('email') }}" required autofocus>
+                        <input id="email" type="email" class="form-control" name="email" value="{{ $request->email ?? old('email') }}" required autofocus>
                     </div>
 
                     <div class="form-group">
-                        <label for="password">{{ __('Password') }}</label>
-                        <input id="password" type="password" class="form-control" name="password" required>
+                        <label for="password">{{ __('New Password') }}</label>
+                        <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
                     </div>
 
                     <div class="form-group">
                         <label for="password-confirm">{{ __('Confirm new password') }}</label>
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                     </div>
 
                     <div class="form-group">
