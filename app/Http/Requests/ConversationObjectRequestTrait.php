@@ -14,4 +14,11 @@ trait ConversationObjectRequestTrait
             'od_id' => ['bail', 'string', 'filled', 'not_regex:/[\$\:\/]/', new OdId($parent, $currentUid)],
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'od_id' => 'name'
+        ];
+    }
 }

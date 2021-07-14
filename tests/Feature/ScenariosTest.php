@@ -217,13 +217,21 @@ class ScenariosTest extends TestCase
         $fakeTriggerTurn->setDescription('Automatically generated');
         $fakeTriggerScene->setTurns(new TurnCollection([$fakeTriggerTurn]));
 
-        $fakeTriggerIntent = new Intent($fakeTriggerTurn);
-        $fakeTriggerIntent->setName('Trigger Intent');
-        $fakeTriggerIntent->setOdId('intent.core.welcome');
-        $fakeTriggerIntent->setSpeaker(Intent::USER);
-        $fakeTriggerIntent->setDescription('Automatically generated');
-        $fakeTriggerIntent->setIsRequestIntent(true);
-        $fakeTriggerTurn->setRequestIntents(new IntentCollection([$fakeTriggerIntent]));
+        $fakeTriggerWelcomeIntent = new Intent($fakeTriggerTurn);
+        $fakeTriggerWelcomeIntent->setName('Trigger Intent');
+        $fakeTriggerWelcomeIntent->setOdId('intent.core.welcome');
+        $fakeTriggerWelcomeIntent->setSpeaker(Intent::USER);
+        $fakeTriggerWelcomeIntent->setDescription('Automatically generated');
+        $fakeTriggerWelcomeIntent->setIsRequestIntent(true);
+        $fakeTriggerTurn->setRequestIntents(new IntentCollection([$fakeTriggerWelcomeIntent]));
+
+        $fakeTriggerRestartIntent = new Intent($fakeTriggerTurn);
+        $fakeTriggerRestartIntent->setName('Trigger Intent');
+        $fakeTriggerRestartIntent->setOdId('intent.core.restart');
+        $fakeTriggerRestartIntent->setSpeaker(Intent::USER);
+        $fakeTriggerRestartIntent->setDescription('Automatically generated');
+        $fakeTriggerRestartIntent->setIsRequestIntent(true);
+        $fakeTriggerTurn->setRequestIntents(new IntentCollection([$fakeTriggerRestartIntent]));
 
         $fakeScenarioCreated = clone($fakeScenario);
         $fakeScenarioCreated->setUid("0x0001");
@@ -265,8 +273,11 @@ class ScenariosTest extends TestCase
             ->andReturn($fakeScenarioCreated);
 
         ConversationDataClient::shouldReceive('updateIntent')
-            ->once()
-            ->andReturn($fakeTriggerIntent);
+            ->twice()
+            ->andReturn(
+                $fakeTriggerWelcomeIntent,
+                $fakeTriggerRestartIntent
+            );
 
         ConversationDataClient::shouldReceive('updateScenario')
             ->once()

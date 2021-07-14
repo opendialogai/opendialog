@@ -23,6 +23,8 @@
 
     <script>window.user = {!! json_encode(auth()->user()) !!};</script>
 
+    <script>window.ODVersion = '{{ env("DASHBOARD_VERSION") }}';</script>
+    
     @include("includes.gtm-head")
   </head>
 
