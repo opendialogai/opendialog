@@ -191,7 +191,7 @@ class ComponentConfigurationController extends Controller
 
             $utterance = new UtteranceAttribute('configuration_test');
             $utterance->setText($text);
-            $utterance->setCallbackId("test");
+            $utterance->setCallbackId($text);
 
             $configuration = $interpreterClass::createConfiguration('test', $request->get('configuration'));
             $interpreter = new $interpreterClass($configuration);
