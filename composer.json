@@ -17,7 +17,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "maennchen/zipstream-php": "^2.0",
-        "opendialogai/core": "dev-feature/intent_transition_queries",
+        "opendialogai/core": "1.x-dev",
         "opendialogai/dgraph-docker": "21.03.0.2",
         "opendialogai/webchat": "1.x-dev",
         "phalcongelist/php-diff": "^2.0",
