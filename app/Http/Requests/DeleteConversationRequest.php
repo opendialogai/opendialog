@@ -15,7 +15,7 @@ class DeleteConversationRequest extends FormRequest
     public function rules()
     {
         return [
-            'conversation_id' => [new ConversationInTransition()]
+            'conversation' => [new ConversationInTransition()]
         ];
     }
 
@@ -24,6 +24,6 @@ class DeleteConversationRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge(['conversation_id' => $this->route('conversation')->getUid()]);
+        $this->merge(['conversation' => $this->route('conversation')]);
     }
 }

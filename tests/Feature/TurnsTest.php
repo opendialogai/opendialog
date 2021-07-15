@@ -335,6 +335,32 @@ class TurnsTest extends TestCase
             ->assertStatus(422);
     }
 
+    public function testDeleteTurnByUidInUseInUse()
+    {
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0001');
+        $fakeTurn->setOdId('welcome_turn');
+        $fakeTurn->setName('Welcome Turn');
+        $fakeTurn->setDescription('A welcome turn');
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        ConversationDataClient::shouldReceive('deleteTurnByUid')
+            ->never();
+
+        IntentDataClient::shouldReceive('getIntentWithTurnTransition')
+            ->once()
+            ->with($fakeTurn->getUid())
+            ->andReturn(new IntentCollection(new Intent()));
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid())
+            ->assertStatus(422);
+    }
+
     public function testDuplication()
     {
         $scenario = ScenariosTest::getFakeScenarioForDuplication();

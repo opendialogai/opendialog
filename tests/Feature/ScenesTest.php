@@ -16,6 +16,7 @@ use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
+use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use Tests\TestCase;
 
@@ -320,6 +321,35 @@ class ScenesTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
             ->assertStatus(422);
+    }
+
+    public function testDeleteSceneByUidInUseBySelf()
+    {
+        $fakeScene = new Scene();
+        $fakeScene->setUid('0x0001');
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->setDescription('A welcome scene');
+
+        ConversationDataClient::shouldReceive('getSceneByUid')
+            ->once()
+            ->with($fakeScene->getUid(), false)
+            ->andReturn($fakeScene);
+
+        ConversationDataClient::shouldReceive('deleteSceneByUid')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(true);
+
+        $intent = new Intent(new Turn($fakeScene));
+        IntentDataClient::shouldReceive('getIntentWithSceneTransition')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(new IntentCollection([$intent]));
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
+            ->assertStatus(200);
     }
 
     public function testDuplication()

@@ -4,7 +4,9 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\Conversation\Scene;
 
 class SceneInTransition implements Rule
 {
@@ -14,13 +16,18 @@ class SceneInTransition implements Rule
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  Scene  $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        $this->linkedIntents = IntentDataClient::getIntentWithSceneTransition($value);
-        return $this->linkedIntents->count() === 0;
+        $linkedIntents = IntentDataClient::getIntentWithSceneTransition($value->getUid());
+
+        $linkedIntents = $linkedIntents->filter(function (Intent $intent) use ($value) {
+            return $intent->getTurn()->getScene()->getUid() !== $value->getUid();
+        });
+
+        return $linkedIntents->count() === 0;
     }
 
     /**

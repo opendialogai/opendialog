@@ -4,7 +4,9 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
+use OpenDialogAi\Core\Conversation\Turn;
 
 class TurnInTransition implements Rule
 {
@@ -14,13 +16,18 @@ class TurnInTransition implements Rule
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  Turn  $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        $this->linkedIntents = IntentDataClient::getIntentWithTurnTransition($value);
-        return $this->linkedIntents->count() === 0;
+        $linkedIntents = IntentDataClient::getIntentWithTurnTransition($value->getUid());
+
+        $linkedIntents = $linkedIntents->filter(function (Intent $intent) use ($value) {
+            return $intent->getTurn()->getUid() !== $value->getUid();
+        });
+
+        return $linkedIntents->count() === 0;
     }
 
     /**
