@@ -325,10 +325,12 @@ class TurnsTest extends TestCase
         ConversationDataClient::shouldReceive('deleteTurnByUid')
             ->never();
 
+        $turn = new Turn();
+        $turn->setUid('different');
         IntentDataClient::shouldReceive('getIntentWithTurnTransition')
             ->once()
             ->with($fakeTurn->getUid())
-            ->andReturn(new IntentCollection(new Intent()));
+            ->andReturn(new IntentCollection([new Intent($turn)]));
 
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid())

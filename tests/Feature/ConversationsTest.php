@@ -289,10 +289,12 @@ class ConversationsTest extends TestCase
         ConversationDataClient::shouldReceive('deleteConversationByUid')
             ->never();
 
+        $conversation = new Conversation();
+        $conversation->setUid('different');
         IntentDataClient::shouldReceive('getIntentWithConversationTransition')
             ->once()
             ->with($fakeConversation->getUid())
-            ->andReturn(new IntentCollection(new Intent()));
+            ->andReturn(new IntentCollection([new Intent(new Turn(new Scene($conversation)))]));
 
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid())

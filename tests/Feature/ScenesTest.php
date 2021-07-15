@@ -313,10 +313,13 @@ class ScenesTest extends TestCase
         ConversationDataClient::shouldReceive('deleteSceneByUid')
             ->never();
 
+        $scene = new Scene();
+        $scene->setUid('different');
+
         IntentDataClient::shouldReceive('getIntentWithSceneTransition')
             ->once()
             ->with($fakeScene->getUid())
-            ->andReturn(new IntentCollection(new Intent()));
+            ->andReturn(new IntentCollection([new Intent(new Turn($scene))]));
 
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
