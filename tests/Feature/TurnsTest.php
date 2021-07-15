@@ -10,7 +10,9 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Facades\TurnDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Turn;
@@ -297,9 +299,40 @@ class TurnsTest extends TestCase
             ->with($fakeTurn->getUid())
             ->andReturn(true);
 
+        IntentDataClient::shouldReceive('getIntentWithTurnTransition')
+            ->once()
+            ->with($fakeTurn->getUid())
+            ->andReturn(new IntentCollection());
+
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid())
             ->assertStatus(200);
+    }
+
+    public function testDeleteTurnByUidInUse()
+    {
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0001');
+        $fakeTurn->setOdId('welcome_turn');
+        $fakeTurn->setName('Welcome Turn');
+        $fakeTurn->setDescription('A welcome turn');
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        ConversationDataClient::shouldReceive('deleteTurnByUid')
+            ->never();
+
+        IntentDataClient::shouldReceive('getIntentWithTurnTransition')
+            ->once()
+            ->with($fakeTurn->getUid())
+            ->andReturn(new IntentCollection(new Intent()));
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid())
+            ->assertStatus(422);
     }
 
     public function testDuplication()
@@ -323,7 +356,9 @@ class TurnsTest extends TestCase
         // Called in the controller, getting parent & sibling data
         ConversationDataClient::shouldReceive('getSceneByUid')
             ->once()
-            ->andReturnUsing(function ($uid) use ($scene) { return $scene; });
+            ->andReturnUsing(function ($uid) use ($scene) {
+                return $scene;
+            });
 
         // Called in controller, once before persisting, again after, and finally after patching
         TurnDataClient::shouldReceive('getFullTurnGraph')

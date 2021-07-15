@@ -10,6 +10,9 @@ use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\ConversationCollection;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use Tests\TestCase;
 
@@ -258,9 +261,40 @@ class ConversationsTest extends TestCase
             ->with($fakeConversation->getUid())
             ->andReturn(true);
 
+        IntentDataClient::shouldReceive('getIntentWithConversationTransition')
+            ->once()
+            ->with($fakeConversation->getUid())
+            ->andReturn(new IntentCollection());
+
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid())
             ->assertStatus(200);
+    }
+
+    public function testDeleteConversationByUidInUse()
+    {
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0001');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setDescription('An new example conversation');
+
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->with($fakeConversation->getUid(), false)
+            ->andReturn($fakeConversation);
+
+        ConversationDataClient::shouldReceive('deleteConversationByUid')
+            ->never();
+
+        IntentDataClient::shouldReceive('getIntentWithConversationTransition')
+            ->once()
+            ->with($fakeConversation->getUid())
+            ->andReturn(new IntentCollection(new Intent()));
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid())
+            ->assertStatus(422);
     }
 
     public function testDuplication()
@@ -278,7 +312,9 @@ class ConversationsTest extends TestCase
         // Called in the controller, getting parent & sibling data
         ConversationDataClient::shouldReceive('getScenarioByUid')
             ->once()
-            ->andReturnUsing(function ($uid) use ($scenario) { return $scenario; });
+            ->andReturnUsing(function ($uid) use ($scenario) {
+                return $scenario;
+            });
 
         // Called in controller, once before persisting, again after, and finally after patching
         ConversationDataClient::shouldReceive('getFullConversationGraph')
