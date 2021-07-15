@@ -25,7 +25,7 @@ class DeleteSceneRequest extends FormRequest
     public function rules()
     {
         return [
-            'scene' => [new SceneInTransition()]
+            'transition_intents' => [new SceneInTransition()]
         ];
     }
 
@@ -34,6 +34,6 @@ class DeleteSceneRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge(['scene' => $this->route('scene')]);
+        $this->merge(['transition_intents' => $this->route('scene')]);
     }
 }

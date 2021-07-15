@@ -2,16 +2,12 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
-use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 
-class SceneInTransition implements Rule
+class SceneInTransition extends BaseTransitionRule
 {
-    private IntentCollection $linkedIntents;
-
     /**
      * Determine if the validation rule passes.
      *
@@ -27,16 +23,7 @@ class SceneInTransition implements Rule
             return $intent->getTurn()->getScene()->getUid() !== $value->getUid();
         });
 
+        $this->linkedIntents = $linkedIntents;
         return $linkedIntents->count() === 0;
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'The scene is used in a transition.';
     }
 }

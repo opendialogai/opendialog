@@ -25,7 +25,7 @@ class DeleteTurnRequest extends FormRequest
     public function rules()
     {
         return [
-            'turn' => [new TurnInTransition()]
+            'transition_intents' => [new TurnInTransition()]
         ];
     }
 
@@ -34,6 +34,6 @@ class DeleteTurnRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge(['turn' => $this->route('turn')]);
+        $this->merge(['transition_intents' => $this->route('turn')]);
     }
 }

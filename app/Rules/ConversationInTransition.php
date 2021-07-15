@@ -2,16 +2,12 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
-use OpenDialogAi\Core\Conversation\IntentCollection;
 
-class ConversationInTransition implements Rule
+class ConversationInTransition extends BaseTransitionRule
 {
-    private IntentCollection $linkedIntents;
-
     /**
      * Determine if the validation rule passes.
      *
@@ -27,16 +23,8 @@ class ConversationInTransition implements Rule
             return $intent->getTurn()->getScene()->getConversation()->getUid() !== $value->getUid();
         });
 
-        return $linkedIntents->count() === 0;
-    }
+        $this->linkedIntents = $linkedIntents;
 
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'The conversation is used in a transaction';
+        return $linkedIntents->count() === 0;
     }
 }
