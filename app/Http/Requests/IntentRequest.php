@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use OpenDialogAi\Core\Conversation\Intent;
 
 class IntentRequest extends FormRequest
 {
@@ -26,13 +28,13 @@ class IntentRequest extends FormRequest
     {
         return [
             'id' => 'string',
-            'od_id' => 'string',
+            'od_id' => ['bail', 'required', 'string', 'filled'],
             'name' => 'string',
             'description' => 'string',
             'interpreter' => 'nullable|string',
-            'confidence' => 'string',
-            'sample_utterance' => 'string',
-            'speaker' => 'string',
+            'confidence' => ['bail', 'required', 'numeric', 'between:0,1'],
+            'sample_utterance' => ['bail', 'required', 'string'],
+            'speaker' => ['bail', 'required', 'string', Rule::in([Intent::USER, Intent::APP])],
             'behaviors' => 'array',
             'conditions' => 'array',
             'transitions' => 'array',

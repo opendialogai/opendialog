@@ -43,7 +43,7 @@ class OdId implements Rule
      */
     public function message()
     {
-        return 'OD ID is not a unique ID.';
+        return 'The :attribute field is not unique.';
     }
 
     /**

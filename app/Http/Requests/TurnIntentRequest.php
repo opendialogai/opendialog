@@ -3,11 +3,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use OpenDialogAi\Core\Conversation\Turn;
 
-class TurnIntentRequest extends FormRequest
+class TurnIntentRequest extends IntentRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +25,27 @@ class TurnIntentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'order' => ['string', Rule::in([Turn::ORDER_REQUEST, Turn::ORDER_RESPONSE])],
-            'intent' => 'array'
+        $intentRules = [];
+
+        foreach (parent::rules() as $attribute => $rule) {
+            $intentRules["intent.$attribute"] = $rule;
+        }
+
+        return $intentRules + [
+            'order' => ['bail', 'required', 'string', Rule::in([Turn::ORDER_REQUEST, Turn::ORDER_RESPONSE])],
         ];
+    }
+
+    public function attributes()
+    {
+        $attributes = [];
+
+        foreach (parent::rules() as $attribute => $rule) {
+            $attributes["intent.$attribute"] = $attribute;
+        }
+
+        return [
+            'intent.od_id' => 'name'
+        ] + $attributes;
     }
 }

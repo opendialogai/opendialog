@@ -380,6 +380,8 @@ $fakeRequestIntent->getUid())
                         'id' => $fakeUpdatedResponseIntent->getUid(),
                         'od_id' => $fakeUpdatedResponseIntent->getOdId(),
                         'description' =>  $fakeUpdatedResponseIntent->getDescription(),
+                        'confidence' =>  $fakeUpdatedResponseIntent->getConfidence(),
+                        'speaker' =>  $fakeUpdatedResponseIntent->getSpeaker(),
                         'listens_for' => $fakeUpdatedResponseIntent->getListensFor(),
                         'sample_utterance' => $fakeUpdatedResponseIntent->getSampleUtterance()
                     ]
@@ -503,6 +505,8 @@ $fakeRequestIntent->getUid())
                 'id' => $fakeIntentUpdated->getUid(),
                 'od_id' => $fakeIntentUpdated->getOdId(),
                 'description' =>  $fakeIntentUpdated->getDescription(),
+                'confidence' =>  $fakeIntentUpdated->getConfidence(),
+                'speaker' =>  $fakeIntentUpdated->getSpeaker(),
                 'listens_for' => $fakeIntentUpdated->getListensFor(),
                 'sample_utterance' => $fakeIntentUpdated->getSampleUtterance()
             ])
