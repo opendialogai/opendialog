@@ -7,6 +7,7 @@ use App\Console\Facades\ImportExportSerializer;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\ConversationObjectDuplicationRequest;
+use App\Http\Requests\DeleteTurnRequest;
 use App\Http\Requests\TurnIntentRequest;
 use App\Http\Requests\TurnRequest;
 use App\Http\Resources\TurnIntentResource;
@@ -110,11 +111,11 @@ class TurnsController extends Controller
     }
 
     /**
-     *
+     * @param DeleteTurnRequest $request
      * @param Turn $Turn
      * @return Response $response
      */
-    public function destroy(Turn $Turn): Response
+    public function destroy(DeleteTurnRequest $request, Turn $Turn): Response
     {
         if (ConversationDataClient::deleteTurnByUid($Turn->getUid())) {
             return response()->noContent(200);

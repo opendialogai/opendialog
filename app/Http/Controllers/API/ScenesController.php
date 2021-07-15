@@ -7,6 +7,7 @@ use App\Console\Facades\ImportExportSerializer;
 use App\Http\Controllers\Controller;
 use App\Http\Facades\Serializer;
 use App\Http\Requests\ConversationObjectDuplicationRequest;
+use App\Http\Requests\DeleteSceneRequest;
 use App\Http\Requests\SceneRequest;
 use App\Http\Requests\TurnRequest;
 use App\Http\Resources\SceneResource;
@@ -90,10 +91,11 @@ class ScenesController extends Controller
     /**
      * Destroy the specified scenario.
      *
+     * @param DeleteSceneRequest $request
      * @param Scene $scene
      * @return Response $response
      */
-    public function destroy(Scene $scene): Response
+    public function destroy(DeleteSceneRequest $request, Scene $scene): Response
     {
         if (ConversationDataClient::deleteSceneByUid($scene->getUid())) {
             return response()->noContent(200);

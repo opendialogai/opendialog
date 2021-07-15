@@ -10,9 +10,13 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Exceptions\ConversationObjectNotFoundException;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
+use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Facades\SceneDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
+use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use Tests\TestCase;
 
@@ -283,6 +287,69 @@ class ScenesTest extends TestCase
             ->with($fakeScene->getUid())
             ->andReturn(true);
 
+        IntentDataClient::shouldReceive('getIntentWithSceneTransition')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(new IntentCollection());
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
+            ->assertStatus(200);
+    }
+
+    public function testDeleteSceneByUidInUse()
+    {
+        $fakeScene = new Scene();
+        $fakeScene->setUid('0x0001');
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->setDescription('A welcome scene');
+
+        ConversationDataClient::shouldReceive('getSceneByUid')
+            ->once()
+            ->with($fakeScene->getUid(), false)
+            ->andReturn($fakeScene);
+
+        ConversationDataClient::shouldReceive('deleteSceneByUid')
+            ->never();
+
+        $scene = new Scene();
+        $scene->setUid('different');
+
+        IntentDataClient::shouldReceive('getIntentWithSceneTransition')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(new IntentCollection([new Intent(new Turn($scene))]));
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
+            ->assertStatus(422);
+    }
+
+    public function testDeleteSceneByUidInUseBySelf()
+    {
+        $fakeScene = new Scene();
+        $fakeScene->setUid('0x0001');
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->setDescription('A welcome scene');
+
+        ConversationDataClient::shouldReceive('getSceneByUid')
+            ->once()
+            ->with($fakeScene->getUid(), false)
+            ->andReturn($fakeScene);
+
+        ConversationDataClient::shouldReceive('deleteSceneByUid')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(true);
+
+        $intent = new Intent(new Turn($fakeScene));
+        IntentDataClient::shouldReceive('getIntentWithSceneTransition')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(new IntentCollection([$intent]));
+
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
             ->assertStatus(200);
@@ -306,7 +373,9 @@ class ScenesTest extends TestCase
         // Called in the controller, getting parent & sibling data
         ConversationDataClient::shouldReceive('getConversationByUid')
             ->once()
-            ->andReturnUsing(function ($uid) use ($conversation) { return $conversation; });
+            ->andReturnUsing(function ($uid) use ($conversation) {
+                return $conversation;
+            });
 
         // Called in controller, once before persisting, again after, and finally after patching
         SceneDataClient::shouldReceive('getFullSceneGraph')
