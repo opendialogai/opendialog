@@ -22,9 +22,11 @@
     <script>window.NavigationItems = {!! json_encode(config('admin-navigation')) !!};</script>
 
     <script>window.user = {!! json_encode(auth()->user()) !!};</script>
-    
+
     <script>window.ODVersion = '{{ config('dashboard.version') }}';</script>
-   
+
+    <script>window.notificationsEndpoint = '{{ config('dashboard.notifications_endpoint') }}';</script>
+
     @include("includes.gtm-head")
   </head>
 
