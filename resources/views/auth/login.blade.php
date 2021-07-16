@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 
 @section('content')
-            <a class="home" href="URL::to('/')">
+            <a class="home" href="{{URL::to('/')}}">
                 <div class="img-wrapper">
                     <img src="/images/logo.svg" />
                 </div>
