@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39b5c440bec2b702e93dadaf3a56749d",
+    "content-hash": "df4f584c2b9ca3eed76cb47230386eed",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3048,16 +3048,16 @@
         },
         {
             "name": "opendialogai/webchat",
-            "version": "dev-fix/link-text-in-messages",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opendialogai/webchat.git",
-                "reference": "d9d8493d2664a54b1a9f3463090e3e1f54c79147"
+                "reference": "2e040e2693ad95f5c54543bcc00165fac034b840"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/d9d8493d2664a54b1a9f3463090e3e1f54c79147",
-                "reference": "d9d8493d2664a54b1a9f3463090e3e1f54c79147",
+                "url": "https://api.github.com/repos/opendialogai/webchat/zipball/2e040e2693ad95f5c54543bcc00165fac034b840",
+                "reference": "2e040e2693ad95f5c54543bcc00165fac034b840",
                 "shasum": ""
             },
             "require": {
@@ -3070,6 +3070,7 @@
                 "phpunit/phpunit": "^9.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3099,9 +3100,9 @@
             "description": "Webchat front end component for the Open Dialog project",
             "support": {
                 "issues": "https://github.com/opendialogai/webchat/issues",
-                "source": "https://github.com/opendialogai/webchat/tree/fix/link-text-in-messages"
+                "source": "https://github.com/opendialogai/webchat/tree/1.x"
             },
-            "time": "2021-07-16T11:26:17+00:00"
+            "time": "2021-07-19T08:30:20+00:00"
         },
         {
             "name": "opis/closure",

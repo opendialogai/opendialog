@@ -31,12 +31,12 @@
 
                     <div class="form-group">
                         <label for="password">{{ __('New Password') }}</label>
-                        <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
+                        <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password" data-lpignore="true">
                     </div>
 
                     <div class="form-group">
                         <label for="password-confirm">{{ __('Confirm new password') }}</label>
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" data-lpignore="true" required autocomplete="new-password">
                     </div>
 
                     <div class="form-group">
