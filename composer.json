@@ -19,7 +19,7 @@
         "maennchen/zipstream-php": "^2.0",
         "opendialogai/core": "1.x-dev",
         "opendialogai/dgraph-docker": "21.03.0.2",
-        "opendialogai/webchat": "dev-fix/link-text-in-messages",
+        "opendialogai/webchat": "1.x-dev",
         "phalcongelist/php-diff": "^2.0",
         "predis/predis": "^1.1",
         "spatie/commonmark-highlighter": "^2.0",
