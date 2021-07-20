@@ -13,14 +13,16 @@ use App\Http\Resources\ConversationResource;
 use App\Http\Resources\SceneResource;
 use App\ImportExportHelpers\PathSubstitutionHelper;
 use App\ImportExportHelpers\ScenarioImportExportHelper;
+use App\Rules\ConversationInTransition;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
-use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Transition;
 
 class ConversationsController extends Controller
 {
@@ -110,6 +112,15 @@ class ConversationsController extends Controller
      */
     public function destroy(DeleteConversationRequest $request, Conversation $conversation): Response
     {
+        if ($request->json('force')) {
+            $linkedIntents = ConversationInTransition::getIntentsThatTransitionTo($conversation->getUid());
+
+            $linkedIntents->each(function (Intent $intent) {
+                $intent->setTransition(new Transition(null, null, null));
+                ConversationDataClient::updateIntent($intent);
+            });
+        }
+
         if (ConversationDataClient::deleteConversationByUid($conversation->getUid())) {
             return response()->noContent(200);
         } else {
