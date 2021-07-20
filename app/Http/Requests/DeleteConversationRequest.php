@@ -7,16 +7,16 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteConversationRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
+    use DeleteObjectRequestTrait;
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
-        return [
-            'transition_intents' => [new ConversationInTransition()]
-        ];
+        return $this->prepareRules(ConversationInTransition::class);
     }
 
     /**
@@ -24,6 +24,6 @@ class DeleteConversationRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge(['transition_intents' => $this->route('conversation')]);
+        $this->prepareValidation('conversation');
     }
 }

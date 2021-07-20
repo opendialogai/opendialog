@@ -15,6 +15,7 @@ use App\Http\Resources\TurnIntentResourceCollection;
 use App\Http\Resources\TurnResource;
 use App\ImportExportHelpers\PathSubstitutionHelper;
 use App\ImportExportHelpers\ScenarioImportExportHelper;
+use App\Rules\TurnInTransition;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
@@ -25,6 +26,7 @@ use OpenDialogAi\Core\Conversation\Facades\MessageTemplateDataClient;
 use OpenDialogAi\Core\Conversation\Facades\TurnDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\MessageTemplate;
+use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\MessageBuilder\MessageMarkUpGenerator;
 
@@ -117,6 +119,15 @@ class TurnsController extends Controller
      */
     public function destroy(DeleteTurnRequest $request, Turn $Turn): Response
     {
+        if ($request->json('force')) {
+            $linkedIntents = TurnInTransition::getIntentsThatTransitionTo($Turn->getUid());
+
+            $linkedIntents->each(function (Intent $intent) {
+                $intent->setTransition(new Transition(null, null, null));
+                ConversationDataClient::updateIntent($intent);
+            });
+        }
+
         if (ConversationDataClient::deleteTurnByUid($Turn->getUid())) {
             return response()->noContent(200);
         } else {

@@ -14,12 +14,15 @@ use App\Http\Resources\SceneResource;
 use App\Http\Resources\TurnResource;
 use App\ImportExportHelpers\PathSubstitutionHelper;
 use App\ImportExportHelpers\ScenarioImportExportHelper;
+use App\Rules\SceneInTransition;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ScenarioNormalizer;
 use OpenDialogAi\Core\Conversation\Facades\ConversationDataClient;
 use OpenDialogAi\Core\Conversation\Facades\SceneDataClient;
+use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 
 class ScenesController extends Controller
@@ -97,6 +100,15 @@ class ScenesController extends Controller
      */
     public function destroy(DeleteSceneRequest $request, Scene $scene): Response
     {
+        if ($request->json('force')) {
+            $linkedIntents = SceneInTransition::getIntentsThatTransitionTo($scene->getUid());
+
+            $linkedIntents->each(function (Intent $intent) {
+                $intent->setTransition(new Transition(null, null, null));
+                ConversationDataClient::updateIntent($intent);
+            });
+        }
+
         if (ConversationDataClient::deleteSceneByUid($scene->getUid())) {
             return response()->noContent(200);
         } else {
