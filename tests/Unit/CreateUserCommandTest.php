@@ -31,7 +31,7 @@ class CreateUserCommandTest extends TestCase
 
         // test the --checkUser flag
         $this->artisan('user:create', ['--userCheck' => true])
-            ->assertExitCode(1);
+            ->assertExitCode(0);
     }
 
     public function testCreateUserCommandArguments()
@@ -54,6 +54,6 @@ class CreateUserCommandTest extends TestCase
 
         // test the --checkUser flag
         $this->artisan('user:create', ['--userCheck' => true])
-            ->assertExitCode(1);
+            ->assertExitCode(0);
     }
 }

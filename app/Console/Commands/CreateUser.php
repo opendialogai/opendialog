@@ -15,8 +15,8 @@ class CreateUser extends Command
     public function handle()
     {
         if ($this->option('userCheck') && User::count() >0) {
-            $this->error('Not creating user, at least 1 already exists');
-            return 1;
+            $this->warn('Not creating user, at least 1 already exists');
+            return 0;
         }
 
         $this->info('Creating user - please enter details');
