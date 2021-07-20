@@ -7,15 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteTurnRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    use DeleteObjectRequestTrait;
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,9 +16,7 @@ class DeleteTurnRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'transition_intents' => [new TurnInTransition()]
-        ];
+        return $this->prepareRules(TurnInTransition::class);
     }
 
     /**
@@ -34,6 +24,6 @@ class DeleteTurnRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge(['transition_intents' => $this->route('turn')]);
+        $this->prepareValidation('turn');
     }
 }

@@ -16,6 +16,7 @@ use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\SceneCollection;
+use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use Tests\TestCase;
@@ -324,6 +325,50 @@ class ScenesTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid())
             ->assertStatus(422);
+    }
+
+    public function testForceDeleteSceneByUidInUse()
+    {
+        $fakeScene = new Scene();
+        $fakeScene->setUid('0x0001');
+        $fakeScene->setOdId('welcome_scene');
+        $fakeScene->setName('Welcome scene');
+        $fakeScene->setDescription('A welcome scene');
+
+        ConversationDataClient::shouldReceive('getSceneByUid')
+            ->once()
+            ->with($fakeScene->getUid(), false)
+            ->andReturn($fakeScene);
+
+        ConversationDataClient::shouldReceive('deleteSceneByUid')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(true);
+
+        $scene = new Scene();
+        $scene->setUid('different');
+
+        $intent = new Intent(new Turn($scene));
+        $intent->setTransition(new Transition('some_conv', $fakeScene->getUid(), null));
+
+        IntentDataClient::shouldReceive('getIntentWithSceneTransition')
+            ->once()
+            ->with($fakeScene->getUid())
+            ->andReturn(new IntentCollection([$intent]));
+
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once()
+            ->with($intent)
+            ->andReturnUsing(function (Intent $intent) {
+                $intent->setTransition(null);
+                return $intent;
+            });
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/scenes/' . $fakeScene->getUid(), [
+                'force' => true
+            ])
+            ->assertStatus(200);
     }
 
     public function testDeleteSceneByUidInUseBySelf()

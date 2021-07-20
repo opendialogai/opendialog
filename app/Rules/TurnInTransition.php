@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Turn;
 
 class TurnInTransition extends BaseTransitionRule
@@ -17,13 +18,21 @@ class TurnInTransition extends BaseTransitionRule
      */
     public function passes($attribute, $value)
     {
-        $linkedIntents = IntentDataClient::getIntentWithTurnTransition($value->getUid());
+        $this->linkedIntents = self::getIntentsThatTransitionTo($value->getUid());
 
-        $linkedIntents = $linkedIntents->filter(function (Intent $intent) use ($value) {
-            return $intent->getTurn()->getUid() !== $value->getUid();
+        return $this->linkedIntents->count() === 0;
+    }
+
+    /**
+     * @param string $turnUid
+     * @return IntentCollection
+     */
+    public static function getIntentsThatTransitionTo(string $turnUid): IntentCollection
+    {
+        $linkedIntents = IntentDataClient::getIntentWithTurnTransition($turnUid);
+
+        return $linkedIntents->filter(function (Intent $intent) use ($turnUid) {
+            return $intent->getTurn()->getUid() !== $turnUid;
         });
-
-        $this->linkedIntents = $linkedIntents;
-        return $linkedIntents->count() === 0;
     }
 }

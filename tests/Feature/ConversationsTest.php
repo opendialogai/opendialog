@@ -15,6 +15,7 @@ use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scenario;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use Tests\TestCase;
 
@@ -299,6 +300,50 @@ class ConversationsTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid())
             ->assertStatus(422);
+    }
+
+    public function testForceDeleteConversationByUidInUse()
+    {
+        $fakeConversation = new Conversation();
+        $fakeConversation->setUid('0x0001');
+        $fakeConversation->setOdId('new_example_conversation');
+        $fakeConversation->setName('New Example conversation');
+        $fakeConversation->setDescription('An new example conversation');
+
+        ConversationDataClient::shouldReceive('getConversationByUid')
+            ->once()
+            ->with($fakeConversation->getUid(), false)
+            ->andReturn($fakeConversation);
+
+        ConversationDataClient::shouldReceive('deleteConversationByUid')
+            ->once()
+            ->with($fakeConversation->getUid())
+            ->andReturn(true);
+
+        $conversation = new Conversation();
+        $conversation->setUid('different');
+
+        $intent = new Intent(new Turn(new Scene($conversation)));
+        $intent->setTransition(new Transition($fakeConversation->getUid(), null, null));
+
+        IntentDataClient::shouldReceive('getIntentWithConversationTransition')
+            ->once()
+            ->with($fakeConversation->getUid())
+            ->andReturn(new IntentCollection([$intent]));
+
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once()
+            ->with($intent)
+            ->andReturnUsing(function (Intent $intent) {
+                $intent->setTransition(null);
+                return $intent;
+            });
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/conversations/' . $fakeConversation->getUid(), [
+                'force' => true
+            ])
+            ->assertStatus(200);
     }
 
     /** If the intent with the transition is in the conversation being deleted, we should allow it through */

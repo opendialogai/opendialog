@@ -5,6 +5,7 @@ namespace App\Rules;
 use OpenDialogAi\Core\Conversation\Conversation;
 use OpenDialogAi\Core\Conversation\Facades\IntentDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
+use OpenDialogAi\Core\Conversation\IntentCollection;
 
 class ConversationInTransition extends BaseTransitionRule
 {
@@ -17,14 +18,21 @@ class ConversationInTransition extends BaseTransitionRule
      */
     public function passes($attribute, $value)
     {
-        $linkedIntents = IntentDataClient::getIntentWithConversationTransition($value->getUid());
+        $this->linkedIntents = self::getIntentsThatTransitionTo($value->getUid());
 
-        $linkedIntents = $linkedIntents->filter(function (Intent $intent) use ($value) {
-            return $intent->getTurn()->getScene()->getConversation()->getUid() !== $value->getUid();
+        return $this->linkedIntents->count() === 0;
+    }
+
+    /**
+     * @param string $conversationUid
+     * @return IntentCollection
+     */
+    public static function getIntentsThatTransitionTo(string $conversationUid): IntentCollection
+    {
+        $linkedIntents = IntentDataClient::getIntentWithConversationTransition($conversationUid);
+
+        return $linkedIntents->filter(function (Intent $intent) use ($conversationUid) {
+            return $intent->getTurn()->getScene()->getConversation()->getUid() !== $conversationUid;
         });
-
-        $this->linkedIntents = $linkedIntents;
-
-        return $linkedIntents->count() === 0;
     }
 }
