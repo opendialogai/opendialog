@@ -15,6 +15,7 @@ use OpenDialogAi\Core\Conversation\Facades\TurnDataClient;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
+use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use Tests\TestCase;
@@ -335,6 +336,50 @@ class TurnsTest extends TestCase
         $this->actingAs($this->user, 'api')
             ->json('DELETE', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid())
             ->assertStatus(422);
+    }
+
+    public function testForceDeleteSceneByUidInUse()
+    {
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0001');
+        $fakeTurn->setOdId('welcome_turn');
+        $fakeTurn->setName('Welcome Turn');
+        $fakeTurn->setDescription('A welcome turn');
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        ConversationDataClient::shouldReceive('deleteTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid())
+            ->andReturn(true);
+
+        $turn = new Turn();
+        $turn->setUid('different');
+
+        $intent = new Intent($turn);
+        $intent->setTransition(new Transition('some_conv', 'some_scene', $fakeTurn->getUid()));
+
+        IntentDataClient::shouldReceive('getIntentWithTurnTransition')
+            ->once()
+            ->with($fakeTurn->getUid())
+            ->andReturn(new IntentCollection([$intent]));
+
+        ConversationDataClient::shouldReceive('updateIntent')
+            ->once()
+            ->with($intent)
+            ->andReturnUsing(function (Intent $intent) {
+                $intent->setTransition(null);
+                return $intent;
+            });
+
+        $this->actingAs($this->user, 'api')
+            ->json('DELETE', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid(), [
+                'force' => true
+            ])
+            ->assertStatus(200);
     }
 
     public function testDeleteTurnByUidInUseBySelf()
