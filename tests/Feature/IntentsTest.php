@@ -17,7 +17,7 @@ use OpenDialogAi\Core\Conversation\IntentCollection;
 use OpenDialogAi\Core\Conversation\Scene;
 use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
-use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
+use OpenDialogAi\Core\Conversation\VirtualIntent;
 use Tests\TestCase;
 
 class IntentsTest extends TestCase
@@ -73,7 +73,7 @@ class IntentsTest extends TestCase
         $fakeResponseIntent->setConfidence(1.0);
         $fakeResponseIntent->setListensFor(['intent_c']);
         $fakeResponseIntent->setTransition(new Transition(null, null, null));
-        $fakeResponseIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeResponseIntent->setVirtualIntent(VirtualIntent::createEmpty());
         $fakeResponseIntent->setSampleUtterance('Welcome user!');
 
         $fakeRequestIntentCollection = new IntentCollection();
@@ -114,7 +114,7 @@ class IntentsTest extends TestCase
                     "confidence" => 1,
                     "listens_for" => ['intent_a', 'intent_b'],
                     "transition" => [],
-                    "virtual_intents" => [],
+                    "virtual_intent" => [],
                     "sample_utterance" => "Hello!"
                 ],
             ], [
@@ -133,7 +133,7 @@ class IntentsTest extends TestCase
                     "confidence" => 1,
                     "listens_for" => ['intent_c'],
                     "transition" => [],
-                    "virtual_intents" => [],
+                    "virtual_intent" => [],
                     "sample_utterance" => "Welcome user!"
     ],
 ]]);
@@ -220,7 +220,7 @@ class IntentsTest extends TestCase
         $fakeResponseIntent->setConfidence(1.0);
         $fakeResponseIntent->setListensFor(['intent_a', 'intent_b']);
         $fakeResponseIntent->setTransition(new Transition(null, null, null));
-        $fakeResponseIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeResponseIntent->setVirtualIntent(VirtualIntent::createEmpty());
         $fakeResponseIntent->setSampleUtterance('Bye!');
 
         ConversationDataClient::shouldReceive('getTurnByUid')
@@ -276,6 +276,51 @@ class IntentsTest extends TestCase
             ]);
     }
 
+    public function testAddResponseIntentToTurnVirtualIntentValidation()
+    {
+        $fakeTurn = new Turn();
+        $fakeTurn->setUid('0x0004');
+        $fakeTurn->setName('New Example turn 1');
+        $fakeTurn->setOdId('new_example_turn_1');
+        $fakeTurn->setDescription("An new example turn 1");
+
+        ConversationDataClient::shouldReceive('getTurnByUid')
+            ->once()
+            ->with($fakeTurn->getUid(), false)
+            ->andReturn($fakeTurn);
+
+        $this->actingAs($this->user, 'api')
+            ->json('POST', '/admin/api/conversation-builder/turns/' . $fakeTurn->getUid() . '/intents', [
+                "order" => "RESPONSE",
+                "intent" => [
+                    "od_id" => "goodbye_intent_1",
+                    "name" => "Goodbye intent 1",
+                    "description" => "A goodbye intent 1",
+                    "default_interpreter" => "interpreter.core.nlp",
+                    "conditions" => [],
+                    "behaviors" => [],
+                    "listens_for" => ["intent_a", "intent_b"],
+                    "speaker" => "APP",
+                    "confidence" => 1,
+                    "sample_utterance" => "Bye!",
+                    "virtual_intent" => [
+                        "speaker" => "APP",
+                        "intent_id" => "test"
+                    ]
+                ]
+
+            ])
+            ->assertStatus(422)
+            ->assertJson([
+                "message" => "The given data was invalid.",
+                "errors" => [
+                    "intent.virtual_intent.speaker" => [
+                        "The virtual intent speaker can only be USER."
+                    ]
+                ]
+            ]);
+    }
+
     public function testGetTurnIntentByTurnAndIntentUid()
     {
         $fakeTurn = new Turn();
@@ -324,7 +369,7 @@ $fakeRequestIntent->getUid())
                     "confidence" => 1,
                     "listens_for" => ['intent_a', 'intent_b'],
                     "transition" => [],
-                    "virtual_intents" => [],
+                    "virtual_intent" => [],
                     "sample_utterance" => "Hello!"
                 ],
             ]);
@@ -403,7 +448,7 @@ $fakeRequestIntent->getUid())
                     "sample_utterance" => "Hello Updated!",
                     "listens_for" => ["intent_a_updated", "intent_b"],
                     "transition" => [],
-                    "virtual_intents" => [],
+                    "virtual_intent" => [],
                 ]
             ]);
     }
@@ -424,7 +469,7 @@ $fakeRequestIntent->getUid())
         $fakeIntent->setConfidence(1.0);
         $fakeIntent->setListensFor(['intent_a', 'intent_b']);
         $fakeIntent->setTransition(new Transition(null, null, null));
-        $fakeIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeIntent->setVirtualIntent(VirtualIntent::createEmpty());
         $fakeIntent->setSampleUtterance('Hello!');
 
         ConversationDataClient::shouldReceive('getIntentByUid')
@@ -449,7 +494,7 @@ $fakeRequestIntent->getUid())
                 "confidence" => 1,
                 "sample_utterance" => "Hello!",
                 "transition" => [],
-                "virtual_intents" => [],
+                "virtual_intent" => [],
             ]);
     }
 
@@ -469,7 +514,7 @@ $fakeRequestIntent->getUid())
         $fakeIntent->setConfidence(1.0);
         $fakeIntent->setListensFor(['intent_a', 'intent_b']);
         $fakeIntent->setTransition(new Transition(null, null, null));
-        $fakeIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeIntent->setVirtualIntent(VirtualIntent::createEmpty());
         $fakeIntent->setSampleUtterance('Hello!');
 
         $fakeIntentUpdated = new Intent();
@@ -486,7 +531,7 @@ $fakeRequestIntent->getUid())
         $fakeIntentUpdated->setConfidence(1.0);
         $fakeIntentUpdated->setListensFor(['intent_a_updated', 'intent_b']);
         $fakeIntentUpdated->setTransition(new Transition(null, null, null));
-        $fakeIntentUpdated->setVirtualIntents(new VirtualIntentCollection());
+        $fakeIntentUpdated->setVirtualIntent(VirtualIntent::createEmpty());
         $fakeIntentUpdated->setSampleUtterance('Hello updated!');
 
         ConversationDataClient::shouldReceive('getIntentByUid')
@@ -526,7 +571,7 @@ $fakeRequestIntent->getUid())
                 "sample_utterance" => "Hello updated!",
                 "listens_for" => ["intent_a_updated", "intent_b"],
                 "transition" => [],
-                "virtual_intents" => [],
+                "virtual_intent" => [],
             ]);
     }
 
@@ -546,7 +591,7 @@ $fakeRequestIntent->getUid())
         $fakeIntent->setConfidence(1.0);
         $fakeIntent->setListensFor(['intent_a', 'intent_b']);
         $fakeIntent->setTransition(new Transition(null, null, null));
-        $fakeIntent->setVirtualIntents(new VirtualIntentCollection());
+        $fakeIntent->setVirtualIntent(VirtualIntent::createEmpty());
         $fakeIntent->setSampleUtterance('Hello!');
 
         ConversationDataClient::shouldReceive('getIntentByUid')

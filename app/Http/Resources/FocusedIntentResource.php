@@ -40,7 +40,7 @@ class FocusedIntentResource extends JsonResource
             Intent::CONFIDENCE,
             Intent::EXPECTED_ATTRIBUTES,
             Intent::TRANSITION,
-            Intent::VIRTUAL_INTENTS,
+            Intent::VIRTUAL_INTENT,
             Intent::ACTIONS => Action::FIELDS,
             Intent::MESSAGE_TEMPLATES => [
                 MessageTemplate::UID,
