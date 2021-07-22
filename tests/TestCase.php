@@ -10,7 +10,7 @@ use OpenDialogAi\Core\Conversation\ConditionCollection;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
-use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
+use OpenDialogAi\Core\Conversation\VirtualIntent;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -82,7 +82,7 @@ abstract class TestCase extends BaseTestCase
         $intent->setConfidence(1.0);
         $intent->setListensFor(['intent_a', 'intent_b']);
         $intent->setTransition(new Transition(null, null, null));
-        $intent->setVirtualIntents(new VirtualIntentCollection());
+        $intent->setVirtualIntent(VirtualIntent::createEmpty());
         $intent->setSampleUtterance('Hello!');
 
         return $intent;

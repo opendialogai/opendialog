@@ -20,7 +20,7 @@ use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use OpenDialogAi\Core\Conversation\VirtualIntent;
-use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
+use RuntimeException;
 use Tests\TestCase;
 
 class ImportExportSerializerTest extends TestCase
@@ -28,7 +28,7 @@ class ImportExportSerializerTest extends TestCase
     public static function getConversationObjectPropertyByName(string $name, ConversationObject $object)
     {
         if (!in_array($name, $object::allFields())) {
-            throw new \RuntimeException("Can't access property %s of %s", $name, get_class($object));
+            throw new RuntimeException("Can't access property %s of %s", $name, get_class($object));
         }
         $nameToPropertyValue = [
             ConversationObject::UID => fn (ConversationObject $object) => $object->getUid(),
@@ -46,7 +46,7 @@ class ImportExportSerializerTest extends TestCase
     public static function getScenarioPropertyByName(string $name, Scenario $object)
     {
         if (!in_array($name, $object::allFields())) {
-            throw new \RuntimeException("Can't access property %s of %s", $name, get_class($object));
+            throw new RuntimeException("Can't access property %s of %s", $name, get_class($object));
         }
         if (in_array($name, ConversationObject::allFields())) {
             return self::getConversationObjectPropertyByName($name, $object);
@@ -63,7 +63,7 @@ class ImportExportSerializerTest extends TestCase
     public static function getConversationPropertyByName(string $name, Conversation $object)
     {
         if (!in_array($name, $object::allFields())) {
-            throw new \RuntimeException("Can't access property %s of %s", $name, get_class($object));
+            throw new RuntimeException("Can't access property %s of %s", $name, get_class($object));
         }
         if (in_array($name, ConversationObject::allFields())) {
             return self::getConversationObjectPropertyByName($name, $object);
@@ -79,7 +79,7 @@ class ImportExportSerializerTest extends TestCase
     public static function getScenePropertyByName(string $name, Scene $object)
     {
         if (!in_array($name, $object::allFields())) {
-            throw new \RuntimeException("Can't access property %s of %s", $name, get_class($object));
+            throw new RuntimeException("Can't access property %s of %s", $name, get_class($object));
         }
         if (in_array($name, ConversationObject::allFields())) {
             return self::getConversationObjectPropertyByName($name, $object);
@@ -95,7 +95,7 @@ class ImportExportSerializerTest extends TestCase
     public static function getTurnPropertyByName(string $name, Turn $object)
     {
         if (!in_array($name, $object::allFields())) {
-            throw new \RuntimeException("Can't access property %s of %s", $name, get_class($object));
+            throw new RuntimeException("Can't access property %s of %s", $name, get_class($object));
         }
         if (in_array($name, ConversationObject::allFields())) {
             return self::getConversationObjectPropertyByName($name, $object);
@@ -113,7 +113,7 @@ class ImportExportSerializerTest extends TestCase
     public static function getIntentPropertyByName(string $name, Intent $object)
     {
         if (!in_array($name, $object::allFields())) {
-            throw new \RuntimeException("Can't access property %s of %s", $name, get_class($object));
+            throw new RuntimeException("Can't access property %s of %s", $name, get_class($object));
         }
         if (in_array($name, ConversationObject::allFields())) {
             return self::getConversationObjectPropertyByName($name, $object);
@@ -125,7 +125,7 @@ class ImportExportSerializerTest extends TestCase
                 Intent::LISTENS_FOR => fn (Intent $intent) => $intent->getListensFor(),
                 Intent::EXPECTED_ATTRIBUTES => fn (Intent $intent) => $intent->getExpectedAttributes(),
                 Intent::TRANSITION => fn (Intent $intent) => $intent->getTransition(),
-                Intent::VIRTUAL_INTENTS => fn (Intent $intent) => $intent->getVirtualIntents(),
+                Intent::VIRTUAL_INTENT => fn (Intent $intent) => $intent->getVirtualIntent(),
                 Intent::ACTIONS => fn (Intent $intent) => $intent->getActions(),
                 Intent::TURN => fn (Intent $intent) => $intent->getTurn()
             ];
@@ -256,7 +256,7 @@ class ImportExportSerializerTest extends TestCase
         $scenario->setStatus(Scenario::LIVE_STATUS);
 
         // Conversations
-        $conversationA = new \OpenDialogAi\Core\Conversation\Conversation($scenario);
+        $conversationA = new Conversation($scenario);
         $conversationA->setOdId("test_conversation_a");
         $conversationA->setName("Test conversation (A)");
         $conversationA->setDescription("(A) Test conversation description.");
@@ -348,7 +348,7 @@ class ImportExportSerializerTest extends TestCase
         $intentA->setConfidence(1.0);
         $intentA->setSampleUtterance("(A) Test intent sample utterance");
         $intentA->setTransition(new Transition(null, null, "test_turn_d"));
-        $intentA->setVirtualIntents(new VirtualIntentCollection([new VirtualIntent(Intent::USER, "test_intent_b")]));
+        $intentA->setVirtualIntent(new VirtualIntent(Intent::USER, "test_intent_b"));
 
         $intentB = new Intent($turnA);
         $intentB->setOdId("test_intent_b");
@@ -525,7 +525,6 @@ class ImportExportSerializerTest extends TestCase
                                             'speaker' => 'USER',
                                             'listens_for' => [],
                                             'expected_attributes' => [],
-                                            'virtual_intents' => [],
                                             'actions' => [],
                                             'message_templates' => []
                                         ]
@@ -601,11 +600,9 @@ class ImportExportSerializerTest extends TestCase
                                                 "scene" => null,
                                                 "turn" => "test_turn_d"
                                             ],
-                                            "virtual_intents" => [
-                                                [
-                                                    "speaker" => "USER",
-                                                    "intent_id" => "test_intent_b"
-                                                ]
+                                            "virtual_intent" => [
+                                                "speaker" => "USER",
+                                                "intent_id" => "test_intent_b"
                                             ],
                                             "actions" => [],
                                             "message_templates" => []
@@ -624,7 +621,6 @@ class ImportExportSerializerTest extends TestCase
                                             "sample_utterance" => "(B) Test intent sample utterance",
                                             "listens_for" => [],
                                             "expected_attributes" => [],
-                                            "virtual_intents" => [],
                                             "actions" => [],
                                             "message_templates" => []
                                         ]
@@ -651,7 +647,6 @@ class ImportExportSerializerTest extends TestCase
                                             "sample_utterance" => "(C) Test intent sample utterance",
                                             "listens_for" => [],
                                             "expected_attributes" => [],
-                                            "virtual_intents" => [],
                                             "actions" => [],
                                             'message_templates' => []
                                         ]
@@ -690,7 +685,6 @@ class ImportExportSerializerTest extends TestCase
                                             "sample_utterance" => "(D) Test intent sample utterance",
                                             "listens_for" => [],
                                             "expected_attributes" => [],
-                                            "virtual_intents" => [],
                                             "actions" => [],
                                             'message_templates' => []
                                         ]
@@ -742,7 +736,7 @@ class ImportExportSerializerTest extends TestCase
     {
         $serializedScenario = $this->getSerializedMinimalTestScenario();
 
-        /* @var $deserializedScenario \OpenDialogAi\Core\Conversation\Scenario */
+        /* @var $deserializedScenario Scenario */
         $deserializedScenario = ImportExportSerializer::deserialize($serializedScenario, Scenario::class, 'json');
 
         $minimalScenario = $this->getMinimalTestScenario();
@@ -772,7 +766,7 @@ class ImportExportSerializerTest extends TestCase
     {
         $serializedScenario = $this->getSerializedTestScenarioToIntentBranch();
 
-        /* @var $deserializedScenario \OpenDialogAi\Core\Conversation\Scenario */
+        /* @var $deserializedScenario Scenario */
         $deserializedScenario = ImportExportSerializer::deserialize($serializedScenario, Scenario::class, 'json');
 
         $scenarioToIntentBranch = $this->getTestScenarioToIntentBranch();
@@ -793,7 +787,7 @@ class ImportExportSerializerTest extends TestCase
     {
         $serializedScenario = $this->getSerializedFullTestScenario();
 
-        /* @var $deserializedScenario \OpenDialogAi\Core\Conversation\Scenario */
+        /* @var $deserializedScenario Scenario */
         $deserializedScenario = ImportExportSerializer::deserialize($serializedScenario, Scenario::class, 'json');
         $fullScenario = $this->getFullTestScenario();
 
@@ -896,7 +890,7 @@ class ImportExportSerializerTest extends TestCase
                             Intent::SAMPLE_UTTERANCE,
                             Intent::LISTENS_FOR,
                             Intent::EXPECTED_ATTRIBUTES,
-                            Intent::VIRTUAL_INTENTS,
+                            Intent::VIRTUAL_INTENT,
                             Intent::TRANSITION
                         ]);
                     }
@@ -921,7 +915,7 @@ class ImportExportSerializerTest extends TestCase
                             Intent::SAMPLE_UTTERANCE,
                             Intent::LISTENS_FOR,
                             Intent::EXPECTED_ATTRIBUTES,
-                            Intent::VIRTUAL_INTENTS,
+                            Intent::VIRTUAL_INTENT,
                             Intent::TRANSITION
                         ]);
                     }

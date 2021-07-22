@@ -10,6 +10,7 @@ use OpenDialogAi\Core\Conversation\Behavior;
 use OpenDialogAi\Core\Conversation\Condition;
 use OpenDialogAi\Core\Conversation\Intent;
 use OpenDialogAi\Core\Conversation\Transition;
+use OpenDialogAi\Core\Conversation\VirtualIntent;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class IntentResource extends JsonResource
@@ -31,7 +32,7 @@ class IntentResource extends JsonResource
             Intent::TRANSITION => Transition::FIELDS,
             Intent::LISTENS_FOR,
             Intent::EXPECTED_ATTRIBUTES,
-            Intent::VIRTUAL_INTENTS => [],
+            Intent::VIRTUAL_INTENT => VirtualIntent::FIELDS,
             Intent::ACTIONS,
             Intent::BEHAVIORS => Behavior::FIELDS,
             Intent::CONDITIONS => Condition::FIELDS,

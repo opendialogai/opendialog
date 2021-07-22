@@ -49,7 +49,6 @@
                                     "speaker" : "USER",
                                     "listens_for" : ["other_example_intent_id"],
                                     "expected_attributes" : [],
-                                    "virtual_intents" : [],
                                     "actions" : [],
                                     "transition": {
                                         "conversation": null,
@@ -72,7 +71,10 @@
                                     "speaker" : "APP",
                                     "listens_for" : [],
                                     "expected_attributes" : [],
-                                    "virtual_intents" : [],
+                                    "virtual_intent" : {
+                                        "speaker" : "USER",
+                                        "intent_id" : "intent.app.test"
+                                    },
                                     "actions" : [],
                                     "transition": {
                                         "conversation": "$path:example_scenario/example_conversation",

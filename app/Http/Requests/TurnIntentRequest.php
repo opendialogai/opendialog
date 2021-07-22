@@ -8,6 +8,8 @@ use OpenDialogAi\Core\Conversation\Turn;
 
 class TurnIntentRequest extends IntentRequest
 {
+    protected string $prefix = 'intent.';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,27 +27,15 @@ class TurnIntentRequest extends IntentRequest
      */
     public function rules()
     {
-        $intentRules = [];
-
-        foreach (parent::rules() as $attribute => $rule) {
-            $intentRules["intent.$attribute"] = $rule;
-        }
-
-        return $intentRules + [
+        return parent::rules() + [
             'order' => ['bail', 'required', 'string', Rule::in([Turn::ORDER_REQUEST, Turn::ORDER_RESPONSE])],
         ];
     }
 
     public function attributes()
     {
-        $attributes = [];
-
-        foreach (parent::rules() as $attribute => $rule) {
-            $attributes["intent.$attribute"] = $attribute;
-        }
-
         return [
             'intent.od_id' => 'name'
-        ] + $attributes;
+        ] + parent::attributes();
     }
 }

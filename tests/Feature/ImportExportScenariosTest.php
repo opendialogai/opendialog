@@ -27,7 +27,6 @@ use OpenDialogAi\Core\Conversation\Transition;
 use OpenDialogAi\Core\Conversation\Turn;
 use OpenDialogAi\Core\Conversation\TurnCollection;
 use OpenDialogAi\Core\Conversation\VirtualIntent;
-use OpenDialogAi\Core\Conversation\VirtualIntentCollection;
 use Tests\TestCase;
 
 /**
@@ -222,7 +221,7 @@ class ImportExportScenariosTest extends TestCase
         $intentA->setConfidence(1.0);
         $intentA->setSampleUtterance("(A) Test intent sample utterance");
         $intentA->setTransition(new Transition(null, null, "test_turn_d"));
-        $intentA->setVirtualIntents(new VirtualIntentCollection([new VirtualIntent(Intent::USER, "test_intent_b")]));
+        $intentA->setVirtualIntent(new VirtualIntent(Intent::USER, "test_intent_b"));
 
         $intentB = new Intent($turnA);
         $intentB->setOdId("test_intent_b");
@@ -335,6 +334,7 @@ class ImportExportScenariosTest extends TestCase
         $responseIntent->setBehaviors(new BehaviorsCollection([new Behavior(Behavior::COMPLETING_BEHAVIOR)]));
         $responseIntent->setSampleUtterance("Example sample utterance");
         $responseIntent->setConfidence(1);
+        $responseIntent->setVirtualIntent(new VirtualIntent(Intent::USER, 'intent.app.test'));
         $responseIntent->setSpeaker(Intent::APP);
 
         $messageTemplate = new MessageTemplate();

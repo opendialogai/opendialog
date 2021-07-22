@@ -7,6 +7,8 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConditionCollectionNo
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ConversationCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\IntentCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\MessageTemplateCollectionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ActionNormalizer;
+use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ActionsCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\BehaviorNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ConditionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ConversationNormalizer;
@@ -17,12 +19,9 @@ use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExp
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TransitionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\TurnNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\VirtualIntentNormalizer;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ActionNormalizer;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\Normalizers\ImportExport\ActionsCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\ScenarioCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\SceneCollectionNormalizer;
 use OpenDialogAi\Core\Conversation\DataClients\Serializers\TurnCollectionNormalizer;
-use OpenDialogAi\Core\Conversation\DataClients\Serializers\VirtualIntentCollectionNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -49,7 +48,6 @@ class ImportExportSerializer
             new ConditionNormalizer(),
             new BehaviorsCollectionNormalizer(),
             new BehaviorNormalizer(),
-            new VirtualIntentCollectionNormalizer(),
             new VirtualIntentNormalizer(),
             new TransitionNormalizer(),
             new ActionsCollectionNormalizer(),
